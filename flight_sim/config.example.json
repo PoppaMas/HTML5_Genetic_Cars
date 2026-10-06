@@ -1,0 +1,14 @@
+{
+  "pop_size": 48,
+  "generations": 40,
+  "elite": 2,
+  "selection_p": 0.2,
+  "crossover": "uniform",
+  "mutation_rate": 0.15,
+  "mutation_sigma": 0.08,
+  "mutation_mode": "gauss",
+  "seed": 1,
+  "scenarios": 3,
+  "workers": 0,
+  "out": "results/example"
+}

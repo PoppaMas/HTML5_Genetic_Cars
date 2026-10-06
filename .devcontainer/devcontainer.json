@@ -1,0 +1,14 @@
+{
+  "name": "HTML5 Genetic Cars + flight_sim (Python 3)",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install -r flight_sim/requirements.txt ipykernel",
+  "forwardPorts": [8000],
+  "portsAttributes": {
+    "8000": { "label": "car sim (python3 -m http.server 8000)" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "ms-toolsai.jupyter"]
+    }
+  }
+}

@@ -1,0 +1,3 @@
+jsbsim>=1.2,<2
+numpy>=1.24
+matplotlib>=3.7
