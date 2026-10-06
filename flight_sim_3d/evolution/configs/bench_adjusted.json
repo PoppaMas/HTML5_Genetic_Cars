@@ -1,0 +1,21 @@
+{
+  "_comment": "Stage C: stage-B IC plus small, documented per-aircraft changes (see README 'Benchmark'). c172x unchanged (baseline profile).",
+  "seed": 1,
+  "scenarios": 3,
+  "ga": {"pop_size": 32, "generations": 20},
+  "profiles": {
+    "adj_f16": {"h0_ft": 10000, "speed_kts": 350,
+                "gain_bounds": {"ki_alt": [1e-7, 0.05], "ki_pitch": [1e-7, 0.2], "kd_pitch": [1e-6, 0.5]},
+                "_why": "stage B pinned ki_alt/ki_pitch/kd_pitch at their lower bounds (FBW FCS already integrates/damps pitch); widen downward 100x"},
+    "adj_737": {"h0_ft": 10000, "speed_kts": 250, "nz_limits": [-1.0, 2.5],
+                "_why": "transport-category load limit (+2.5 g) instead of the C172 normal-category 3.8 g"},
+    "adj_t6texan2": {"h0_ft": 10000, "speed_kts": 200, "gain_bounds": {"kp_alt": [0.002, 2.0]},
+                     "_why": "stage B pinned kp_alt at its upper bound 0.5; widen upward 4x"}
+  },
+  "aircraft": [
+    {"name": "c172x", "profile": "baseline"},
+    {"name": "f16", "profile": "adj_f16"},
+    {"name": "737", "profile": "adj_737"},
+    {"name": "t6texan2", "profile": "adj_t6texan2"}
+  ]
+}

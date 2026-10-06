@@ -1,0 +1,41 @@
+{
+  "_comment": "seed-robustness check of bench_ic.json (non-c172x aircraft), seed 2",
+  "seed": 2,
+  "scenarios": 3,
+  "ga": {
+    "pop_size": 32,
+    "generations": 20
+  },
+  "profiles": {
+    "ic_f16": {
+      "h0_ft": 10000,
+      "speed_kts": 350
+    },
+    "ic_737": {
+      "h0_ft": 10000,
+      "speed_kts": 250
+    },
+    "ic_t6texan2": {
+      "h0_ft": 10000,
+      "speed_kts": 200
+    }
+  },
+  "aircraft": [
+    {
+      "name": "f16",
+      "profile": "ic_f16"
+    },
+    {
+      "name": "737",
+      "profile": "ic_737"
+    },
+    {
+      "name": "t6texan2",
+      "profile": "ic_t6texan2"
+    }
+  ],
+  "cache": {
+    "enabled": true,
+    "path": "cache/seeds.sqlite"
+  }
+}

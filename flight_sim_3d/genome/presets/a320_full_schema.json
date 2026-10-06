@@ -1,0 +1,31 @@
+{
+  "_comment": "Schema/range inspection only: every block on, ranges derived from the A320 profile. yaw_damper/structure are inert on today's backend and the backend flies c172x only, so do NOT evolve with this. Altitude reference ramped at 600 fpm.",
+  "name": "a320_full_schema",
+  "aircraft": "a320",
+  "blocks": {
+    "pitch_altitude": true,
+    "roll_heading": true,
+    "yaw_damper": true,
+    "speed_throttle": true,
+    "structure": true
+  },
+  "allow_inert_blocks": true,
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "sideslip": 0.5,
+      "comfort": 0.02,
+      "structural": 0.1
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600
+  },
+  "backend": "jsbsim_ext",
+  "controller": {
+    "alt_ref_ff": true
+  }
+}

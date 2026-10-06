@@ -1,0 +1,43 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.027826279920683275,
+      "range": [
+        3.65e-07,
+        0.05
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.026308699999999966,
+      "range": [
+        3.65e-07,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 0.5,
+      "value": 0.208706,
+      "range": [
+        0.137,
+        13.7
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {}
+}

@@ -1,0 +1,7 @@
+{
+  "_comment": "Same settings as: python flight_sim/evolve.py --pop-size 24 --generations 15 --seed 1 (original prototype). Must reproduce its best cost exactly.",
+  "seed": 1,
+  "scenarios": 3,
+  "ga": {"pop_size": 24, "generations": 15},
+  "aircraft": [{"name": "c172x", "profile": "baseline"}]
+}

@@ -1,0 +1,148 @@
+{
+  "cost": 0.4055043926934642,
+  "per_scenario": [
+    {
+      "cost": 0.2398011436263661,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.19651224370714865,
+      "effort": 0.011085962598715807
+    },
+    {
+      "cost": 0.3549281887720418,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.2385113237061064,
+      "effort": 0.018406396185587533
+    },
+    {
+      "cost": 0.5366593187131025,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.3197212939975997,
+      "effort": 0.03350489140590759
+    }
+  ],
+  "objectives_per_scenario": [
+    {
+      "track_alt": 0.19651224370714865,
+      "effort": 0.011085962598715807,
+      "comfort": 0.7092123441457606,
+      "structural": -0.015489180376594084,
+      "track_heading_rms": 0.11455378910918582,
+      "aeroelastic_margin_penalty": 0.028374842322960784
+    },
+    {
+      "track_alt": 0.2385113237061064,
+      "effort": 0.018406396185587533,
+      "comfort": 1.7546399173741736,
+      "structural": -0.009748456224470365,
+      "track_heading_rms": 0.16205330505219992,
+      "aeroelastic_margin_penalty": 0.028374842322960784
+    },
+    {
+      "track_alt": 0.3197212939975997,
+      "effort": 0.03350489140590759,
+      "comfort": 2.8526143979634795,
+      "structural": 0.0060141309736012755,
+      "track_heading_rms": 0.12833910319123606,
+      "aeroelastic_margin_penalty": 0.028374842322960784
+    }
+  ],
+  "skipped": {},
+  "violation": 0.0,
+  "objectives": {
+    "track_alt": 0.25158162047028493,
+    "effort": 0.02099908339673698,
+    "comfort": 1.772155553161138,
+    "structural": -0.0064078352091543915,
+    "track_heading_rms": 0.13498206578420727,
+    "aeroelastic_margin_penalty": 0.028374842322960784
+  },
+  "aeroelastic": {
+    "flutter_margin": 1.1663103325496016,
+    "no_flutter_below_cap": false,
+    "flutter_margin_cap": 3.0,
+    "flutter_cap_source": "fd",
+    "margin_error": false,
+    "div_margin": 1.5615505198707849,
+    "div_not_found_below_cap": false,
+    "margin_penalty": 0.028374842322960784,
+    "delta_wing_mass_lb": -21.409624899377235,
+    "fail": null
+  },
+  "diagnostics": [
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.1766417304884635,
+      "max_pitch_above_trim_deg": 4.403896295547652,
+      "min_pitch_below_trim_deg": -4.993733028552934,
+      "max_abs_q_dps": 1.3838660994761112,
+      "max_nz": 1.0931034172419252,
+      "min_nz": 0.8779677955648463,
+      "rms_dn_g": 0.04652727701872437,
+      "max_climb_fpm": 780.3331491431686,
+      "max_sink_fpm": 937.2031697779087,
+      "theta_trim_deg": 0.7727454349408122,
+      "max_overshoot_ft": 30.341915763914585,
+      "max_ref_err_ft": 43.40312707982139,
+      "hold_pp_ft": 34.86125620827079,
+      "hold_rms_hdot_fps": 2.790696778770181,
+      "hdg_final_deg": 0.3499171370909835,
+      "hdg_max_abs_deg": 0.887119839246509,
+      "max_abs_phi_deg": 1.4931050117589557,
+      "max_root_bm_over_limit": 0.39360074240992954,
+      "max_tip_deflection_ft": 0.39960200511648386,
+      "max_tip_twist_deg": 0.8776537737124532,
+      "wing_mass_delta_lb": -21.409624899377235
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 4.866781914317214,
+      "max_pitch_above_trim_deg": 4.094036479376403,
+      "min_pitch_below_trim_deg": -5.4003785101839945,
+      "max_abs_q_dps": 3.618333077338217,
+      "max_nz": 1.2092284710366068,
+      "min_nz": 0.5616103377688617,
+      "rms_dn_g": 0.07114739132199262,
+      "max_climb_fpm": 709.683493816661,
+      "max_sink_fpm": 945.4895878998448,
+      "theta_trim_deg": 0.7727454349408122,
+      "max_overshoot_ft": 28.407260410487652,
+      "max_ref_err_ft": 28.407260410487652,
+      "hold_pp_ft": 45.08864728361368,
+      "hold_rms_hdot_fps": 3.4881222661911306,
+      "hdg_final_deg": 0.40593190679226154,
+      "hdg_max_abs_deg": 5.025337203975255,
+      "max_abs_phi_deg": 9.850013617186148,
+      "max_root_bm_over_limit": 0.4415696971887236,
+      "max_tip_deflection_ft": 0.4511568603579097,
+      "max_tip_twist_deg": 1.0345256608978306,
+      "wing_mass_delta_lb": -21.409624899377235
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.0894141790795,
+      "max_pitch_above_trim_deg": 4.316668744138688,
+      "min_pitch_below_trim_deg": -4.823607460035122,
+      "max_abs_q_dps": 4.084604341316111,
+      "max_nz": 1.4666636358347767,
+      "min_nz": 0.4357691255944734,
+      "rms_dn_g": 0.13101082655145246,
+      "max_climb_fpm": 940.31056618242,
+      "max_sink_fpm": 1059.2426990994438,
+      "theta_trim_deg": 0.7727454349408122,
+      "max_overshoot_ft": 34.482854187488556,
+      "max_ref_err_ft": 34.66395555249528,
+      "hold_pp_ft": 62.34582480788231,
+      "hold_rms_hdot_fps": 3.7528860083454654,
+      "hdg_final_deg": 0.5408267956001964,
+      "hdg_max_abs_deg": 2.872107498550008,
+      "max_abs_phi_deg": 7.7545560577922314,
+      "max_root_bm_over_limit": 0.5311045682379055,
+      "max_tip_deflection_ft": 0.5422132616636814,
+      "max_tip_twist_deg": 1.179845689513091,
+      "wing_mass_delta_lb": -21.409624899377235
+    }
+  ]
+}

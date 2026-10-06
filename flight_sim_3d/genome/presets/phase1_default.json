@@ -1,0 +1,19 @@
+{
+  "_comment": "Team default (Phase 1). Task, envelope, trim point, gain bounds and fitness weights come from the shared set aircraft_profiles/phase1_shared.json (also used by Evolution Runner, see ALIGNMENT.md): 200 ft step ramped at 600 fpm with 0.1 g corners (tracking scored against that reference), climb-rate feed-forward, track + 2*effort + 0.05*comfort. Use --aircraft c172x | t38 | b737.",
+  "name": "phase1_default",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    }
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1"
+}

@@ -1,0 +1,563 @@
+{
+ "c172x": {
+  "design_point": {
+   "kcas": 100.0,
+   "alt_ft": 4000.0
+  },
+  "defaults_after_load": {
+   "gear_cmd": 1.0,
+   "gear_pos": 1.0,
+   "flap_cmd": 0.0,
+   "n_engines": 1,
+   "Sw_ft2": 174.0,
+   "b_ft": 36.0,
+   "cbar_ft": 4.9,
+   "empty_wt_lb": 1454.0
+  },
+  "trim_mode1_gear_default(down)": {
+   "alpha_deg": 0.7946,
+   "theta_deg": 0.7946,
+   "throttle_cmd": 0.7805,
+   "throttle_pos": 0.7805,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": 0.2186,
+   "elevator_pos_deg": 5.142,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.1626,
+   "qbar_psf": 33.8253,
+   "weight_lb": 2480.0,
+   "thrust_lbf_eng0": 272.8149,
+   "udot": -0.0,
+   "wdot": -0.0002,
+   "qdot": -0.0,
+   "engine-rpm": 2393.75,
+   "hold10s": {
+    "dtheta_deg": 0.004,
+    "dkcas": -0.006,
+    "dh_ft": 0.07
+   }
+  },
+  "trim_mode0_gear_default(down)": {
+   "alpha_deg": 0.7943,
+   "theta_deg": 0.7943,
+   "throttle_cmd": 0.7805,
+   "throttle_pos": 0.7805,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": 0.219,
+   "elevator_pos_deg": 5.1515,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.1626,
+   "qbar_psf": 33.8253,
+   "weight_lb": 2480.0,
+   "thrust_lbf_eng0": 272.8641,
+   "udot": -0.0,
+   "wdot": -0.0002,
+   "qdot": -0.0,
+   "engine-rpm": 2393.88,
+   "hold10s": {
+    "dtheta_deg": -11.17,
+    "dkcas": 8.569,
+    "dh_ft": -106.37
+   }
+  },
+  "trim_mode1_gear_up": {
+   "alpha_deg": 0.7946,
+   "theta_deg": 0.7946,
+   "throttle_cmd": 0.7805,
+   "throttle_pos": 0.7805,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": 0.2186,
+   "elevator_pos_deg": 5.142,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.1626,
+   "qbar_psf": 33.8253,
+   "weight_lb": 2480.0,
+   "thrust_lbf_eng0": 272.8149,
+   "udot": -0.0,
+   "wdot": -0.0002,
+   "qdot": -0.0,
+   "engine-rpm": 2393.75,
+   "hold10s": {
+    "dtheta_deg": 0.004,
+    "dkcas": -0.006,
+    "dh_ft": 0.07
+   }
+  },
+  "trim_mode0_gear_up": {
+   "alpha_deg": 0.7943,
+   "theta_deg": 0.7943,
+   "throttle_cmd": 0.7805,
+   "throttle_pos": 0.7805,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": 0.219,
+   "elevator_pos_deg": 5.1515,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.1626,
+   "qbar_psf": 33.8253,
+   "weight_lb": 2480.0,
+   "thrust_lbf_eng0": 272.8641,
+   "udot": -0.0,
+   "wdot": -0.0002,
+   "qdot": -0.0,
+   "engine-rpm": 2393.88,
+   "hold10s": {
+    "dtheta_deg": -11.17,
+    "dkcas": 8.569,
+    "dh_ft": -106.37
+   }
+  },
+  "trimmable_kcas_at_design_alt": {
+   "min": [
+    45,
+    11.73,
+    0.671
+   ],
+   "max": [
+    115,
+    0.18,
+    0.862
+   ],
+   "n_ok": 15,
+   "tried": [
+    40,
+    160
+   ]
+  },
+  "level_trim_ceiling_ft": [
+   20000,
+   50
+  ],
+  "clmax": {
+   "alpha_clmax_deg": 40.0,
+   "clmax_untrimmed": 4.096,
+   "vs1g_keas_from_clmax": 32.1,
+   "note": "CL from JSBSim aero at IC (elevator 0, power on, gear up), alpha swept -4..40 deg; peak may be the table edge"
+  },
+  "control_response": {
+   "elevator": {
+    "cmd_step": "+0.1",
+    "dq_dps": -2.455,
+    "dp_dps": -0.643,
+    "dr_dps": -0.11,
+    "dthrust_lbf": -0.1
+   },
+   "aileron": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.023,
+    "dp_dps": 6.863,
+    "dr_dps": -0.157,
+    "dthrust_lbf": 0.0
+   },
+   "rudder": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.112,
+    "dp_dps": -0.169,
+    "dr_dps": -1.615,
+    "dthrust_lbf": 0.1
+   },
+   "throttle": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.045,
+    "dp_dps": 0.139,
+    "dr_dps": 0.013,
+    "dthrust_lbf": 16.7
+   },
+   "surface_travel": {
+    "cmd-1": {
+     "fcs/elevator-pos-deg": -19.481,
+     "fcs/left-aileron-pos-deg": -19.853,
+     "fcs/right-aileron-pos-deg": 14.854,
+     "fcs/left-aileron-pos-norm": 0.0,
+     "fcs/right-aileron-pos-norm": 0.0,
+     "fcs/rudder-pos-deg": -15.997
+    },
+    "cmd+1": {
+     "fcs/elevator-pos-deg": 19.481,
+     "fcs/left-aileron-pos-deg": 14.854,
+     "fcs/right-aileron-pos-deg": -19.853,
+     "fcs/left-aileron-pos-norm": 0.0,
+     "fcs/right-aileron-pos-norm": 0.0,
+     "fcs/rudder-pos-deg": 15.997
+    }
+   }
+  }
+ },
+ "T38": {
+  "design_point": {
+   "kcas": 300.0,
+   "alt_ft": 10000.0
+  },
+  "defaults_after_load": {
+   "gear_cmd": 1.0,
+   "gear_pos": 1.0,
+   "flap_cmd": 0.0,
+   "n_engines": 2,
+   "Sw_ft2": 170.0,
+   "b_ft": 25.25,
+   "cbar_ft": 6.73,
+   "empty_wt_lb": 7574.0
+  },
+  "trim_mode1_gear_default(down)": {
+   "alpha_deg": 4.5832,
+   "theta_deg": 4.5832,
+   "throttle_cmd": 0.4355,
+   "throttle_pos": 0.871,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.1148,
+   "elevator_pos_deg": 0.0,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.541,
+   "qbar_psf": 298.2272,
+   "weight_lb": 11474.0,
+   "thrust_lbf_eng0": 1039.1063,
+   "udot": -0.0001,
+   "wdot": 0.0007,
+   "qdot": -0.0,
+   "n2": 93.93,
+   "hold10s": {
+    "dtheta_deg": 0.009,
+    "dkcas": -0.019,
+    "dh_ft": 0.69
+   }
+  },
+  "trim_mode0_gear_default(down)": {
+   "alpha_deg": 4.5832,
+   "theta_deg": 4.5832,
+   "throttle_cmd": 0.4355,
+   "throttle_pos": 0.871,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.1148,
+   "elevator_pos_deg": 0.0,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.541,
+   "qbar_psf": 298.2272,
+   "weight_lb": 11474.0,
+   "thrust_lbf_eng0": 1039.1063,
+   "udot": -0.0001,
+   "wdot": 0.0007,
+   "qdot": -0.0,
+   "n2": 93.93,
+   "hold10s": {
+    "dtheta_deg": 0.009,
+    "dkcas": -0.019,
+    "dh_ft": 0.69
+   }
+  },
+  "trim_mode1_gear_up": {
+   "alpha_deg": 4.6077,
+   "theta_deg": 4.6077,
+   "throttle_cmd": 0.3538,
+   "throttle_pos": 0.7076,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.1154,
+   "elevator_pos_deg": 0.0,
+   "gear_pos": 0.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.541,
+   "qbar_psf": 298.2272,
+   "weight_lb": 11474.0,
+   "thrust_lbf_eng0": 659.6815,
+   "udot": -0.0001,
+   "wdot": 0.0007,
+   "qdot": -0.0,
+   "n2": 86.26,
+   "hold10s": {
+    "dtheta_deg": 0.011,
+    "dkcas": -0.021,
+    "dh_ft": 0.71
+   }
+  },
+  "trim_mode0_gear_up": {
+   "alpha_deg": 4.6077,
+   "theta_deg": 4.6077,
+   "throttle_cmd": 0.3538,
+   "throttle_pos": 0.7076,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.1154,
+   "elevator_pos_deg": 0.0,
+   "gear_pos": 0.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.541,
+   "qbar_psf": 298.2272,
+   "weight_lb": 11474.0,
+   "thrust_lbf_eng0": 659.6815,
+   "udot": -0.0001,
+   "wdot": 0.0007,
+   "qdot": -0.0,
+   "n2": 86.26,
+   "hold10s": {
+    "dtheta_deg": 0.011,
+    "dkcas": -0.021,
+    "dh_ft": 0.71
+   }
+  },
+  "trimmable_kcas_at_design_alt": {
+   "min": [
+    150,
+    17.43,
+    0.426
+   ],
+   "max": [
+    540,
+    1.47,
+    0.944
+   ],
+   "n_ok": 40,
+   "tried": [
+    120,
+    700
+   ]
+  },
+  "level_trim_ceiling_ft": [
+   50000,
+   180
+  ],
+  "clmax": {
+   "alpha_clmax_deg": 19.0,
+   "clmax_untrimmed": 0.94,
+   "vs1g_keas_from_clmax": 145.6,
+   "note": "CL from JSBSim aero at IC (elevator 0, power on, gear up), alpha swept -4..40 deg; peak may be the table edge"
+  },
+  "control_response": {
+   "elevator": {
+    "cmd_step": "+0.1",
+    "dq_dps": -3.306,
+    "dp_dps": 0.0,
+    "dr_dps": 0.0,
+    "dthrust_lbf": -0.0
+   },
+   "aileron": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.01,
+    "dp_dps": 10.788,
+    "dr_dps": 0.175,
+    "dthrust_lbf": 0.0
+   },
+   "rudder": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.003,
+    "dp_dps": 0.267,
+    "dr_dps": -0.601,
+    "dthrust_lbf": 0.0
+   },
+   "throttle": {
+    "cmd_step": "+0.1",
+    "dq_dps": -0.253,
+    "dp_dps": 0.0,
+    "dr_dps": 0.0,
+    "dthrust_lbf": 475.5
+   },
+   "surface_travel": {
+    "cmd-1": {
+     "fcs/elevator-pos-deg": 0.0,
+     "fcs/left-aileron-pos-deg": 0.0,
+     "fcs/right-aileron-pos-deg": 0.0,
+     "fcs/left-aileron-pos-norm": -1.0,
+     "fcs/right-aileron-pos-norm": 0.65,
+     "fcs/rudder-pos-deg": 0.0
+    },
+    "cmd+1": {
+     "fcs/elevator-pos-deg": 0.0,
+     "fcs/left-aileron-pos-deg": 0.0,
+     "fcs/right-aileron-pos-deg": 0.0,
+     "fcs/left-aileron-pos-norm": 0.75,
+     "fcs/right-aileron-pos-norm": -1.0,
+     "fcs/rudder-pos-deg": 0.0
+    }
+   }
+  }
+ },
+ "737": {
+  "design_point": {
+   "kcas": 250.0,
+   "alt_ft": 10000.0
+  },
+  "defaults_after_load": {
+   "gear_cmd": 1.0,
+   "gear_pos": 1.0,
+   "flap_cmd": 0.0,
+   "n_engines": 2,
+   "Sw_ft2": 1171.0,
+   "b_ft": 94.7,
+   "cbar_ft": 12.31,
+   "empty_wt_lb": 83000.0
+  },
+  "trim_mode1_gear_default(down)": {
+   "alpha_deg": 3.2493,
+   "theta_deg": 3.2493,
+   "throttle_cmd": 0.6895,
+   "throttle_pos": 0.6895,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.211,
+   "elevator_pos_deg": -3.6266,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.4522,
+   "qbar_psf": 208.388,
+   "weight_lb": 107000.0,
+   "thrust_lbf_eng0": 6404.9213,
+   "udot": -0.0001,
+   "wdot": 0.0001,
+   "qdot": -0.0,
+   "n2": 87.58,
+   "hold10s": {
+    "dtheta_deg": 0.027,
+    "dkcas": -0.034,
+    "dh_ft": 0.86
+   }
+  },
+  "trim_mode0_gear_default(down)": {
+   "alpha_deg": 3.2493,
+   "theta_deg": 3.2493,
+   "throttle_cmd": 0.6895,
+   "throttle_pos": 0.6895,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.211,
+   "elevator_pos_deg": -3.6266,
+   "gear_pos": 1.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.4522,
+   "qbar_psf": 208.388,
+   "weight_lb": 107000.0,
+   "thrust_lbf_eng0": 6404.9213,
+   "udot": -0.0001,
+   "wdot": 0.0001,
+   "qdot": -0.0,
+   "n2": 87.58,
+   "hold10s": {
+    "dtheta_deg": 0.027,
+    "dkcas": -0.034,
+    "dh_ft": 0.86
+   }
+  },
+  "trim_mode1_gear_up": {
+   "alpha_deg": 3.2776,
+   "theta_deg": 3.2776,
+   "throttle_cmd": 0.5857,
+   "throttle_pos": 0.5857,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.2334,
+   "elevator_pos_deg": -4.0112,
+   "gear_pos": 0.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.4522,
+   "qbar_psf": 208.388,
+   "weight_lb": 107000.0,
+   "thrust_lbf_eng0": 4628.8625,
+   "udot": -0.0001,
+   "wdot": 0.0001,
+   "qdot": -0.0,
+   "n2": 83.43,
+   "hold10s": {
+    "dtheta_deg": 0.023,
+    "dkcas": -0.031,
+    "dh_ft": 0.79
+   }
+  },
+  "trim_mode0_gear_up": {
+   "alpha_deg": 3.2776,
+   "theta_deg": 3.2776,
+   "throttle_cmd": 0.5857,
+   "throttle_pos": 0.5857,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.2334,
+   "elevator_pos_deg": -4.0112,
+   "gear_pos": 0.0,
+   "flap_pos_deg": 0.0,
+   "mach": 0.4522,
+   "qbar_psf": 208.388,
+   "weight_lb": 107000.0,
+   "thrust_lbf_eng0": 4628.8625,
+   "udot": -0.0001,
+   "wdot": 0.0001,
+   "qdot": -0.0,
+   "n2": 83.43,
+   "hold10s": {
+    "dtheta_deg": 0.023,
+    "dkcas": -0.031,
+    "dh_ft": 0.79
+   }
+  },
+  "trimmable_kcas_at_design_alt": {
+   "min": [
+    190,
+    7.57,
+    0.579
+   ],
+   "max": [
+    420,
+    -0.54,
+    0.723
+   ],
+   "n_ok": 24,
+   "tried": [
+    120,
+    420
+   ]
+  },
+  "level_trim_ceiling_ft": [
+   45000,
+   200
+  ],
+  "clmax": {
+   "alpha_clmax_deg": 13.0,
+   "clmax_untrimmed": 1.186,
+   "vs1g_keas_from_clmax": 150.8,
+   "note": "CL from JSBSim aero at IC (elevator 0, power on, gear up), alpha swept -4..40 deg; peak may be the table edge"
+  },
+  "control_response": {
+   "elevator": {
+    "cmd_step": "+0.1",
+    "dq_dps": -1.231,
+    "dp_dps": 0.0,
+    "dr_dps": 0.0,
+    "dthrust_lbf": 0.1
+   },
+   "aileron": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.001,
+    "dp_dps": 2.277,
+    "dr_dps": 0.004,
+    "dthrust_lbf": -0.0
+   },
+   "rudder": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.009,
+    "dp_dps": -0.204,
+    "dr_dps": -1.538,
+    "dthrust_lbf": -0.0
+   },
+   "throttle": {
+    "cmd_step": "+0.1",
+    "dq_dps": 0.022,
+    "dp_dps": 0.0,
+    "dr_dps": -0.0,
+    "dthrust_lbf": 1705.7
+   },
+   "surface_travel": {
+    "cmd-1": {
+     "fcs/elevator-pos-deg": -17.189,
+     "fcs/left-aileron-pos-deg": -20.054,
+     "fcs/right-aileron-pos-deg": 20.054,
+     "fcs/left-aileron-pos-norm": -1.0,
+     "fcs/right-aileron-pos-norm": 1.0,
+     "fcs/rudder-pos-deg": -14.8
+    },
+    "cmd+1": {
+     "fcs/elevator-pos-deg": 13.178,
+     "fcs/left-aileron-pos-deg": 20.054,
+     "fcs/right-aileron-pos-deg": -20.054,
+     "fcs/left-aileron-pos-norm": 1.0,
+     "fcs/right-aileron-pos-norm": -1.0,
+     "fcs/rudder-pos-deg": 14.884
+    }
+   }
+  }
+ }
+}

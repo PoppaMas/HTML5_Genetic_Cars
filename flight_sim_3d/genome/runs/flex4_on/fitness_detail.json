@@ -1,0 +1,129 @@
+{
+  "cost": 0.44659756565567116,
+  "per_scenario": [
+    {
+      "cost": 0.2160210364996125,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.0572516233598686,
+      "effort": 0.04615251483596958
+    },
+    {
+      "cost": 0.6252838584594876,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.08202777747704353,
+      "effort": 0.14289180689989844
+    },
+    {
+      "cost": 0.3664434930920085,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.06775577551926852,
+      "effort": 0.08102679942978629
+    }
+  ],
+  "objectives_per_scenario": [
+    {
+      "track_alt": 0.0572516233598686,
+      "effort": 0.04615251483596958,
+      "comfort": 0.8206624125054228,
+      "structural": 0.025431262842533574,
+      "aeroelastic_margin_penalty": 0.04401476963863491
+    },
+    {
+      "track_alt": 0.08202777747704353,
+      "effort": 0.14289180689989844,
+      "comfort": 3.956648310312685,
+      "structural": 0.059640051667012965,
+      "aeroelastic_margin_penalty": 0.04401476963863491
+    },
+    {
+      "track_alt": 0.06775577551926852,
+      "effort": 0.08102679942978629,
+      "comfort": 2.03649501061625,
+      "structural": 0.034809368182354944,
+      "aeroelastic_margin_penalty": 0.04401476963863491
+    }
+  ],
+  "skipped": {},
+  "violation": 0.0,
+  "objectives": {
+    "track_alt": 0.0690117254520602,
+    "effort": 0.0900237070552181,
+    "comfort": 2.2712685778114525,
+    "structural": 0.03996022756396716,
+    "aeroelastic_margin_penalty": 0.04401476963863491
+  },
+  "aeroelastic": {
+    "flutter_margin": 1.1580406055150292,
+    "no_flutter_below_cap": false,
+    "flutter_margin_cap": 3.0,
+    "flutter_cap_source": "fd",
+    "margin_error": false,
+    "div_margin": 1.5812478892292643,
+    "div_not_found_below_cap": false,
+    "margin_penalty": 0.04401476963863491,
+    "delta_wing_mass_lb": 2.46408515522603,
+    "fail": null
+  },
+  "diagnostics": [
+    {
+      "status": "ok",
+      "max_pitch_deg": 4.258933515975369,
+      "max_pitch_above_trim_deg": 3.4617838336605695,
+      "min_pitch_below_trim_deg": -3.7156957554477783,
+      "max_abs_q_dps": 1.834048072460053,
+      "max_nz": 1.145976156882838,
+      "min_nz": 0.8636159132964322,
+      "rms_dn_g": 0.04877124718680892,
+      "max_climb_fpm": 613.9728067243846,
+      "max_sink_fpm": 683.926104529475,
+      "theta_trim_deg": 0.7971496823147993,
+      "max_overshoot_ft": 1.3049348220229149,
+      "max_ref_err_ft": 10.73166761236007,
+      "max_root_bm_over_limit": 0.3417050783779115,
+      "max_tip_deflection_ft": 0.3457217729014829,
+      "max_tip_twist_deg": 0.898678150277403,
+      "wing_mass_delta_lb": 2.46408515522603
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.663816509958422,
+      "max_pitch_above_trim_deg": 4.8666668276436225,
+      "min_pitch_below_trim_deg": -4.486636009485615,
+      "max_abs_q_dps": 4.102427145786932,
+      "max_nz": 1.5354920001356496,
+      "min_nz": 0.19572537670991347,
+      "rms_dn_g": 0.18058371607505722,
+      "max_climb_fpm": 990.9489676700997,
+      "max_sink_fpm": 845.1913362102041,
+      "theta_trim_deg": 0.7971496823147993,
+      "max_overshoot_ft": 8.540779456496239,
+      "max_ref_err_ft": 14.813173610087688,
+      "max_root_bm_over_limit": 0.4757918486891488,
+      "max_tip_deflection_ft": 0.48225101379862145,
+      "max_tip_twist_deg": 1.3092879066532594,
+      "wing_mass_delta_lb": 2.46408515522603
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.25518474227646,
+      "max_pitch_above_trim_deg": 4.45803505996166,
+      "min_pitch_below_trim_deg": -3.7582060341981203,
+      "max_abs_q_dps": 2.502833885769291,
+      "max_nz": 1.4991744791674293,
+      "min_nz": 0.6329581501805207,
+      "rms_dn_g": 0.09199198711077326,
+      "max_climb_fpm": 708.0760692101808,
+      "max_sink_fpm": 742.1623573328083,
+      "theta_trim_deg": 0.7971496823147993,
+      "max_overshoot_ft": 2.022943526506424,
+      "max_ref_err_ft": 12.850767582025583,
+      "max_root_bm_over_limit": 0.4556817957292516,
+      "max_tip_deflection_ft": 0.46383098682014107,
+      "max_tip_twist_deg": 1.198486741115863,
+      "wing_mass_delta_lb": 2.46408515522603
+    }
+  ]
+}

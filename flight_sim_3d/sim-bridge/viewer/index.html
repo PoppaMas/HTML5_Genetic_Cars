@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GA flight-sim trajectory viewer</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css">
+<script type="importmap">
+{ "imports": {
+    "three": "./vendor/three.module.min.js",
+    "three/addons/": "./vendor/addons/",
+    "fv/": "./js/"
+} }
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+
+  <div id="panel">
+    <div class="title">GA flight-sim viewer <button id="collapse" title="hide panel">&#x2039;</button></div>
+    <div id="panel-body">
+      <section>
+        <label>Run <select id="run-select"><option value="">(none)</option></select></label>
+        <div class="row"><input id="index-url" type="text" placeholder="index.json or traj URL"><button id="load-url">Load</button></div>
+        <div class="row"><input id="file-input" type="file" multiple accept=".json,.gz,application/json,application/gzip"></div>
+        <div id="run-info" class="small"></div>
+      </section>
+      <section>
+        <div class="row tabs">
+          <label><input type="radio" name="mode" value="single" checked> Single</label>
+          <label><input type="radio" name="mode" value="compare"> Compare</label>
+        </div>
+        <div id="single-ui">
+          <div class="row"><button id="gen-prev">&#x25C0;</button><select id="gen-select"></select><button id="gen-next">&#x25B6;</button></div>
+        </div>
+        <div id="compare-ui" hidden>
+          <div class="row small"><button id="cmp-improve" title="generations where the best fitness improved">improvements</button><button id="cmp-spread">spread 5</button><button id="cmp-none">none</button></div>
+          <div id="presets" class="row small"></div>
+          <div id="gen-list"></div>
+          <label class="small">Side-by-side spacing <input id="spacing" type="range" min="0" max="150" step="5" value="25"> <span id="spacing-val">25 m</span></label>
+        </div>
+      </section>
+      <section>
+        <label>Camera <select id="cam-mode"><option value="chase">chase</option><option value="orbit">orbit (follow)</option><option value="free">free / overview</option></select></label>
+        <label class="small">Layout <select id="layout" title="compare layout">
+          <option value="true">true positions</option>
+          <option value="formation">formation (lock to own track)</option></select></label>
+        <label class="small">3D altitude <select id="vref">
+          <option value="auto">auto</option><option value="abs">absolute (MSL)</option><option value="rel">relative to own trim</option><option value="norm">relative, steps normalised</option></select> <span id="vref-eff"></span></label>
+        <label class="small">Chart <select id="cy">
+          <option value="auto">auto</option><option value="alt">altitude MSL</option><option value="rel">alt vs own trim</option>
+          <option value="err">error vs step target</option><option value="rerr">error vs ramp reference</option><option value="pct">error % of step</option>
+          <option value="nz">load factor nz</option><option value="kcas">airspeed KCAS</option><option value="dkcas">KCAS vs trim</option></select> <span id="cy-eff"></span></label>
+        <label class="small">Vertical exaggeration <select id="exag"><option>1</option><option>2</option><option>5</option><option>10</option></select>x</label>
+        <label class="small">Model scale <input id="mscale" type="range" min="1" max="30" step="1" value="1"> <span id="mscale-val">1x</span></label>
+        <label class="small" id="defl-row" hidden title="soft-body files only: structural deflection exaggeration (HUD tip values stay true scale)">Flex deflection <input id="defl" type="range" min="0" max="50" step="1" value="1"> <span id="defl-val">1x</span></label>
+        <div class="row small checks">
+          <label><input id="show-trail" type="checkbox" checked> trail</label>
+          <label><input id="show-target" type="checkbox" checked> setpoint</label>
+          <label><input id="show-refgrid" type="checkbox"> start-alt grid</label>
+          <label><input id="show-chart" type="checkbox" checked> chart</label>
+          <label><input id="show-hud" type="checkbox" checked> HUD</label>
+        </div>
+      </section>
+      <div id="msg" class="small"></div>
+    </div>
+  </div>
+
+  <div id="hud"></div>
+  <div id="legend" hidden></div>
+  <canvas id="chart" width="460" height="170"></canvas>
+
+  <div id="controls">
+    <button id="play" title="play/pause (space)">&#x25B6;</button>
+    <input id="timeline" type="range" min="0" max="10000" value="0" step="1">
+    <span id="time-label">0.00 / 0.00 s</span>
+    <select id="speed" title="playback speed">
+      <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="1" selected>1x</option>
+      <option value="2">2x</option><option value="4">4x</option><option value="8">8x</option>
+    </select>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

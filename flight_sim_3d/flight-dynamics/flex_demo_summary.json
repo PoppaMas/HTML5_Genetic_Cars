@@ -1,0 +1,571 @@
+{
+ "c172x": {
+  "png": "/workspace/flight-sim-team/flight-dynamics/flex_demo_c172x.png",
+  "deterministic_repeat": true,
+  "cases": {
+   "rigid (one-way loads)": {
+    "wall_s": 0.301,
+    "rtf": 39.9,
+    "m_root_1g_lbft": 7168.8,
+    "root_bm_peak_lbft": 19300.2,
+    "tip_w_max_ft": 0.724,
+    "tip_twist_range_deg": [
+     0.386,
+     1.763
+    ],
+    "nz_max": 2.297,
+    "p_max_dps": 30.78,
+    "p_min_dps": -21.48,
+    "alt_end_ft": 3937.5,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 109.692,
+     "q_div_psf": 306.941,
+     "v_div_keas": 301.102,
+     "div_margin": 1.673,
+     "div_not_found_below_cap": 0.0,
+     "v_flutter_keas": 450.959,
+     "f_flutter_hz": 15.059,
+     "flutter_margin_qs": 2.505,
+     "v_coalescence_keas": 222.944,
+     "coalescence_margin": 1.239,
+     "flutter_margin": 1.239,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      6.95,
+      22.25,
+      39.7
+     ]
+    }
+   },
+   "flex baseline (two-way)": {
+    "wall_s": 0.196,
+    "rtf": 61.2,
+    "m_root_1g_lbft": 7168.8,
+    "root_bm_peak_lbft": 18810.3,
+    "tip_w_max_ft": 0.704,
+    "tip_twist_range_deg": [
+     0.317,
+     1.728
+    ],
+    "nz_max": 2.361,
+    "p_max_dps": 27.29,
+    "p_min_dps": -18.66,
+    "alt_end_ft": 4022.5,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 109.692,
+     "q_div_psf": 306.941,
+     "v_div_keas": 301.102,
+     "div_margin": 1.673,
+     "div_not_found_below_cap": 0.0,
+     "v_flutter_keas": 450.959,
+     "f_flutter_hz": 15.059,
+     "flutter_margin_qs": 2.505,
+     "v_coalescence_keas": 222.944,
+     "coalescence_margin": 1.239,
+     "flutter_margin": 1.239,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      6.95,
+      22.25,
+      39.7
+     ]
+    }
+   },
+   "flex soft EI,GJ x0.4 (two-way)": {
+    "wall_s": 0.26,
+    "rtf": 46.1,
+    "m_root_1g_lbft": 7208.9,
+    "root_bm_peak_lbft": 20794.5,
+    "tip_w_max_ft": 1.975,
+    "tip_twist_range_deg": [
+     0.418,
+     4.573
+    ],
+    "nz_max": 2.498,
+    "p_max_dps": 22.74,
+    "p_min_dps": -15.1,
+    "alt_end_ft": 4126.8,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 109.692,
+     "q_div_psf": 129.285,
+     "v_div_keas": 195.416,
+     "div_margin": 1.086,
+     "div_not_found_below_cap": 0.0,
+     "v_flutter_keas": 540.0,
+     "f_flutter_hz": 0.0,
+     "flutter_margin_qs": 3.0,
+     "v_coalescence_keas": 142.921,
+     "coalescence_margin": 0.794,
+     "flutter_margin": 0.794,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      5.37,
+      17.19,
+      30.67
+     ]
+    }
+   }
+  }
+ },
+ "737": {
+  "png": "/workspace/flight-sim-team/flight-dynamics/flex_demo_737.png",
+  "deterministic_repeat": true,
+  "cases": {
+   "rigid (one-way loads)": {
+    "wall_s": 0.383,
+    "rtf": 31.4,
+    "m_root_1g_lbft": 720209.2,
+    "root_bm_peak_lbft": 1006592.3,
+    "tip_w_max_ft": 2.428,
+    "tip_twist_range_deg": [
+     0.553,
+     1.222
+    ],
+    "nz_max": 1.416,
+    "p_max_dps": 12.87,
+    "p_min_dps": -11.53,
+    "alt_end_ft": 10099.5,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 541.686,
+     "q_div_psf": 4875.178,
+     "v_div_keas": 1200.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 514.824,
+     "f_flutter_hz": 7.864,
+     "flutter_margin_qs": 1.287,
+     "v_coalescence_keas": 492.334,
+     "coalescence_margin": 1.231,
+     "flutter_margin": 1.231,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      2.53,
+      10.95,
+      11.91
+     ]
+    }
+   },
+   "flex baseline (two-way)": {
+    "wall_s": 0.354,
+    "rtf": 33.9,
+    "m_root_1g_lbft": 720209.2,
+    "root_bm_peak_lbft": 1015607.5,
+    "tip_w_max_ft": 2.45,
+    "tip_twist_range_deg": [
+     0.561,
+     1.23
+    ],
+    "nz_max": 1.399,
+    "p_max_dps": 9.84,
+    "p_min_dps": -8.5,
+    "alt_end_ft": 10103.6,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 541.686,
+     "q_div_psf": 4875.178,
+     "v_div_keas": 1200.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 514.824,
+     "f_flutter_hz": 7.864,
+     "flutter_margin_qs": 1.287,
+     "v_coalescence_keas": 492.334,
+     "coalescence_margin": 1.231,
+     "flutter_margin": 1.231,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      2.53,
+      10.95,
+      11.91
+     ]
+    }
+   },
+   "flex soft EI,GJ x0.4 (two-way)": {
+    "wall_s": 0.174,
+    "rtf": 68.8,
+    "m_root_1g_lbft": 724289.1,
+    "root_bm_peak_lbft": 996496.8,
+    "tip_w_max_ft": 5.995,
+    "tip_twist_range_deg": [
+     1.445,
+     2.894
+    ],
+    "nz_max": 1.383,
+    "p_max_dps": 5.51,
+    "p_min_dps": -4.58,
+    "alt_end_ft": 10111.2,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 541.686,
+     "q_div_psf": 4875.178,
+     "v_div_keas": 1200.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 380.746,
+     "f_flutter_hz": 5.927,
+     "flutter_margin_qs": 0.952,
+     "v_coalescence_keas": 333.388,
+     "coalescence_margin": 0.833,
+     "flutter_margin": 0.833,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      1.95,
+      8.46,
+      9.21
+     ]
+    }
+   }
+  }
+ },
+ "T38": {
+  "png": "/workspace/flight-sim-team/flight-dynamics/flex_demo_T38.png",
+  "deterministic_repeat": true,
+  "cases": {
+   "rigid (one-way loads)": {
+    "wall_s": 0.172,
+    "rtf": 69.9,
+    "m_root_1g_lbft": 20729.5,
+    "root_bm_peak_lbft": 34448.4,
+    "tip_w_max_ft": 0.343,
+    "tip_twist_range_deg": [
+     0.188,
+     0.527
+    ],
+    "nz_max": 1.688,
+    "p_max_dps": 43.96,
+    "p_min_dps": -36.28,
+    "alt_end_ft": 10219.6,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 1198.566,
+     "q_div_psf": 10787.093,
+     "v_div_keas": 1785.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 765.317,
+     "f_flutter_hz": 25.922,
+     "flutter_margin_qs": 1.286,
+     "v_coalescence_keas": 748.151,
+     "coalescence_margin": 1.257,
+     "flutter_margin": 1.257,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      9.2,
+      34.95,
+      41.6
+     ]
+    }
+   },
+   "flex baseline (two-way)": {
+    "wall_s": 0.213,
+    "rtf": 56.4,
+    "m_root_1g_lbft": 20729.5,
+    "root_bm_peak_lbft": 35053.3,
+    "tip_w_max_ft": 0.349,
+    "tip_twist_range_deg": [
+     0.19,
+     0.535
+    ],
+    "nz_max": 1.688,
+    "p_max_dps": 40.59,
+    "p_min_dps": -32.64,
+    "alt_end_ft": 10231.1,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 1198.566,
+     "q_div_psf": 10787.093,
+     "v_div_keas": 1785.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 765.317,
+     "f_flutter_hz": 25.922,
+     "flutter_margin_qs": 1.286,
+     "v_coalescence_keas": 748.151,
+     "coalescence_margin": 1.257,
+     "flutter_margin": 1.257,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      9.2,
+      34.95,
+      41.6
+     ]
+    }
+   },
+   "flex soft EI,GJ x0.4 (two-way)": {
+    "wall_s": 0.201,
+    "rtf": 59.8,
+    "m_root_1g_lbft": 20800.0,
+    "root_bm_peak_lbft": 34690.1,
+    "tip_w_max_ft": 0.857,
+    "tip_twist_range_deg": [
+     0.488,
+     1.295
+    ],
+    "nz_max": 1.699,
+    "p_max_dps": 36.17,
+    "p_min_dps": -28.24,
+    "alt_end_ft": 10252.6,
+    "margins": {
+     "margin_cap": 3.0,
+     "q_dive_psf": 1198.566,
+     "q_div_psf": 10787.093,
+     "v_div_keas": 1785.0,
+     "div_margin": 3.0,
+     "div_not_found_below_cap": 1.0,
+     "v_flutter_keas": 528.441,
+     "f_flutter_hz": 19.882,
+     "flutter_margin_qs": 0.888,
+     "v_coalescence_keas": 497.757,
+     "coalescence_margin": 0.837,
+     "flutter_margin": 0.837,
+     "flutter_not_found_below_cap": 0.0,
+     "margin_error": 0.0,
+     "f_modes_hz": [
+      7.11,
+      27.01,
+      32.14
+     ]
+    }
+   }
+  }
+ },
+ "ga_composition_c172x": {
+  "gains_from": "flight_sim/results/example/best_gains.json",
+  "rigid_repo_cost": 0.18552,
+  "rigid_wall_s": 0.61,
+  "baseline": {
+   "genes": {
+    "stiffness_scale": 1.0,
+    "torsion_bend_ratio": 1.0,
+    "zeta": 0.02,
+    "nonstruct_scale": 1.0
+   },
+   "cost_total": 0.2448,
+   "status": "ok",
+   "wall_s": 3.99,
+   "margins": {
+    "flutter_margin": 1.239,
+    "div_margin": 1.673,
+    "coalescence_margin": 1.239,
+    "flutter_not_found_below_cap": 0.0,
+    "div_not_found_below_cap": 0.0
+   },
+   "pre_terms": {
+    "J_flutter_margin": 0.0,
+    "J_div_margin": 0.0,
+    "J_mass": 0.0,
+    "delta_wing_mass_lb": 0.0
+   },
+   "per_scenario": [
+    {
+     "cost": 0.17556,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.09986,
+     "effort": 0.03785,
+     "struct": {
+      "J_bm_rms": 0.04396,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 15479.86683,
+     "bm_allow": 27241.34209,
+     "tip_max_ft": 0.57899,
+     "twist_max_deg": 1.36997,
+     "bm_rms": 1260.64969,
+     "m_root_1g": 7168.77423,
+     "cost_total": 0.21953
+    },
+    {
+     "cost": 0.21874,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.08696,
+     "effort": 0.06589,
+     "struct": {
+      "J_bm_rms": 0.06313,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 15985.10779,
+     "bm_allow": 27241.34209,
+     "tip_max_ft": 0.60259,
+     "twist_max_deg": 1.47355,
+     "bm_rms": 1810.12439,
+     "m_root_1g": 7168.77423,
+     "cost_total": 0.28186
+    },
+    {
+     "cost": 0.18477,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.09719,
+     "effort": 0.04379,
+     "struct": {
+      "J_bm_rms": 0.04823,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 15892.33898,
+     "bm_allow": 27241.34209,
+     "tip_max_ft": 0.59376,
+     "twist_max_deg": 1.41366,
+     "bm_rms": 1383.10379,
+     "m_root_1g": 7168.77423,
+     "cost_total": 0.233
+    }
+   ]
+  },
+  "soft_light": {
+   "genes": {
+    "stiffness_scale": 0.6,
+    "torsion_bend_ratio": 1.0,
+    "zeta": 0.02,
+    "nonstruct_scale": 1.0
+   },
+   "cost_total": 2000.0,
+   "status": "flutter",
+   "wall_s": 0.01,
+   "margins": {
+    "flutter_margin": 0.968,
+    "div_margin": 1.318,
+    "coalescence_margin": 0.968,
+    "flutter_not_found_below_cap": 0.0,
+    "div_not_found_below_cap": 0.0
+   },
+   "pre_terms": {
+    "J_flutter_margin": 1.34454,
+    "J_div_margin": 0.0,
+    "J_mass": -0.066,
+    "delta_wing_mass_lb": -39.6
+   },
+   "per_scenario": []
+  },
+  "stiff_heavy": {
+   "genes": {
+    "stiffness_scale": 2.0,
+    "torsion_bend_ratio": 1.0,
+    "zeta": 0.02,
+    "nonstruct_scale": 1.0
+   },
+   "cost_total": 0.40444,
+   "status": "ok",
+   "wall_s": 4.24,
+   "margins": {
+    "flutter_margin": 1.712,
+    "div_margin": 2.265,
+    "coalescence_margin": 1.712,
+    "flutter_not_found_below_cap": 0.0,
+    "div_not_found_below_cap": 0.0
+   },
+   "pre_terms": {
+    "J_flutter_margin": 0.0,
+    "J_div_margin": 0.0,
+    "J_mass": 0.165,
+    "delta_wing_mass_lb": 99.0
+   },
+   "per_scenario": [
+    {
+     "cost": 0.17806,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.10427,
+     "effort": 0.03689,
+     "struct": {
+      "J_bm_rms": 0.04214,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 14825.23678,
+     "bm_allow": 53974.1323,
+     "tip_max_ft": 0.27565,
+     "twist_max_deg": 0.69932,
+     "bm_rms": 1197.12318,
+     "m_root_1g": 7101.85951,
+     "cost_total": 0.2202
+    },
+    {
+     "cost": 0.21256,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.09385,
+     "effort": 0.05935,
+     "struct": {
+      "J_bm_rms": 0.06102,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 15568.36566,
+     "bm_allow": 53974.1323,
+     "tip_max_ft": 0.29145,
+     "twist_max_deg": 0.76918,
+     "bm_rms": 1733.52263,
+     "m_root_1g": 7101.85951,
+     "cost_total": 0.27358
+    },
+    {
+     "cost": 0.17828,
+     "status": "ok",
+     "t_end": 90.0,
+     "track": 0.0983,
+     "effort": 0.03999,
+     "struct": {
+      "J_bm_rms": 0.04628,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0
+     },
+     "bm_peak": 15296.59239,
+     "bm_allow": 53974.1323,
+     "tip_max_ft": 0.28483,
+     "twist_max_deg": 0.72058,
+     "bm_rms": 1314.63321,
+     "m_root_1g": 7101.85951,
+     "cost_total": 0.22455
+    }
+   ]
+  },
+  "soft_torsion_corner": {
+   "genes": {
+    "stiffness_scale": 0.8,
+    "torsion_bend_ratio": 0.8,
+    "zeta": 0.005,
+    "nonstruct_scale": 1.0
+   },
+   "cost_total": 2000.0,
+   "status": "flutter",
+   "wall_s": 0.01,
+   "margins": {
+    "flutter_margin": 0.967,
+    "div_margin": 1.359,
+    "coalescence_margin": 0.967,
+    "flutter_not_found_below_cap": 0.0,
+    "div_not_found_below_cap": 0.0
+   },
+   "pre_terms": {
+    "J_flutter_margin": 1.35181,
+    "J_div_margin": 0.0,
+    "J_mass": -0.0462,
+    "delta_wing_mass_lb": -27.72
+   },
+   "per_scenario": []
+  }
+ }
+}

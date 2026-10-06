@@ -1,0 +1,7 @@
+# Python deps for flight_sim_3d/ (all four team folders). Tested with Python 3.13, jsbsim 1.3.1, numpy 2.5.3,
+# matplotlib 3.11.2, pytest 9.1.1. JSBSim 1.3.1 is what every recorded number was produced with; other versions
+# change model files / trim results, and the result caches and replay checks would then report mismatches.
+jsbsim==1.3.1
+numpy>=1.24
+matplotlib>=3.7
+pytest>=8

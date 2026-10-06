@@ -1,0 +1,114 @@
+{
+  "_comment": "Jets at verified trim points. Flight Dynamics trim recipe (flight-dynamics/INTERFACE.md s4a): gear up before run_ic, do_simple_trim=1 (full), all engines commanded. Gene ranges, controller structure, pitch-command limits, cost weights and duration unchanged. Step: same recipe but the c172x 200 ft step / 100 ft error scale, to isolate the effect of step scaling. c172x keeps the unchanged baseline profile.",
+  "seed": 1,
+  "scenarios": 3,
+  "ga": {
+    "pop_size": 32,
+    "generations": 20
+  },
+  "profiles": {
+    "jet_T38": {
+      "h0_ft": 10000,
+      "speed_kts": 300,
+      "gear_up": true,
+      "throttle_all_engines": true,
+      "steps_rel_ft": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          200.0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "throttle_max": 0.5,
+      "min_kcas": 180,
+      "nz_limits": [
+        -3.0,
+        7.33
+      ],
+      "_why": "300 KCAS/10000 ft, trim thr 0.354, MIL clamp 0.5 (no AB); min 180 KCAS ~1.2 Vs1g(146 KEAS); n +7.33/-3.0"
+    },
+    "jet_737": {
+      "h0_ft": 10000,
+      "speed_kts": 250,
+      "gear_up": true,
+      "throttle_all_engines": true,
+      "steps_rel_ft": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          200.0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "min_kcas": 195,
+      "nz_limits": [
+        -1.0,
+        2.5
+      ],
+      "_why": "250 KCAS/10000 ft; built-in trim fails below ~190 KCAS so min 195; transport n +2.5/-1.0"
+    },
+    "jet_f16": {
+      "h0_ft": 10000,
+      "speed_kts": 350,
+      "gear_up": true,
+      "throttle_all_engines": true,
+      "steps_rel_ft": [
+        [
+          0,
+          0
+        ],
+        [
+          5,
+          200.0
+        ],
+        [
+          50,
+          0
+        ]
+      ],
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "min_kcas": 200,
+      "nz_limits": [
+        -3.0,
+        9.0
+      ],
+      "_why": "350 KCAS/10000 ft (flytest point, not FD-verified); min 200 KCAS; n +9/-3"
+    }
+  },
+  "aircraft": [
+    {
+      "name": "c172x",
+      "profile": "baseline"
+    },
+    {
+      "name": "T38",
+      "profile": "jet_T38"
+    },
+    {
+      "name": "737",
+      "profile": "jet_737"
+    },
+    {
+      "name": "f16",
+      "profile": "jet_f16"
+    }
+  ]
+}

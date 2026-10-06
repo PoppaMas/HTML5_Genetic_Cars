@@ -1,0 +1,291 @@
+{
+  "runs": [
+    {
+      "seed": 1,
+      "best": 0.41925397486687443,
+      "objectives": {
+        "track_alt": 0.09059594991151505,
+        "effort": 0.09360636848399954,
+        "comfort": 2.3532361272953666,
+        "structural": 0.022383610719393664,
+        "track_heading_rms": 0.1399870903198297,
+        "aeroelastic_margin_penalty": 0.0
+      },
+      "failed_per_gen": [
+        "6",
+        "2",
+        "2",
+        "3",
+        "1"
+      ],
+      "structure": {
+        "stiffness_scale": 0.8443988462311578,
+        "torsion_bend_ratio": 1.0964494297218053,
+        "struct_damping_ratio": 0.006659326935791309,
+        "nonstructural_mass_scale": 1.0348226859716447
+      },
+      "flutter_margin": 1.2074985381375662,
+      "div_margin": 1.614734049005622,
+      "margin_penalty": 0.0,
+      "delta_wing_mass_lb": -8.552508194163266,
+      "hdg_final_deg": [
+        0.2956860496405511,
+        0.39012782456001105,
+        0.395316616737432
+      ],
+      "max_root_bending": [
+        null,
+        null,
+        null
+      ],
+      "max_tip_twist_deg": [
+        0.8732895409435663,
+        1.4862911599524022,
+        1.1000079383913537
+      ],
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "at_bounds": [
+        {
+          "gene": "ki_alt",
+          "block": "pitch_altitude",
+          "bound": "near_upper",
+          "fraction": 1.0,
+          "value": 0.016621129508443515,
+          "range": [
+            1e-06,
+            0.05
+          ],
+          "scale": "log0"
+        },
+        {
+          "gene": "kp_hdg",
+          "block": "roll_heading",
+          "bound": "near_upper",
+          "fraction": 1.0,
+          "value": 4.2550580787479975,
+          "range": [
+            0.05,
+            5.0
+          ],
+          "scale": "log"
+        }
+      ]
+    },
+    {
+      "seed": 2,
+      "best": 0.4055043926934642,
+      "objectives": {
+        "track_alt": 0.25158162047028493,
+        "effort": 0.02099908339673698,
+        "comfort": 1.772155553161138,
+        "structural": -0.0064078352091543915,
+        "track_heading_rms": 0.13498206578420727,
+        "aeroelastic_margin_penalty": 0.028374842322960784
+      },
+      "failed_per_gen": [
+        "3",
+        "1",
+        "1",
+        "2",
+        "3"
+      ],
+      "structure": {
+        "stiffness_scale": 0.7847232344747616,
+        "torsion_bend_ratio": 1.097232713265052,
+        "struct_damping_ratio": 0.018974349343848687,
+        "nonstructural_mass_scale": 0.9521714420955679
+      },
+      "flutter_margin": 1.1663103325496016,
+      "div_margin": 1.5615505198707849,
+      "margin_penalty": 0.028374842322960784,
+      "delta_wing_mass_lb": -21.409624899377235,
+      "hdg_final_deg": [
+        0.3499171370909835,
+        0.40593190679226154,
+        0.5408267956001964
+      ],
+      "max_root_bending": [
+        null,
+        null,
+        null
+      ],
+      "max_tip_twist_deg": [
+        0.8776537737124532,
+        1.0345256608978306,
+        1.179845689513091
+      ],
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "at_bounds": [
+        {
+          "gene": "ki_alt",
+          "block": "pitch_altitude",
+          "bound": "near_upper",
+          "fraction": 1.0,
+          "value": 0.021092362942519188,
+          "range": [
+            1e-06,
+            0.05
+          ],
+          "scale": "log0"
+        }
+      ]
+    },
+    {
+      "seed": 3,
+      "best": 0.37546085568625936,
+      "objectives": {
+        "track_alt": 0.08395144391743249,
+        "effort": 0.09476287772113447,
+        "comfort": 1.8051131321968892,
+        "structural": 0.0029462924565001186,
+        "track_heading_rms": 0.8781707260213386,
+        "aeroelastic_margin_penalty": 0.0
+      },
+      "failed_per_gen": [
+        "7",
+        "4",
+        "2",
+        "1",
+        "0"
+      ],
+      "structure": {
+        "stiffness_scale": 0.917648017439086,
+        "torsion_bend_ratio": 1.0455452766914692,
+        "struct_damping_ratio": 0.011047557207067547,
+        "nonstructural_mass_scale": 0.8736046435334812
+      },
+      "flutter_margin": 1.221169720182459,
+      "div_margin": 1.641389927262233,
+      "margin_penalty": 0.0,
+      "delta_wing_mass_lb": -16.32204077076625,
+      "hdg_final_deg": [
+        4.488416042070128,
+        4.5266558123429945,
+        4.661686404463353
+      ],
+      "max_root_bending": [
+        null,
+        null,
+        null
+      ],
+      "max_tip_twist_deg": [
+        0.7930854358579762,
+        1.051574328924121,
+        1.000586145726463
+      ],
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "at_bounds": [
+        {
+          "gene": "ki_alt",
+          "block": "pitch_altitude",
+          "bound": "near_lower",
+          "fraction": 1.0,
+          "value": 2.431645401492307e-06,
+          "range": [
+            1e-06,
+            0.05
+          ],
+          "scale": "log0"
+        },
+        {
+          "gene": "ki_pitch",
+          "block": "pitch_altitude",
+          "bound": "zeroed",
+          "fraction": 1.0,
+          "value": 0.0,
+          "range": [
+            1e-05,
+            0.2
+          ],
+          "scale": "log0"
+        },
+        {
+          "gene": "ki_hdg",
+          "block": "roll_heading",
+          "bound": "near_lower",
+          "fraction": 1.0,
+          "value": 1.4859747343234328e-05,
+          "range": [
+            1e-05,
+            0.1
+          ],
+          "scale": "log0"
+        }
+      ]
+    }
+  ],
+  "probe": [
+    {
+      "s": 0.6,
+      "r": 0.8,
+      "cost": 2000.0,
+      "flutter": 0.8406765417908373,
+      "div": 1.1851929950238966,
+      "penalty": NaN,
+      "fail": "flutter",
+      "status": "aeroelastic_flutter"
+    },
+    {
+      "s": 0.7,
+      "r": 0.9,
+      "cost": 2000.0,
+      "flutter": 0.9771715428486759,
+      "div": 1.3490906586591445,
+      "penalty": NaN,
+      "fail": "flutter",
+      "status": "aeroelastic_flutter"
+    },
+    {
+      "s": 0.8,
+      "r": 1.0,
+      "cost": 0.6354132451285006,
+      "flutter": 1.112830586616289,
+      "div": 1.5091649383763752,
+      "penalty": 0.1899626657415069,
+      "fail": null,
+      "status": "ok"
+    },
+    {
+      "s": 0.8443988462311578,
+      "r": 1.0964494297218053,
+      "cost": 0.41925397486687443,
+      "flutter": 1.2074985381375662,
+      "div": 1.614734049005622,
+      "penalty": 0.0,
+      "fail": null,
+      "status": "ok"
+    },
+    {
+      "s": 1.2,
+      "r": 1.1,
+      "cost": 0.49247262207876447,
+      "flutter": 1.4292364420478152,
+      "div": 1.8954146210384715,
+      "penalty": 0.0,
+      "fail": null,
+      "status": "ok"
+    },
+    {
+      "s": 2.0,
+      "r": 1.15,
+      "cost": 0.6345146579638079,
+      "flutter": 1.852956431886087,
+      "div": 2.3972296646976194,
+      "penalty": 0.0,
+      "fail": null,
+      "status": "ok"
+    }
+  ]
+}

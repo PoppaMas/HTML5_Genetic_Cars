@@ -1,0 +1,10501 @@
+{
+"bounds": {
+"kp_alt": [
+0.0004426098125953916,
+0.5,
+"log"
+],
+"ki_alt": [
+2.2130490629769578e-07,
+0.05,
+"log0"
+],
+"kd_alt": [
+0.0022130490629769578,
+3.0,
+"log"
+],
+"kp_pitch": [
+0.002,
+0.707070913949984,
+"log"
+],
+"ki_pitch": [
+1e-05,
+0.28282836557999363,
+"log0"
+],
+"kd_pitch": [
+0.0001,
+0.707070913949984,
+"log"
+]
+},
+"best_gains": {
+"1": {
+"kp_alt": 0.4040137363133403,
+"ki_alt": 2.7843687869648947e-06,
+"kd_alt": 1.106913370672531,
+"kp_pitch": 0.006069058033825972,
+"ki_pitch": 0.00024732456066325453,
+"kd_pitch": 0.0001
+},
+"2": {
+"kp_alt": 0.32953971025655926,
+"ki_alt": 0.0,
+"kd_alt": 0.1323222574220482,
+"kp_pitch": 0.14257941085815468,
+"ki_pitch": 0.005035844034825143,
+"kd_pitch": 0.0005897377962113896
+},
+"3": {
+"kp_alt": 0.3483200680836086,
+"ki_alt": 0.0,
+"kd_alt": 0.1066295258503674,
+"kp_pitch": 0.22434657727742943,
+"ki_pitch": 0.00016564639147606931,
+"kd_pitch": 0.006186374321524283
+}
+},
+"best_cost_run": {
+"1": 0.09009480210402053,
+"2": 0.08876249360294831,
+"3": 0.08942040323392227
+},
+"sweeps": [
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 1.4753660419846386e-05,
+"in_bounds": false,
+"cost": 0.20738601104449486,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 2.3248893664249656e-05,
+"in_bounds": false,
+"cost": 0.20734732451593518,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 3.6635725727054214e-05,
+"in_bounds": false,
+"cost": 0.2072864375988106,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 5.773076426478893e-05,
+"in_bounds": false,
+"cost": 0.20719072199610364,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 9.097243405049959e-05,
+"in_bounds": false,
+"cost": 0.20704049231549215,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0001433548275770909,
+"in_bounds": false,
+"cost": 0.20680555465503103,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.00022589927162166087,
+"in_bounds": false,
+"cost": 0.2064413750212675,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0003559732293755833,
+"in_bounds": false,
+"cost": 0.20587917290883548,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0005609444382995129,
+"in_bounds": true,
+"cost": 0.20501910223113762,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0008839391192733857,
+"in_bounds": true,
+"cost": 0.2037124210068357,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0013929157920710366,
+"in_bounds": true,
+"cost": 0.2018388170629278,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.0021949638402651256,
+"in_bounds": true,
+"cost": 0.19944618285488622,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.003458835263047774,
+"in_bounds": true,
+"cost": 0.196692920643509,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.005450450325166961,
+"in_bounds": true,
+"cost": 0.1931475185358141,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.00858884754197162,
+"in_bounds": true,
+"cost": 0.18826427130858078,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.013534349952445852,
+"in_bounds": true,
+"cost": 0.18371457785159298,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.021327497983882168,
+"in_bounds": true,
+"cost": 0.17761688733179218,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.033607980571708045,
+"in_bounds": true,
+"cost": 0.16451137005746905,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.052959627939568904,
+"in_bounds": true,
+"cost": 0.1428836590627537,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.08345405298938566,
+"in_bounds": true,
+"cost": 0.11756648282425197,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.13150732418857478,
+"in_bounds": true,
+"cost": 0.10094111321295401,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.20722991509398006,
+"in_bounds": true,
+"cost": 0.09454836943720353,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.32655396172671225,
+"in_bounds": true,
+"cost": 0.0907016717174383,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.5145854056401571,
+"in_bounds": false,
+"cost": 0.09056839769540594,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 0.8108863181376736,
+"in_bounds": false,
+"cost": 0.09649457301484622,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 1.2777988138332097,
+"in_bounds": false,
+"cost": 0.11538182928928513,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 2.0135619162788037,
+"in_bounds": false,
+"cost": 0.29115194434890573,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 3.1729811820106995,
+"in_bounds": false,
+"cost": 0.8721030558112726,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_alt",
+"value": 5.0,
+"in_bounds": false,
+"cost": 1.3737104196883994,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.09009498653268659,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 7.376830209923193e-09,
+"in_bounds": false,
+"cost": 0.0900949860832162,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 1.404597652219989e-08,
+"in_bounds": false,
+"cost": 0.09009498564116096,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 2.6744475723028012e-08,
+"in_bounds": false,
+"cost": 0.09009498478896101,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 5.092326479181725e-08,
+"in_bounds": false,
+"cost": 0.09009498323034602,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 9.696129114337858e-08,
+"in_bounds": false,
+"cost": 0.09009498013307289,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 1.846207626047914e-07,
+"in_bounds": false,
+"cost": 0.09009497434615261,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 3.515302403963746e-07,
+"in_bounds": true,
+"cost": 0.09009496325714661,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 6.693370137228861e-07,
+"in_bounds": true,
+"cost": 0.09009494218999148,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 1.2744622978504083e-06,
+"in_bounds": true,
+"cost": 0.09009490209889019,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 2.426661181648937e-06,
+"in_bounds": true,
+"cost": 0.09009482587230293,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 4.620524671819663e-06,
+"in_bounds": true,
+"cost": 0.09009468089183174,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 8.797787018782429e-06,
+"in_bounds": true,
+"cost": 0.09009440698103872,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 1.6751573019384915e-05,
+"in_bounds": true,
+"cost": 0.09009389206997871,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 3.189611183183881e-05,
+"in_bounds": true,
+"cost": 0.09009292865036893,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 6.073232339505555e-05,
+"in_bounds": true,
+"cost": 0.0900911510952835,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.00011563839267956816,
+"in_bounds": true,
+"cost": 0.09008800806905094,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.00022018320910480293,
+"in_bounds": true,
+"cost": 0.0900829254713379,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.0004192435094288135,
+"in_bounds": true,
+"cost": 0.09007767657652739,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.0007982675923054916,
+"in_bounds": true,
+"cost": 0.0900797622433596,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.0015199547150852328,
+"in_bounds": true,
+"cost": 0.09012015390105782,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.0028940951106852823,
+"in_bounds": true,
+"cost": 0.09047085312697939,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.005510550035842862,
+"in_bounds": true,
+"cost": 0.09115451044854354,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.010492454648574932,
+"in_bounds": true,
+"cost": 0.09227345146074913,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.01997833316752793,
+"in_bounds": true,
+"cost": 0.09239676770730089,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.038040078277293894,
+"in_bounds": true,
+"cost": 0.09044499713813187,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.07243084511647965,
+"in_bounds": false,
+"cost": 0.09221009060598058,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.13791315796053308,
+"in_bounds": false,
+"cost": 0.09656961515749636,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.262595847225859,
+"in_bounds": false,
+"cost": 0.10841679065309286,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_alt",
+"value": 0.5,
+"in_bounds": false,
+"cost": 0.1683174964454138,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 7.376830209923193e-05,
+"in_bounds": false,
+"cost": 1.5008509903294016,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.00011700386204366179,
+"in_bounds": false,
+"cost": 1.5002626419992675,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.0001855797591046192,
+"in_bounds": false,
+"cost": 1.499325318583747,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.00029434795046745326,
+"in_bounds": false,
+"cost": 1.4978458955806202,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.0004668651169848068,
+"in_bounds": false,
+"cost": 1.4957832245428524,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.0007404944967719014,
+"in_bounds": false,
+"cost": 1.4924969993961443,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.0011744979005731012,
+"in_bounds": false,
+"cost": 1.487381498743089,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.0018628704527368582,
+"in_bounds": false,
+"cost": 1.4800430978758456,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.002954697766583223,
+"in_bounds": true,
+"cost": 1.4714267423684062,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.004686444448687107,
+"in_bounds": true,
+"cost": 1.4614489262822181,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.007433166877175284,
+"in_bounds": true,
+"cost": 1.4476388421268342,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.011789741760283627,
+"in_bounds": true,
+"cost": 1.4112422090893455,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.018699702706929795,
+"in_bounds": true,
+"cost": 1.3830614594739992,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.029659587838092354,
+"in_bounds": true,
+"cost": 1.364037915506291,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.047043055417106565,
+"in_bounds": true,
+"cost": 1.2591078158210487,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.07461496346671073,
+"in_bounds": true,
+"cost": 0.973825436303299,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.11834675115753794,
+"in_bounds": true,
+"cost": 0.7172818307609079,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.18770971476509438,
+"in_bounds": true,
+"cost": 0.3448738567387614,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.29772627193026957,
+"in_bounds": true,
+"cost": 0.14892933825732266,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.47222347073738175,
+"in_bounds": true,
+"cost": 0.10526087555267939,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 0.7489933786141872,
+"in_bounds": true,
+"cost": 0.09290431451335086,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 1.1879779722339974,
+"in_bounds": true,
+"cost": 0.09016356028313617,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 1.8842511867386862,
+"in_bounds": true,
+"cost": 0.09354785632777153,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 2.9886097366347633,
+"in_bounds": true,
+"cost": 0.1034619709430471,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 4.740232205116705,
+"in_bounds": false,
+"cost": 0.11992674711998134,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 7.518479607085497,
+"in_bounds": false,
+"cost": 0.1448822579760173,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 11.92505623271862,
+"in_bounds": false,
+"cost": 0.19608264293542055,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 18.91432491477184,
+"in_bounds": false,
+"cost": 0.2560167514919547,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_alt",
+"value": 30.0,
+"in_bounds": false,
+"cost": 0.3540206660520988,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 6.666666666666667e-05,
+"in_bounds": false,
+"cost": 1421.2345679012344,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.00010078428535442443,
+"in_bounds": false,
+"cost": 1356.2037037037037,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0001523620826160308,
+"in_bounds": false,
+"cost": 1362.4074074074074,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.00023033555417352664,
+"in_bounds": false,
+"cost": 1246.5740740740741,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.000348213063286413,
+"in_bounds": false,
+"cost": 1302.6851851851852,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0005264160710159416,
+"in_bounds": false,
+"cost": 1151.4506172839506,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0007958170127463837,
+"in_bounds": false,
+"cost": 0.9362754387260802,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0012030877335380576,
+"in_bounds": false,
+"cost": 0.22199796144288497,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0018187850616496108,
+"in_bounds": false,
+"cost": 0.13053430660740215,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.0027495742897748828,
+"in_bounds": true,
+"cost": 0.10254662032121496,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.004156708197357911,
+"in_bounds": true,
+"cost": 0.09251780827052676,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.006283962976463918,
+"in_bounds": true,
+"cost": 0.09008694173427116,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.00949987076664867,
+"in_bounds": true,
+"cost": 0.09233307885494879,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.01436156529264112,
+"in_bounds": true,
+"cost": 0.09816262480776845,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.021711301418846113,
+"in_bounds": true,
+"cost": 0.10637086458492301,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.03282236996419361,
+"in_bounds": true,
+"cost": 0.11743192635654165,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.04961968650719669,
+"in_bounds": true,
+"cost": 0.13715122657213388,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.07501326966207594,
+"in_bounds": true,
+"cost": 0.1634344548994501,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.11340238162486578,
+"in_bounds": true,
+"cost": 0.19923292588236782,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.1714376698432772,
+"in_bounds": true,
+"cost": 0.2494561432175313,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.25917334556973687,
+"in_bounds": true,
+"cost": 0.31613453138923475,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.39180900624241793,
+"in_bounds": true,
+"cost": 0.396771072941531,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.5923228603435398,
+"in_bounds": true,
+"cost": 0.5053166017836727,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 0.8954525426821842,
+"in_bounds": false,
+"cost": 0.6508491435755567,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 1.3537131687453903,
+"in_bounds": false,
+"cost": 2.8339020671235153,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 2.0464952143031634,
+"in_bounds": false,
+"cost": 2.8973966368329385,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 3.0938183648219106,
+"in_bounds": false,
+"cost": 7.499159288589162,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 4.677124093724554,
+"in_bounds": false,
+"cost": 7.583056654373487,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kp_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 7.698345721726859,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.09131586340386237,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 3.3333333333333335e-07,
+"in_bounds": false,
+"cost": 0.09131471556269637,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 5.892917003870872e-07,
+"in_bounds": false,
+"cost": 0.09131382763380903,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 1.0417941244353137e-06,
+"in_bounds": false,
+"cost": 0.09131224415767737,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 1.8417618931252849e-06,
+"in_bounds": false,
+"cost": 0.09130940384011911,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 3.2560049931238206e-06,
+"in_bounds": false,
+"cost": 0.09130427382793192,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 5.756210156600349e-06,
+"in_bounds": false,
+"cost": 0.09129482704868225,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 1.0176260612905326e-05,
+"in_bounds": true,
+"cost": 0.09127700282830038,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 1.7990357760483333e-05,
+"in_bounds": true,
+"cost": 0.09124207911963668,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 3.180470554574177e-05,
+"in_bounds": true,
+"cost": 0.09117034800532094,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 5.622674703408238e-05,
+"in_bounds": true,
+"cost": 0.09101648080091072,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 9.940186610084708e-05,
+"in_bounds": true,
+"cost": 0.09069397478528311,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.00017573008408865306,
+"in_bounds": true,
+"cost": 0.0902731330584925,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.00031066884018530463,
+"in_bounds": true,
+"cost": 0.09012497353804201,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0005492237072702468,
+"in_bounds": true,
+"cost": 0.09109564070313858,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0009709589170505509,
+"in_bounds": true,
+"cost": 0.09348522793134632,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0017165340937041705,
+"in_bounds": true,
+"cost": 0.09779319573772038,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0030346178845540154,
+"in_bounds": true,
+"cost": 0.1063346935363323,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.0053648253996417,
+"in_bounds": true,
+"cost": 0.13373375373737273,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.009484341246104078,
+"in_bounds": true,
+"cost": 1.9974915638271475,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.016767130739904178,
+"in_bounds": true,
+"cost": 3.227385280938711,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.029642192952992204,
+"in_bounds": true,
+"cost": 3.091496812998063,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.05240369486541264,
+"in_bounds": true,
+"cost": 3.1232384089378997,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.09264318736141527,
+"in_bounds": true,
+"cost": 3.2639728897152285,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.16378158422846378,
+"in_bounds": true,
+"cost": 3.4214148794848014,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.28954538478624714,
+"in_bounds": false,
+"cost": 3.6034953846736038,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.5118800764197632,
+"in_bounds": false,
+"cost": 3.7678950683010277,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 0.9049400418830216,
+"in_bounds": false,
+"cost": 3.90368006979198,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 1.5998209680888236,
+"in_bounds": false,
+"cost": 4.045607556532465,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "ki_pitch",
+"value": 2.8282836557999365,
+"in_bounds": false,
+"cost": 4.208288599200919,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 3.3333333333333333e-06,
+"in_bounds": false,
+"cost": 0.09007781942080573,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 5.608260549677772e-06,
+"in_bounds": false,
+"cost": 0.09007821605340194,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 9.435775917921594e-06,
+"in_bounds": false,
+"cost": 0.09007888334398417,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 1.587548695082378e-05,
+"in_bounds": false,
+"cost": 0.09008000637484102,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 2.671016015196879e-05,
+"in_bounds": false,
+"cost": 0.09008190335155108,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 4.4939261236758474e-05,
+"in_bounds": false,
+"cost": 0.09008510232302742,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 7.560932577773286e-05,
+"in_bounds": false,
+"cost": 0.09009050223529014,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.00012721103968409806,
+"in_bounds": true,
+"cost": 0.09009961449904495,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.0002140297966031461,
+"in_bounds": true,
+"cost": 0.09011507830219874,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.0003601004594234947,
+"in_bounds": true,
+"cost": 0.0901414866694537,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.0006058611601516877,
+"in_bounds": true,
+"cost": 0.09018736894744302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.0010193481729182145,
+"in_bounds": true,
+"cost": 0.09026822282924907,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.001715031043369002,
+"in_bounds": true,
+"cost": 0.09041324155700643,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.002885502282599723,
+"in_bounds": true,
+"cost": 0.09067992163911753,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.004854794585252754,
+"in_bounds": true,
+"cost": 0.09116735453038544,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.008168085884778688,
+"in_bounds": true,
+"cost": 0.09213157263214367,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.013742626150195246,
+"in_bounds": true,
+"cost": 0.09422974980524475,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.02312166842613302,
+"in_bounds": true,
+"cost": 0.09875693279363579,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.038901702263103605,
+"in_bounds": true,
+"cost": 0.10804040949996002,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.06545126463524223,
+"in_bounds": true,
+"cost": 0.1253325163075717,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.11012032361410473,
+"in_bounds": true,
+"cost": 0.15952784767216746,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.18527503999282002,
+"in_bounds": true,
+"cost": 0.2200059660936423,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.3117212092895107,
+"in_bounds": true,
+"cost": 34.95102174240035,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.5244641281668636,
+"in_bounds": true,
+"cost": 1239.6913580246912,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 0.8823994439158107,
+"in_bounds": false,
+"cost": 1421.7283950617284,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 1.4846177971111911,
+"in_bounds": false,
+"cost": 1472.5617283950617,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 2.4978370268664647,
+"in_bounds": false,
+"cost": 1737.5617283950621,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 4.202556257189886,
+"in_bounds": false,
+"cost": 1763.641975308642,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 1,
+"gene": "kd_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 1786.2962962962963,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 1.4753660419846386e-05,
+"in_bounds": false,
+"cost": 0.9034330199790218,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 2.3248893664249656e-05,
+"in_bounds": false,
+"cost": 0.9027421747210104,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 3.6635725727054214e-05,
+"in_bounds": false,
+"cost": 0.9016578460573541,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 5.773076426478893e-05,
+"in_bounds": false,
+"cost": 0.8999593778117246,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 9.097243405049959e-05,
+"in_bounds": false,
+"cost": 0.8973064319608127,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0001433548275770909,
+"in_bounds": false,
+"cost": 0.8931777173181302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.00022589927162166087,
+"in_bounds": false,
+"cost": 0.8867858580802039,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0003559732293755833,
+"in_bounds": false,
+"cost": 0.8769699280003147,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0005609444382995129,
+"in_bounds": true,
+"cost": 0.862087057267661,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0008839391192733857,
+"in_bounds": true,
+"cost": 0.8399147309881053,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0013929157920710366,
+"in_bounds": true,
+"cost": 0.8208944263697576,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.0021949638402651256,
+"in_bounds": true,
+"cost": 0.8110766560940789,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.003458835263047774,
+"in_bounds": true,
+"cost": 0.7901860618979383,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.005450450325166961,
+"in_bounds": true,
+"cost": 0.7422359422041956,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.00858884754197162,
+"in_bounds": true,
+"cost": 0.6490653212022978,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.013534349952445852,
+"in_bounds": true,
+"cost": 0.5093713427012203,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.021327497983882168,
+"in_bounds": true,
+"cost": 0.36328468215659226,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.033607980571708045,
+"in_bounds": true,
+"cost": 0.24543710912557778,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.052959627939568904,
+"in_bounds": true,
+"cost": 0.17125335745257955,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.08345405298938566,
+"in_bounds": true,
+"cost": 0.1282762470028483,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.13150732418857478,
+"in_bounds": true,
+"cost": 0.10446762061951252,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.20722991509398006,
+"in_bounds": true,
+"cost": 0.09258377950741355,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.32655396172671225,
+"in_bounds": true,
+"cost": 0.08876544526005709,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.5145854056401571,
+"in_bounds": false,
+"cost": 0.09321796410024379,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 0.8108863181376736,
+"in_bounds": false,
+"cost": 0.11493197297075915,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 1.2777988138332097,
+"in_bounds": false,
+"cost": 0.16402984213675834,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 2.0135619162788037,
+"in_bounds": false,
+"cost": 506.47797378340897,
+"status": [
+"ok",
+"overload",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 3.1729811820106995,
+"in_bounds": false,
+"cost": 4.965791302643436,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_alt",
+"value": 5.0,
+"in_bounds": false,
+"cost": 548.4095535376654,
+"status": [
+"ok",
+"ok",
+"overload"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.08876249360294831,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 7.376830209923193e-09,
+"in_bounds": false,
+"cost": 0.08876249618863481,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 1.404597652219989e-08,
+"in_bounds": false,
+"cost": 0.08876249862313186,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 2.6744475723028012e-08,
+"in_bounds": false,
+"cost": 0.08876250311732921,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 5.092326479181725e-08,
+"in_bounds": false,
+"cost": 0.08876251167694223,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 9.696129114337858e-08,
+"in_bounds": false,
+"cost": 0.08876252800105437,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 1.846207626047914e-07,
+"in_bounds": false,
+"cost": 0.08876255917592335,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 3.515302403963746e-07,
+"in_bounds": true,
+"cost": 0.08876261850239352,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 6.693370137228861e-07,
+"in_bounds": true,
+"cost": 0.08876273143889533,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 1.2744622978504083e-06,
+"in_bounds": true,
+"cost": 0.08876294661069822,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 2.426661181648937e-06,
+"in_bounds": true,
+"cost": 0.0887633570772669,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 4.620524671819663e-06,
+"in_bounds": true,
+"cost": 0.08876413887955355,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 8.797787018782429e-06,
+"in_bounds": true,
+"cost": 0.08876563258193627,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 1.6751573019384915e-05,
+"in_bounds": true,
+"cost": 0.08876848664596386,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 3.189611183183881e-05,
+"in_bounds": true,
+"cost": 0.08877395690628524,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 6.073232339505555e-05,
+"in_bounds": true,
+"cost": 0.08878451898779598,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.00011563839267956816,
+"in_bounds": true,
+"cost": 0.0888051207070365,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.00022018320910480293,
+"in_bounds": true,
+"cost": 0.08884617667503793,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.0004192435094288135,
+"in_bounds": true,
+"cost": 0.08893067125641578,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.0007982675923054916,
+"in_bounds": true,
+"cost": 0.08909836102826864,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.0015199547150852328,
+"in_bounds": true,
+"cost": 0.08945682978763209,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.0028940951106852823,
+"in_bounds": true,
+"cost": 0.09025498502719882,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.005510550035842862,
+"in_bounds": true,
+"cost": 0.0915445736276825,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.010492454648574932,
+"in_bounds": true,
+"cost": 0.09311014661074095,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.01997833316752793,
+"in_bounds": true,
+"cost": 0.09296503564425668,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.038040078277293894,
+"in_bounds": true,
+"cost": 0.08944979175983248,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.07243084511647965,
+"in_bounds": false,
+"cost": 0.08577989977641953,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.13791315796053308,
+"in_bounds": false,
+"cost": 0.08606626903066518,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.262595847225859,
+"in_bounds": false,
+"cost": 0.09379047609318501,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_alt",
+"value": 0.5,
+"in_bounds": false,
+"cost": 0.15440057778867752,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 7.376830209923193e-05,
+"in_bounds": false,
+"cost": 0.1224386375220921,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.00011700386204366179,
+"in_bounds": false,
+"cost": 0.12239851865243993,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.0001855797591046192,
+"in_bounds": false,
+"cost": 0.12233498910973313,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.00029434795046745326,
+"in_bounds": false,
+"cost": 0.12223448609428282,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.0004668651169848068,
+"in_bounds": false,
+"cost": 0.12207575264412358,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.0007404944967719014,
+"in_bounds": false,
+"cost": 0.12182569671119713,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.0011744979005731012,
+"in_bounds": false,
+"cost": 0.12143339469900409,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.0018628704527368582,
+"in_bounds": false,
+"cost": 0.12087549853492881,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.002954697766583223,
+"in_bounds": true,
+"cost": 0.12003759213617042,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.004686444448687107,
+"in_bounds": true,
+"cost": 0.1187542663165061,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.007433166877175284,
+"in_bounds": true,
+"cost": 0.11682588011139182,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.011789741760283627,
+"in_bounds": true,
+"cost": 0.1140017895825185,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.018699702706929795,
+"in_bounds": true,
+"cost": 0.11001765101929638,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.029659587838092354,
+"in_bounds": true,
+"cost": 0.10473384670786072,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.047043055417106565,
+"in_bounds": true,
+"cost": 0.09841336363558668,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.07461496346671073,
+"in_bounds": true,
+"cost": 0.09248215805855146,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.11834675115753794,
+"in_bounds": true,
+"cost": 0.08891468174796253,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.18770971476509438,
+"in_bounds": true,
+"cost": 0.09134432538030968,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.29772627193026957,
+"in_bounds": true,
+"cost": 0.10376972165729363,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.47222347073738175,
+"in_bounds": true,
+"cost": 0.12866222150147014,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 0.7489933786141872,
+"in_bounds": true,
+"cost": 0.17082871937311372,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 1.1879779722339974,
+"in_bounds": true,
+"cost": 0.23767875950283202,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 1.8842511867386862,
+"in_bounds": true,
+"cost": 0.3356567404146964,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 2.9886097366347633,
+"in_bounds": true,
+"cost": 0.4574757339115794,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 4.740232205116705,
+"in_bounds": false,
+"cost": 0.5791226144332654,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 7.518479607085497,
+"in_bounds": false,
+"cost": 0.7217638526889743,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 11.92505623271862,
+"in_bounds": false,
+"cost": 3.498898912272882,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 18.91432491477184,
+"in_bounds": false,
+"cost": 3.878924803424941,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_alt",
+"value": 30.0,
+"in_bounds": false,
+"cost": 10.870294798456477,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 6.666666666666667e-05,
+"in_bounds": false,
+"cost": 1724.8456790123457,
+"status": [
+"attitude",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.00010078428535442443,
+"in_bounds": false,
+"cost": 1725.2777777777776,
+"status": [
+"attitude",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0001523620826160308,
+"in_bounds": false,
+"cost": 1725.864197530864,
+"status": [
+"attitude",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.00023033555417352664,
+"in_bounds": false,
+"cost": 1726.574074074074,
+"status": [
+"attitude",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.000348213063286413,
+"in_bounds": false,
+"cost": 1716.0493827160492,
+"status": [
+"diverged",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0005264160710159416,
+"in_bounds": false,
+"cost": 1706.018518518519,
+"status": [
+"diverged",
+"diverged",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0007958170127463837,
+"in_bounds": false,
+"cost": 1708.9197530864196,
+"status": [
+"diverged",
+"diverged",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0012030877335380576,
+"in_bounds": false,
+"cost": 1696.6358024691356,
+"status": [
+"diverged",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0018187850616496108,
+"in_bounds": false,
+"cost": 1660.6172839506173,
+"status": [
+"attitude",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.0027495742897748828,
+"in_bounds": true,
+"cost": 1595.4012345679012,
+"status": [
+"attitude",
+"attitude",
+"diverged"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.004156708197357911,
+"in_bounds": true,
+"cost": 1543.1790123456788,
+"status": [
+"diverged",
+"attitude",
+"attitude"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.006283962976463918,
+"in_bounds": true,
+"cost": 9.226074616516179,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.00949987076664867,
+"in_bounds": true,
+"cost": 4.830520867415203,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.01436156529264112,
+"in_bounds": true,
+"cost": 1.690631851236209,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.021711301418846113,
+"in_bounds": true,
+"cost": 0.1613782730520095,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.03282236996419361,
+"in_bounds": true,
+"cost": 0.11538215672630243,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.04961968650719669,
+"in_bounds": true,
+"cost": 0.0988631707175059,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.07501326966207594,
+"in_bounds": true,
+"cost": 0.09237823630199445,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.11340238162486578,
+"in_bounds": true,
+"cost": 0.08921262448051707,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.1714376698432772,
+"in_bounds": true,
+"cost": 0.08930686172627271,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.25917334556973687,
+"in_bounds": true,
+"cost": 0.09456767968086129,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.39180900624241793,
+"in_bounds": true,
+"cost": 0.10657618460069052,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.5923228603435398,
+"in_bounds": true,
+"cost": 0.1282873701703427,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 0.8954525426821842,
+"in_bounds": false,
+"cost": 0.17074393212309458,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 1.3537131687453903,
+"in_bounds": false,
+"cost": 0.2586283521318478,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 2.0464952143031634,
+"in_bounds": false,
+"cost": 0.8310959350912187,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 3.0938183648219106,
+"in_bounds": false,
+"cost": 9.862801323887927,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 4.677124093724554,
+"in_bounds": false,
+"cost": 9.86133219737296,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kp_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 9.82824853429627,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.08880232261414793,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 3.3333333333333335e-07,
+"in_bounds": false,
+"cost": 0.0888023187301899,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 5.892917003870872e-07,
+"in_bounds": false,
+"cost": 0.0888023159273434,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 1.0417941244353137e-06,
+"in_bounds": false,
+"cost": 0.08880231082351953,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 1.8417618931252849e-06,
+"in_bounds": false,
+"cost": 0.08880230166401526,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 3.2560049931238206e-06,
+"in_bounds": false,
+"cost": 0.08880228554392904,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 5.756210156600349e-06,
+"in_bounds": false,
+"cost": 0.08880225708634927,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 1.0176260612905326e-05,
+"in_bounds": true,
+"cost": 0.08880220683405894,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 1.7990357760483333e-05,
+"in_bounds": true,
+"cost": 0.08880211725828761,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 3.180470554574177e-05,
+"in_bounds": true,
+"cost": 0.08880195870801348,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 5.622674703408238e-05,
+"in_bounds": true,
+"cost": 0.08880167588616299,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 9.940186610084708e-05,
+"in_bounds": true,
+"cost": 0.08880116832638756,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.00017573008408865306,
+"in_bounds": true,
+"cost": 0.08880024998559995,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.00031066884018530463,
+"in_bounds": true,
+"cost": 0.08879857040957599,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0005492237072702468,
+"in_bounds": true,
+"cost": 0.08879547752827883,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0009709589170505509,
+"in_bounds": true,
+"cost": 0.08878984050652268,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0017165340937041705,
+"in_bounds": true,
+"cost": 0.08878025920605485,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0030346178845540154,
+"in_bounds": true,
+"cost": 0.08876755149823727,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.0053648253996417,
+"in_bounds": true,
+"cost": 0.08876329742607535,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.009484341246104078,
+"in_bounds": true,
+"cost": 0.08880718953040544,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.016767130739904178,
+"in_bounds": true,
+"cost": 0.0889595149069518,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.029642192952992204,
+"in_bounds": true,
+"cost": 0.08921345551095265,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.05240369486541264,
+"in_bounds": true,
+"cost": 0.0895609030650339,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.09264318736141527,
+"in_bounds": true,
+"cost": 0.08998834156231271,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.16378158422846378,
+"in_bounds": true,
+"cost": 0.0904156177968889,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.28954538478624714,
+"in_bounds": false,
+"cost": 0.091118654562743,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.5118800764197632,
+"in_bounds": false,
+"cost": 0.09499540331919369,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 0.9049400418830216,
+"in_bounds": false,
+"cost": 0.11894573049073992,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 1.5998209680888236,
+"in_bounds": false,
+"cost": 6.737475833500278,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "ki_pitch",
+"value": 2.8282836557999365,
+"in_bounds": false,
+"cost": 8.397419773735102,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 3.3333333333333333e-06,
+"in_bounds": false,
+"cost": 0.08876857830119296,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 5.608260549677772e-06,
+"in_bounds": false,
+"cost": 0.08876853367059949,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 9.435775917921594e-06,
+"in_bounds": false,
+"cost": 0.0887684587969572,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 1.587548695082378e-05,
+"in_bounds": false,
+"cost": 0.08876833458206017,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 2.671016015196879e-05,
+"in_bounds": false,
+"cost": 0.08876812689661019,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 4.4939261236758474e-05,
+"in_bounds": false,
+"cost": 0.08876778706223748,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 7.560932577773286e-05,
+"in_bounds": false,
+"cost": 0.08876725079182073,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.00012721103968409806,
+"in_bounds": true,
+"cost": 0.08876644583133843,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.0002140297966031461,
+"in_bounds": true,
+"cost": 0.08876523316489136,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.0003601004594234947,
+"in_bounds": true,
+"cost": 0.08876362076973161,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.0006058611601516877,
+"in_bounds": true,
+"cost": 0.08876248317520902,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.0010193481729182145,
+"in_bounds": true,
+"cost": 0.08876544434732714,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.001715031043369002,
+"in_bounds": true,
+"cost": 0.08878440659892362,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.002885502282599723,
+"in_bounds": true,
+"cost": 0.08885383926015607,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.004854794585252754,
+"in_bounds": true,
+"cost": 0.08905611989460681,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.008168085884778688,
+"in_bounds": true,
+"cost": 0.08958662041907828,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.013742626150195246,
+"in_bounds": true,
+"cost": 0.09085651296946139,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.02312166842613302,
+"in_bounds": true,
+"cost": 0.09357531264318518,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.038901702263103605,
+"in_bounds": true,
+"cost": 0.09907554790402073,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.06545126463524223,
+"in_bounds": true,
+"cost": 0.11065109785084193,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.11012032361410473,
+"in_bounds": true,
+"cost": 0.1351337719471664,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.18527503999282002,
+"in_bounds": true,
+"cost": 0.18576322305105894,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.3117212092895107,
+"in_bounds": true,
+"cost": 30.751747701431043,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.5244641281668636,
+"in_bounds": true,
+"cost": 22.58735960878009,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 0.8823994439158107,
+"in_bounds": false,
+"cost": 21.90390274238681,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 1.4846177971111911,
+"in_bounds": false,
+"cost": 21.73338404847699,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 2.4978370268664647,
+"in_bounds": false,
+"cost": 22.179368081439552,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 4.202556257189886,
+"in_bounds": false,
+"cost": 1652.8395061728395,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 2,
+"gene": "kd_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 1743.2407407407409,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 1.4753660419846386e-05,
+"in_bounds": false,
+"cost": 1.0195748761370897,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 2.3248893664249656e-05,
+"in_bounds": false,
+"cost": 1.018689717267979,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 3.6635725727054214e-05,
+"in_bounds": false,
+"cost": 1.0173009614957553,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 5.773076426478893e-05,
+"in_bounds": false,
+"cost": 1.015126949193564,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 9.097243405049959e-05,
+"in_bounds": false,
+"cost": 1.011734348234275,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0001433548275770909,
+"in_bounds": false,
+"cost": 1.0064619457336894,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.00022589927162166087,
+"in_bounds": false,
+"cost": 0.9983164539612349,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0003559732293755833,
+"in_bounds": false,
+"cost": 0.9858477606911614,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0005609444382995129,
+"in_bounds": true,
+"cost": 0.9670234245721634,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0008839391192733857,
+"in_bounds": true,
+"cost": 0.9391334019875873,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0013929157920710366,
+"in_bounds": true,
+"cost": 0.9255716251110268,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.0021949638402651256,
+"in_bounds": true,
+"cost": 0.9124636972109913,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.003458835263047774,
+"in_bounds": true,
+"cost": 0.8827921150142003,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.005450450325166961,
+"in_bounds": true,
+"cost": 0.8163055986980465,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.00858884754197162,
+"in_bounds": true,
+"cost": 0.6946802558909043,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.013534349952445852,
+"in_bounds": true,
+"cost": 0.5282953970129244,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.021327497983882168,
+"in_bounds": true,
+"cost": 0.3666232970150818,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.033607980571708045,
+"in_bounds": true,
+"cost": 0.24504143802714382,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.052959627939568904,
+"in_bounds": true,
+"cost": 0.17114965931117845,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.08345405298938566,
+"in_bounds": true,
+"cost": 0.1287190454376572,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.13150732418857478,
+"in_bounds": true,
+"cost": 0.10539126551605837,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.20722991509398006,
+"in_bounds": true,
+"cost": 0.09339472564676703,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.32655396172671225,
+"in_bounds": true,
+"cost": 0.08945498657776614,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.5145854056401571,
+"in_bounds": false,
+"cost": 0.09292819691534572,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 0.8108863181376736,
+"in_bounds": false,
+"cost": 0.10982920620916636,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 1.2777988138332097,
+"in_bounds": false,
+"cost": 0.13911447894594284,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 2.0135619162788037,
+"in_bounds": false,
+"cost": 0.2731539833491911,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 3.1729811820106995,
+"in_bounds": false,
+"cost": 4.93716349651907,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_alt",
+"value": 5.0,
+"in_bounds": false,
+"cost": 507.9872660862622,
+"status": [
+"ok",
+"overload",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.08942040323392227,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 7.376830209923193e-09,
+"in_bounds": false,
+"cost": 0.08942040603051654,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 1.404597652219989e-08,
+"in_bounds": false,
+"cost": 0.08942040825613533,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 2.6744475723028012e-08,
+"in_bounds": false,
+"cost": 0.08942041234352893,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 5.092326479181725e-08,
+"in_bounds": false,
+"cost": 0.0894204207393396,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 9.696129114337858e-08,
+"in_bounds": false,
+"cost": 0.08942043630808065,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 1.846207626047914e-07,
+"in_bounds": false,
+"cost": 0.08942046619196072,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 3.515302403963746e-07,
+"in_bounds": true,
+"cost": 0.08942052288143842,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 6.693370137228861e-07,
+"in_bounds": true,
+"cost": 0.08942063029245828,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 1.2744622978504083e-06,
+"in_bounds": true,
+"cost": 0.08942083542918905,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 2.426661181648937e-06,
+"in_bounds": true,
+"cost": 0.08942122583065763,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 4.620524671819663e-06,
+"in_bounds": true,
+"cost": 0.0894219696683697,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 8.797787018782429e-06,
+"in_bounds": true,
+"cost": 0.08942338748520788,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 1.6751573019384915e-05,
+"in_bounds": true,
+"cost": 0.0894260976766531,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 3.189611183183881e-05,
+"in_bounds": true,
+"cost": 0.08943127286498283,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 6.073232339505555e-05,
+"in_bounds": true,
+"cost": 0.0894411966306569,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.00011563839267956816,
+"in_bounds": true,
+"cost": 0.08946038897502843,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.00022018320910480293,
+"in_bounds": true,
+"cost": 0.08949792778940065,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.0004192435094288135,
+"in_bounds": true,
+"cost": 0.08957289331739664,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.0007982675923054916,
+"in_bounds": true,
+"cost": 0.08972638245078272,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.0015199547150852328,
+"in_bounds": true,
+"cost": 0.0900565100795337,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.0028940951106852823,
+"in_bounds": true,
+"cost": 0.09077437778562376,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.005510550035842862,
+"in_bounds": true,
+"cost": 0.09196323232205161,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.010492454648574932,
+"in_bounds": true,
+"cost": 0.09348819564206372,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.01997833316752793,
+"in_bounds": true,
+"cost": 0.09365128771725283,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.038040078277293894,
+"in_bounds": true,
+"cost": 0.09067125433124673,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.07243084511647965,
+"in_bounds": false,
+"cost": 0.08730102705044597,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.13791315796053308,
+"in_bounds": false,
+"cost": 0.08769611717036012,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.262595847225859,
+"in_bounds": false,
+"cost": 0.09529286080306586,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_alt",
+"value": 0.5,
+"in_bounds": false,
+"cost": 0.1442386647261655,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 7.376830209923193e-05,
+"in_bounds": false,
+"cost": 0.11682810408621032,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.00011700386204366179,
+"in_bounds": false,
+"cost": 0.11679796833547444,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.0001855797591046192,
+"in_bounds": false,
+"cost": 0.1167502269726121,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.00029434795046745326,
+"in_bounds": false,
+"cost": 0.11667466672703149,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.0004668651169848068,
+"in_bounds": false,
+"cost": 0.11655521056209443,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.0007404944967719014,
+"in_bounds": false,
+"cost": 0.11636667453663184,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.0011744979005731012,
+"in_bounds": false,
+"cost": 0.11606995442477953,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.0018628704527368582,
+"in_bounds": false,
+"cost": 0.115605048540594,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.002954697766583223,
+"in_bounds": true,
+"cost": 0.1148820971765583,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.004686444448687107,
+"in_bounds": true,
+"cost": 0.11376932731332139,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.007433166877175284,
+"in_bounds": true,
+"cost": 0.11208154712855771,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.011789741760283627,
+"in_bounds": true,
+"cost": 0.10958298112795474,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.018699702706929795,
+"in_bounds": true,
+"cost": 0.1060210874370842,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.029659587838092354,
+"in_bounds": true,
+"cost": 0.10146291896169547,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.047043055417106565,
+"in_bounds": true,
+"cost": 0.09604655866599354,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.07461496346671073,
+"in_bounds": true,
+"cost": 0.09111855239829553,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.11834675115753794,
+"in_bounds": true,
+"cost": 0.08954172335802807,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.18770971476509438,
+"in_bounds": true,
+"cost": 0.09579745645905798,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.29772627193026957,
+"in_bounds": true,
+"cost": 0.11320703369950962,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.47222347073738175,
+"in_bounds": true,
+"cost": 0.14470949902118294,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 0.7489933786141872,
+"in_bounds": true,
+"cost": 0.19602190588988175,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 1.1879779722339974,
+"in_bounds": true,
+"cost": 0.2738249857736392,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 1.8842511867386862,
+"in_bounds": true,
+"cost": 0.38061020537343065,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 2.9886097366347633,
+"in_bounds": true,
+"cost": 0.5111464011642276,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 4.740232205116705,
+"in_bounds": false,
+"cost": 0.673917494459186,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 7.518479607085497,
+"in_bounds": false,
+"cost": 3.2240188365180753,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 11.92505623271862,
+"in_bounds": false,
+"cost": 3.591183759485327,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 18.91432491477184,
+"in_bounds": false,
+"cost": 10.202851391689526,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_alt",
+"value": 30.0,
+"in_bounds": false,
+"cost": 11.258292590156321,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 6.666666666666667e-05,
+"in_bounds": false,
+"cost": 1458.1790123456788,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.00010078428535442443,
+"in_bounds": false,
+"cost": 1455.524691358025,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0001523620826160308,
+"in_bounds": false,
+"cost": 1439.4135802469136,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.00023033555417352664,
+"in_bounds": false,
+"cost": 1269.1666666666665,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.000348213063286413,
+"in_bounds": false,
+"cost": 1294.537037037037,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0005264160710159416,
+"in_bounds": false,
+"cost": 1225.2469135802469,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0007958170127463837,
+"in_bounds": false,
+"cost": 1149.7222222222224,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0012030877335380576,
+"in_bounds": false,
+"cost": 5.653226761276687,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0018187850616496108,
+"in_bounds": false,
+"cost": 2.283875678363335,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.0027495742897748828,
+"in_bounds": true,
+"cost": 1.3300947952701303,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.004156708197357911,
+"in_bounds": true,
+"cost": 0.7999005931955468,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.006283962976463918,
+"in_bounds": true,
+"cost": 0.3861825924485182,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.00949987076664867,
+"in_bounds": true,
+"cost": 0.44722022184305904,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.01436156529264112,
+"in_bounds": true,
+"cost": 0.1700071378160201,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.021711301418846113,
+"in_bounds": true,
+"cost": 0.17413917973268392,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.03282236996419361,
+"in_bounds": true,
+"cost": 0.13389461829420735,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.04961968650719669,
+"in_bounds": true,
+"cost": 0.11149782127387192,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.07501326966207594,
+"in_bounds": true,
+"cost": 0.09950738054320107,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.11340238162486578,
+"in_bounds": true,
+"cost": 0.09334066684422637,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.1714376698432772,
+"in_bounds": true,
+"cost": 0.08983434269494668,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.25917334556973687,
+"in_bounds": true,
+"cost": 0.0900214886112392,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.39180900624241793,
+"in_bounds": true,
+"cost": 0.09575982326049852,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.5923228603435398,
+"in_bounds": true,
+"cost": 0.10959228719458314,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 0.8954525426821842,
+"in_bounds": false,
+"cost": 0.13687763878133427,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 1.3537131687453903,
+"in_bounds": false,
+"cost": 0.19154150459740057,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 2.0464952143031634,
+"in_bounds": false,
+"cost": 0.3868642002350991,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 3.0938183648219106,
+"in_bounds": false,
+"cost": 9.922899298018507,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 4.677124093724554,
+"in_bounds": false,
+"cost": 9.958198020031446,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kp_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 9.906212066379625,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0,
+"in_bounds": true,
+"cost": 0.08942121549854443,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 3.3333333333333335e-07,
+"in_bounds": false,
+"cost": 0.08942121396838391,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 5.892917003870872e-07,
+"in_bounds": false,
+"cost": 0.089421212669529,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 1.0417941244353137e-06,
+"in_bounds": false,
+"cost": 0.08942121072783936,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 1.8417618931252849e-06,
+"in_bounds": false,
+"cost": 0.08942120662597025,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 3.2560049931238206e-06,
+"in_bounds": false,
+"cost": 0.08942120005642196,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 5.756210156600349e-06,
+"in_bounds": false,
+"cost": 0.08942118825900425,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 1.0176260612905326e-05,
+"in_bounds": true,
+"cost": 0.08942116693278723,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 1.7990357760483333e-05,
+"in_bounds": true,
+"cost": 0.08942112888523679,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 3.180470554574177e-05,
+"in_bounds": true,
+"cost": 0.0894210622263406,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 5.622674703408238e-05,
+"in_bounds": true,
+"cost": 0.08942094350866592,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 9.940186610084708e-05,
+"in_bounds": true,
+"cost": 0.08942073212887762,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.00017573008408865306,
+"in_bounds": true,
+"cost": 0.08942035314138046,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.00031066884018530463,
+"in_bounds": true,
+"cost": 0.08941966747473284,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0005492237072702468,
+"in_bounds": true,
+"cost": 0.08941841462572732,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0009709589170505509,
+"in_bounds": true,
+"cost": 0.08941611681857699,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0017165340937041705,
+"in_bounds": true,
+"cost": 0.08941199096813128,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0030346178845540154,
+"in_bounds": true,
+"cost": 0.08940526501696539,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.0053648253996417,
+"in_bounds": true,
+"cost": 0.08939740493365152,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.009484341246104078,
+"in_bounds": true,
+"cost": 0.08939910421050262,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.016767130739904178,
+"in_bounds": true,
+"cost": 0.08943619271679519,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.029642192952992204,
+"in_bounds": true,
+"cost": 0.08954307917153143,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.05240369486541264,
+"in_bounds": true,
+"cost": 0.08971157801876249,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.09264318736141527,
+"in_bounds": true,
+"cost": 0.08991026993311302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.16378158422846378,
+"in_bounds": true,
+"cost": 0.090062195449572,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.28954538478624714,
+"in_bounds": false,
+"cost": 0.09001699464651532,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.5118800764197632,
+"in_bounds": false,
+"cost": 0.0898571799659146,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 0.9049400418830216,
+"in_bounds": false,
+"cost": 0.09186267022947414,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 1.5998209680888236,
+"in_bounds": false,
+"cost": 0.1048332309232357,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "ki_pitch",
+"value": 2.8282836557999365,
+"in_bounds": false,
+"cost": 6.619067486685559,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 3.3333333333333333e-06,
+"in_bounds": false,
+"cost": 0.08999958800066793,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 5.608260549677772e-06,
+"in_bounds": false,
+"cost": 0.08999910585847533,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 9.435775917921594e-06,
+"in_bounds": false,
+"cost": 0.08999829508157757,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 1.587548695082378e-05,
+"in_bounds": false,
+"cost": 0.08999693688289596,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 2.671016015196879e-05,
+"in_bounds": false,
+"cost": 0.08999466283065054,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 4.4939261236758474e-05,
+"in_bounds": false,
+"cost": 0.0899908556129498,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 7.560932577773286e-05,
+"in_bounds": false,
+"cost": 0.08998449908512701,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.00012721103968409806,
+"in_bounds": true,
+"cost": 0.08997396288653538,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.0002140297966031461,
+"in_bounds": true,
+"cost": 0.08995655303008233,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.0003601004594234947,
+"in_bounds": true,
+"cost": 0.08992796414719145,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.0006058611601516877,
+"in_bounds": true,
+"cost": 0.0898818597863193,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.0010193481729182145,
+"in_bounds": true,
+"cost": 0.08981021045544241,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.001715031043369002,
+"in_bounds": true,
+"cost": 0.08970597773306561,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.002885502282599723,
+"in_bounds": true,
+"cost": 0.08957290334099849,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.004854794585252754,
+"in_bounds": true,
+"cost": 0.08944659855422848,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.008168085884778688,
+"in_bounds": true,
+"cost": 0.08946780563714102,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.013742626150195246,
+"in_bounds": true,
+"cost": 0.09002347933946027,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.02312166842613302,
+"in_bounds": true,
+"cost": 0.09188935032636454,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.038901702263103605,
+"in_bounds": true,
+"cost": 0.09627233057572061,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.06545126463524223,
+"in_bounds": true,
+"cost": 0.10503787617106695,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.11012032361410473,
+"in_bounds": true,
+"cost": 0.12394695182911682,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.18527503999282002,
+"in_bounds": true,
+"cost": 0.17167642182695295,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.3117212092895107,
+"in_bounds": true,
+"cost": 27.05004022920647,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.5244641281668636,
+"in_bounds": true,
+"cost": 23.170992146923126,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 0.8823994439158107,
+"in_bounds": false,
+"cost": 21.799853842253523,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 1.4846177971111911,
+"in_bounds": false,
+"cost": 21.76324222782136,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 2.4978370268664647,
+"in_bounds": false,
+"cost": 21.821434716254302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 4.202556257189886,
+"in_bounds": false,
+"cost": 1486.5123456790122,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"seed": 3,
+"gene": "kd_pitch",
+"value": 7.07070913949984,
+"in_bounds": false,
+"cost": 1744.0740740740741,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+}
+],
+"random": [
+{
+"u": [
+0.22733602246716966,
+0.31675833970975287,
+0.7973654573327341,
+0.6762546707509746,
+0.391109550601909,
+0.33281392786638453
+],
+"cost": 0.34088393250060456,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5983087535871898,
+0.18673418560371335,
+0.6727560440146213,
+0.9418028652699372,
+0.248245714629571,
+0.9488811518333182
+],
+"cost": 20.535056972266897,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6672374531003724,
+0.09589793559411208,
+0.4418396661678128,
+0.8864799193275177,
+0.6974534998820221,
+0.3264728640701121
+],
+"cost": 0.18058810644021817,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7339281633300665,
+0.22013495554548623,
+0.08159456954220812,
+0.15989560107504752,
+0.3401001849547053,
+0.46519315370205094
+],
+"cost": 0.2962892563327072,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.26642102829077097,
+0.815776403424807,
+0.1932943892894945,
+0.12946907617720027,
+0.09166475154493592,
+0.5985680136649132
+],
+"cost": 4.630246781042323,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8547419043740013,
+0.6016212416937131,
+0.9319883611359835,
+0.7247813610920201,
+0.8605513173932924,
+0.9293378015753163
+],
+"cost": 21.079808448549823,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.546186009082353,
+0.9376729587677569,
+0.4949879400788243,
+0.2737731824899875,
+0.4517787074747607,
+0.6650389233995303
+],
+"cost": 2.1786964859481803,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.33089093046705464,
+0.9034540068082391,
+0.2570741752765343,
+0.33982833761031983,
+0.25885339864292733,
+0.355446479944286
+],
+"cost": 2.567371451498907,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.005022333717131788,
+0.6286045440996787,
+0.2823827074251183,
+0.06808768948794575,
+0.6168289772563805,
+0.17632632028120343
+],
+"cost": 2.0726002173969413,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3043883872195896,
+0.44088681087611803,
+0.1502023410627008,
+0.21792886308543502,
+0.4743331153335445,
+0.47636885508119187
+],
+"cost": 1.5178311861400822,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.25523235381950027,
+0.29756526814804807,
+0.27906711981376664,
+0.26057921249129756,
+0.48276159279931574,
+0.2119790363515106
+],
+"cost": 1.529623000757951,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.49563059667304066,
+0.24626132583073757,
+0.8384826524669448,
+0.18013059009503507,
+0.8621562915092364,
+0.17829944484518745
+],
+"cost": 3.4107797278741825,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7505313319372441,
+0.6111204038305652,
+0.20915503492860732,
+0.7598724211239952,
+0.2492605695349125,
+0.08557173198655799
+],
+"cost": 0.1338623276089517,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.618056722318091,
+0.5369683310323355,
+0.6345267112152757,
+0.17437410869138825,
+0.24816448985645245,
+0.6848229846393992
+],
+"cost": 0.44682280973217536,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.08087164625090748,
+0.8750736007561262,
+0.42869438153999184,
+0.6183941953973778,
+0.31310550418511984,
+0.1789628552928676
+],
+"cost": 1.4013378240590972,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.009712127795452608,
+0.210042958448453,
+0.8700006787716521,
+0.9728298023975587,
+0.4417923431911024,
+0.37874949480925335
+],
+"cost": 0.6384257503209659,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.27594708126815015,
+0.9661041092344418,
+0.058202605265843976,
+0.40873389886185485,
+0.16862884452848603,
+0.24014405840168784
+],
+"cost": 2.184607749322581,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7800078563342119,
+0.20376759615561235,
+0.5520509547616217,
+0.36699414205166747,
+0.5072817213923568,
+0.3334377966962858
+],
+"cost": 0.11926568601755727,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2827216741078784,
+0.28183030130520703,
+0.08538129212128776,
+0.48181365578068525,
+0.8833428945145543,
+0.9472277660100212
+],
+"cost": 25.504179143167352,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.027383721927118798,
+0.9177522445025565,
+0.1215245294854096,
+0.7478477597858088,
+0.8965207420496949,
+0.1679297999371563
+],
+"cost": 2.0563682082566883,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.33146321926681144,
+0.37815662561580254,
+0.346848957674191,
+0.5162557011153627,
+0.008994027371330371,
+0.42267820448238347
+],
+"cost": 1.2624777287152782,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8776577295116168,
+0.0874051528524733,
+0.4840848174580369,
+0.4812277273405302,
+0.7825714903198652,
+0.9645595751383909
+],
+"cost": 25.859628759326252,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7070964416355432,
+0.2737367209154963,
+0.6701133004698582,
+0.34753480274823845,
+0.7681278360549094,
+0.6757714162524862
+],
+"cost": 0.28290359208269733,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9775320280272596,
+0.8667097895946211,
+0.04610801464594605,
+0.29032371308763205,
+0.8623910976890801,
+0.6008478340407654
+],
+"cost": 5.093848514007972,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3442579584850909,
+0.055602576788945424,
+0.7628726699820981,
+0.0015187877390547833,
+0.09284353923913602,
+0.9935041598056401
+],
+"cost": 1062.4955622614661,
+"status": [
+"ok",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.7760130772286886,
+0.8682708629262477,
+0.4771582515867283,
+0.16884864042232495,
+0.5339773211451656,
+0.42583187682655255
+],
+"cost": 388.3639885766292,
+"status": [
+"ok",
+"diverged",
+"ok"
+]
+},
+{
+"u": [
+0.16302959660518224,
+0.16587757120071456,
+0.2581501683258217,
+0.9430915698657686,
+0.9868069418476214,
+0.7036664148605156
+],
+"cost": 1.7051469500005785,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7231574133709524,
+0.732497807242168,
+0.5173955185145552,
+0.17742630825536754,
+0.8776462069275693,
+0.8803903557495891
+],
+"cost": 1.7037439900844316,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.709534552789582,
+0.9334288071570864,
+0.9799981603994237,
+0.5034757821321136,
+0.7575695069584943,
+0.616618523439051
+],
+"cost": 0.19085472447549626,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.11488906821052436,
+0.31598848012363057,
+0.06773389752989756,
+0.8868711781112267,
+0.022070398874919128,
+0.5372867034044053
+],
+"cost": 1.9967890820334893,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.17761210649073045,
+0.14699490936465665,
+0.16584448006484975,
+0.8769539789089008,
+0.49447012557905823,
+0.34090049533413946
+],
+"cost": 1.805013928757786,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9992098258817393,
+0.5459748957515987,
+0.30333112560537767,
+0.37065170083965293,
+0.6958668780532824,
+0.12024656863873784
+],
+"cost": 5.5924414196625705,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7582211881687652,
+0.8837676068489173,
+0.47513114477703766,
+0.4373047049662322,
+0.14311477326886435,
+0.4227422584097865
+],
+"cost": 0.12672552402271642,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7644116943791643,
+0.4139832914359034,
+0.6199309686400511,
+0.04377948120211961,
+0.21972537375712653,
+0.20382871431249316
+],
+"cost": 0.28618121422981896,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9811735029508034,
+0.04454988189910736,
+0.2153184965996242,
+0.03139923395213562,
+0.6395352516913244,
+0.653170421798361
+],
+"cost": 1636.2345679012344,
+"status": [
+"diverged",
+"diverged",
+"attitude"
+]
+},
+{
+"u": [
+0.34552150150327776,
+0.036354524733103855,
+0.43501044428436586,
+0.17132863376663,
+0.4267242355151557,
+0.37281025261987677
+],
+"cost": 0.9130669076270416,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.22108633647271425,
+0.8416409449885903,
+0.6926150495556315,
+0.4706451931227693,
+0.3996853131022202,
+0.10903988659303587
+],
+"cost": 0.40900368135525417,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6030385517426197,
+0.5041519490305957,
+0.9053810659260484,
+0.9689099187580771,
+0.8095952910610263,
+0.8666962622641864
+],
+"cost": 1.3153225714441108,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.49578972633242413,
+0.373782206031387,
+0.47899019376275254,
+0.5312425752302322,
+0.8176967945074863,
+0.15100636125840594
+],
+"cost": 0.5066693293319515,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6005588949831602,
+0.9059897829650985,
+0.22246401837233565,
+0.2878632541971984,
+0.8422146001753997,
+0.6518678936933059
+],
+"cost": 2.8869984401527398,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9654649423932107,
+0.6420837353513841,
+0.9493328925572762,
+0.8268483852390722,
+0.6746679849336359,
+0.18998774860084988
+],
+"cost": 0.47546559693589135,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2135331866111766,
+0.8630297119140868,
+0.3339239322528196,
+0.6864357825267221,
+0.4353757188649643,
+0.4593487596232221
+],
+"cost": 1.5370764975848923,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.010575040030257776,
+0.822322444843155,
+0.3114494642130865,
+0.33713345080148793,
+0.07160190124426624,
+0.624627076500583
+],
+"cost": 3.0984253514639595,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7786121504387277,
+0.5110412622842444,
+0.4777098830820632,
+0.7721071256306444,
+0.09672300669145661,
+0.5409183378900226
+],
+"cost": 0.11189987178273116,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7488836572098916,
+0.36630770854055006,
+0.8761304763245265,
+0.456815177583934,
+0.11589639436094779,
+0.9768903138905809
+],
+"cost": 356.37255845096473,
+"status": [
+"diverged",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.45590073289053235,
+0.7527891285954276,
+0.07825320580568229,
+0.8088404437544449,
+0.15200032387783657,
+0.12495628504165601
+],
+"cost": 0.6178672416880784,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.27643630246698025,
+0.42470739153935355,
+0.48528567828793434,
+0.42829252756954506,
+0.034539526674067456,
+0.597031260391558
+],
+"cost": 1.1556416955328237,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.741959274526392,
+0.978753879788451,
+0.5541599481257746,
+0.9318684718484388,
+0.9519661088087921,
+0.21239534806276517
+],
+"cost": 0.12761757051554182,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.06637991873072846,
+0.1696618972190208,
+0.7444334218790457,
+0.2609691020849294,
+0.11223830081001618,
+0.9433875548035912
+],
+"cost": 29.06654249211765,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6835893922194715,
+0.9581797289213643,
+0.3295097747554756,
+0.19225828691063473,
+0.13678876846395083,
+0.9433776963503583
+],
+"cost": 1046.1777007685403,
+"status": [
+"ok",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.16416519145981,
+0.8023521504177914,
+0.21168308979664452,
+0.8629193392500576,
+0.05667457729126257,
+0.3814174100148231
+],
+"cost": 1.9912709889918492,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4019309950394273,
+0.9762421164686362,
+0.8977273314741284,
+0.38445183272962824,
+0.42468283327849343,
+0.71514541368092
+],
+"cost": 0.17390647039797533,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6401143770213608,
+0.8941525080194651,
+0.6871937734177728,
+0.5153118713267911,
+0.9006842500143096,
+0.3309922977837203
+],
+"cost": 0.20375422160008796,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3674464864848085,
+0.3514324820551247,
+0.4895119002614233,
+0.034729426620813575,
+0.45290675541675807,
+0.3166175689458346
+],
+"cost": 0.7149917151662329,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2431850406608277,
+0.24742694117700714,
+0.797544141094011,
+0.38559106516422814,
+0.980743856921214,
+0.4127518514977849
+],
+"cost": 4.551404959205213,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6977073649863538,
+0.30537267967855075,
+0.8264959002000666,
+0.21306993052146717,
+0.2751870638005721,
+0.2925183495006818
+],
+"cost": 0.14593203006102068,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.12935612652333173,
+0.7505955217315128,
+0.43151575005481313,
+0.12594520849312696,
+0.5362136726243534,
+0.4883222216056897
+],
+"cost": 2.1403043531633563,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5052506250254043,
+0.7124996116836905,
+0.06653163947871898,
+0.49194202324992453,
+0.051604468516231905,
+0.9760919322890481
+],
+"cost": 25.712857893029582,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6598992417764632,
+0.16918527201362055,
+0.9195634294953501,
+0.17498896631269045,
+0.354588846447234,
+0.047487987646351204
+],
+"cost": 0.13772973356380727,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.37126445944531783,
+0.7314089613882474,
+0.12187017232483455,
+0.776984569380729,
+0.42708219413129855,
+0.8023279126704553
+],
+"cost": 0.9596853675998377,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.17392739260169687,
+0.9023467412145109,
+0.727262308460995,
+0.048221204239976334,
+0.479248445792966,
+0.06553106576882772
+],
+"cost": 0.6055847333793302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7224597554807674,
+0.36326163338223494,
+0.7741538043360033,
+0.8825342995828024,
+0.17636489744333006,
+0.8103754218298086
+],
+"cost": 0.22660393395105874,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.38576263435115743,
+0.3822799750559934,
+0.6543239878019914,
+0.9741268181693468,
+0.6824878693095359,
+0.2210647630197683
+],
+"cost": 0.6378651686124502,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.00043708682381393693,
+0.1113937717295247,
+0.2946888355518631,
+0.06893041377647235,
+0.06630740531991142,
+0.9463422324974671
+],
+"cost": 1425.1851851851852,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.15167087204915775,
+0.3339239614209506,
+0.96582711826138,
+0.5336973176096063,
+0.6926838296642847,
+0.2875966855732315
+],
+"cost": 0.26939126116630724,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6660601242135076,
+0.16305620425215395,
+0.34608929086358975,
+0.9066116323555717,
+0.7295521119341165,
+0.46222325655803764
+],
+"cost": 0.17812466857525844,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4578896700497155,
+0.7422895756464045,
+0.39785207960770796,
+0.4325006867502479,
+0.5677104580072477,
+0.5597489967980277
+],
+"cost": 0.6241896797672412,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4604378467301887,
+0.60449579815047,
+0.1498655417892838,
+0.7389066362668404,
+0.1625542951269634,
+0.8085940460461967
+],
+"cost": 0.7011238056679998,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5727048283566137,
+0.935819962781393,
+0.41735615574226315,
+0.6583702382084657,
+0.07346005336178596,
+0.30343028823174023
+],
+"cost": 0.2707714757001924,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.1622113909815237,
+0.6684881251896809,
+0.12109474411399002,
+0.49848896760552497,
+0.2526721607545479,
+0.167835833592047
+],
+"cost": 2.238191811460324,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8133470828430972,
+0.24382244273764764,
+0.07987231493196689,
+0.3924217996459116,
+0.2107175799148494,
+0.7140187841520924
+],
+"cost": 0.6417265277368315,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6186985193266021,
+0.9489407841619937,
+0.8513422830153393,
+0.3061041061601997,
+0.8609816936556625,
+0.25298937915040953
+],
+"cost": 3.3400318715766546,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.853450923792102,
+0.14500134120432417,
+0.9286261297995541,
+0.5644470697606866,
+0.4574603129661371,
+0.40294617369577657
+],
+"cost": 0.19755306544074014,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3774721825758748,
+0.15723164422411406,
+0.6312049880612975,
+0.35585531520356994,
+0.8804351911676153,
+0.12366673260232686
+],
+"cost": 1.707621953516501,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.46798135660786755,
+0.5853549343165854,
+0.7289728356308858,
+0.6552193805882004,
+0.4265322045512665,
+0.7315391665910768
+],
+"cost": 0.4046927358990571,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7099946141284708,
+0.38157726143824544,
+0.4280145936765477,
+0.3545052383159414,
+0.777532445392244,
+0.14298018020965475
+],
+"cost": 0.16355351298055334,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8155184625833093,
+0.5881249704004694,
+0.37114635580812716,
+0.9424117418388464,
+0.9578117285920226,
+0.9686051648557965
+],
+"cost": 20.45882873652614,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.10090176211260693,
+0.49056149153675277,
+0.9208420476493326,
+0.008866412707066007,
+0.2999615964467881,
+0.4595058494015938
+],
+"cost": 0.15078631168173962,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.27804470253451863,
+0.5715176389735546,
+0.5362087056870084,
+0.8441061581830718,
+0.23952718875997292,
+0.7560786605054353
+],
+"cost": 1.1518188273349492,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4935099426877132,
+0.9652713364896228,
+0.858289147432145,
+0.02056194179025983,
+0.3995610704098791,
+0.25504970841457064
+],
+"cost": 0.3548475932038408,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4880457498984927,
+0.9962108853892382,
+0.5792384554141374,
+0.0690212893416432,
+0.7473744414819691,
+0.20084216992728077
+],
+"cost": 1.2968047238444338,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4627542193847425,
+0.6359414538087265,
+0.9127954367937111,
+0.3412815524076833,
+0.6650432052545497,
+0.03532216746573802
+],
+"cost": 0.21664398874035237,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.06242566846504216,
+0.4254149856803576,
+0.5898170245510119,
+0.283374447674378,
+0.7426610174141713,
+0.3208839917851132
+],
+"cost": 0.8070556370350723,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2702098339296798,
+0.695917156728804,
+0.708612359963129,
+0.9761859723150326,
+0.1327447901864256,
+0.0963575906841857
+],
+"cost": 0.7680774314336535,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8317350632441984,
+0.2762543733568754,
+0.9062090149852464,
+0.5716021436706651,
+0.6017196136384271,
+0.004705813326081998
+],
+"cost": 0.20235290722192734,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5663815008070421,
+0.8704990020637664,
+0.99381788683324,
+0.3806002053235725,
+0.16796829957785198,
+0.9038111847245934
+],
+"cost": 29.18130691575732,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.414378741994212,
+0.45227950685706064,
+0.46916617171990915,
+0.5474354591428096,
+0.06063859787448955,
+0.015222747775344714
+],
+"cost": 0.8043080421345463,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7670889983993878,
+0.6326322263133535,
+0.39415721468814735,
+0.6545333181844043,
+0.7127945702751826,
+0.29112881147276937
+],
+"cost": 0.12036390403551234,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.39197539864099795,
+0.2474078150723822,
+0.1381199545140096,
+0.5918031181394104,
+0.7376533542860838,
+0.6078528543308646
+],
+"cost": 0.9934455685064346,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2554045866815319,
+0.6414140395730856,
+0.4110578543582546,
+0.446542243325757,
+0.013042258792156147,
+0.7790359846481468
+],
+"cost": 1.64485250125908,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8974065046164961,
+0.2916034554146887,
+0.36185755986534984,
+0.4914903967162403,
+0.3977906123811429,
+0.36941241887849685
+],
+"cost": 0.1601639709468879,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7459661988198921,
+0.6535641710729222,
+0.3208530115185003,
+0.6345714580773677,
+0.6835233532804104,
+0.44007264412831015
+],
+"cost": 0.13425130357705317,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2607571558829167,
+0.8629051013677126,
+0.005742812946473608,
+0.7193024363705705,
+0.8089680978067819,
+0.2109472777241942
+],
+"cost": 1.5829384446029942,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5700010401884741,
+0.9820898365078997,
+0.3015860322521442,
+0.6151807004811084,
+0.4137143526539562,
+0.4410208424135118
+],
+"cost": 1.6265076686674813,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7527116552371678,
+0.5451509168951166,
+0.2774519102463575,
+0.7414181352011556,
+0.559252674648105,
+0.30792724546347017
+],
+"cost": 0.12919612923503596,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5970670755367073,
+0.7422365087053274,
+0.06401298029109681,
+0.1654381994363101,
+0.3526469063209873,
+0.24924817179910597
+],
+"cost": 1.5306392881481237,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5663786914637727,
+0.04907262091266351,
+0.9176161155647454,
+0.7354233595287475,
+0.4195787320349038,
+0.15190886051521757
+],
+"cost": 0.38407197497826945,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.0627382281479566,
+0.7392012372591545,
+0.5665048874282348,
+0.4150569624160054,
+0.31391928397123603,
+0.05417010406816358
+],
+"cost": 1.1542437668323684,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7584156006633375,
+0.21081427881435288,
+0.2677080048352196,
+0.23287951086818193,
+0.5663740609204754,
+0.2903693672092008
+],
+"cost": 4.30556951853751,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.10873837905601802,
+0.8727445879016097,
+0.17330755225034555,
+0.21599028832720657,
+0.7404371434419982,
+0.4591775419741544
+],
+"cost": 3.063946111554184,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.934736407568265,
+0.8947336971354792,
+0.5608290110012816,
+0.1638898360572777,
+0.30780727750928005,
+0.6637188821952145
+],
+"cost": 1.4247562362510313,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.29722539857598107,
+0.5128438965662698,
+0.12227762193524794,
+0.5611160970070944,
+0.9417976932152712,
+0.6224503204704117
+],
+"cost": 1.6693734489803818,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.28706674610674643,
+0.11574244227556951,
+0.5980930237485246,
+0.5515795746504655,
+0.7552660296042241,
+0.0018603686954929977
+],
+"cost": 0.6982434243135159,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.1520144944022619,
+0.6150047757872839,
+0.5745086675577682,
+0.7025129660964795,
+0.8939393047301726,
+0.7680299016498975
+],
+"cost": 1.2110170721213096,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6106483587870734,
+0.994134488859964,
+0.3367575216434505,
+0.24086798369476214,
+0.2685822363470485,
+0.6282663033446985
+],
+"cost": 2.048029219200288,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.1195106749856687,
+0.40790248118144523,
+0.3443218342068902,
+0.11924734275554438,
+0.829038932975197,
+0.8338824007664941
+],
+"cost": 1.7727175682622534,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2513955956006695,
+0.08913990044513098,
+0.6272272943746691,
+0.2039991941990581,
+0.5835087139053914,
+0.39068725196707743
+],
+"cost": 0.6051100259576586,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8606889305068058,
+0.31175315639612244,
+0.5197832748875222,
+0.0820786726391528,
+0.36444927897403967,
+0.902884137088116
+],
+"cost": 496.2599527897797,
+"status": [
+"ok",
+"diverged",
+"ok"
+]
+},
+{
+"u": [
+0.1453669297597061,
+0.7528631047346568,
+0.4503637280507744,
+0.5643302014457606,
+0.8945156491570009,
+0.9012528973647066
+],
+"cost": 27.342841736810175,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.43584360432658986,
+0.9937968334794209,
+0.2844441119047326,
+0.22285262325907185,
+0.6162153420662968,
+0.5904119985896686
+],
+"cost": 8.397089500570738,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5206859579360599,
+0.307064922985946,
+0.43336902404388855,
+0.5464466173884817,
+0.02658687779688218,
+0.06496388961102817
+],
+"cost": 0.4260511445570609,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.03860231527642455,
+0.8389535710719254,
+0.6199049958435737,
+0.3132864003545157,
+0.5744738433634384,
+0.8772733207909856
+],
+"cost": 2.2902139559909735,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.09960692573219787,
+0.1963037316454086,
+0.32982396472757636,
+0.45818221865034914,
+0.35804411001315095,
+0.8484468450638738
+],
+"cost": 1.755419392453781,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5455139453021668,
+0.07642888006758397,
+0.2630135286410651,
+0.5071965397985306,
+0.7589683297761077,
+0.6287295687125484
+],
+"cost": 0.35734211199538946,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.99615551409509,
+0.3224976608203115,
+0.619913847544405,
+0.9592303927119804,
+0.44759004295723714,
+0.16106752437109573
+],
+"cost": 0.14757118540779007,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.22977815043164662,
+0.4028159652398998,
+0.12472165239399635,
+0.4751517221192474,
+0.9700182999481914,
+0.8782190584586527
+],
+"cost": 1.945121003446147,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5962263763721638,
+0.9369814213332073,
+0.6285735243800914,
+0.08068996643609216,
+0.6545026038653882,
+0.5883738728713797
+],
+"cost": 3.9928824671115124,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6455686110199882,
+0.2594166385134057,
+0.7327413336213893,
+0.5336853926120072,
+0.9670210865229482,
+0.1284448398687421
+],
+"cost": 3.0462274792158683,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5254871460801389,
+0.8528626785794617,
+0.16717096357039918,
+0.7719403831683246,
+0.934563793528736,
+0.7379477282289412
+],
+"cost": 0.25343294890544865,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6532688191705419,
+0.21634668086073783,
+0.9283431848141308,
+0.08233946916118962,
+0.3657380675447287,
+0.05574173747479283
+],
+"cost": 0.12021543216197071,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4672010593638819,
+0.7368497801248654,
+0.5018849224372144,
+0.23397873196269958,
+0.6309129835477197,
+0.7384377737144886
+],
+"cost": 0.479654128565942,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.25364357399452464,
+0.32825469834048104,
+0.2063462080001438,
+0.4533409235154008,
+0.0588722046951774,
+0.41675656251222126
+],
+"cost": 1.7137360948597342,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.08449851260344232,
+0.2605606443233458,
+0.9910772559388535,
+0.06933889434970508,
+0.29509362785668936,
+0.38043689132130887
+],
+"cost": 0.12765402162627018,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8305865060979893,
+0.11352263114969263,
+0.9278086084713428,
+0.721764954097309,
+0.8986051594837771,
+0.8196368041857646
+],
+"cost": 0.21295951392786605,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5877005008662098,
+0.05302625684260187,
+0.9035095158229043,
+0.5833270179390245,
+0.16946513962598897,
+0.9529303689426847
+],
+"cost": 21.757320441076413,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.16388528648241618,
+0.19552143095431462,
+0.6053851718761337,
+0.7377710191437802,
+0.13202968980814933,
+0.3940714102779287
+],
+"cost": 0.7097667988516037,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4486906937213708,
+0.4577001525237846,
+0.47903894436007477,
+0.4518886099244819,
+0.0174984899018501,
+0.9347637030504777
+],
+"cost": 28.572270316270778,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5774552894866025,
+0.7060767319754218,
+0.662801234866946,
+0.956785379140732,
+0.5536924399671098,
+0.3526384696554643
+],
+"cost": 0.37866570581369335,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7528376145343824,
+0.18199239397009093,
+0.5943149568922776,
+0.738726616020874,
+0.5693299990386673,
+0.841107455592542
+],
+"cost": 0.1588374264819397,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.14339795947536038,
+0.8144989912788716,
+0.9425910882329518,
+0.8497240346392678,
+0.380595613967163,
+0.15303536884676916
+],
+"cost": 0.6075413673168774,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5964110790878963,
+0.2598811995938034,
+0.7013180249330607,
+0.31563568631547223,
+0.7192972802609775,
+0.3903599862114213
+],
+"cost": 0.28469340609806687,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.47559032300192206,
+0.9107496218827766,
+0.39809706745952933,
+0.05268144227329763,
+0.9619335748320029,
+0.16507191258002507
+],
+"cost": 2.1781544035676963,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.29178051186044274,
+0.7650860434928476,
+0.0005124376118774698,
+0.7579987026148753,
+0.4920250345306446,
+0.6694410127905202
+],
+"cost": 1.4268604839223296,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.33625963783870183,
+0.3032123108542579,
+0.9552472703873444,
+0.8944045750557679,
+0.6389216215095938,
+0.34871306290705484
+],
+"cost": 0.6424608735194379,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.09997022487906981,
+0.0662744056728084,
+0.2737105996309157,
+0.7348955083997255,
+0.25837407482670294,
+0.2581612812171835
+],
+"cost": 1.7002674696821636,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5275611382622988,
+0.7692004244817323,
+0.9815338502758189,
+0.9603165860353801,
+0.5699319580204302,
+0.6458995765649463
+],
+"cost": 3.669844030614587,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3335879772991579,
+0.1490385858687785,
+0.6291276942869758,
+0.15361859624966734,
+0.8900980704094681,
+0.1475708815234611
+],
+"cost": 4.051292236459599,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6679616286735052,
+0.053968349331910304,
+0.6872369416174604,
+0.19750067041033992,
+0.6551798527570506,
+0.8397610891380011
+],
+"cost": 1.9629920328759674,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.025802536380824415,
+0.3466657963398315,
+0.1305977372207484,
+0.2697021726926566,
+0.3496383729697914,
+0.971035719056766
+],
+"cost": 1454.3827160493827,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.36441305311836736,
+0.6904899501393821,
+0.27072265475920054,
+0.24741476693307918,
+0.39273744303398483,
+0.6150547522942929
+],
+"cost": 2.752685089818474,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5895757472412977,
+0.3999876706713362,
+0.18220021007933684,
+0.832813336026561,
+0.5582611212041116,
+0.5936828833219311
+],
+"cost": 0.27225326176257475,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7287927959280026,
+0.2115507896674328,
+0.9510414440071144,
+0.7913352551591504,
+0.795522660448447,
+0.7479111454183852
+],
+"cost": 0.30895110299889184,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.20495221135279407,
+0.6518702773715828,
+0.2434983962786561,
+0.5291743494247892,
+0.8911438335998604,
+0.5338170341402166
+],
+"cost": 1.5724904713973464,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.06621768909461911,
+0.7446080022120349,
+0.974736404587905,
+0.7810153774844646,
+0.664584323916836,
+0.07577719948147643
+],
+"cost": 0.5471290215035468,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2852568154295936,
+0.04977335450884668,
+0.40857472444679166,
+0.6365523567836076,
+0.8205615238393505,
+0.3798433867118298
+],
+"cost": 1.219896623133325,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.37234241387933753,
+0.1962805552821738,
+0.05106945103984328,
+0.6905337253602658,
+0.4369450908409558,
+0.5767311378036705
+],
+"cost": 1.1345794607005233,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7008520764469458,
+0.4000698511135605,
+0.8498497583119031,
+0.48067925883354545,
+0.5391976216382293,
+0.8157054623371525
+],
+"cost": 0.1678755334171038,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.29943647272647966,
+0.7318169884517916,
+0.2713517429968688,
+0.7613027954613767,
+0.612938766845798,
+0.956273872273182
+],
+"cost": 22.398861116041598,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.473834975120609,
+0.7272809059181536,
+0.0643394790788222,
+0.7157378152286855,
+0.541217741604934,
+0.23083284363637646
+],
+"cost": 0.6378409316027938,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8015312564252763,
+0.1970864038885628,
+0.504337799684859,
+0.6445921415277387,
+0.0887830384372792,
+0.5668944376050373
+],
+"cost": 0.10791671394503537,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.11424462842929117,
+0.9119727940477806,
+0.22419563028776568,
+0.5740745252013622,
+0.9383238678435535,
+0.4455934537044749
+],
+"cost": 1.8006582359172023,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.011118618447001016,
+0.3815959843779345,
+0.5936252876180792,
+0.5412352407153715,
+0.9627534487119377,
+0.09443544227914635
+],
+"cost": 0.7895288167487758,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.11466695891124912,
+0.38039072059291634,
+0.43616488909557904,
+0.8163164503671955,
+0.17419429864601232,
+0.02290085642333395
+],
+"cost": 1.3576452628995428,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.700724253246192,
+0.4463795242207603,
+0.0408695810826879,
+0.9299492951131251,
+0.04539606631179327,
+0.47734023290233707
+],
+"cost": 0.1622300291962284,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3609647664838883,
+0.9544298888128502,
+0.4219784930020116,
+0.21060454804919415,
+0.8604781838561674,
+0.5219064081263458
+],
+"cost": 1.4350392027113914,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.15945103188372345,
+0.13605596572551892,
+0.6003862966242578,
+0.06069653973339928,
+0.346213618727066,
+0.6818842969644392
+],
+"cost": 0.7351729453496526,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7157505443666731,
+0.658037242531188,
+0.14038541214295797,
+0.019220218242495424,
+0.6482618889346182,
+0.37951151751861745
+],
+"cost": 1538.4876543209875,
+"status": [
+"attitude",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.5515287494801177,
+0.12749894750198476,
+0.1411557121235879,
+0.1648938136172322,
+0.7123151721567677,
+0.20588072049206751
+],
+"cost": 0.46999817244520753,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.21185168736268223,
+0.8169324225525094,
+0.37331519716063577,
+0.8098358071104819,
+0.5016829883793847,
+0.5764275432191601
+],
+"cost": 1.4804359267141587,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.35728660723156935,
+0.4700287159244314,
+0.40354304550307973,
+0.5444202677737437,
+0.892194549079642,
+0.6197934325955197
+],
+"cost": 1.1026594823926696,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.580862406467145,
+0.6295880242879522,
+0.016748313458407327,
+0.2305286516583458,
+0.4145299030494287,
+0.9764637347579591
+],
+"cost": 1025.1583223193293,
+"status": [
+"diverged",
+"diverged",
+"ok"
+]
+},
+{
+"u": [
+0.7415714755091772,
+0.9116200906984304,
+0.5569717514607168,
+0.8693174852907554,
+0.46525107223624873,
+0.9065302607687621
+],
+"cost": 21.539138872539045,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9920548658640016,
+0.6649598177155419,
+0.4811086430055902,
+0.7110595772139533,
+0.95112452901114,
+0.46368229767722
+],
+"cost": 0.13198481587237818,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.690182697163014,
+0.04740094391225502,
+0.5819348180321441,
+0.3039544706122146,
+0.7661672490793618,
+0.29200611702569446
+],
+"cost": 0.20223685393104682,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6016130634586424,
+0.49827165240889026,
+0.9973898944045244,
+0.871454296578068,
+0.08787168622779029,
+0.913218905677892
+],
+"cost": 22.514099016841865,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7663479647228691,
+0.11141145130369257,
+0.7475008301788851,
+0.9200141589748464,
+0.3001890620708113,
+0.5556147860221243
+],
+"cost": 0.24292628229069477,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.15272429881493155,
+0.36867825755590833,
+0.49287670503562697,
+0.4323233524051402,
+0.1890045706378769,
+0.9820542299106726
+],
+"cost": 1102.765718989416,
+"status": [
+"diverged",
+"diverged",
+"ok"
+]
+},
+{
+"u": [
+0.018553161992176048,
+0.17641097752972223,
+0.29904137603075,
+0.24859752472974272,
+0.06025140791574635,
+0.40278318210289954
+],
+"cost": 1.7292779962033318,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.23971135949049693,
+0.33286571995278924,
+0.10750705133794258,
+0.8647309029094814,
+0.7860418332080286,
+0.014772037982168862
+],
+"cost": 1.776058843431697,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.031745911105993674,
+0.6662002857114354,
+0.2704790783269977,
+0.35547667436286445,
+0.4851351474589879,
+0.9451054963322773
+],
+"cost": 1271.7592592592594,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.12031299998697698,
+0.3592335235615878,
+0.7624806095528337,
+0.5889804505951576,
+0.3658442285213269,
+0.5107117711836484
+],
+"cost": 0.36083656766184397,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.0354721160148298,
+0.34872854814208587,
+0.6939400085675591,
+0.01725562612670839,
+0.48740992554319795,
+0.1738161716261737
+],
+"cost": 0.46517722247063514,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.18881936537150568,
+0.30149919919790513,
+0.215157594886482,
+0.11282663588265551,
+0.28433576998384136,
+0.7645423946141027
+],
+"cost": 2.489974056273373,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5833305287860491,
+0.7731436191438866,
+0.8378330004656906,
+0.7157811378668316,
+0.20442599555676733,
+0.3822666420196762
+],
+"cost": 0.31606517514573723,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2982422500817067,
+0.7507095578135572,
+0.6170800184570425,
+0.6302022151817038,
+0.8689293341917863,
+0.23768972443480052
+],
+"cost": 0.6582892049626706,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2707319773689839,
+0.6555948737452116,
+0.8492564699278286,
+0.01110637185110519,
+0.9121448534963863,
+0.2675377371648372
+],
+"cost": 3.593349139565664,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3242831141802135,
+0.6416298623358696,
+0.9158767514194586,
+0.06596498047476995,
+0.4682379441521062,
+0.8109527929151513
+],
+"cost": 0.21151046521053493,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4961968272576275,
+0.6013855532482051,
+0.7149417022758932,
+0.6279854237569801,
+0.014322836031069208,
+0.8891477834906348
+],
+"cost": 0.590224637372042,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.244947053007188,
+0.42806860600386143,
+0.8441904890032239,
+0.3502006168066284,
+0.43715503640566744,
+0.6065037429878999
+],
+"cost": 0.223830720589584,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.35034947254013926,
+0.27817971854072054,
+0.5213676602536554,
+0.1788401477989543,
+0.3954925908145869,
+0.21292089199080966
+],
+"cost": 0.7653281480891178,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.12353507064895308,
+0.970633130374214,
+0.8235836703209846,
+0.9585416422778754,
+0.4173502919659057,
+0.2605024701572297
+],
+"cost": 0.5238839409292514,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8999627554843848,
+0.2553568074270468,
+0.429131921894097,
+0.6210288609321025,
+0.21206075279145586,
+0.4856555253491994
+],
+"cost": 0.11138778606894745,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.790999538483704,
+0.5998227840226245,
+0.3334453992012151,
+0.14309981326389154,
+0.4474093681389508,
+0.4657189206834961
+],
+"cost": 2.3110237334475134,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.27732500623165,
+0.3890801083796651,
+0.3796630204296312,
+0.10983226368900911,
+0.9048076396699951,
+0.7964016476391594
+],
+"cost": 1.5837793478112434,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6054709832379802,
+0.2559671031103481,
+0.5551853248971116,
+0.36634228005283087,
+0.21180530168622225,
+0.28027981594898466
+],
+"cost": 0.2403231050476994,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5778185740005969,
+0.299545897062527,
+0.6392314671615497,
+0.8594126441438285,
+0.7391607343406772,
+0.8849298986031718
+],
+"cost": 0.44076420263193566,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8827262199169204,
+0.7526395994324167,
+0.48630705365675275,
+0.218179321897218,
+0.05468142016757893,
+0.3842713292566008
+],
+"cost": 0.18895125763420198,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.11731914515371855,
+0.11678525622203217,
+0.29777418404376865,
+0.3415048846653187,
+0.9766428215658995,
+0.1407657249786317
+],
+"cost": 1.6575270649446512,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6221531747865293,
+0.03061561593553852,
+0.8439177749932665,
+0.10926388182163582,
+0.38877063291030045,
+0.4916980916692273
+],
+"cost": 0.14438760898914696,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7917036105899637,
+0.4787446809994217,
+0.27562574984615085,
+0.7969970480426102,
+0.2005215287680684,
+0.9654021783698081
+],
+"cost": 21.02657760848601,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6480875704330512,
+0.024633002263277692,
+0.9585594949405882,
+0.8631609737679737,
+0.2026927577287715,
+0.9808175162434974
+],
+"cost": 20.655980031348687,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4203121633796555,
+0.9777833464790703,
+0.5156240933523902,
+0.40639434541414543,
+0.3706975618238687,
+0.7430623870762276
+],
+"cost": 1.3645060736603114,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7696314582535176,
+0.8188216054658093,
+0.7708524708911291,
+0.14707459953371516,
+0.05184687941088428,
+0.3012402959330185
+],
+"cost": 0.1757605117280585,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.33065154133145136,
+0.3878433649063947,
+0.5693669008988329,
+0.2736955711427228,
+0.9757170467716494,
+0.3776236727671194
+],
+"cost": 3.23031784291353,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.21612834830582384,
+0.3996255454265354,
+0.44800346184029693,
+0.5489509483629712,
+0.1877322393996832,
+0.44692400205287697
+],
+"cost": 1.2896965115986214,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9400922117956368,
+0.1315728027733255,
+0.8006246756503363,
+0.24341941207717221,
+0.3288137284929462,
+0.8902809117404209
+],
+"cost": 0.4353214285569646,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.46196301687467467,
+0.9270228323284986,
+0.013709946068799606,
+0.5525942174153378,
+0.07447202682071186,
+0.5051627274375486
+],
+"cost": 2.212917663268193,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7569455725498848,
+0.14284372507417786,
+0.22099608051386055,
+0.8405654850025417,
+0.751502202020236,
+0.5708148822992416
+],
+"cost": 0.13033714452863573,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5889231804870142,
+0.19624090763856938,
+0.5160098170330725,
+0.8985912961074778,
+0.4326339124104922,
+0.07101431445377815
+],
+"cost": 0.30043565761753327,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.940707619274124,
+0.7811764757145208,
+0.07423360950832614,
+0.41870938016179116,
+0.15236697750707873,
+0.8840134181219368
+],
+"cost": 1.8317798515976726,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6544857515375946,
+0.9297183613657853,
+0.46976022682805285,
+0.9901695154328675,
+0.07611916044467815,
+0.23286714173250977
+],
+"cost": 0.152015060577266,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8081259660570629,
+0.5907896771034635,
+0.9207240314801637,
+0.37346878791864724,
+0.002301092541370231,
+0.4682759284274911
+],
+"cost": 0.13839428572997087,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.13818154280734873,
+0.1575691519766138,
+0.21446646428450777,
+0.20232997239495176,
+0.42167980577616604,
+0.564195532471143
+],
+"cost": 1.8286773569503518,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8265841068889296,
+0.028392746062088303,
+0.061903424685768926,
+0.3444433090386364,
+0.420905679425038,
+0.09831767225609822
+],
+"cost": 0.2087009180078545,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.7687120526825015,
+0.2545223693438501,
+0.9877291263278508,
+0.652825795201186,
+0.06763140358008546,
+0.9071192057962034
+],
+"cost": 24.784440440161585,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.45159357307078896,
+0.80336234135779,
+0.7223547226117707,
+0.2884528521447751,
+0.49376495647495133,
+0.0498083758105744
+],
+"cost": 0.3616306838551231,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.03974247771056383,
+0.33742129254568454,
+0.9175331646242246,
+0.7351098621662633,
+0.7646330196498567,
+0.4218921789315736
+],
+"cost": 0.37351375348955784,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9572501549749991,
+0.5663588635227716,
+0.6049532464296768,
+0.8944894069492731,
+0.23438880084765823,
+0.2217936217841352
+],
+"cost": 0.11579952116963238,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5477370550042872,
+0.54422265987869,
+0.6336567139413217,
+0.10140951017957445,
+0.28106573314145666,
+0.2576174999458396
+],
+"cost": 0.3668040219944883,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.48854876529071345,
+0.5886313888100874,
+0.43124763315787773,
+0.8873530684337041,
+0.41149635391947004,
+0.5363626306346296
+],
+"cost": 0.5303934043047175,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.12177855644921909,
+0.5008531081095613,
+0.951868653374664,
+0.8925241415341632,
+0.012523744082379662,
+0.9832553983389063
+],
+"cost": 20.934070884547385,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.557549613148094,
+0.8168468439909103,
+0.23169636889814393,
+0.0655043679192503,
+0.8893900617835722,
+0.48896660302314465
+],
+"cost": 0.2707064886369525,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.26219703477084466,
+0.2619669336855591,
+0.3817591052646213,
+0.22078898430984562,
+0.24772164295619437,
+0.6049646109252557
+],
+"cost": 1.5847916587377728,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9233626107617598,
+0.645559702393702,
+0.5351010316929062,
+0.16101222422600237,
+0.0062990116294266985,
+0.8549211746352756
+],
+"cost": 1.090331738731368,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8578342107724308,
+0.8723521616889911,
+0.17498427781960746,
+0.026253518167404066,
+0.47766939172362033,
+0.45247524977385944
+],
+"cost": 1503.3641975308644,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.512281929326393,
+0.717030166977275,
+0.863812759753679,
+0.49281440894352846,
+0.7758446799314753,
+0.0056155101145235475
+],
+"cost": 0.2934096034570649,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.21224389661032972,
+0.246649561466721,
+0.38960298467813226,
+0.8615066895794161,
+0.17417019223774166,
+0.8351690522098741
+],
+"cost": 1.426681309700941,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.15876794888791979,
+0.15694434619808695,
+0.36174428622469545,
+0.4764680191975704,
+0.8591985053316803,
+0.5903209277200634
+],
+"cost": 1.4812449962220116,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.28969904607377994,
+0.1523694199427552,
+0.5714205945960612,
+0.769610476668318,
+0.4419497542110792,
+0.2261000040994623
+],
+"cost": 0.7881362716715055,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.3024440210183603,
+0.45065722812297426,
+0.8731683543244337,
+0.9096504885617809,
+0.10545948467455457,
+0.07169467144619546
+],
+"cost": 0.5496681996094802,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.2854592890337512,
+0.0016973831636112324,
+0.5242437383973001,
+0.9571521385096508,
+0.7654816594548979,
+0.31180832891734556
+],
+"cost": 0.949738671821224,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.019315294230954683,
+0.6478235834743852,
+0.7372300219268003,
+0.8655771189360053,
+0.8605521176451149,
+0.7340446646706604
+],
+"cost": 0.5900589165054497,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5517420587079799,
+0.38158817805309353,
+0.3289250323476386,
+0.7894004860843409,
+0.6000979933319217,
+0.9175117712484377
+],
+"cost": 25.76443140414464,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.76520643567691,
+0.23561519442070544,
+0.119030177558478,
+0.008852610595088906,
+0.07703798026204844,
+0.3631714991143761
+],
+"cost": 0.9595122987746002,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9247084811825798,
+0.32477090023599153,
+0.03045192122879503,
+0.8472206961657718,
+0.45209510053217516,
+0.5326523210277188
+],
+"cost": 0.11191063651669651,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6390897398046829,
+0.0995983081234052,
+0.5197367324965344,
+0.28860578505384205,
+0.2447534037185557,
+0.02698738423253444
+],
+"cost": 0.2153336344917988,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4836572589255732,
+0.045442952132545456,
+0.08711413860588957,
+0.5967215997136828,
+0.6279905786993705,
+0.8623045900683275
+],
+"cost": 0.5852015603255967,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9161532417681172,
+0.4936134961942442,
+0.8233121724487766,
+0.179172734919275,
+0.5402039821749434,
+0.9264418862248573
+],
+"cost": 1342.0061728395062,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.06457197437536177,
+0.7891702802181563,
+0.16074242720817133,
+0.04292777817268412,
+0.5363212599572597,
+0.8728072704821492
+],
+"cost": 1452.9012345679012,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.33313908902100187,
+0.22804427795287474,
+0.3125527926295012,
+0.2271798284099127,
+0.5183136867920429,
+0.10616614108847089
+],
+"cost": 1.1715618084537749,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.17824545479037646,
+0.7785028522434176,
+0.22081155081046744,
+0.6720745649722577,
+0.4478723633599474,
+0.1105216741367715
+],
+"cost": 1.9187185212041025,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.36348176659399933,
+0.2175254903009718,
+0.7711996726484619,
+0.8970409950007239,
+0.6879176826324314,
+0.4966490506591331
+],
+"cost": 0.4472757270306686,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.9728995551602251,
+0.1933164247761231,
+0.0808580699503545,
+0.2128761249024239,
+0.4868966211196273,
+0.7437525818514719
+],
+"cost": 1210.2469135802469,
+"status": [
+"diverged",
+"diverged",
+"diverged"
+]
+},
+{
+"u": [
+0.096091138057117,
+0.9420993708526887,
+0.49865609065187844,
+0.8065416855677692,
+0.6988676250932898,
+0.09038919894022845
+],
+"cost": 0.8405819356207584,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8260793706175252,
+0.338340454377708,
+0.5465432175248667,
+0.6230006029187763,
+0.3457843790006183,
+0.25385765353029754
+],
+"cost": 0.09869167335367657,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.4101786712412028,
+0.7318776830423362,
+0.6528379199535086,
+0.48978525905178716,
+0.8149006730837828,
+0.19287440864046512
+],
+"cost": 0.463402146907999,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8896633100608766,
+0.3962078957059354,
+0.021510786753133115,
+0.534920687802187,
+0.47286374370382145,
+0.27249372837286234
+],
+"cost": 0.17770144911134103,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5348494837908114,
+0.6998355814696688,
+0.9355760853724978,
+0.035560660074395956,
+0.5811503593461006,
+0.9633121088477026
+],
+"cost": 529.2055426248334,
+"status": [
+"ok",
+"ok",
+"diverged"
+]
+},
+{
+"u": [
+0.34685021481432876,
+0.9128600414334884,
+0.3363627070989753,
+0.7375926085912549,
+0.41001868379143447,
+0.6356258043259626
+],
+"cost": 1.4447605050947319,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.669894678665097,
+0.14413859103985116,
+0.18299030979243214,
+0.51507194713677,
+0.1592241513223328,
+0.8291591840450802
+],
+"cost": 0.2789031881072192,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6441112438461718,
+0.08022669186149978,
+0.8655517247833305,
+0.7999587901097966,
+0.8597316644030997,
+0.006056580477847406
+],
+"cost": 0.3922981994460735,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.09638366172362423,
+0.15184446366531779,
+0.0867169126566707,
+0.6475319444681832,
+0.9616140093177487,
+0.7281759529193056
+],
+"cost": 1.9289490582361022,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.06208806521922294,
+0.8973236383150959,
+0.3425249896845468,
+0.4643578373749381,
+0.7179801362643513,
+0.5888260137035175
+],
+"cost": 2.421792015162166,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8704944505014992,
+0.19659196913700194,
+0.2266995690618281,
+0.13601404611142764,
+0.25321470790002365,
+0.5169380396769196
+],
+"cost": 0.7287822073377024,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.11266355908292991,
+0.8790541507993249,
+0.8106722496035581,
+0.7654959011380623,
+0.9566765687372867,
+0.5610853467540172
+],
+"cost": 0.36505965612299573,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.6928016711885776,
+0.2817753165087289,
+0.9172492784809466,
+0.8475533009115002,
+0.6421032851959674,
+0.19300557357934156
+],
+"cost": 0.49619678000144746,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.5812517774808481,
+0.36211841254992416,
+0.20081160402318987,
+0.47838653663621233,
+0.6267924674877959,
+0.8757142184729974
+],
+"cost": 1.0474637507523064,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.38367058030459134,
+0.19709002359349792,
+0.3053383044766802,
+0.572993322069083,
+0.6282509898999494,
+0.33433049927091474
+],
+"cost": 0.9934444954873035,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8407066559970471,
+0.42319852965757465,
+0.5591715247904638,
+0.8029892846426387,
+0.8842778095245655,
+0.47241088840196455
+],
+"cost": 0.1004074414613673,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.03172344873502253,
+0.7554456835176502,
+0.16151307426942108,
+0.5813404347134642,
+0.8946923407574561,
+0.6087478114378637
+],
+"cost": 1.5364897830823214,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.8634816985198586,
+0.4243252825704318,
+0.11078409929657118,
+0.4274666328502864,
+0.8315145076146407,
+0.2566319551004096
+],
+"cost": 1051.69393189333,
+"status": [
+"ok",
+"overload",
+"overload"
+]
+},
+{
+"u": [
+0.9579222825348164,
+0.14738587459936647,
+0.6972078860926929,
+0.7985390768510293,
+0.23968049284694892,
+0.7436536211765428
+],
+"cost": 0.10118188430336349,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.915990803500748,
+0.33022865680481717,
+0.26152564216842666,
+0.3111081840969966,
+0.5064414785441643,
+0.8863055285649473
+],
+"cost": 342.25563118852733,
+"status": [
+"ok",
+"ok",
+"diverged"
+]
+},
+{
+"u": [
+0.33375460146054825,
+0.9570262033097346,
+0.7751805385210185,
+0.5694331661916683,
+0.6823460357201283,
+0.9645177900727269
+],
+"cost": 21.842688098684846,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.12811896865579264,
+0.48905030677382166,
+0.3233908622346453,
+0.9292099636455133,
+0.5129300558748029,
+0.3394678666726466
+],
+"cost": 2.0334990946913476,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"u": [
+0.10439712948459223,
+0.8811840352127628,
+0.12612572121137,
+0.5249219812869825,
+0.8221823951700771,
+0.6692570622604851
+],
+"cost": 2.6295610457033436,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+}
+]
+}

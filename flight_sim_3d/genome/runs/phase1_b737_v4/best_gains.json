@@ -1,0 +1,261 @@
+{
+  "aircraft": "737",
+  "best_cost": 0.11024576983937538,
+  "initial_best_cost": 0.13982405428265854,
+  "gains": {
+    "kp_alt": 0.22758695442076438,
+    "ki_alt": 0.0,
+    "kd_alt": 0.1297767294782835,
+    "kp_pitch": 0.16234713257478026,
+    "ki_pitch": 0.0035144970654211,
+    "kd_pitch": 0.0299430997001754
+  },
+  "gain_units": {
+    "kp_alt": "deg/ft",
+    "ki_alt": "deg/(ft*s)",
+    "kd_alt": "deg/(ft/s)",
+    "kp_pitch": "elev/deg",
+    "ki_pitch": "elev/(deg*s)",
+    "kd_pitch": "elev/(deg/s)"
+  },
+  "genome": [
+    0.8312748346644612,
+    0.0,
+    0.5320738490019521,
+    0.5341602742834007,
+    0.4914603761247164,
+    0.5078916385041079
+  ],
+  "per_scenario": [
+    {
+      "cost": 0.0848363633326335,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.03263462842852946,
+      "effort": 0.007205730115086362
+    },
+    {
+      "cost": 0.14107997159855806,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.04445312069850235,
+      "effort": 0.014547026712769171
+    },
+    {
+      "cost": 0.10482097458693457,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.04017474307215189,
+      "effort": 0.009529354407918529
+    }
+  ],
+  "initial_best_gains": {
+    "kp_alt": 0.22758695442076438,
+    "ki_alt": 4.2762101017926317e-07,
+    "kd_alt": 0.9299255467833539,
+    "kp_pitch": 0.0077460323395368395,
+    "ki_pitch": 0.0007500567928556674,
+    "kd_pitch": 0.0035018799559652083
+  },
+  "scenarios": [
+    {
+      "seed": 1016164991,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 250.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": 0.0,
+      "wind_east_fps": 0.0,
+      "gust_sigma_fps": 0.0,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 0.0,
+      "discrete_gust_t_s": 30.0,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "737",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -5.0,
+        10.0
+      ],
+      "min_kcas": 195.0,
+      "nz_limits": [
+        -1.0,
+        2.5
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    },
+    {
+      "seed": 1099128569,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 250.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": 14.815420728420232,
+      "wind_east_fps": 18.893081885137402,
+      "gust_sigma_fps": 3.8459483414117317,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": -10.96328514280803,
+      "discrete_gust_t_s": 41.554051876408835,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "737",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -5.0,
+        10.0
+      ],
+      "min_kcas": 195.0,
+      "nz_limits": [
+        -1.0,
+        2.5
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    },
+    {
+      "seed": 669652944,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 250.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": -12.549072662472344,
+      "wind_east_fps": -4.042050948210394,
+      "gust_sigma_fps": 1.082677339729205,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 11.767003192534947,
+      "discrete_gust_t_s": 31.594634329981844,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "737",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -5.0,
+        10.0
+      ],
+      "min_kcas": 195.0,
+      "nz_limits": [
+        -1.0,
+        2.5
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    }
+  ],
+  "config": {
+    "pop_size": 32,
+    "generations": 20,
+    "elite": 2,
+    "selection_p": 0.2,
+    "crossover": "uniform",
+    "blx_alpha": 0.3,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "seed": 1,
+    "scenarios": 3,
+    "scenario_seed": 1,
+    "workers": 0,
+    "out": "runs/phase1_b737_v4"
+  }
+}

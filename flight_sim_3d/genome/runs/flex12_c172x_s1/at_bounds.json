@@ -1,0 +1,55 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.016621129508443515,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 4.2550580787479975,
+      "range": [
+        0.05,
+        5.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 0.2,
+      "value": 0.016621099999999993,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 4.2550599999999985,
+      "range": [
+        0.05,
+        5.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {}
+}

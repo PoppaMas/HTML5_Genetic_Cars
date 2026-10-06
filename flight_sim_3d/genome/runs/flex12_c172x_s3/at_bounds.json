@@ -1,0 +1,115 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 2.431645401492307e-06,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "zeroed",
+      "fraction": 1.0,
+      "value": 0.0,
+      "range": [
+        1e-05,
+        0.2
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 1.4859747343234328e-05,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 0.6,
+      "value": 2.43165e-06,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "zeroed",
+      "fraction": 0.8,
+      "value": 0.0,
+      "range": [
+        1e-05,
+        0.2
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 0.2,
+      "value": 1.5841200000000003e-05,
+      "range": [
+        1e-05,
+        0.2
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 0.8,
+      "value": 1.48597e-05,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "torsion_bend_ratio",
+      "block": "structure",
+      "bound": "near_upper",
+      "fraction": 0.4,
+      "value": 1.12601,
+      "range": [
+        0.8,
+        1.15
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "nonstructural_mass_scale",
+      "block": "structure",
+      "bound": "near_upper",
+      "fraction": 0.2,
+      "value": 1.21499,
+      "range": [
+        0.8,
+        1.25
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {}
+}

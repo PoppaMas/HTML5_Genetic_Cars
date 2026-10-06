@@ -1,0 +1,38 @@
+{
+ "jsbsim_root": "/workspace/flight-sim-team/flight-dynamics/jsbsim_root",
+ "zero_force_identical_to_stock": true,
+ "force_cmd": [
+  10.0,
+  20.0,
+  -100.0
+ ],
+ "force_jsbsim": [
+  10.0,
+  20.0,
+  -100.0
+ ],
+ "moment_cmd": [
+  50.0,
+  25.0,
+  -5.0
+ ],
+ "moment_jsbsim": [
+  125.1835,
+  24.1018,
+  2.3387
+ ],
+ "moment_expected_incl_arm": [
+  125.1835,
+  24.1018,
+  2.3387
+ ],
+ "force_ok": true,
+ "moment_ok": true,
+ "roll_moment_cmd_lbft": 2000.0,
+ "ixx_slugft2": 2095.7348788760423,
+ "ixz_slugft2": 13.554833340616021,
+ "delta_pdot_measured": 0.9543810281903494,
+ "delta_pdot_expected_L_over_Ixx": 0.9543191842436741,
+ "roll_dynamics_ok": true,
+ "all_ok": true
+}

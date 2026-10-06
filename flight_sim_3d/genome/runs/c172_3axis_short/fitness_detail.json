@@ -1,0 +1,108 @@
+{
+  "cost": 1.9004473668203223,
+  "per_scenario": [
+    {
+      "cost": 1.5369798112020876,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.9842201289615443,
+      "effort": 0.009066649607872124
+    },
+    {
+      "cost": 2.191676749502426,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 1.1081200262165094,
+      "effort": 0.07530117999172588
+    },
+    {
+      "cost": 1.8304591049493177,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 1.0040123065820075,
+      "effort": 0.10077329245938191
+    }
+  ],
+  "objectives_per_scenario": [
+    {
+      "track_alt": 0.9842201289615443,
+      "effort": 0.009066649607872124,
+      "track_heading": 0.5902587854496705,
+      "effort_aileron": 0.07992562308638036,
+      "track_speed": 1.1966814025215908,
+      "effort_throttle": 0.02025245056058916,
+      "comfort": 2.9637806514310556,
+      "structural": 0.35569317509911785
+    },
+    {
+      "track_alt": 1.1081200262165094,
+      "effort": 0.07530117999172588,
+      "track_heading": 0.7262226895182635,
+      "effort_aileron": 0.16827924539606487,
+      "track_speed": 1.4568618872939076,
+      "effort_throttle": 0.14853437296011837,
+      "comfort": 7.544385890443941,
+      "structural": 0.5727222354993736
+    },
+    {
+      "track_alt": 1.0040123065820075,
+      "effort": 0.10077329245938191,
+      "track_heading": 0.6087176720793782,
+      "effort_aileron": 0.090934214171797,
+      "track_speed": 1.3163396135762144,
+      "effort_throttle": 0.0531168893791504,
+      "comfort": 3.790188123434858,
+      "structural": 0.4006778059556607
+    }
+  ],
+  "skipped": {},
+  "violation": 0.0,
+  "objectives": {
+    "track_alt": 1.0321174872533536,
+    "effort": 0.06171370735299331,
+    "track_heading": 0.6417330490157708,
+    "effort_aileron": 0.1130463608847474,
+    "track_speed": 1.3232943011305711,
+    "effort_throttle": 0.07396790429995265,
+    "comfort": 4.766118221769951,
+    "structural": 0.44303107218471743
+  },
+  "diagnostics": [
+    {
+      "status": "ok",
+      "max_pitch_deg": 9.880387459293045,
+      "max_pitch_above_trim_deg": 9.085756741505392,
+      "min_pitch_below_trim_deg": -11.522944717844856,
+      "max_abs_q_dps": 3.2031502312219002,
+      "max_nz": 1.2346806051894141,
+      "min_nz": 0.8475738396252785,
+      "rms_dn_g": 0.08617623382217215,
+      "max_climb_fpm": 1361.865220117492,
+      "theta_trim_deg": 0.7946307177876527
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 12.35863863072004,
+      "max_pitch_above_trim_deg": 11.706330476708192,
+      "min_pitch_below_trim_deg": -12.184356985896304,
+      "max_abs_q_dps": 6.217549503684839,
+      "max_nz": 1.8425188760754663,
+      "min_nz": 0.41099134572473744,
+      "rms_dn_g": 0.24597677176369195,
+      "max_climb_fpm": 2382.147621531679,
+      "theta_trim_deg": 0.6523081540118489
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 12.67705926307446,
+      "max_pitch_above_trim_deg": 11.755492550845348,
+      "min_pitch_below_trim_deg": -11.038864696708204,
+      "max_abs_q_dps": 3.710052252119597,
+      "max_nz": 1.366727187585353,
+      "min_nz": 0.7375335437863424,
+      "rms_dn_g": 0.11483571845506345,
+      "max_climb_fpm": 1710.506182223049,
+      "theta_trim_deg": 0.9215667122291108
+    }
+  ]
+}

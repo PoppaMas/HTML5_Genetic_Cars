@@ -1,0 +1,110 @@
+{
+  "cost": 0.20855686488098224,
+  "per_scenario": [
+    {
+      "cost": 0.11417106771012486,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.047714475208332274,
+      "effort": 0.012986486190163
+    },
+    {
+      "cost": 0.3405118341988459,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.07779390654764706,
+      "effort": 0.03974630867960183
+    },
+    {
+      "cost": 0.17098769273397596,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.054260675824376846,
+      "effort": 0.019415995815084332
+    }
+  ],
+  "objectives_per_scenario": [
+    {
+      "track_alt": 0.047714475208332274,
+      "effort": 0.012986486190163,
+      "comfort": 0.5745176692322633,
+      "track_heading_rms": 0.11757736659853409
+    },
+    {
+      "track_alt": 0.07779390654764706,
+      "effort": 0.03974630867960183,
+      "comfort": 3.1562004836465234,
+      "track_heading_rms": 0.2541528610966903
+    },
+    {
+      "track_alt": 0.054260675824376846,
+      "effort": 0.019415995815084332,
+      "comfort": 1.3022544093422364,
+      "track_heading_rms": 0.12782304812318637
+    }
+  ],
+  "skipped": {},
+  "violation": 0.0,
+  "objectives": {
+    "track_alt": 0.05992301919345206,
+    "effort": 0.02404959689494972,
+    "comfort": 1.6776575207403408,
+    "track_heading_rms": 0.1665177586061369
+  },
+  "diagnostics": [
+    {
+      "status": "ok",
+      "max_pitch_deg": 4.708476636767172,
+      "max_pitch_above_trim_deg": 3.91384591897952,
+      "min_pitch_below_trim_deg": -3.928931486323319,
+      "max_abs_q_dps": 1.116158407472992,
+      "max_nz": 1.0994443445946578,
+      "min_nz": 0.8996753044096257,
+      "rms_dn_g": 0.03699886469018421,
+      "max_climb_fpm": 694.4611184033611,
+      "max_sink_fpm": 722.2145122410979,
+      "theta_trim_deg": 0.7946307177876527,
+      "max_overshoot_ft": 8.163646034896374,
+      "max_ref_err_ft": 10.558948880052867,
+      "hdg_final_deg": 0.5033318031223644,
+      "hdg_max_abs_deg": 0.9112154309909215,
+      "max_abs_phi_deg": 1.5379696789251858
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.826130249879363,
+      "max_pitch_above_trim_deg": 5.0314995320917095,
+      "min_pitch_below_trim_deg": -3.8696292259212117,
+      "max_abs_q_dps": 4.129281490424964,
+      "max_nz": 1.5511753211387063,
+      "min_nz": 0.5235853225207183,
+      "rms_dn_g": 0.14947881761488196,
+      "max_climb_fpm": 917.8526225976893,
+      "max_sink_fpm": 757.4431083622308,
+      "theta_trim_deg": 0.7946307177876527,
+      "max_overshoot_ft": 15.285295158624649,
+      "max_ref_err_ft": 15.285295158624649,
+      "hdg_final_deg": 0.5753136843829338,
+      "hdg_max_abs_deg": 9.30134686212972,
+      "max_abs_phi_deg": 15.621269480681141
+    },
+    {
+      "status": "ok",
+      "max_pitch_deg": 5.407341379736472,
+      "max_pitch_above_trim_deg": 4.612710661948819,
+      "min_pitch_below_trim_deg": -3.936719674485427,
+      "max_abs_q_dps": 2.739741300884734,
+      "max_nz": 1.260304549365434,
+      "min_nz": 0.7531173876270036,
+      "rms_dn_g": 0.06457502960536292,
+      "max_climb_fpm": 729.5210051241356,
+      "max_sink_fpm": 757.5572820360635,
+      "theta_trim_deg": 0.7946307177876527,
+      "max_overshoot_ft": 10.324619814753532,
+      "max_ref_err_ft": 13.253903682645614,
+      "hdg_final_deg": 0.5986203934113519,
+      "hdg_max_abs_deg": 1.5905129500670228,
+      "max_abs_phi_deg": 2.5404033511123
+    }
+  ]
+}

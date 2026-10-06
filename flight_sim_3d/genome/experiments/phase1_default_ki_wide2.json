@@ -1,0 +1,43 @@
+{
+  "_comment": "Experiment: phase1_default with ki_alt upper x10 (0.05 -> 0.5) AND ki_pitch lower bound /100 (1e-5 -> 1e-7, log0) because ki_pitch sat just above its lower bound in the ki_wide run.",
+  "name": "phase1_default_ki_wide2",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05
+    },
+    "aggregate": {
+      "mode": "mean"
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "gene_overrides": {
+    "ki_alt": {
+      "min": 1e-06,
+      "max": 0.5,
+      "scale": "log0"
+    },
+    "ki_pitch": {
+      "min": 1e-07,
+      "max": 0.2,
+      "scale": "log0"
+    }
+  }
+}

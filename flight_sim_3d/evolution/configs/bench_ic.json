@@ -1,0 +1,17 @@
+{
+  "_comment": "Stage B: per-aircraft initial condition only (trim speed/altitude from flight-sim-plan/flytest_results.jsonl). Gain ranges, fitness, envelope limits, task (+200 ft step, 90 s) unchanged. c172x keeps the baseline profile.",
+  "seed": 1,
+  "scenarios": 3,
+  "ga": {"pop_size": 32, "generations": 20},
+  "profiles": {
+    "ic_f16": {"h0_ft": 10000, "speed_kts": 350},
+    "ic_737": {"h0_ft": 10000, "speed_kts": 250},
+    "ic_t6texan2": {"h0_ft": 10000, "speed_kts": 200}
+  },
+  "aircraft": [
+    {"name": "c172x", "profile": "baseline"},
+    {"name": "f16", "profile": "ic_f16"},
+    {"name": "737", "profile": "ic_737"},
+    {"name": "t6texan2", "profile": "ic_t6texan2"}
+  ]
+}

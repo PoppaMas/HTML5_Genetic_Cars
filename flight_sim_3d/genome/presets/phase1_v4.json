@@ -1,0 +1,33 @@
+{
+  "_comment": "FROZEN Phase-1 v4 (team default as of 2026-10-06 05:30 PT): 200 ft step, 600 fpm ramp with 0.1 g corners, climb-rate feed-forward, heading hold, track + 2*effort + 0.05*comfort + 0.01*heading_rms, 3 legacy scenarios, mean. Task-level knobs are pinned here so later shared-set defaults can't change v4; aircraft data (trim, envelope, gain bounds, bank limit) comes from phase1_shared.json, and tests/test_v5.py pins the resulting costs bit for bit. Use --aircraft c172x | t38 | b737.",
+  "name": "phase1_v4",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false
+}

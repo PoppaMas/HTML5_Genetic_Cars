@@ -1,0 +1,32 @@
+{
+  "_comment": "A/B experiment: phase1_default with the ramp corners limited to 0.1 g vertical acceleration (trapezoid in climb rate). Tracking is scored against this smoothed reference.",
+  "name": "phase1_smooth_ramp",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05
+    },
+    "aggregate": {
+      "mode": "mean"
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext"
+}

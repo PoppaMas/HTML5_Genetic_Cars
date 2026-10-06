@@ -1,0 +1,45 @@
+html, body { margin: 0; height: 100%; overflow: hidden; background: #0b1420; font: 13px/1.35 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #e8eef5; }
+#app { position: relative; width: 100%; height: 100%; min-height: 480px; }
+#scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#panel { position: absolute; top: 8px; left: 8px; width: 270px; max-height: calc(100% - 70px); overflow: auto; background: rgba(12, 20, 32, 0.82); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 10px; backdrop-filter: blur(4px); }
+#panel.collapsed #panel-body { display: none; }
+#panel .title { font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+#panel section { border-top: 1px solid rgba(255,255,255,0.1); padding: 6px 0; }
+#panel label { display: block; margin: 3px 0; }
+.row { display: flex; gap: 4px; align-items: center; margin: 3px 0; flex-wrap: wrap; }
+.row.checks label { display: inline-flex; gap: 3px; margin: 0 6px 0 0; }
+.tabs label { display: inline-flex !important; gap: 4px; margin-right: 10px !important; }
+select, input[type=text], button { background: #1b2a3d; color: #e8eef5; border: 1px solid #36506e; border-radius: 4px; padding: 2px 6px; font: inherit; }
+button { cursor: pointer; } button:hover { background: #26405e; }
+#gen-select { flex: 1; min-width: 0; }
+#index-url { flex: 1; min-width: 0; }
+#file-input { font-size: 11px; max-width: 100%; }
+.small { font-size: 11.5px; color: #b7c6d6; }
+#gen-list { max-height: 210px; overflow: auto; margin: 4px 0; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; }
+#gen-list label { display: flex !important; gap: 6px; align-items: center; margin: 0 !important; padding: 1px 4px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.4); }
+#hud { position: absolute; top: 8px; right: 8px; min-width: 250px; background: rgba(0, 12, 6, 0.62); border: 1px solid rgba(80,255,140,0.35); border-radius: 8px; padding: 8px 10px; font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #8dffb0; white-space: pre; pointer-events: none; }
+#hud .big { font-size: 15px; color: #d6ffe2; }
+#hud .warn { color: #ffb36b; }
+.bar { display: inline-block; width: 90px; height: 8px; background: rgba(255,255,255,0.12); position: relative; vertical-align: middle; border-radius: 2px; }
+.bar i { position: absolute; top: 0; bottom: 0; background: #8dffb0; }
+.bar b { position: absolute; top: -2px; bottom: -2px; left: 50%; width: 1px; background: rgba(255,255,255,0.5); }
+#legend { position: absolute; right: 8px; top: 250px; background: rgba(12, 20, 32, 0.82); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 10px; font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; white-space: pre; }
+#legend .focus { text-decoration: underline; }
+#legend div { cursor: pointer; }
+#chart { position: absolute; right: 8px; bottom: 56px; width: 460px; height: 170px; background: rgba(12, 20, 32, 0.82); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; cursor: crosshair; }
+#controls { position: absolute; left: 8px; right: 8px; bottom: 8px; display: flex; gap: 8px; align-items: center; background: rgba(12, 20, 32, 0.82); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 10px; }
+#timeline { flex: 1; }
+#time-label { font: 12px ui-monospace, Menlo, Consolas, monospace; min-width: 120px; text-align: right; }
+#play { width: 38px; }
+#msg { color: #ffcf8a; white-space: pre-wrap; }
+#msg.err { color: #ff8a8a; }
+#presets button { font-size: 11px; padding: 1px 5px; }
+#legend .small { font-size: 10.5px; color: #b7c6d6; }
+#legend details { white-space: pre; }
+#legend summary { cursor: pointer; margin-top: 2px; }
+
+#presets .prow { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; margin: 2px 0; }
+#presets .plabel { color: #9fb3c8; min-width: 78px; font-size: 10.5px; }
+#presets select { font-size: 11px; max-width: 170px; }
+[hidden] { display: none !important; }

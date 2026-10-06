@@ -1,0 +1,31 @@
+{
+  "_comment": "Opt-in flex variant of phase1_default: FD two-way flex-wing coupling (coupled_sim, ~5x slower per scenario). Structure block = FD's final Phase-1 4 genes: stiffness_scale (0.6-2.0 log), torsion_bend_ratio (0.8-1.15 linear; GJ x = s*r), struct_damping_ratio (0.005-0.05 log), nonstructural_mass_scale (0.8-1.25 log). Elastic axis / section CG (CG aft of EA) and tip mass (0) are fixed per aircraft by FD and cannot be overridden. Flutter/divergence margins (finite, capped at 3.0) are constraints: <1.0 fail, <1.2 penalised. Structural objective = FD response terms + wing-mass term (weight 1.0).",
+  "name": "phase1_flex",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "structural": 1.0
+    },
+    "aggregate": {
+      "mode": "mean"
+    }
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "mode": "twoway",
+    "substeps": 2
+  },
+  "shared": "phase1"
+}

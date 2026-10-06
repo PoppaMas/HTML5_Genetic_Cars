@@ -1,0 +1,936 @@
+{
+  "tag": "b1",
+  "configs": [
+    {
+      "config": "evolution/configs/bench_baseline.json",
+      "run_id": "bench_baseline-b1",
+      "run_dir": "/workspace/flight-sim-team/evolution/runs/bench_baseline-b1",
+      "wall_s": 58.56661488395184,
+      "sims_computed": 2706,
+      "sims_per_s": 46.20379725483308,
+      "workers": 8,
+      "loadavg_start": [
+        9.1083984375,
+        19.14306640625,
+        15.0966796875
+      ],
+      "loadavg_end": [
+        13.1103515625,
+        18.36767578125,
+        15.0791015625
+      ],
+      "rerun_run_id": "bench_baseline-b1-rerun",
+      "rerun_wall_s": 0.9846196119906381,
+      "rerun_cache_hit_rate": 1.0,
+      "rerun_sims_computed": 0,
+      "rerun_identical": true,
+      "seq_run_id": "bench_baseline-b1-seq",
+      "seq_wall_s": 61.54787894198671,
+      "seq_loadavg_start": [
+        13.1103515625,
+        18.36767578125,
+        15.0791015625
+      ],
+      "seq_loadavg_end": [
+        13.57275390625,
+        17.56298828125,
+        15.01171875
+      ],
+      "seq_sims_computed": 2706,
+      "seq_identical": true,
+      "aircraft": [
+        {
+          "aircraft": "c172x",
+          "profile": "baseline",
+          "trim": {
+            "vc_kts": 99.9999999999997,
+            "h_sl_ft": 4000.0,
+            "alpha_deg": 0.7946307376032841,
+            "throttle_trim": 0.7804654514255639,
+            "pitch_trim_cmd": 0.21862279646488825
+          },
+          "best_fitness": 0.19229308046598703,
+          "gen0_best_fitness": 0.3192408271094282,
+          "hold_rms_ft_calm": 3.134151362075121,
+          "hold_rms_ft_mean": 2.952743554065987,
+          "hold_max_abs_ft": 7.390852998942137,
+          "rms_ft_mean_incl_steps": 53.20764174922767,
+          "overshoot_ft_max": 6.90394239872694,
+          "settle_s_max": 7.866666666666667,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.25,
+          "invalid_rate_all_gens": 0.0328125,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1871,
+            "diverged": 5,
+            "overload": 44
+          },
+          "sims_computed": 1341,
+          "unique_sims": 1551,
+          "cpu_s_per_sim": 0.20047602420011265,
+          "aircraft_wall_s": 57.806650744983926,
+          "sims_per_s_aircraft": 23.198022765855587,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "kp_alt": "max"
+          },
+          "best_gains": {
+            "kp_alt": 0.49731794291948506,
+            "ki_alt": 1.4271668074276556e-05,
+            "kd_alt": 0.8608002536071679,
+            "kp_pitch": 0.021385257314574486,
+            "ki_pitch": 0.002340500306431053,
+            "kd_pitch": 0.01117085999847093
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_c172x_bench_baseline-b1_g0.json",
+            "traj_c172x_bench_baseline-b1_g9.json",
+            "traj_c172x_bench_baseline-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "f16",
+          "profile": "baseline",
+          "skipped": "trim_failed: TrimFailureError: Trim Failed"
+        },
+        {
+          "aircraft": "737",
+          "profile": "baseline",
+          "skipped": "trim_failed: TrimFailureError: Trim Failed"
+        },
+        {
+          "aircraft": "t6texan2",
+          "profile": "baseline",
+          "trim": {
+            "vc_kts": 99.9999999999997,
+            "h_sl_ft": 4000.0,
+            "alpha_deg": 8.028184970197394,
+            "throttle_trim": 0.626136196625271,
+            "pitch_trim_cmd": -0.37175837425260727
+          },
+          "best_fitness": 0.16900995265431826,
+          "gen0_best_fitness": 0.20131881098129656,
+          "hold_rms_ft_calm": 0.4792523239303303,
+          "hold_rms_ft_mean": 1.161120530471876,
+          "hold_max_abs_ft": 4.115942295640707,
+          "rms_ft_mean_incl_steps": 61.315996174747056,
+          "overshoot_ft_max": 5.431998506188393,
+          "settle_s_max": 9.566666666666666,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.0,
+          "invalid_rate_all_gens": 0.0,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1920
+          },
+          "sims_computed": 1365,
+          "unique_sims": 1641,
+          "cpu_s_per_sim": 0.1393563839935718,
+          "aircraft_wall_s": 56.76769713900285,
+          "sims_per_s_aircraft": 24.04536503669729,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "kp_alt": "max"
+          },
+          "best_gains": {
+            "kp_alt": 0.5,
+            "ki_alt": 2.599521748121827e-05,
+            "kd_alt": 1.007359121106512,
+            "kp_pitch": 0.023734433382071287,
+            "ki_pitch": 0.027042889905295714,
+            "kd_pitch": 0.006608949973235726
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_t6texan2_bench_baseline-b1_g0.json",
+            "traj_t6texan2_bench_baseline-b1_g9.json",
+            "traj_t6texan2_bench_baseline-b1_g19.json"
+          ]
+        }
+      ]
+    },
+    {
+      "config": "evolution/configs/bench_ic.json",
+      "run_id": "bench_ic-b1",
+      "run_dir": "/workspace/flight-sim-team/evolution/runs/bench_ic-b1",
+      "wall_s": 116.51034726999933,
+      "sims_computed": 5574,
+      "sims_per_s": 47.84124440967373,
+      "workers": 8,
+      "loadavg_start": [
+        13.57275390625,
+        17.56298828125,
+        15.01171875
+      ],
+      "loadavg_end": [
+        14.47607421875,
+        16.59765625,
+        14.95947265625
+      ],
+      "rerun_run_id": "bench_ic-b1-rerun",
+      "rerun_wall_s": 1.8801354590104893,
+      "rerun_cache_hit_rate": 1.0,
+      "rerun_sims_computed": 0,
+      "rerun_identical": true,
+      "seq_run_id": "bench_ic-b1-seq",
+      "seq_wall_s": 128.74024827603716,
+      "seq_loadavg_start": [
+        14.4375,
+        16.55419921875,
+        14.9541015625
+      ],
+      "seq_loadavg_end": [
+        14.765625,
+        16.0888671875,
+        15.00390625
+      ],
+      "seq_sims_computed": 5574,
+      "seq_identical": true,
+      "aircraft": [
+        {
+          "aircraft": "c172x",
+          "profile": "baseline",
+          "trim": {
+            "vc_kts": 99.9999999999997,
+            "h_sl_ft": 4000.0,
+            "alpha_deg": 0.7946307376032841,
+            "throttle_trim": 0.7804654514255639,
+            "pitch_trim_cmd": 0.21862279646488825
+          },
+          "best_fitness": 0.19229308046598703,
+          "gen0_best_fitness": 0.3192408271094282,
+          "hold_rms_ft_calm": 3.134151362075121,
+          "hold_rms_ft_mean": 2.952743554065987,
+          "hold_max_abs_ft": 7.390852998942137,
+          "rms_ft_mean_incl_steps": 53.20764174922767,
+          "overshoot_ft_max": 6.90394239872694,
+          "settle_s_max": 7.866666666666667,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.25,
+          "invalid_rate_all_gens": 0.0328125,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1871,
+            "diverged": 5,
+            "overload": 44
+          },
+          "sims_computed": 1341,
+          "unique_sims": 1551,
+          "cpu_s_per_sim": 0.190642145685138,
+          "aircraft_wall_s": 113.04772944300203,
+          "sims_per_s_aircraft": 11.86224620881151,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "kp_alt": "max"
+          },
+          "best_gains": {
+            "kp_alt": 0.49731794291948506,
+            "ki_alt": 1.4271668074276556e-05,
+            "kd_alt": 0.8608002536071679,
+            "kp_pitch": 0.021385257314574486,
+            "ki_pitch": 0.002340500306431053,
+            "kd_pitch": 0.01117085999847093
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_c172x_bench_ic-b1_g0.json",
+            "traj_c172x_bench_ic-b1_g9.json",
+            "traj_c172x_bench_ic-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "f16",
+          "profile": "ic_f16",
+          "trim": {
+            "vc_kts": 350.00000000000017,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": 1.0420207751338755,
+            "throttle_trim": 0.3726419480074185,
+            "pitch_trim_cmd": -0.057383629193804415
+          },
+          "best_fitness": 0.0727459325543643,
+          "gen0_best_fitness": 0.180367063136165,
+          "hold_rms_ft_calm": 0.07039339158669052,
+          "hold_rms_ft_mean": 0.8762884579628724,
+          "hold_max_abs_ft": 4.963060636073351,
+          "rms_ft_mean_incl_steps": 50.35531571525818,
+          "overshoot_ft_max": 4.742267306894064,
+          "settle_s_max": 5.766666666666666,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.21875,
+          "invalid_rate_all_gens": 0.034375,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1859,
+            "diverged": 4,
+            "overload": 57
+          },
+          "sims_computed": 1335,
+          "unique_sims": 1566,
+          "cpu_s_per_sim": 0.19740930959274505,
+          "aircraft_wall_s": 113.95313390501542,
+          "sims_per_s_aircraft": 11.715342564538654,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "ki_alt": "min",
+            "ki_pitch": "min",
+            "kd_pitch": "min"
+          },
+          "best_gains": {
+            "kp_alt": 0.2617432992229557,
+            "ki_alt": 1e-05,
+            "kd_alt": 0.4477390013516815,
+            "kp_pitch": 0.011140849678478686,
+            "ki_pitch": 1e-05,
+            "kd_pitch": 0.00010185683315085768
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_f16_bench_ic-b1_g0.json",
+            "traj_f16_bench_ic-b1_g9.json",
+            "traj_f16_bench_ic-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "737",
+          "profile": "ic_737",
+          "trim": {
+            "vc_kts": 249.99999999999903,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": 3.249277683855154,
+            "throttle_trim": 0.6895194141381188,
+            "pitch_trim_cmd": -0.21098830588536105
+          },
+          "best_fitness": 0.13169612577171522,
+          "gen0_best_fitness": 0.23867893840133855,
+          "hold_rms_ft_calm": 0.7943517948546405,
+          "hold_rms_ft_mean": 1.3489763817342484,
+          "hold_max_abs_ft": 5.334513422101736,
+          "rms_ft_mean_incl_steps": 61.41076940383969,
+          "overshoot_ft_max": 9.396705478429794,
+          "settle_s_max": 8.399999999999999,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.0625,
+          "invalid_rate_all_gens": 0.0140625,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1895,
+            "overload": 25
+          },
+          "sims_computed": 1392,
+          "unique_sims": 1635,
+          "cpu_s_per_sim": 0.14289682846803728,
+          "aircraft_wall_s": 115.1556384160067,
+          "sims_per_s_aircraft": 12.087988214448657,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {},
+          "best_gains": {
+            "kp_alt": 0.2206994377213745,
+            "ki_alt": 7.241011196907539e-05,
+            "kd_alt": 0.6303230966793347,
+            "kp_pitch": 0.017196467786087095,
+            "ki_pitch": 0.0017172511795221904,
+            "kd_pitch": 0.005450873523676941
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_737_bench_ic-b1_g0.json",
+            "traj_737_bench_ic-b1_g9.json",
+            "traj_737_bench_ic-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "t6texan2",
+          "profile": "ic_t6texan2",
+          "trim": {
+            "vc_kts": 199.9999999999994,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": -0.03713536967147276,
+            "throttle_trim": 0.9525182841198202,
+            "pitch_trim_cmd": 0.0686893355223452
+          },
+          "best_fitness": 0.0719503381655665,
+          "gen0_best_fitness": 0.126504037424752,
+          "hold_rms_ft_calm": 0.19253449906962722,
+          "hold_rms_ft_mean": 0.5481499319071754,
+          "hold_max_abs_ft": 2.6393556110560894,
+          "rms_ft_mean_incl_steps": 48.24515640623767,
+          "overshoot_ft_max": 2.6393556110560894,
+          "settle_s_max": 5.5,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.1875,
+          "invalid_rate_all_gens": 0.01875,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1884,
+            "overload": 36
+          },
+          "sims_computed": 1506,
+          "unique_sims": 1746,
+          "cpu_s_per_sim": 0.13117065551391757,
+          "aircraft_wall_s": 111.99487739999313,
+          "sims_per_s_aircraft": 13.447043605586307,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "kp_alt": "max"
+          },
+          "best_gains": {
+            "kp_alt": 0.5,
+            "ki_alt": 1.570845020162171e-05,
+            "kd_alt": 0.6865097219522533,
+            "kp_pitch": 0.014003543984254132,
+            "ki_pitch": 0.005814211658874694,
+            "kd_pitch": 0.003779425689289078
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_t6texan2_bench_ic-b1_g0.json",
+            "traj_t6texan2_bench_ic-b1_g9.json",
+            "traj_t6texan2_bench_ic-b1_g19.json"
+          ]
+        }
+      ]
+    },
+    {
+      "config": "evolution/configs/bench_adjusted.json",
+      "run_id": "bench_adjusted-b1",
+      "run_dir": "/workspace/flight-sim-team/evolution/runs/bench_adjusted-b1",
+      "wall_s": 142.85290954296943,
+      "sims_computed": 5604,
+      "sims_per_s": 39.22916248558693,
+      "workers": 8,
+      "loadavg_start": [
+        14.765625,
+        16.0888671875,
+        15.00390625
+      ],
+      "loadavg_end": [
+        14.5068359375,
+        15.23583984375,
+        14.82861328125
+      ],
+      "rerun_run_id": "bench_adjusted-b1-rerun",
+      "rerun_wall_s": 2.195585929963272,
+      "rerun_cache_hit_rate": 1.0,
+      "rerun_sims_computed": 0,
+      "rerun_identical": true,
+      "seq_run_id": "bench_adjusted-b1-seq",
+      "seq_wall_s": 202.60239211999578,
+      "seq_loadavg_start": [
+        14.4658203125,
+        15.21484375,
+        14.82373046875
+      ],
+      "seq_loadavg_end": [
+        13.63623046875,
+        14.95849609375,
+        14.83056640625
+      ],
+      "seq_sims_computed": 5604,
+      "seq_identical": true,
+      "aircraft": [
+        {
+          "aircraft": "c172x",
+          "profile": "baseline",
+          "trim": {
+            "vc_kts": 99.9999999999997,
+            "h_sl_ft": 4000.0,
+            "alpha_deg": 0.7946307376032841,
+            "throttle_trim": 0.7804654514255639,
+            "pitch_trim_cmd": 0.21862279646488825
+          },
+          "best_fitness": 0.19229308046598703,
+          "gen0_best_fitness": 0.3192408271094282,
+          "hold_rms_ft_calm": 3.134151362075121,
+          "hold_rms_ft_mean": 2.952743554065987,
+          "hold_max_abs_ft": 7.390852998942137,
+          "rms_ft_mean_incl_steps": 53.20764174922767,
+          "overshoot_ft_max": 6.90394239872694,
+          "settle_s_max": 7.866666666666667,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.25,
+          "invalid_rate_all_gens": 0.0328125,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1871,
+            "diverged": 5,
+            "overload": 44
+          },
+          "sims_computed": 1341,
+          "unique_sims": 1551,
+          "cpu_s_per_sim": 0.2282703144444218,
+          "aircraft_wall_s": 135.64740939700278,
+          "sims_per_s_aircraft": 9.885924146735901,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "kp_alt": "max"
+          },
+          "best_gains": {
+            "kp_alt": 0.49731794291948506,
+            "ki_alt": 1.4271668074276556e-05,
+            "kd_alt": 0.8608002536071679,
+            "kp_pitch": 0.021385257314574486,
+            "ki_pitch": 0.002340500306431053,
+            "kd_pitch": 0.01117085999847093
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_c172x_bench_adjusted-b1_g0.json",
+            "traj_c172x_bench_adjusted-b1_g9.json",
+            "traj_c172x_bench_adjusted-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "f16",
+          "profile": "adj_f16",
+          "trim": {
+            "vc_kts": 350.00000000000017,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": 1.0420207751338755,
+            "throttle_trim": 0.3726419480074185,
+            "pitch_trim_cmd": -0.057383629193804415
+          },
+          "best_fitness": 0.07207304827905123,
+          "gen0_best_fitness": 0.10761335442639668,
+          "hold_rms_ft_calm": 0.05067722769959922,
+          "hold_rms_ft_mean": 0.907550903236134,
+          "hold_max_abs_ft": 5.163909960538149,
+          "rms_ft_mean_incl_steps": 49.88524898189843,
+          "overshoot_ft_max": 4.812215723097324,
+          "settle_s_max": 5.666666666666664,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.1875,
+          "invalid_rate_all_gens": 0.025,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1874,
+            "diverged": 4,
+            "overload": 42
+          },
+          "sims_computed": 1482,
+          "unique_sims": 1704,
+          "cpu_s_per_sim": 0.23844646294504643,
+          "aircraft_wall_s": 138.3688129420043,
+          "sims_per_s_aircraft": 10.710505991123616,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {},
+          "best_gains": {
+            "kp_alt": 0.24033251790943974,
+            "ki_alt": 3.097651469442887e-07,
+            "kd_alt": 0.40675374814374415,
+            "kp_pitch": 0.011744853636590299,
+            "ki_pitch": 1.7347240070365468e-06,
+            "kd_pitch": 0.00010663983797629054
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-07,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-07,
+              0.2
+            ],
+            "kd_pitch": [
+              1e-06,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_f16_bench_adjusted-b1_g0.json",
+            "traj_f16_bench_adjusted-b1_g9.json",
+            "traj_f16_bench_adjusted-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "737",
+          "profile": "adj_737",
+          "trim": {
+            "vc_kts": 249.99999999999903,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": 3.249277683855154,
+            "throttle_trim": 0.6895194141381188,
+            "pitch_trim_cmd": -0.21098830588536105
+          },
+          "best_fitness": 0.12451554477379538,
+          "gen0_best_fitness": 0.23867893840133855,
+          "hold_rms_ft_calm": 0.7255006528861125,
+          "hold_rms_ft_mean": 1.4741797900033842,
+          "hold_max_abs_ft": 5.867701500654221,
+          "rms_ft_mean_incl_steps": 58.17062389476467,
+          "overshoot_ft_max": 4.632181093096733,
+          "settle_s_max": 7.533333333333331,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.21875,
+          "invalid_rate_all_gens": 0.0296875,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1867,
+            "overload": 50,
+            "diverged": 3
+          },
+          "sims_computed": 1533,
+          "unique_sims": 1740,
+          "cpu_s_per_sim": 0.1698172905433219,
+          "aircraft_wall_s": 141.42516203899868,
+          "sims_per_s_aircraft": 10.839655248740446,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {},
+          "best_gains": {
+            "kp_alt": 0.17331599607474293,
+            "ki_alt": 3.810327644232646e-05,
+            "kd_alt": 0.4398841129925166,
+            "kp_pitch": 0.02718396461824907,
+            "ki_pitch": 0.0026011721096392913,
+            "kd_pitch": 0.018249400313215362
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              0.5
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_737_bench_adjusted-b1_g0.json",
+            "traj_737_bench_adjusted-b1_g9.json",
+            "traj_737_bench_adjusted-b1_g19.json"
+          ]
+        },
+        {
+          "aircraft": "t6texan2",
+          "profile": "adj_t6texan2",
+          "trim": {
+            "vc_kts": 199.9999999999994,
+            "h_sl_ft": 10000.0,
+            "alpha_deg": -0.03713536967147276,
+            "throttle_trim": 0.9525182841198202,
+            "pitch_trim_cmd": 0.0686893355223452
+          },
+          "best_fitness": 0.07260039915730376,
+          "gen0_best_fitness": 0.10521867348540172,
+          "hold_rms_ft_calm": 0.1885508293812188,
+          "hold_rms_ft_mean": 0.43561310657286983,
+          "hold_max_abs_ft": 2.288525100797415,
+          "rms_ft_mean_incl_steps": 49.96585541076946,
+          "overshoot_ft_max": 6.335826359689236,
+          "settle_s_max": 5.899999999999999,
+          "final_status": [
+            "ok",
+            "ok",
+            "ok"
+          ],
+          "invalid_rate_gen0": 0.25,
+          "invalid_rate_all_gens": 0.015625,
+          "crash_rate_all_gens": 0.0,
+          "status_counts_all_gens": {
+            "ok": 1893,
+            "overload": 27
+          },
+          "sims_computed": 1248,
+          "unique_sims": 1431,
+          "cpu_s_per_sim": 0.1628152221190435,
+          "aircraft_wall_s": 139.59908825502498,
+          "sims_per_s_aircraft": 8.93988646774043,
+          "rerun_cache_hit_rate": 1.0,
+          "rerun_sims_computed": 0,
+          "genes_at_bound": {
+            "ki_alt": "min"
+          },
+          "best_gains": {
+            "kp_alt": 0.7189316965259738,
+            "ki_alt": 1e-05,
+            "kd_alt": 0.9707577525576383,
+            "kp_pitch": 0.01320180273006363,
+            "ki_pitch": 0.0031620245982807286,
+            "kd_pitch": 0.004858112397113606
+          },
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              2.0
+            ],
+            "ki_alt": [
+              1e-05,
+              0.05
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ]
+          },
+          "trajectories": [
+            "traj_t6texan2_bench_adjusted-b1_g0.json",
+            "traj_t6texan2_bench_adjusted-b1_g9.json",
+            "traj_t6texan2_bench_adjusted-b1_g19.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "name": "c172_3axis",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "roll_heading": true,
+    "speed_throttle": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "track_heading": 0.2,
+      "effort_aileron": 1.0,
+      "track_speed": 0.2,
+      "effort_throttle": 1.0,
+      "comfort": 0.02,
+      "structural": 0.05
+    },
+    "aggregate": {
+      "mode": "mean_cvar",
+      "alpha": 0.34,
+      "lambda": 0.3
+    }
+  },
+  "scenarios": {
+    "set": "robust",
+    "heading_steps": [
+      [
+        0,
+        0
+      ],
+      [
+        20,
+        30
+      ],
+      [
+        60,
+        0
+      ]
+    ]
+  },
+  "backend": "jsbsim_ext"
+}

@@ -1,0 +1,1065 @@
+{
+ "design_point": {
+  "kcas": 350.0,
+  "alt_ft": 10000.0
+ },
+ "prepared_copy": {
+  "meta": {
+   "fmt": 3,
+   "aerorp_in": [
+    -189.5,
+    0.0,
+    3.9
+   ],
+   "pm_index_R": 2,
+   "pm_index_L": 3,
+   "network_io_removed": 0,
+   "payload_placeholder_index": 0,
+   "stock_pointmass_index_shift": 1
+  },
+  "pointmass_order": [
+   "payload_placeholder",
+   "Pilot",
+   "flexwing_dm_R",
+   "flexwing_dm_L"
+  ],
+  "network_io_grep": "none",
+  "external_reactions": [
+   "pushback",
+   "hook",
+   "flexwing_F",
+   "flexwing_M"
+  ],
+  "pointmass_weights_lb": [
+   0.0,
+   230.0,
+   0.0,
+   0.0
+  ],
+  "defaults_after_load": {
+   "gear_cmd": 1.0,
+   "gear_pos": 1.0,
+   "Sw_ft2": 300.0,
+   "b_ft": 30.0,
+   "cbar_ft": 11.32,
+   "empty_wt_lb": 17400.0,
+   "n_engines": 1
+  }
+ },
+ "zero_force_patched_identical_to_stock": true,
+ "trim_350kcas_10kft": {
+  "mode1_gear_up": {
+   "alpha_deg": 1.04546,
+   "theta_deg": 1.04546,
+   "throttle_cmd": 0.28358,
+   "throttle_pos": 0.56715,
+   "thrust_lbf": 3230.75596,
+   "fuel_flow_pps": 0.0,
+   "n2": 79.65606,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.06008,
+   "elevator_pos_norm": -0.04447,
+   "elevator_pos_deg": -1.11099,
+   "g_load_pid": -0.00546,
+   "pitch_trim_error": -0.01821,
+   "aileron_pos_rad": -0.0,
+   "rudder_pos_norm": 0.0,
+   "gear_pos": 0.0,
+   "lef_pos_deg": 0.0,
+   "tef_pos_rad": 0.0,
+   "speedbrake_pos_norm": 0.0,
+   "mach": 0.62899,
+   "kcas": 350.0,
+   "qbar_psf": 403.11332,
+   "weight_lb": 20630.0,
+   "udot": -0.00029,
+   "wdot": -0.00094,
+   "qdot": -0.0,
+   "nz": 0.99622,
+   "hold20s": {
+    "seconds": 20.0,
+    "dtheta_deg": 0.0277,
+    "dalpha_deg": -0.0016,
+    "dkcas": -0.1038,
+    "dh_ft": 3.939,
+    "phi_deg": -0.0,
+    "gear_pos": 0.0
+   }
+  },
+  "mode0_gear_up": {
+   "alpha_deg": 1.04546,
+   "theta_deg": 1.04546,
+   "throttle_cmd": 0.28358,
+   "throttle_pos": 0.56715,
+   "thrust_lbf": 3230.75596,
+   "fuel_flow_pps": 0.0,
+   "n2": 79.65606,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.06008,
+   "elevator_pos_norm": -0.04447,
+   "elevator_pos_deg": -1.111,
+   "g_load_pid": -0.00546,
+   "pitch_trim_error": -0.01821,
+   "aileron_pos_rad": 0.0,
+   "rudder_pos_norm": 0.0,
+   "gear_pos": 0.0,
+   "lef_pos_deg": 0.0,
+   "tef_pos_rad": 0.0,
+   "speedbrake_pos_norm": 0.0,
+   "mach": 0.62899,
+   "kcas": 350.0,
+   "qbar_psf": 403.11332,
+   "weight_lb": 20630.0,
+   "udot": -0.00029,
+   "wdot": -0.00095,
+   "qdot": 0.0,
+   "nz": 0.99622,
+   "hold20s": {
+    "seconds": 20.0,
+    "dtheta_deg": 0.0277,
+    "dalpha_deg": -0.0016,
+    "dkcas": -0.1038,
+    "dh_ft": 3.939,
+    "phi_deg": -0.0,
+    "gear_pos": 0.0
+   }
+  },
+  "mode1_gear_default(down)": {
+   "alpha_deg": 1.04202,
+   "theta_deg": 1.04202,
+   "throttle_cmd": 0.37264,
+   "throttle_pos": 0.74528,
+   "thrust_lbf": 6479.32122,
+   "fuel_flow_pps": 0.0,
+   "n2": 88.02834,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.05738,
+   "elevator_pos_norm": -0.04116,
+   "elevator_pos_deg": -1.02812,
+   "g_load_pid": -0.00468,
+   "pitch_trim_error": -0.01561,
+   "aileron_pos_rad": -0.0,
+   "rudder_pos_norm": 0.0,
+   "gear_pos": 1.0,
+   "lef_pos_deg": 0.0,
+   "tef_pos_rad": 0.0,
+   "speedbrake_pos_norm": 0.0,
+   "mach": 0.62899,
+   "kcas": 350.0,
+   "qbar_psf": 403.11332,
+   "weight_lb": 20630.0,
+   "udot": -0.0003,
+   "wdot": -0.00088,
+   "qdot": -0.0,
+   "nz": 0.99621,
+   "hold20s": {
+    "seconds": 20.0,
+    "dtheta_deg": 0.0236,
+    "dalpha_deg": -0.0035,
+    "dkcas": -0.0897,
+    "dh_ft": 3.797,
+    "phi_deg": -0.0,
+    "gear_pos": 1.0
+   }
+  },
+  "mode0_gear_default(down)": {
+   "alpha_deg": 1.04202,
+   "theta_deg": 1.04202,
+   "throttle_cmd": 0.37264,
+   "throttle_pos": 0.74528,
+   "thrust_lbf": 6479.32122,
+   "fuel_flow_pps": 0.0,
+   "n2": 88.02834,
+   "elevator_cmd": 0.0,
+   "pitch_trim_cmd": -0.05738,
+   "elevator_pos_norm": -0.04116,
+   "elevator_pos_deg": -1.02813,
+   "g_load_pid": -0.00468,
+   "pitch_trim_error": -0.01561,
+   "aileron_pos_rad": 0.0,
+   "rudder_pos_norm": 0.0,
+   "gear_pos": 1.0,
+   "lef_pos_deg": 0.0,
+   "tef_pos_rad": 0.0,
+   "speedbrake_pos_norm": 0.0,
+   "mach": 0.62899,
+   "kcas": 350.0,
+   "qbar_psf": 403.11332,
+   "weight_lb": 20630.0,
+   "udot": -0.0003,
+   "wdot": -0.00088,
+   "qdot": 0.0,
+   "nz": 0.99621,
+   "hold20s": {
+    "seconds": 20.0,
+    "dtheta_deg": 0.0236,
+    "dalpha_deg": -0.0035,
+    "dkcas": -0.0897,
+    "dh_ft": 3.797,
+    "phi_deg": -0.0,
+    "gear_pos": 1.0
+   }
+  },
+  "mode2_ground": {
+   "error": "TrimFailureError: Trim Failed"
+  }
+ },
+ "throttle_map": [
+  {
+   "throttle_cmd": 0.25,
+   "throttle_pos": 0.5,
+   "thrust_lbf_after_8s": 2292.4,
+   "n2": 76.5,
+   "fuel_flow_pps": 0.572,
+   "afterburner": false
+  },
+  {
+   "throttle_cmd": 0.45,
+   "throttle_pos": 0.9,
+   "thrust_lbf_after_8s": 10121.1,
+   "n2": 95.3,
+   "fuel_flow_pps": 1.969,
+   "afterburner": false
+  },
+  {
+   "throttle_cmd": 0.5,
+   "throttle_pos": 1.0,
+   "thrust_lbf_after_8s": 13053.9,
+   "n2": 100.0,
+   "fuel_flow_pps": 2.509,
+   "afterburner": false
+  },
+  {
+   "throttle_cmd": 0.51,
+   "throttle_pos": 1.02,
+   "thrust_lbf_after_8s": 13271.3,
+   "n2": 100.0,
+   "fuel_flow_pps": 7.557,
+   "afterburner": true
+  },
+  {
+   "throttle_cmd": 0.6,
+   "throttle_pos": 1.2,
+   "thrust_lbf_after_8s": 15226.3,
+   "n2": 100.0,
+   "fuel_flow_pps": 8.671,
+   "afterburner": true
+  },
+  {
+   "throttle_cmd": 0.75,
+   "throttle_pos": 1.5,
+   "thrust_lbf_after_8s": 18486.3,
+   "n2": 100.0,
+   "fuel_flow_pps": 10.527,
+   "afterburner": true
+  },
+  {
+   "throttle_cmd": 1.0,
+   "throttle_pos": 2.0,
+   "thrust_lbf_after_8s": 24047.7,
+   "n2": 100.0,
+   "fuel_flow_pps": 11.873,
+   "afterburner": true
+  }
+ ],
+ "control_response": {
+  "elevator": {
+   "cmd_step": "+0.1 for 0.5 s",
+   "dq_dps": -3.039,
+   "dp_dps": 0.0,
+   "dr_dps": 0.0,
+   "dthrust_lbf": -0.9,
+   "dsurf": {
+    "elevator-pos-deg": 0.20055,
+    "aileron-pos-rad": -0.0,
+    "left-aileron-pos-rad": -0.0,
+    "right-aileron-pos-rad": 0.0,
+    "rudder-pos-rad": 0.0
+   }
+  },
+  "aileron": {
+   "cmd_step": "+0.1 for 0.5 s",
+   "dq_dps": -0.171,
+   "dp_dps": 15.766,
+   "dr_dps": 0.163,
+   "dthrust_lbf": -7.2,
+   "dsurf": {
+    "elevator-pos-deg": 0.07901,
+    "aileron-pos-rad": 0.05151,
+    "left-aileron-pos-rad": 0.0239,
+    "right-aileron-pos-rad": -0.0239,
+    "rudder-pos-rad": 0.01538
+   }
+  },
+  "rudder": {
+   "cmd_step": "+0.1 for 0.5 s",
+   "dq_dps": 0.003,
+   "dp_dps": -0.092,
+   "dr_dps": -0.204,
+   "dthrust_lbf": 0.0,
+   "dsurf": {
+    "elevator-pos-deg": 0.0003,
+    "aileron-pos-rad": 0.00056,
+    "left-aileron-pos-rad": 0.00026,
+    "right-aileron-pos-rad": -0.00026,
+    "rudder-pos-rad": 0.00741
+   }
+  },
+  "throttle": {
+   "cmd_step": "+0.1 for 0.5 s",
+   "dq_dps": -0.074,
+   "dp_dps": 0.0,
+   "dr_dps": 0.0,
+   "dthrust_lbf": 3704.6,
+   "dsurf": {
+    "elevator-pos-deg": -0.07988,
+    "aileron-pos-rad": -0.0,
+    "left-aileron-pos-rad": -0.0,
+    "right-aileron-pos-rad": 0.0,
+    "rudder-pos-rad": 0.0
+   }
+  }
+ },
+ "pitch_step": {
+  "input": "fcs/elevator-cmd-norm trim-0.10 for t=1..2 s, 8 s total, dt 1/120",
+  "rigid": {
+   "q_peak_dps": 3.129,
+   "t_q_peak_s": 1.267,
+   "nz_peak": 1.619,
+   "nz_min": 0.9824,
+   "alpha_peak_deg": 2.58,
+   "elev_pos_range_deg": [
+    -4.113,
+    1.534
+   ],
+   "q_at_end_dps": -0.0305,
+   "nz_at_end": 0.9824,
+   "dtheta_end_deg": 2.027,
+   "dkcas_end": -4.852,
+   "dh_end_ft": 143.07,
+   "max_abs_ext_fz_lbf": 0.0,
+   "max_abs_ext_m_lbft": 0.0
+  },
+  "rigid_repeat_bit_identical": true,
+  "flex_twoway": {
+   "q_peak_dps": 3.184,
+   "t_q_peak_s": 1.275,
+   "nz_peak": 1.6157,
+   "nz_min": 0.9814,
+   "alpha_peak_deg": 2.692,
+   "elev_pos_range_deg": [
+    -4.113,
+    1.682
+   ],
+   "q_at_end_dps": -0.0336,
+   "nz_at_end": 0.9814,
+   "dtheta_end_deg": 2.103,
+   "dkcas_end": -5.028,
+   "dh_end_ft": 147.12,
+   "max_abs_ext_fz_lbf": 898.22,
+   "max_abs_ext_m_lbft": 2180.31
+  },
+  "flex_repeat_bit_identical": true
+ },
+ "coupled_maneuver": {
+  "rigid": {
+   "p_max_dps": 48.66,
+   "nz_max": 3.4458,
+   "nz_min": -0.8633,
+   "q_max_dps": 3.129
+  },
+  "flex_baseline": {
+   "p_max_dps": 50.165,
+   "nz_max": 3.2804,
+   "nz_min": -0.7534,
+   "q_max_dps": 3.184,
+   "root_bm_peak_lbft": 126568.3,
+   "m_root_1g_lbft": 36143.6,
+   "tip_w_max_ft": 0.7205,
+   "tip_twist_max_deg": 0.9143
+  },
+  "flex_s0.6_r1.0": {
+   "p_max_dps": 50.963,
+   "nz_max": 3.1576,
+   "nz_min": -0.6856,
+   "q_max_dps": 3.22,
+   "root_bm_peak_lbft": 121715.9,
+   "m_root_1g_lbft": 36343.1,
+   "tip_w_max_ft": 1.113,
+   "tip_twist_max_deg": 1.4518
+  }
+ },
+ "envelope": {
+  "trimmable_kcas_at_10kft": {
+   "min": [
+    130,
+    16.37,
+    0.275,
+    0.236
+   ],
+   "max": [
+    800,
+    -0.95,
+    0.907,
+    1.411
+   ],
+   "n_ok": 68,
+   "tried": [
+    100,
+    800
+   ],
+   "row": "(kcas, alpha_deg, throttle_cmd, mach)"
+  },
+  "mil_power_kcas_range_at_10kft": [
+   130,
+   610
+  ],
+  "level_trim_ceiling": {
+   "alt_ft": 55000,
+   "first_kcas": 160,
+   "throttle_cmd": 0.897,
+   "mach": 0.755
+  },
+  "table": [
+   [
+    130,
+    16.37,
+    0.275,
+    0.236
+   ],
+   [
+    140,
+    14.12,
+    0.251,
+    0.255
+   ],
+   [
+    150,
+    12.22,
+    0.242,
+    0.273
+   ],
+   [
+    160,
+    10.64,
+    0.231,
+    0.291
+   ],
+   [
+    170,
+    9.3,
+    0.224,
+    0.309
+   ],
+   [
+    180,
+    8.15,
+    0.221,
+    0.327
+   ],
+   [
+    190,
+    7.17,
+    0.217,
+    0.345
+   ],
+   [
+    200,
+    6.33,
+    0.213,
+    0.363
+   ],
+   [
+    210,
+    5.6,
+    0.208,
+    0.381
+   ],
+   [
+    220,
+    5.0,
+    0.204,
+    0.399
+   ],
+   [
+    230,
+    4.45,
+    0.21,
+    0.417
+   ],
+   [
+    240,
+    3.96,
+    0.217,
+    0.434
+   ],
+   [
+    250,
+    3.53,
+    0.224,
+    0.452
+   ],
+   [
+    260,
+    3.15,
+    0.23,
+    0.47
+   ],
+   [
+    270,
+    2.81,
+    0.237,
+    0.488
+   ],
+   [
+    280,
+    2.5,
+    0.243,
+    0.506
+   ],
+   [
+    290,
+    2.23,
+    0.249,
+    0.523
+   ],
+   [
+    300,
+    1.98,
+    0.255,
+    0.541
+   ],
+   [
+    310,
+    1.76,
+    0.26,
+    0.559
+   ],
+   [
+    320,
+    1.55,
+    0.266,
+    0.576
+   ],
+   [
+    330,
+    1.37,
+    0.272,
+    0.594
+   ],
+   [
+    340,
+    1.2,
+    0.278,
+    0.611
+   ],
+   [
+    350,
+    1.05,
+    0.284,
+    0.629
+   ],
+   [
+    360,
+    0.9,
+    0.289,
+    0.646
+   ],
+   [
+    370,
+    0.77,
+    0.295,
+    0.664
+   ],
+   [
+    380,
+    0.65,
+    0.3,
+    0.681
+   ],
+   [
+    390,
+    0.54,
+    0.306,
+    0.699
+   ],
+   [
+    400,
+    0.44,
+    0.311,
+    0.716
+   ],
+   [
+    410,
+    0.34,
+    0.316,
+    0.733
+   ],
+   [
+    420,
+    0.25,
+    0.32,
+    0.751
+   ],
+   [
+    430,
+    0.17,
+    0.325,
+    0.768
+   ],
+   [
+    440,
+    0.09,
+    0.33,
+    0.785
+   ],
+   [
+    450,
+    0.01,
+    0.334,
+    0.802
+   ],
+   [
+    460,
+    -0.05,
+    0.34,
+    0.82
+   ],
+   [
+    470,
+    -0.11,
+    0.349,
+    0.837
+   ],
+   [
+    480,
+    -0.16,
+    0.359,
+    0.854
+   ],
+   [
+    490,
+    -0.22,
+    0.369,
+    0.871
+   ],
+   [
+    500,
+    -0.26,
+    0.379,
+    0.888
+   ],
+   [
+    510,
+    -0.3,
+    0.389,
+    0.905
+   ],
+   [
+    520,
+    -0.34,
+    0.399,
+    0.922
+   ],
+   [
+    530,
+    -0.38,
+    0.409,
+    0.939
+   ],
+   [
+    540,
+    -0.41,
+    0.419,
+    0.956
+   ],
+   [
+    550,
+    -0.44,
+    0.429,
+    0.973
+   ],
+   [
+    560,
+    -0.47,
+    0.439,
+    0.989
+   ],
+   [
+    570,
+    -0.5,
+    0.45,
+    1.006
+   ],
+   [
+    580,
+    -0.53,
+    0.461,
+    1.023
+   ],
+   [
+    590,
+    -0.56,
+    0.472,
+    1.04
+   ],
+   [
+    600,
+    -0.58,
+    0.484,
+    1.057
+   ],
+   [
+    610,
+    -0.61,
+    0.495,
+    1.073
+   ],
+   [
+    620,
+    -0.64,
+    0.525,
+    1.09
+   ],
+   [
+    630,
+    -0.66,
+    0.558,
+    1.107
+   ],
+   [
+    640,
+    -0.68,
+    0.575,
+    1.124
+   ],
+   [
+    650,
+    -0.7,
+    0.592,
+    1.142
+   ],
+   [
+    660,
+    -0.73,
+    0.611,
+    1.159
+   ],
+   [
+    670,
+    -0.75,
+    0.63,
+    1.176
+   ],
+   [
+    680,
+    -0.77,
+    0.65,
+    1.194
+   ],
+   [
+    690,
+    -0.79,
+    0.67,
+    1.212
+   ],
+   [
+    700,
+    -0.8,
+    0.69,
+    1.23
+   ],
+   [
+    710,
+    -0.82,
+    0.71,
+    1.247
+   ],
+   [
+    720,
+    -0.84,
+    0.731,
+    1.265
+   ],
+   [
+    730,
+    -0.85,
+    0.752,
+    1.283
+   ],
+   [
+    740,
+    -0.87,
+    0.773,
+    1.301
+   ],
+   [
+    750,
+    -0.88,
+    0.795,
+    1.319
+   ],
+   [
+    760,
+    -0.9,
+    0.817,
+    1.338
+   ],
+   [
+    770,
+    -0.91,
+    0.839,
+    1.356
+   ],
+   [
+    780,
+    -0.93,
+    0.861,
+    1.374
+   ],
+   [
+    790,
+    -0.94,
+    0.884,
+    1.392
+   ],
+   [
+    800,
+    -0.95,
+    0.907,
+    1.411
+   ]
+  ]
+ },
+ "margins": {
+  "default": {
+   "flutter_margin": 1.3895,
+   "flutter_margin_qs": 1.4487,
+   "coalescence_margin": 1.3895,
+   "div_margin": 3.0,
+   "flutter_not_found_below_cap": false,
+   "div_not_found_below_cap": true,
+   "margin_error": false,
+   "f_flutter_hz": 21.6862,
+   "f_modes_hz": [
+    7.892,
+    28.017,
+    36.574
+   ]
+  },
+  "corners": {
+   "s0.6_r0.8": {
+    "flutter_margin": 0.963,
+    "flutter_margin_qs": 1.0298,
+    "coalescence_margin": 0.963,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 17.7031,
+    "f_modes_hz": [
+     7.073,
+     22.494,
+     32.73
+    ]
+   },
+   "s0.6_r1.0": {
+    "flutter_margin": 1.0763,
+    "flutter_margin_qs": 1.1465,
+    "coalescence_margin": 1.0763,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 19.1923,
+    "f_modes_hz": [
+     6.922,
+     24.573,
+     32.078
+    ]
+   },
+   "s0.6_r1.15": {
+    "flutter_margin": 1.1582,
+    "flutter_margin_qs": 1.2239,
+    "coalescence_margin": 1.1582,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 20.1603,
+    "f_modes_hz": [
+     6.815,
+     25.895,
+     31.637
+    ]
+   },
+   "s0.8_r0.8": {
+    "flutter_margin": 1.102,
+    "flutter_margin_qs": 1.1734,
+    "coalescence_margin": 1.102,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 19.1127,
+    "f_modes_hz": [
+     7.674,
+     24.407,
+     35.513
+    ]
+   },
+   "s0.8_r1.0": {
+    "flutter_margin": 1.2428,
+    "flutter_margin_qs": 1.3077,
+    "coalescence_margin": 1.2428,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 20.6431,
+    "f_modes_hz": [
+     7.483,
+     26.563,
+     34.675
+    ]
+   },
+   "s0.8_r1.15": {
+    "flutter_margin": 1.3373,
+    "flutter_margin_qs": 1.397,
+    "coalescence_margin": 1.3373,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 21.6292,
+    "f_modes_hz": [
+     7.348,
+     27.92,
+     34.111
+    ]
+   },
+   "s1.0_r0.8": {
+    "flutter_margin": 1.232,
+    "flutter_margin_qs": 1.2986,
+    "coalescence_margin": 1.232,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 20.1375,
+    "f_modes_hz": [
+     8.118,
+     25.819,
+     37.567
+    ]
+   },
+   "s1.0_r1.0": {
+    "flutter_margin": 1.3895,
+    "flutter_margin_qs": 1.4487,
+    "coalescence_margin": 1.3895,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 21.6862,
+    "f_modes_hz": [
+     7.892,
+     28.017,
+     36.574
+    ]
+   },
+   "s1.0_r1.15": {
+    "flutter_margin": 1.4952,
+    "flutter_margin_qs": 1.5485,
+    "coalescence_margin": 1.4952,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 22.6772,
+    "f_modes_hz": [
+     7.735,
+     29.39,
+     35.906
+    ]
+   },
+   "s2.0_r0.8": {
+    "flutter_margin": 1.7424,
+    "flutter_margin_qs": 1.786,
+    "coalescence_margin": 1.7424,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 22.7768,
+    "f_modes_hz": [
+     9.3,
+     29.579,
+     43.039
+    ]
+   },
+   "s2.0_r1.0": {
+    "flutter_margin": 1.9651,
+    "flutter_margin_qs": 1.9991,
+    "coalescence_margin": 1.9651,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 24.3181,
+    "f_modes_hz": [
+     8.965,
+     31.825,
+     41.545
+    ]
+   },
+   "s2.0_r1.15": {
+    "flutter_margin": 2.1145,
+    "flutter_margin_qs": 2.1413,
+    "coalescence_margin": 2.1145,
+    "div_margin": 3.0,
+    "flutter_not_found_below_cap": false,
+    "div_not_found_below_cap": true,
+    "margin_error": false,
+    "f_flutter_hz": 25.2846,
+    "f_modes_hz": [
+     8.736,
+     33.194,
+     40.554
+    ]
+   }
+  },
+  "ea_cg_sensitivity_flutter_margin": {
+   "0.35/0.38": {
+    "default": 1.5295,
+    "s0.6_r0.8": 1.0511,
+    "s0.8_r0.8": 1.2137
+   },
+   "0.38/0.42": {
+    "default": 1.4294,
+    "s0.6_r0.8": 0.985,
+    "s0.8_r0.8": 1.1331
+   },
+   "0.40/0.42": {
+    "default": 1.4005,
+    "s0.6_r0.8": 0.9698,
+    "s0.8_r0.8": 1.1115
+   },
+   "0.40/0.43": {
+    "default": 1.3895,
+    "s0.6_r0.8": 0.963,
+    "s0.8_r0.8": 1.102
+   },
+   "0.40/0.45": {
+    "default": 1.3764,
+    "s0.6_r0.8": 0.9547,
+    "s0.8_r0.8": 1.0904
+   },
+   "0.42/0.45": {
+    "default": 1.3451,
+    "s0.6_r0.8": 0.9375,
+    "s0.8_r0.8": 1.0666
+   }
+  }
+ }
+}

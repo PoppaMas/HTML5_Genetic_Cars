@@ -1,0 +1,45 @@
+# Python / test caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv*/
+venv/
+_oas_venv/
+
+# evolution/: sqlite result cache and new run outputs (the shipped run records are whitelisted below)
+evolution/cache/
+*.sqlite
+*.sqlite-journal
+*.db
+evolution/runs/*
+!evolution/runs/phase1_report.md
+!evolution/runs/phase1_report.json
+!evolution/runs/phase1-s1/
+!evolution/runs/phase1-s2/
+!evolution/runs/phase1-s3/
+!evolution/runs/phase1hdg-s1/
+!evolution/runs/phase1hdg-s2/
+!evolution/runs/phase1hdg-s3/
+!evolution/runs/bench_jets-j1/
+evolution/runs/*/trajectories/
+evolution/runs/*/live/
+evolution/bench_results/fastmode/
+
+# large generated artifacts
+*.png
+*.npz
+*.log
+sim-bridge/data/
+sim-bridge/screenshots/
+sim-bridge/tools/build/node_modules/
+*_standalone.html
+flight-dynamics/_scratch/
+# machine-specific links to the installed jsbsim package (create with flight-dynamics/link_jsbsim_data.py)
+flight-dynamics/jsbsim_root/engine
+flight-dynamics/jsbsim_root/systems
+
+# the repo-root .gitignore ignores every "main.js"; the viewer's entry point must stay tracked
+!sim-bridge/viewer/js/main.js
+# the repo-root .gitignore also ignores every "build/" and "dist/" directory; keep the viewer bundle and its build script
+!sim-bridge/tools/build/
+!sim-bridge/viewer/dist/

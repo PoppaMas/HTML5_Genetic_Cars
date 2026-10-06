@@ -1,0 +1,53 @@
+{
+  "_comment": "Phase-1 benchmark aircraft. Supersonic jet trainer. APPROXIMATE. JSBSim model is Aeromatic-derived (BETA) and has its own yaw SAS in the FCS.",
+  "name": "t38",
+  "description": "Northrop T-38 Talon (JSBSim T38), twin-engine supersonic trainer",
+  "jsbsim_model": "T38",
+  "mass_lb": 11474.0,
+  "ixx": 7806.0,
+  "iyy": 36075.0,
+  "izz": 31319.0,
+  "wing_area_ft2": 170.0,
+  "span_ft": 25.25,
+  "chord_ft": 6.73,
+  "vstall_kcas": 140.0,
+  "vcruise_ktas": 500.0,
+  "vne_kcas": 710.0,
+  "mmo": 1.3,
+  "n_limits": [
+    -3.0,
+    7.33
+  ],
+  "control_limits_deg": {
+    "elevator": 20.0,
+    "aileron": 20.0,
+    "rudder": 30.0
+  },
+  "max_thrust_lbf": 4100.0,
+  "control_derivatives": {
+    "cm_de_per_norm": -0.195,
+    "cl_da_per_norm": 0.0386,
+    "cn_dr_per_norm": -0.007
+  },
+  "gain_overrides": {},
+  "sources": {
+    "geometry_inertia": "JSBSim 1.3.1 stock model aircraft/T38/T38.xml (metrics, mass_balance) -- an approximate public model (release=BETA)",
+    "mass_lb": "JSBSim T38 inertia/weight-lbs as loaded (empty 7574 lb + fuel/payload) = 11474 lb",
+    "control_derivatives": "T38.xml aero functions written per NORMALIZED deflection: Cmde=-0.195, CldaL=+0.0193 and CldaR=-0.0193 (|sum|=0.0386), Cndr=-0.007",
+    "control_limits": "rough public figures, informational only (per-norm derivatives are used for range derivation); T38.xml elevator-pos-norm range is -1..+0.583",
+    "max_thrust_lbf": "J85-GE-5.xml milthrust 2050 lbf x 2 engines (afterburner maxthrust 2900 x 2 not used)",
+    "speeds_n": "approx public T-38A figures: limit ~710 KIAS / ~M1.3, +7.33/-3.0 g; clean stall ~140 KCAS is ROUGH (weight dependent); cruise ~500 KTAS rough",
+    "design_point": "phase-1 benchmark condition chosen for the altitude-hold task (300 KCAS, 10,000 ft, ~M0.53), not a published cruise point",
+    "pitch_cmd_limits_deg": "design choice (trainer), not aircraft data",
+    "sim_envelope": "min_kcas 180 (shared Phase-1 set, ALIGNMENT.md): ~1.2 x Vs1g (146 KEAS) at the 10,000 ft benchmark, as used by Evolution Runner; n +7.33/-3.0 (T-38 limits, approx)",
+    "throttle_max": "team decision 2026-10-06: Phase 1 is military power only. JSBSim T38 throttle-pos = 2 x cmd, so cmd 0.5 = MIL and >0.5 = afterburner (FD INTERFACE.md 4c/4d). Trim at the design point uses cmd 0.354",
+    "flex_constants": "Flight Dynamics final Phase-1 values (INTERFACE.md section 0, 2026-10-06 04:05 PT; flexwing.AIRCRAFT_PROFILES): fixed, not genes; section CG aft of the elastic axis (>= 0.02 chord); tip mass 0. Notional (typical ranges, not manufacturer data). Never passed to FD (FD applies its own copy); kept here for reporting and checked equal to FD's in tests."
+  },
+  "approximate": true,
+  "flex_constants": {
+    "elastic_axis_frac": 0.4,
+    "section_cg_frac": 0.42,
+    "tip_mass_frac": 0.0
+  },
+  "_shared": "Trim point, envelope (min_kcas, nz), pitch-command clamp, throttle_max and pitch/altitude gain bounds come from phase1_shared.json (see ALIGNMENT.md); the sources below still document them."
+}

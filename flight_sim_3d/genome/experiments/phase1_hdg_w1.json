@@ -1,0 +1,26 @@
+{
+  "_comment": "Heading-hold weight sweep (2026-10-06): phase1_default (shared set, heading hold on) with track_heading_rms weight 0.1. Default weight is in phase1_shared.json task.heading_hold.weight.",
+  "name": "phase1_hdg_w1",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.1
+    }
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1",
+  "heading_hold": true
+}

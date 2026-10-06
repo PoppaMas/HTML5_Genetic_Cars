@@ -1,0 +1,49 @@
+{
+  "_comment": "Pitch + roll/heading + speed blocks on c172x with heading steps; all three are consumed by sim_ext. Yaw/structure stay off (no dynamics yet). Task definition (ramp 600 fpm with 0.1 g corners, feed-forward, steps) from the shared Phase-1 set.",
+  "name": "c172_3axis",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "roll_heading": true,
+    "speed_throttle": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "track_heading": 0.2,
+      "effort_aileron": 1.0,
+      "track_speed": 0.2,
+      "effort_throttle": 1.0,
+      "comfort": 0.02,
+      "structural": 0.05,
+      "track_heading_rms": 0.0
+    },
+    "aggregate": {
+      "mode": "mean_cvar",
+      "alpha": 0.34,
+      "lambda": 0.3
+    }
+  },
+  "scenarios": {
+    "set": "robust",
+    "heading_steps": [
+      [
+        0,
+        0
+      ],
+      [
+        20,
+        30
+      ],
+      [
+        60,
+        0
+      ]
+    ]
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1",
+  "_heading_hold_note": "Shared heading_hold is on (bank clamp 16 deg, heading I-limit 10 deg) but this preset evolves the full roll_heading block and keeps its own track_heading term, so the Phase-1 track_heading_rms term is set to 0 here."
+}

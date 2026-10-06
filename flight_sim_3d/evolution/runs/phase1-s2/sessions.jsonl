@@ -1,0 +1,1 @@
+{"session": 0, "started": "2026-10-06T04:32:13-07:00", "host": "grok-bot-vm-405693560", "workers": 8, "schedule": "concurrent", "resumed_at_generation": {}, "argv": ["/workspace/flight-sim-team/evolution/batch.py", "--config", "evolution/configs/phase1.json", "--seed", "2", "--run-id", "phase1-s2"]}

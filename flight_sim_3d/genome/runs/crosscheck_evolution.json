@@ -1,0 +1,178 @@
+{
+  "bench_jets-j1/T38": {
+    "their_best_cost": 0.1314713173660026,
+    "their_task_cost_in_our_sim": 0.13147131736600257,
+    "rel_diff": 2.111150642718537e-16,
+    "statuses_their_task_our_sim": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_cost": 0.16363273838628503,
+    "our_phase1_objectives": {
+      "track_alt": 0.11727130744159488,
+      "effort": 0.002627805114880768,
+      "comfort": 0.8221164142985726
+    },
+    "our_phase1_statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_calm": {
+      "max_pitch_deg": 5.781578161399212,
+      "max_climb_fpm": 645.4408972220272,
+      "min_nz": 0.8929146998974486,
+      "max_nz": 1.0916437505530403,
+      "max_overshoot_ft": 0.7474064491689205
+    },
+    "gains": {
+      "kp_alt": 0.05722328108258839,
+      "ki_alt": 1e-05,
+      "kd_alt": 0.08550438521831062,
+      "kp_pitch": 0.025722419481518054,
+      "ki_pitch": 0.009260131529437573,
+      "kd_pitch": 0.0012786513631207388
+    },
+    "in_our_ranges": {
+      "kp_alt": true,
+      "ki_alt": true,
+      "kd_alt": true,
+      "kp_pitch": true,
+      "ki_pitch": true,
+      "kd_pitch": true
+    }
+  },
+  "bench_jets-j1/737": {
+    "their_best_cost": 0.19201266650463208,
+    "their_task_cost_in_our_sim": 0.1920126665046317,
+    "rel_diff": 2.0237105483321372e-15,
+    "statuses_their_task_our_sim": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_cost": 0.12372112062425238,
+    "our_phase1_objectives": {
+      "track_alt": 0.0612966409513517,
+      "effort": 0.007561202925200728,
+      "comfort": 0.9460414764499842
+    },
+    "our_phase1_statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_calm": {
+      "max_pitch_deg": 5.036056797585298,
+      "max_climb_fpm": 720.319042305558,
+      "min_nz": 0.8653313408238368,
+      "max_nz": 1.1208660414238396,
+      "max_overshoot_ft": 5.781410187482834
+    },
+    "gains": {
+      "kp_alt": 0.13351471505170048,
+      "ki_alt": 9.140819154304029e-05,
+      "kd_alt": 0.33513546929177784,
+      "kp_pitch": 0.03538030001274595,
+      "ki_pitch": 0.003574791188419518,
+      "kd_pitch": 0.019199010796688756
+    },
+    "in_our_ranges": {
+      "kp_alt": true,
+      "ki_alt": true,
+      "kd_alt": true,
+      "kp_pitch": true,
+      "ki_pitch": true,
+      "kd_pitch": true
+    }
+  },
+  "bench_jets_step200-j1/T38": {
+    "their_best_cost": 0.08328109617836463,
+    "their_task_cost_in_our_sim": 0.08328109617836442,
+    "rel_diff": 2.499568649665492e-15,
+    "statuses_their_task_our_sim": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_cost": 0.12048947716642926,
+    "our_phase1_objectives": {
+      "track_alt": 0.06658482096402275,
+      "effort": 0.003118992128756906,
+      "comfort": 0.9533334388978535
+    },
+    "our_phase1_statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_calm": {
+      "max_pitch_deg": 5.999234397449186,
+      "max_climb_fpm": 694.601386806433,
+      "min_nz": 0.8676449182158866,
+      "max_nz": 1.1165770664215404,
+      "max_overshoot_ft": 2.452022261917591
+    },
+    "gains": {
+      "kp_alt": 0.10063577351675096,
+      "ki_alt": 1e-05,
+      "kd_alt": 0.1684182563215487,
+      "kp_pitch": 0.021929423252942146,
+      "ki_pitch": 0.005385323808486022,
+      "kd_pitch": 0.0026600074213202567
+    },
+    "in_our_ranges": {
+      "kp_alt": true,
+      "ki_alt": true,
+      "kd_alt": true,
+      "kp_pitch": true,
+      "ki_pitch": true,
+      "kd_pitch": true
+    }
+  },
+  "bench_jets_step200-j1/737": {
+    "their_best_cost": 0.12879860948762123,
+    "their_task_cost_in_our_sim": 0.12879860948762134,
+    "rel_diff": 8.619837038938371e-16,
+    "statuses_their_task_our_sim": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_cost": 0.12308282999188713,
+    "our_phase1_objectives": {
+      "track_alt": 0.05008564802402321,
+      "effort": 0.010744256553650529,
+      "comfort": 1.0301733772112576
+    },
+    "our_phase1_statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "our_phase1_calm": {
+      "max_pitch_deg": 5.1142711890617845,
+      "max_climb_fpm": 736.5576997427733,
+      "min_nz": 0.8556240640817221,
+      "max_nz": 1.1297180597815542,
+      "max_overshoot_ft": 7.697021283209324
+    },
+    "gains": {
+      "kp_alt": 0.18533315158046784,
+      "ki_alt": 7.364604846535345e-05,
+      "kd_alt": 0.5138106014691701,
+      "kp_pitch": 0.02110652830823408,
+      "ki_pitch": 0.0013116671894623352,
+      "kd_pitch": 0.004770948297670608
+    },
+    "in_our_ranges": {
+      "kp_alt": true,
+      "ki_alt": true,
+      "kd_alt": true,
+      "kp_pitch": true,
+      "ki_pitch": true,
+      "kd_pitch": true
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "zeroed",
+      "fraction": 1.0,
+      "value": 0.0,
+      "range": [
+        3.04e-07,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 1.0013375434732311e-05,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 7.967423156766318e-05,
+      "range": [
+        3.29e-05,
+        0.329
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "zeroed",
+      "fraction": 0.1,
+      "value": 0.0,
+      "range": [
+        3.04e-07,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 0.9,
+      "value": 6.799440000000002e-07,
+      "range": [
+        3.04e-07,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "zeroed",
+      "fraction": 0.3,
+      "value": 0.0,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 0.7,
+      "value": 1.00134e-05,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "zeroed",
+      "fraction": 0.1,
+      "value": 0.0,
+      "range": [
+        3.29e-05,
+        0.329
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 0.9,
+      "value": 7.967419999999997e-05,
+      "range": [
+        3.29e-05,
+        0.329
+      ],
+      "scale": "log0"
+    }
+  ],
+  "suggestions": {}
+}

@@ -1,0 +1,12 @@
+{
+  "_comment": "Honest baseline: every aircraft flies the ORIGINAL c172x task/profile (4000 ft, 100 KCAS, +200 ft step, 90 s), original gain ranges and fitness.",
+  "seed": 1,
+  "scenarios": 3,
+  "ga": {"pop_size": 32, "generations": 20},
+  "aircraft": [
+    {"name": "c172x", "profile": "baseline"},
+    {"name": "f16", "profile": "baseline"},
+    {"name": "737", "profile": "baseline"},
+    {"name": "t6texan2", "profile": "baseline"}
+  ]
+}

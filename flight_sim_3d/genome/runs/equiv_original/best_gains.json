@@ -1,0 +1,125 @@
+{
+  "aircraft": "c172x",
+  "best_cost": 0.2340581950086979,
+  "initial_best_cost": 0.2630288829912597,
+  "gains": {
+    "kp_alt": 0.24545360560375803,
+    "ki_alt": 0.00010437621892505372,
+    "kd_alt": 0.03383211536967929,
+    "kp_pitch": 0.040538322332147526,
+    "ki_pitch": 0.004326553808298206,
+    "kd_pitch": 0.0005337804329428159
+  },
+  "gain_units": {
+    "kp_alt": "deg/ft",
+    "ki_alt": "deg/(ft*s)",
+    "kd_alt": "deg/(ft/s)",
+    "kp_pitch": "elev/deg",
+    "ki_pitch": "elev/(deg*s)",
+    "kd_pitch": "elev/(deg/s)"
+  },
+  "genome": [
+    0.8711391497935891,
+    0.2753743769480771,
+    0.21368721943054814,
+    0.5449826814580041,
+    0.6129094919024392,
+    0.19663923977212372
+  ],
+  "per_scenario": [
+    {
+      "cost": 0.21440655781368023,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.1069632243325903,
+      "effort": 0.05372166674054497
+    },
+    {
+      "cost": 0.25370983220371557,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.1166409235642592,
+      "effort": 0.06853445431972817
+    }
+  ],
+  "initial_best_gains": {
+    "kp_alt": 0.24545360560375803,
+    "ki_alt": 0.00010437621892505372,
+    "kd_alt": 0.24641707343151542,
+    "kp_pitch": 0.01817111755667139,
+    "ki_pitch": 0.004326553808298206,
+    "kd_pitch": 0.0005337804329428159
+  },
+  "scenarios": [
+    {
+      "seed": 1742692732,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 0.0,
+      "wind_east_fps": 0.0,
+      "gust_sigma_fps": 0.0,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 0.0,
+      "discrete_gust_t_s": 30.0,
+      "discrete_gust_len_s": 3.0
+    },
+    {
+      "seed": 183930185,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 3.0827059353670676,
+      "wind_east_fps": -9.235297063386382,
+      "gust_sigma_fps": 2.7464861081931033,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": -11.031888581655316,
+      "discrete_gust_t_s": 34.58102596281668,
+      "discrete_gust_len_s": 3.0
+    }
+  ],
+  "config": {
+    "pop_size": 16,
+    "generations": 4,
+    "elite": 2,
+    "selection_p": 0.2,
+    "crossover": "uniform",
+    "blx_alpha": 0.3,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "seed": 3,
+    "scenarios": 2,
+    "scenario_seed": 3,
+    "workers": 8,
+    "out": "/workspace/flight-sim-team/genome/runs/equiv_original"
+  }
+}

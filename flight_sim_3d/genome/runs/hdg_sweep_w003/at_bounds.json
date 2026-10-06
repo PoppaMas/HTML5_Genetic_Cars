@@ -1,0 +1,31 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.021714917283607277,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.02171489999999997,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    }
+  ],
+  "suggestions": {}
+}

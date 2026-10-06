@@ -1,0 +1,761 @@
+[
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.0,
+"cost": 0.09009498653268659,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.02,
+"cost": 0.09239462139859615,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.03,
+"cost": 0.0909631780164978,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.04,
+"cost": 0.09047693083392505,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.05,
+"cost": 0.09093658841760129,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.06,
+"cost": 0.09152390425373251,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.0724,
+"cost": 0.09220847172677622,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.09,
+"cost": 0.09311523989412424,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.12,
+"cost": 0.09507512878831532,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.16,
+"cost": 0.09873733877464276,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.22,
+"cost": 0.10508007338338236,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.3,
+"cost": 0.11030600777108386,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 0.5,
+"cost": 0.1683174964454138,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "ki_alt",
+"value": 1.0,
+"cost": 0.22056433905131204,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 0.3,
+"cost": 0.0912005090992173,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 0.4,
+"cost": 0.09010152060512015,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 0.5,
+"cost": 0.09044488986386616,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 0.6,
+"cost": 0.0917023590928167,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 0.75,
+"cost": 0.09489000696624651,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 1.0,
+"cost": 0.1025153992979555,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 1.5,
+"cost": 0.13166948784671034,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 2.0,
+"cost": 0.28038380207586605,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "1",
+"gene": "kp_alt",
+"value": 3.0,
+"cost": 0.8030429494736658,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.0,
+"cost": 0.08876249360294831,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.02,
+"cost": 0.09296179774087977,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.03,
+"cost": 0.091035725649191,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.04,
+"cost": 0.0890954014009198,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.05,
+"cost": 0.08757819836762498,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.06,
+"cost": 0.08655935449839007,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.0724,
+"cost": 0.08578128717628657,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.09,
+"cost": 0.08532831193503689,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.12,
+"cost": 0.08557543424133834,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.16,
+"cost": 0.08702273635512482,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.22,
+"cost": 0.09060269171590314,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.3,
+"cost": 0.09709868794597225,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 0.5,
+"cost": 0.15440057778867752,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "ki_alt",
+"value": 1.0,
+"cost": 2.624717265721987,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 0.3,
+"cost": 0.08892850417552171,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 0.4,
+"cost": 0.08943938506391096,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 0.5,
+"cost": 0.0926021266712586,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 0.6,
+"cost": 0.09762538348753391,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 0.75,
+"cost": 0.10948741873704897,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 1.0,
+"cost": 0.13109960099262238,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 1.5,
+"cost": 0.20534130694231365,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 2.0,
+"cost": 4.313306432915934,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "2",
+"gene": "kp_alt",
+"value": 3.0,
+"cost": 4.956152501030682,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.0,
+"cost": 0.08942040323392227,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.02,
+"cost": 0.09364892130566467,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.03,
+"cost": 0.09206683237283735,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.04,
+"cost": 0.09035381155238247,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.05,
+"cost": 0.0889632410800361,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.06,
+"cost": 0.08801829028676716,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.0724,
+"cost": 0.08730233895376675,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.09,
+"cost": 0.08688339034007098,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.12,
+"cost": 0.08717476651213994,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.16,
+"cost": 0.08861718434992043,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.22,
+"cost": 0.09219054056584979,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.3,
+"cost": 0.09844448324453768,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 0.5,
+"cost": 0.1442386647261655,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "ki_alt",
+"value": 1.0,
+"cost": 3.054358115613741,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 0.3,
+"cost": 0.08970220283096748,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 0.4,
+"cost": 0.08982202677879154,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 0.5,
+"cost": 0.09241521389295086,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 0.6,
+"cost": 0.09650841613491384,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 0.75,
+"cost": 0.10582759505630746,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 1.0,
+"cost": 0.120688758168302,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 1.5,
+"cost": 0.15968147972036803,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 2.0,
+"cost": 0.2690348080978129,
+"status": [
+"ok",
+"ok",
+"ok"
+]
+},
+{
+"seed": "3",
+"gene": "kp_alt",
+"value": 3.0,
+"cost": 507.16593665189816,
+"status": [
+"ok",
+"overload",
+"ok"
+]
+}
+]

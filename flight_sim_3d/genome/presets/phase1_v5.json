@@ -1,0 +1,27 @@
+{
+  "_comment": "Phase-1 v5 candidate (not the default): v4 + hold-quality term (hold_osc, weight from phase1_shared.json task.v5) + one extra calm scenario with a sustained downdraft scaled per aircraft (V_TAS*tan 1.5 deg), aggregated with the others (mean). See DESIGN.md 3a and HANDOFF_phase1_v5.md.",
+  "name": "phase1_v5",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1",
+  "heading_hold": true,
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    }
+  },
+  "hold_quality": true,
+  "disturbance_scenario": true
+}

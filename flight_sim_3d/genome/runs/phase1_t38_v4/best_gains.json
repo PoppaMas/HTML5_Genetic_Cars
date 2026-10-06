@@ -1,0 +1,261 @@
+{
+  "aircraft": "T38",
+  "best_cost": 0.0917745811719954,
+  "initial_best_cost": 0.11245514237619281,
+  "gains": {
+    "kp_alt": 0.2498037216291177,
+    "ki_alt": 0.0,
+    "kd_alt": 0.10750848111370208,
+    "kp_pitch": 0.17043675636346683,
+    "ki_pitch": 0.008845428433865005,
+    "kd_pitch": 0.03189921615368237
+  },
+  "gain_units": {
+    "kp_alt": "deg/ft",
+    "ki_alt": "deg/(ft*s)",
+    "kd_alt": "deg/(ft/s)",
+    "kp_pitch": "elev/deg",
+    "ki_pitch": "elev/(deg*s)",
+    "kd_pitch": "elev/(deg/s)"
+  },
+  "genome": [
+    0.8712317750084627,
+    0.0,
+    0.5171813799827811,
+    0.6240769805182135,
+    0.610267465205266,
+    0.5697593677894036
+  ],
+  "per_scenario": [
+    {
+      "cost": 0.06378347779967103,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.022196696434761107,
+      "effort": 0.0024480894457501647
+    },
+    {
+      "cost": 0.1250379422421974,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.03403338619766042,
+      "effort": 0.00865928183679459
+    },
+    {
+      "cost": 0.08650232347411779,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.028230650955686547,
+      "effort": 0.004634897439916371
+    }
+  ],
+  "initial_best_gains": {
+    "kp_alt": 0.18955187436688323,
+    "ki_alt": 3.5702856386101586e-07,
+    "kd_alt": 0.9007173873395403,
+    "kp_pitch": 0.006455358131572152,
+    "ki_pitch": 0.0005129866539408614,
+    "kd_pitch": 0.0024654180338902843
+  },
+  "scenarios": [
+    {
+      "seed": 1016164991,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 300.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": 0.0,
+      "wind_east_fps": 0.0,
+      "gust_sigma_fps": 0.0,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 0.0,
+      "discrete_gust_t_s": 30.0,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "T38",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -10.0,
+        15.0
+      ],
+      "min_kcas": 180.0,
+      "nz_limits": [
+        -3.0,
+        7.33
+      ],
+      "throttle_max": 0.5,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    },
+    {
+      "seed": 1099128569,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 300.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": 14.815420728420232,
+      "wind_east_fps": 18.893081885137402,
+      "gust_sigma_fps": 3.8459483414117317,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": -10.96328514280803,
+      "discrete_gust_t_s": 41.554051876408835,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "T38",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -10.0,
+        15.0
+      ],
+      "min_kcas": 180.0,
+      "nz_limits": [
+        -3.0,
+        7.33
+      ],
+      "throttle_max": 0.5,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    },
+    {
+      "seed": 669652944,
+      "duration_s": 90.0,
+      "h0_ft": 10000.0,
+      "speed_kts": 300.0,
+      "steps": [
+        [
+          0.0,
+          10000.0
+        ],
+        [
+          5.0,
+          10200.0
+        ],
+        [
+          50.0,
+          10000.0
+        ]
+      ],
+      "wind_north_fps": -12.549072662472344,
+      "wind_east_fps": -4.042050948210394,
+      "gust_sigma_fps": 1.082677339729205,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 11.767003192534947,
+      "discrete_gust_t_s": 31.594634329981844,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "T38",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -10.0,
+        15.0
+      ],
+      "min_kcas": 180.0,
+      "nz_limits": [
+        -3.0,
+        7.33
+      ],
+      "throttle_max": 0.5,
+      "use_fd_root": true,
+      "flex_mode": null,
+      "flex_substeps": 2
+    }
+  ],
+  "config": {
+    "pop_size": 32,
+    "generations": 20,
+    "elite": 2,
+    "selection_p": 0.2,
+    "crossover": "uniform",
+    "blx_alpha": 0.3,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "seed": 1,
+    "scenarios": 3,
+    "scenario_seed": 1,
+    "workers": 0,
+    "out": "runs/phase1_t38_v4"
+  }
+}

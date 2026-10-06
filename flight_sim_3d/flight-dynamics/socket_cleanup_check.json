@@ -1,0 +1,49 @@
+{
+ "arrays_bit_identical": {
+  "c172x_stock_cmp": true,
+  "c172x_rigid": true,
+  "c172x_twoway": true,
+  "T38_stock_cmp": true,
+  "T38_rigid": true,
+  "T38_twoway": true,
+  "737_stock_cmp": true,
+  "737_rigid": true,
+  "737_twoway": true
+ },
+ "trim_identical": {
+  "c172x": true,
+  "T38": true,
+  "737": true
+ },
+ "after_checks": {
+  "c172x": {
+   "zero_force_identical_to_stock": true,
+   "flex_repeat_identical": true
+  },
+  "T38": {
+   "zero_force_identical_to_stock": true,
+   "flex_repeat_identical": true
+  },
+  "737": {
+   "zero_force_identical_to_stock": true,
+   "flex_repeat_identical": true
+  }
+ },
+ "trim_737_after": {
+  "aero/alpha-deg": 3.2776,
+  "attitude/theta-deg": 3.2776,
+  "fcs/throttle-cmd-norm": 0.5857,
+  "fcs/throttle-pos-norm": 0.5857,
+  "fcs/elevator-cmd-norm": 0.0,
+  "fcs/pitch-trim-cmd-norm": -0.2334,
+  "fcs/elevator-pos-deg": -4.0112,
+  "gear/gear-pos-norm": 0.0,
+  "velocities/mach": 0.4522,
+  "aero/qbar-psf": 208.388,
+  "inertia/weight-lbs": 107000.0,
+  "accelerations/udot-ft_sec2": -0.0001,
+  "accelerations/wdot-ft_sec2": 0.0001,
+  "accelerations/qdot-rad_sec2": -0.0
+ },
+ "all_identical": true
+}

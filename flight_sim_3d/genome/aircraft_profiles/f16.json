@@ -1,0 +1,74 @@
+{
+  "_comment": "EXTRA (not Phase 1). Fighter, APPROXIMATE. Flies FD's prepared copy flight-dynamics/jsbsim_root/aircraft/f16 (prepare_aircraft: no network I/O, flex external reactions + point masses). The F-16 is fly-by-wire: elevator/aileron-cmd-norm are pitch-rate/g and roll-rate DEMANDS to the JSBSim FCS, not surface commands, so the derived controller gain bounds below are PROVISIONAL and UNTUNED (they need their own derivation; FD INTERFACE.md 5d).",
+  "name": "f16",
+  "description": "General Dynamics F-16 (JSBSim f16), fighter",
+  "jsbsim_model": "f16",
+  "mass_lb": 20630.0,
+  "ixx": 9496.0,
+  "iyy": 55814.0,
+  "izz": 63100.0,
+  "wing_area_ft2": 300.0,
+  "span_ft": 30.0,
+  "chord_ft": 11.32,
+  "vstall_kcas": 130.0,
+  "vcruise_ktas": 480.0,
+  "vne_kcas": 800.0,
+  "n_limits": [
+    -3.0,
+    9.0
+  ],
+  "design_point": {
+    "kcas": 350.0,
+    "alt_ft": 10000.0
+  },
+  "control_limits_deg": {
+    "elevator": 25.0,
+    "aileron": 21.5,
+    "rudder": 30.0
+  },
+  "max_thrust_lbf": 17000.0,
+  "control_derivatives": {
+    "cm_de_per_rad": -0.6
+  },
+  "gain_overrides": {},
+  "sources": {
+    "geometry_inertia": "JSBSim 1.3.1 stock model aircraft/f16/f16.xml (metrics, mass_balance) -- itself an approximate public model",
+    "mass_lb": "FD INTERFACE.md 5b: JSBSim f16 as loaded 20,630 lb (17,400 empty + 230 pilot + 3,000 internal fuel)",
+    "speeds_n": "approx: +9/-3 g (public), stall ~130 KCAS rough, Vne placeholder 800 KCAS",
+    "control_limits": "approx public: stabilator +/-25 deg, flaperon ~21.5 deg, rudder +/-30 deg",
+    "max_thrust_lbf": "approx dry (military) thrust, F100/F110 class ~17,000 lbf",
+    "control_derivatives": "cm_de rough all-moving-tail estimate (not from the JSBSim tables); others generic",
+    "pitch_cmd_limits_deg": "design choice (fighter), not aircraft data",
+    "sim_envelope": "approx 1.15 x rough Vstall; public g limits",
+    "design_point": "FD INTERFACE.md 5 / Evolution Runner trim point 350 KCAS, 10,000 ft (M0.629); full trim, gear up, dry throttle cmd 0.284",
+    "aircraft_root": "FD prepared copy (INTERFACE.md 5a): no network sockets, flex external reactions after pushback/hook, zero-mass patch flies bit-identically to stock",
+    "flex_constants": "FD INTERFACE.md 5e (2026-10-06): fixed x_ea 0.40 / x_cg 0.43 (CG aft of EA), tip mass 0; flutter margin 1.39 at the default structure, minimum 0.963 at s 0.6 / r 0.8 (fails), >= 1.10 for s >= 0.8; divergence not found below the 3.0 cap. Notional structural data.",
+    "point_masses": "FD INTERFACE.md 5a: payload_placeholder (0, 0 lb at the CG), Pilot (1), flexwing_dm_R/L (2/3); robust-scenario payload deltas go to index 0",
+    "gain_bounds": "PROVISIONAL, UNTUNED: derived by the generic rule from rough data; the FBW FCS makes the controller channels rate/g demands (FD INTERFACE.md 5d finding 3)"
+  },
+  "approximate": true,
+  "pitch_cmd_limits_deg": [
+    -10.0,
+    15.0
+  ],
+  "sim_envelope": {
+    "min_kcas": 150.0,
+    "nz_limits": [
+      -3.0,
+      9.0
+    ]
+  },
+  "aircraft_root": "flight-dynamics/jsbsim_root (FD prepare_aircraft copy)",
+  "flex_constants": {
+    "elastic_axis_frac": 0.4,
+    "section_cg_frac": 0.43,
+    "tip_mass_frac": 0.0
+  },
+  "point_masses": {
+    "payload_placeholder": 0,
+    "pilot": 1,
+    "flexwing_dm_R": 2,
+    "flexwing_dm_L": 3
+  },
+  "gain_bounds_provisional": "FBW: stick inputs are pitch-rate/g and roll-rate demands to the JSBSim FCS (proportional, no integrator; +1/-0.44 stick clip, alpha limiter), so the surface-authority range rule does not apply. Bounds are derived placeholders, untuned; derive them for the FCS before any F-16 evolution run."
+}

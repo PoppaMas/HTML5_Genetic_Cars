@@ -1,0 +1,31 @@
+{
+  "name": "phase1_smooth_ff_off",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05
+    },
+    "aggregate": {
+      "mode": "mean"
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": false
+  },
+  "backend": "jsbsim_ext"
+}

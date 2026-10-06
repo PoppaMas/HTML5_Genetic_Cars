@@ -1,0 +1,25 @@
+{
+  "_comment": "Backward-compatible preset: exactly the original 6-gene altitude-hold task (original ranges, cost = track + 2*effort, mean over sim.make_scenarios).",
+  "name": "altitude_hold_legacy",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "legacy_pitch_ranges": true,
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0
+    },
+    "aggregate": {
+      "mode": "mean"
+    }
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext",
+  "pass_fixed_helpers": false,
+  "use_profile_conditions": false
+}

@@ -1,0 +1,25 @@
+{
+  "name": "altitude_hold_v2",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.02,
+      "structural": 0.05
+    },
+    "aggregate": {
+      "mode": "mean_cvar",
+      "alpha": 0.34,
+      "lambda": 0.3
+    }
+  },
+  "scenarios": {
+    "set": "robust"
+  },
+  "backend": "jsbsim_ext"
+}

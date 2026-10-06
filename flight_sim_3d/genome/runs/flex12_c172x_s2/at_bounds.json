@@ -1,0 +1,91 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.021092362942519188,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "kp_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 0.2,
+      "value": 1.65646,
+      "range": [
+        0.002,
+        2.0
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 0.6,
+      "value": 0.021092400000000032,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_lower",
+      "fraction": 0.2,
+      "value": 1.81552e-05,
+      "range": [
+        1e-05,
+        0.2
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "upper",
+      "fraction": 0.2,
+      "value": 4.877329999999998,
+      "range": [
+        0.05,
+        5.0
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_lower",
+      "fraction": 0.4,
+      "value": 1.05116e-05,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "nonstructural_mass_scale",
+      "block": "structure",
+      "bound": "near_upper",
+      "fraction": 0.4,
+      "value": 1.2028,
+      "range": [
+        0.8,
+        1.25
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {}
+}

@@ -1,0 +1,159 @@
+{
+  "aircraft": "c172x",
+  "best_cost": 0.3064711424875803,
+  "initial_best_cost": 0.40655154223964535,
+  "gains": {
+    "kp_alt": 0.5,
+    "ki_alt": 1.2442721838028204e-05,
+    "kd_alt": 0.9440852609273372,
+    "kp_pitch": 0.02179772061973647,
+    "ki_pitch": 0.00020415490460935017,
+    "kd_pitch": 0.009542579647611184
+  },
+  "gain_units": {
+    "kp_alt": "deg/ft",
+    "ki_alt": "deg/(ft*s)",
+    "kd_alt": "deg/(ft/s)",
+    "kp_pitch": "elev/deg",
+    "ki_pitch": "elev/(deg*s)",
+    "kd_pitch": "elev/(deg/s)"
+  },
+  "genome": [
+    1.0,
+    0.02565995190455034,
+    0.7973009854528209,
+    0.4326134442631515,
+    0.30456886354626905,
+    0.5351937948066473
+  ],
+  "per_scenario": [
+    {
+      "cost": 0.2896249114356526,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.12431722299877518,
+      "effort": 0.030691417680619452
+    },
+    {
+      "cost": 0.33207716026386486,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.094138307286246,
+      "effort": 0.05551184228297346
+    },
+    {
+      "cost": 0.2977113557632235,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.10753206024892221,
+      "effort": 0.039774313173787386
+    }
+  ],
+  "initial_best_gains": {
+    "kp_alt": 0.24033251790943974,
+    "ki_alt": 0.002178957895321676,
+    "kd_alt": 1.0165946498399685,
+    "kp_pitch": 0.01320180273006363,
+    "ki_pitch": 0.0021794048979432287,
+    "kd_pitch": 0.0005322262491984099
+  },
+  "scenarios": [
+    {
+      "seed": 1016164991,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 0.0,
+      "wind_east_fps": 0.0,
+      "gust_sigma_fps": 0.0,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 0.0,
+      "discrete_gust_t_s": 30.0,
+      "discrete_gust_len_s": 3.0
+    },
+    {
+      "seed": 1099128569,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 14.815420728420232,
+      "wind_east_fps": 18.893081885137402,
+      "gust_sigma_fps": 3.8459483414117317,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": -10.96328514280803,
+      "discrete_gust_t_s": 41.554051876408835,
+      "discrete_gust_len_s": 3.0
+    },
+    {
+      "seed": 669652944,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": -12.549072662472344,
+      "wind_east_fps": -4.042050948210394,
+      "gust_sigma_fps": 1.082677339729205,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 11.767003192534947,
+      "discrete_gust_t_s": 31.594634329981844,
+      "discrete_gust_len_s": 3.0
+    }
+  ],
+  "config": {
+    "pop_size": 48,
+    "generations": 40,
+    "elite": 2,
+    "selection_p": 0.2,
+    "crossover": "uniform",
+    "blx_alpha": 0.3,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "seed": 1,
+    "scenarios": 3,
+    "scenario_seed": 1,
+    "workers": 0,
+    "out": "runs/comfort_example"
+  }
+}

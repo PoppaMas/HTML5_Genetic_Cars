@@ -1,0 +1,27 @@
+{
+  "_comment": "NSGA-II mode (use evolve_pareto.py). 'cost' is still the weighted scalar for logging. Task definition (ramp 600 fpm with 0.1 g corners, feed-forward, steps) from the shared Phase-1 set.",
+  "name": "altitude_hold_pareto",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "legacy_pitch_ranges": true,
+  "fitness": {
+    "mode": "pareto",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.02
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "comfort"
+    ]
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1"
+}

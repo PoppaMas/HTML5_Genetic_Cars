@@ -1,0 +1,31 @@
+{
+  "_comment": "Team default (Phase 1). Altitude reference ramped at 600 fpm (tracking scored against the ramp), reference-rate feed-forward in the altitude D term, pitch-command clamp + envelope from the aircraft profile, re-centred ranges, scalar fitness with a modest comfort weight. Use --aircraft c172x | t38 | b737.",
+  "name": "tune_w0.05",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05
+    },
+    "aggregate": {
+      "mode": "mean"
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    }
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext"
+}

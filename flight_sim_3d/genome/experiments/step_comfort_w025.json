@@ -1,0 +1,28 @@
+{
+  "_comment": "HISTORICAL (run 1, 2026-10-06): instant-step target, legacy ranges + comfort penalty. Kept only to reproduce the earlier runs; not a current preset. Like altitude_hold_comfort but comfort weight 0.25 (0.02 barely changed the climb).",
+  "name": "step_comfort_w025",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "legacy_pitch_ranges": true,
+  "fitness": {
+    "mode": "scalar",
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.25
+    },
+    "aggregate": {
+      "mode": "mean"
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    }
+  },
+  "scenarios": {
+    "set": "legacy"
+  },
+  "backend": "jsbsim_ext"
+}

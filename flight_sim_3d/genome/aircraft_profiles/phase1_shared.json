@@ -1,0 +1,308 @@
+{
+  "_schema": "phase1-shared-profiles/1",
+  "_comment": "Phase-1 shared aircraft/task set for genome/ and evolution/ (2026-10-06). Single source of truth for trim points, envelope, controller limits, task definition, fitness weights and pitch/altitude gain bounds. genome/ reads it through profiles.load_profile + adapter (presets with \"shared\": \"phase1\"); export_shared_profiles.py writes the equivalent Evolution Runner profile block. Rationale per field: ALIGNMENT.md. Physical aircraft data (mass, inertia, geometry, derivatives) stays in aircraft_profiles/<name>.json.",
+  "task": {
+    "duration_s": 90.0,
+    "steps_rel_ft": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        200.0
+      ],
+      [
+        50.0,
+        0.0
+      ]
+    ],
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1,
+    "alt_ref_ff": true,
+    "alt_err_scale_ft": 100.0,
+    "max_alt_err_ft": 1000.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "fitness_weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05
+    },
+    "comfort_params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0
+    },
+    "scenarios": {
+      "n": 3,
+      "seed": 1,
+      "draws": "flight_sim/sim.py make_scenarios (calm + 2 wind/turbulence/1-cos gust)"
+    },
+    "envelope_common": {
+      "min_agl_ft": 500.0,
+      "max_abs_theta_deg": 30.0,
+      "max_abs_phi_deg": 45.0
+    },
+    "controller_common": {
+      "alt_i_limit_deg": 5.0,
+      "pitch_i_limit": 0.4
+    },
+    "trim": {
+      "do_simple_trim": 1,
+      "gear_up_before_run_ic": true,
+      "all_engines": true,
+      "trim_throttle_above_max": "trim_failed"
+    },
+    "aircraft_root": "flight-dynamics/jsbsim_root (FD prepare_aircraft copies; network I/O stripped at the source by FD, and any aircraft file declaring network I/O is refused on load)",
+    "heading_hold": {
+      "_why": "Phase 1 (2026-10-06): c172x drifted ~25 deg in heading on every seed (prop torque + P-only wing leveller -> standing ~1.5 deg bank). Outer loop heading error -> bank cmd (PI, clamped to the aircraft's bank_limit_deg) feeding the existing wing leveller (kp_roll/kd_roll fixed, profile-scaled). On for every Phase-1 aircraft that sets heading_hold.enabled; the legacy task never reads this file. See genome/HANDOFF_heading_hold.md.",
+      "genes": [
+        "kp_hdg",
+        "ki_hdg"
+      ],
+      "heading_target": "initial heading (psi at t=0, 0 deg true in every scenario)",
+      "error": "e_psi = wrap180(psi_target - psi), wrap180(a) = (a + 180) % 360 - 180",
+      "law": "phi_cmd = clip(kp_hdg*e_psi + ki_hdg*I, +-bank_limit_deg); I += e_psi*dt only if ki_hdg > 0, clipped to +-hdg_i_limit_deg/ki_hdg",
+      "inner": "aileron = clip(-kp_roll*(phi - phi_cmd) - kd_roll*p, +-0.5)",
+      "hdg_i_limit_deg": 10.0,
+      "cost_term": "track_heading_rms",
+      "hdg_rms_ref_deg": 5.0,
+      "weight": 0.01
+    },
+    "v5": {
+      "_why": "Phase-1 v5 candidate (2026-10-06, after Sim Bridge's replay: flat cost surface, ki_alt at zero on jets, ~17 ft p-p hold oscillation on c172x s1, learning stalls after gen 9). NOT the default: presets opt in with \"hold_quality\": true / \"disturbance_scenario\": true (preset phase1_v5). See genome/HANDOFF_phase1_v5.md.",
+      "enabled_by_default": false,
+      "hold_quality": {
+        "cost_term": "hold_osc",
+        "definition": "hold windows = stretches where the altitude reference equals the commanded altitude with zero reference rate, minus the first hold_settle_s of each stretch; hold_osc = RMS over all hold samples of (e - mean_window(e)), e = h_cmd - h, divided by hold_ref_ft",
+        "hold_settle_s": 5.0,
+        "hold_ref_ft": 5.0,
+        "weight": 0.1,
+        "_weight_why": "sweep on c172x seed 1, pop 48x40 (runs/v5_sweep_w*, v5_sweep_report.py): hold_osc 0.526 (v4 genome) -> 0.443 / 0.373 / 0.254 at w = 0.03 / 0.1 / 0.3, calm hold p-p 6.4 -> 5.6 / 3.9 / 3.1 ft; v4-yardstick cost 0.1960 -> 0.1971 / 0.1951 / 0.2228. 0.1 is the largest weight with no loss on the v4 task (0.3 buys its hold quality with +14% v4 cost: more elevator activity and comfort); at 0.1 the hold term is ~18% of the c172x cost. hold_ref_ft 5 = the v4 bests' RMS hold deviation is ~2.6 ft (hold_osc ~0.5) on c172x, ~1.2 ft on the jets"
+      },
+      "disturbance": {
+        "kind": "sustained downdraft, one extra calm scenario appended to the scenario set (same aggregation as the rest: mean)",
+        "steps_rel_ft": [
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "onset_t_s": 10.0,
+        "onset_ramp_s": 4.0,
+        "onset_shape": "w = draft * 0.5*(1 - cos(pi*clip((t - onset_t_s)/onset_ramp_s, 0, 1))), added to wind-down-fps (+ = down)",
+        "scaling": "downdraft_fps = V_TAS(trim) * tan(gamma_equiv_deg): the same air-relative flight-path offset (hence the same steady pitch offset an altitude integrator must supply) on every aircraft",
+        "gamma_equiv_deg": 1.5
+      }
+    }
+  },
+  "aircraft": {
+    "c172x": {
+      "jsbsim_model": "c172x",
+      "trim_kcas": 100.0,
+      "trim_alt_ft": 4000.0,
+      "min_kcas": 55.0,
+      "nz_limits": [
+        -1.0,
+        3.8
+      ],
+      "pitch_cmd_limits_deg": [
+        -8.0,
+        12.0
+      ],
+      "throttle_max": null,
+      "gain_bounds": {
+        "kp_alt": {
+          "min": 0.002,
+          "max": 2.0,
+          "scale": "log"
+        },
+        "ki_alt": {
+          "min": 1e-06,
+          "max": 0.05,
+          "scale": "log0"
+        },
+        "kd_alt": {
+          "min": 0.01,
+          "max": 3.0,
+          "scale": "log"
+        },
+        "kp_pitch": {
+          "min": 0.002,
+          "max": 0.5,
+          "scale": "log"
+        },
+        "ki_pitch": {
+          "min": 1e-05,
+          "max": 0.2,
+          "scale": "log0"
+        },
+        "kd_pitch": {
+          "min": 0.0001,
+          "max": 0.5,
+          "scale": "log"
+        }
+      },
+      "heading_hold": {
+        "enabled": true,
+        "bank_limit_deg": 16.0,
+        "_bank_limit_why": "min(standard-rate (3 deg/s) bank at the trim TAS, 25 deg autopilot convention), rounded down: c172x 16.2 -> 16, T38 43.8 -> 25, 737 38.6 -> 25",
+        "gain_bounds": {
+          "kp_hdg": {
+            "min": 0.05,
+            "max": 5.0,
+            "scale": "log"
+          },
+          "ki_hdg": {
+            "min": 1e-05,
+            "max": 0.1,
+            "scale": "log0"
+          }
+        },
+        "_gain_bounds_why": "genome_schema reference ranges (c172x) x V/V_ref (TAS at trim; turn rate = g tan(phi)/V), 3 significant figures"
+      },
+      "disturbance": {
+        "downdraft_fps": 4.69,
+        "_why": "V_TAS 179.1 ft/s x tan(1.5 deg) = 1.43 m/s"
+      }
+    },
+    "t38": {
+      "jsbsim_model": "T38",
+      "trim_kcas": 300.0,
+      "trim_alt_ft": 10000.0,
+      "min_kcas": 180.0,
+      "nz_limits": [
+        -3.0,
+        7.33
+      ],
+      "pitch_cmd_limits_deg": [
+        -10.0,
+        15.0
+      ],
+      "throttle_max": 0.5,
+      "gain_bounds": {
+        "kp_alt": {
+          "min": 0.000608,
+          "max": 0.608,
+          "scale": "log"
+        },
+        "ki_alt": {
+          "min": 3.04e-07,
+          "max": 0.05,
+          "scale": "log0"
+        },
+        "kd_alt": {
+          "min": 0.00304,
+          "max": 3.0,
+          "scale": "log"
+        },
+        "kp_pitch": {
+          "min": 0.002,
+          "max": 2.48,
+          "scale": "log"
+        },
+        "ki_pitch": {
+          "min": 1e-05,
+          "max": 0.992,
+          "scale": "log0"
+        },
+        "kd_pitch": {
+          "min": 0.0001,
+          "max": 2.48,
+          "scale": "log"
+        }
+      },
+      "heading_hold": {
+        "enabled": true,
+        "bank_limit_deg": 25.0,
+        "_bank_limit_why": "min(standard-rate (3 deg/s) bank at the trim TAS, 25 deg autopilot convention), rounded down: c172x 16.2 -> 16, T38 43.8 -> 25, 737 38.6 -> 25",
+        "gain_bounds": {
+          "kp_hdg": {
+            "min": 0.164,
+            "max": 16.4,
+            "scale": "log"
+          },
+          "ki_hdg": {
+            "min": 3.29e-05,
+            "max": 0.329,
+            "scale": "log0"
+          }
+        },
+        "_gain_bounds_why": "genome_schema reference ranges (c172x) x V/V_ref (TAS at trim; turn rate = g tan(phi)/V), 3 significant figures"
+      },
+      "disturbance": {
+        "downdraft_fps": 15.43,
+        "_why": "V_TAS 589.2 ft/s x tan(1.5 deg) = 4.70 m/s"
+      }
+    },
+    "b737": {
+      "jsbsim_model": "737",
+      "trim_kcas": 250.0,
+      "trim_alt_ft": 10000.0,
+      "min_kcas": 195.0,
+      "nz_limits": [
+        -1.0,
+        2.5
+      ],
+      "pitch_cmd_limits_deg": [
+        -5.0,
+        10.0
+      ],
+      "throttle_max": null,
+      "gain_bounds": {
+        "kp_alt": {
+          "min": 0.00073,
+          "max": 0.73,
+          "scale": "log"
+        },
+        "ki_alt": {
+          "min": 3.65e-07,
+          "max": 0.05,
+          "scale": "log0"
+        },
+        "kd_alt": {
+          "min": 0.00365,
+          "max": 3.0,
+          "scale": "log"
+        },
+        "kp_pitch": {
+          "min": 0.002,
+          "max": 7.51,
+          "scale": "log"
+        },
+        "ki_pitch": {
+          "min": 1e-05,
+          "max": 3.01,
+          "scale": "log0"
+        },
+        "kd_pitch": {
+          "min": 0.0001,
+          "max": 7.51,
+          "scale": "log"
+        }
+      },
+      "heading_hold": {
+        "enabled": true,
+        "bank_limit_deg": 25.0,
+        "_bank_limit_why": "min(standard-rate (3 deg/s) bank at the trim TAS, 25 deg autopilot convention), rounded down: c172x 16.2 -> 16, T38 43.8 -> 25, 737 38.6 -> 25",
+        "gain_bounds": {
+          "kp_hdg": {
+            "min": 0.137,
+            "max": 13.7,
+            "scale": "log"
+          },
+          "ki_hdg": {
+            "min": 2.74e-05,
+            "max": 0.274,
+            "scale": "log0"
+          }
+        },
+        "_gain_bounds_why": "genome_schema reference ranges (c172x) x V/V_ref (TAS at trim; turn rate = g tan(phi)/V), 3 significant figures"
+      },
+      "disturbance": {
+        "downdraft_fps": 12.86,
+        "_why": "V_TAS 491.0 ft/s x tan(1.5 deg) = 3.92 m/s"
+      }
+    }
+  }
+}

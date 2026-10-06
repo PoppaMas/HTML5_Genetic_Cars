@@ -1,0 +1,31 @@
+{
+  "best": [
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.04686728884422278,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 0.1,
+      "value": 0.04686729999999997,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    }
+  ],
+  "suggestions": {}
+}

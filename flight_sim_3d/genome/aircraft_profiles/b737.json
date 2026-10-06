@@ -1,0 +1,52 @@
+{
+  "_comment": "Phase-1 benchmark aircraft. Narrow-body airliner. APPROXIMATE. JSBSim '737' is a generic 737 (variant not stated in the file; BETA) with its own yaw damper in the FCS.",
+  "name": "b737",
+  "description": "Boeing 737 (JSBSim 737), narrow-body airliner",
+  "jsbsim_model": "737",
+  "mass_lb": 107000.0,
+  "ixx": 562000.0,
+  "iyy": 1473000.0,
+  "izz": 1894000.0,
+  "wing_area_ft2": 1171.0,
+  "span_ft": 94.7,
+  "chord_ft": 12.31,
+  "vstall_kcas": 140.0,
+  "vcruise_ktas": 430.0,
+  "vne_kcas": 340.0,
+  "mmo": 0.82,
+  "n_limits": [
+    -1.0,
+    2.5
+  ],
+  "control_limits_deg": {
+    "elevator": 17.2,
+    "aileron": 20.0,
+    "rudder": 20.0
+  },
+  "max_thrust_lbf": 40000.0,
+  "control_derivatives": {
+    "cm_de_per_rad": -1.0,
+    "cl_da_per_rad": 0.085,
+    "cn_dr_per_rad": -0.2
+  },
+  "gain_overrides": {},
+  "sources": {
+    "geometry_inertia": "JSBSim 1.3.1 stock model aircraft/737/737.xml (metrics, mass_balance) -- an approximate public model (release=BETA)",
+    "mass_lb": "JSBSim 737 inertia/weight-lbs as loaded (empty 83,000 lb + fuel/payload) = 107,000 lb",
+    "control_derivatives": "737.xml: Cmde table -1.20 (M0) .. -0.30 (M2) and Clda 0.100 .. 0.033, linearly interpolated at the benchmark Mach ~0.45 -> ~-1.0 and ~0.085 (approx); Cndr = -0.20 per rad",
+    "control_limits": "737.xml FCS: elevator +/-0.3 rad (17.2 deg), aileron +/-0.35 rad (20 deg), rudder +/-0.35 rad (20 deg)",
+    "max_thrust_lbf": "CFM56.xml milthrust 20,000 lbf x 2 engines",
+    "speeds_n": "approx public 737 Classic/NG figures: VMO ~340 KIAS, MMO ~0.82, FAR-25 +2.5/-1.0 g; clean stall ~140 KCAS is ROUGH (weight dependent); cruise ~430 KTAS rough",
+    "design_point": "phase-1 benchmark condition (250 KCAS, 10,000 ft, ~M0.45: the below-FL100 speed limit), not a cruise point",
+    "pitch_cmd_limits_deg": "design choice (passenger aircraft), not aircraft data",
+    "sim_envelope": "min_kcas 195: team decision 2026-10-06 -- the JSBSim 737 built-in trim fails below ~190 KCAS at 10,000 ft (FD INTERFACE.md 4d #4), although the public clean stall is ~140 KCAS; FAR-25 n limits",
+    "flex_constants": "Flight Dynamics final Phase-1 values (INTERFACE.md section 0, 2026-10-06 04:05 PT; flexwing.AIRCRAFT_PROFILES): fixed, not genes; section CG aft of the elastic axis (>= 0.02 chord); tip mass 0. Notional (typical ranges, not manufacturer data). Never passed to FD (FD applies its own copy); kept here for reporting and checked equal to FD's in tests."
+  },
+  "approximate": true,
+  "flex_constants": {
+    "elastic_axis_frac": 0.36,
+    "section_cg_frac": 0.38,
+    "tip_mass_frac": 0.0
+  },
+  "_shared": "Trim point, envelope (min_kcas, nz), pitch-command clamp, throttle_max and pitch/altitude gain bounds come from phase1_shared.json (see ALIGNMENT.md); the sources below still document them."
+}

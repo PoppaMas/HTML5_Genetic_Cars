@@ -1,0 +1,82 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.05,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.1,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.05,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "upper",
+      "fraction": 0.9,
+      "value": 0.1,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 0.1,
+      "value": 0.08240120000000002,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    }
+  ],
+  "suggestions": {
+    "ki_alt": {
+      "bound": "upper",
+      "suggested_range": [
+        1e-06,
+        0.2
+      ]
+    },
+    "ki_hdg": {
+      "bound": "upper",
+      "suggested_range": [
+        1e-05,
+        0.4
+      ]
+    }
+  }
+}

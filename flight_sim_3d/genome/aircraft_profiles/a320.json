@@ -1,0 +1,55 @@
+{
+  "_comment": "Narrow-body airliner. APPROXIMATE.",
+  "name": "a320",
+  "description": "Airbus A320 (JSBSim A320), narrow-body airliner",
+  "jsbsim_model": "A320",
+  "mass_lb": 140000.0,
+  "ixx": 942877.0,
+  "iyy": 2788920.0,
+  "izz": 3597570.0,
+  "wing_area_ft2": 1317.0,
+  "span_ft": 111.3,
+  "chord_ft": 14.1,
+  "vstall_kcas": 140.0,
+  "vcruise_ktas": 450.0,
+  "vne_kcas": 350.0,
+  "mmo": 0.82,
+  "n_limits": [
+    -1.0,
+    2.5
+  ],
+  "design_point": {
+    "kcas": 255.0,
+    "alt_ft": 35000.0
+  },
+  "control_limits_deg": {
+    "elevator": 25.0,
+    "aileron": 25.0,
+    "rudder": 25.0
+  },
+  "max_thrust_lbf": 54000.0,
+  "control_derivatives": {},
+  "gain_overrides": {},
+  "sources": {
+    "geometry_inertia": "JSBSim 1.3.1 stock model aircraft/A320/A320.xml (metrics, mass_balance) -- itself an approximate public model",
+    "mass_lb": "approx typical cruise weight; MTOW ~172,000 lb (78 t), public figure rounded",
+    "speeds_n": "approx: VMO 350 KCAS / MMO 0.82 (public), clean stall ~140 KCAS (rough, weight dependent), FAR/CS-25 +2.5/-1.0 g",
+    "control_limits": "rough: elevator ~+30/-17 deg, aileron ~25 deg, rudder ~25-30 deg (public descriptions, not AFM)",
+    "max_thrust_lbf": "approx 2 x ~27,000 lbf (CFM56-5B / V2500 class)",
+    "control_derivatives": "not given -> generic defaults used",
+    "pitch_cmd_limits_deg": "design choice (passenger aircraft), not aircraft data",
+    "sim_envelope": "approx 1.15-1.2 x rough Vstall; CS-25 limits"
+  },
+  "approximate": true,
+  "pitch_cmd_limits_deg": [
+    -5.0,
+    10.0
+  ],
+  "sim_envelope": {
+    "min_kcas": 165.0,
+    "nz_limits": [
+      -1.0,
+      2.5
+    ]
+  }
+}
