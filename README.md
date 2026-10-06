@@ -21,3 +21,19 @@ For the graph-only (headless) view, open `graphs.html`.
 > python3 -m http.server 8000
 > ```
 > Then visit `http://localhost:8000`
+
+## Flight-sim GA prototype
+
+[`flight_sim/`](flight_sim/README.md) is a separate Python prototype that applies
+this GA's ideas to tuning an altitude-hold autopilot in JSBSim. It uses
+normalized genes, rank selection, and elitism. Quick start:
+
+```
+cd flight_sim && pip install -r requirements.txt
+python evolve.py --config config.example.json
+```
+
+You can also run it in the browser with the
+[Colab playground notebook](https://colab.research.google.com/github/PoppaMas/HTML5_Genetic_Cars/blob/flight-sim-prototype/flight_sim/playground.ipynb)
+or a GitHub Codespace (`.devcontainer/` is included). See
+[`flight_sim/README.md`](flight_sim/README.md) for details and example results.
