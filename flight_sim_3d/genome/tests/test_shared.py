@@ -82,8 +82,10 @@ def test_export_matches_evolution_profile_schema():
     assert t["thr_kp"] == adapter.load_task("phase1_default", {"aircraft": "t38"}).sim_fixed["kp_spd"]  # full precision
     v5 = X.evolution_v5_profiles()
     assert set(v5["_needs_code"]["profile_keys"]) == set(X.V5_KEYS)
-    for name, prof in v5["profiles"].items():  # v5 = v4 + exactly the pending keys
-        base = d["profiles"][name]
+    for name, prof in v5["profiles"].items():  # v5 = v4 + exactly the pending keys (+ the v5-only ki_alt upper bound 0.5)
+        base = json.loads(json.dumps(d["profiles"][name]))
+        assert prof["gain_bounds"]["ki_alt"] == [base["gain_bounds"]["ki_alt"][0], 0.5] and base["gain_bounds"]["ki_alt"][1] == 0.05
+        base["gain_bounds"]["ki_alt"] = prof["gain_bounds"]["ki_alt"]
         assert {k: v for k, v in prof.items() if k in base and not k.startswith("_")} == {k: v for k, v in base.items() if not k.startswith("_")}
         assert set(prof) - set(base) == set(X.V5_KEYS), name
         assert prof["disturbance_scenario"]["downdraft_fps"] > 0 and prof["w_hold"] > 0

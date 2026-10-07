@@ -1,1 +1,1 @@
-"""sim-bridge helpers importable as a package (add flight_sim_3d/sim-bridge to sys.path)."""
+"""sim-bridge helpers importable as a package (add the sim-bridge directory to sys.path; paths: sim_bridge.paths)."""

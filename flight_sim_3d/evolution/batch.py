@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Evolve altitude-hold controllers for several JSBSim aircraft in one batch.
 
-    cd flight_sim_3d
+    cd flight_sim_3d              # (team layout: cd <team folder>)
     python -m evolution.batch --config evolution/configs/bench_baseline.json
     python -m evolution.batch --resume evolution/runs/<run_id>      # continue a killed run
 
@@ -24,6 +24,7 @@ import copy
 import datetime as _dt
 import hashlib
 import json
+import math
 import multiprocessing as mp
 import os
 import platform
@@ -43,7 +44,24 @@ from . import fidelity as fid_mod
 from . import ga, genome, runinfo, sim, trajectory
 
 PKG_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_SOURCE_REPO = os.path.dirname(os.path.dirname(PKG_DIR))  # repo root (flight_sim_3d/..), recorded as git sha
+_LEGACY_SOURCE_REPO = os.path.dirname(os.path.dirname(PKG_DIR))   # outside the push layout: set $EVOLUTION_SOURCE_REPO
+
+
+def _default_source_repo() -> str:
+    """Repo whose git sha is recorded. 1) $EVOLUTION_SOURCE_REPO; 2) repo-relative (push layout
+    <repo>/flight_sim_3d/evolution -> <repo>, recognised by its flight_sim/ prototype dir); 3) the legacy sandbox clone
+    (team layout <team>/evolution, whose grandparent is not the repo: falls back to that grandparent; set
+    $EVOLUTION_SOURCE_REPO to the git clone there)."""
+    env = os.environ.get("EVOLUTION_SOURCE_REPO")
+    if env:
+        return env
+    repo = os.path.dirname(os.path.dirname(PKG_DIR))
+    if os.path.isdir(os.path.join(repo, "flight_sim")):
+        return repo
+    return _LEGACY_SOURCE_REPO
+
+
+DEFAULT_SOURCE_REPO = _default_source_repo()
 
 DEFAULTS: Dict = {
     "run_id": None,                 # default: <config-stem>-<hash of resolved config>  (same command => resume)
@@ -61,20 +79,38 @@ DEFAULTS: Dict = {
     "source_repo": DEFAULT_SOURCE_REPO,
     "profiles": {"baseline": {}},   # name -> sim.Profile overrides; {} = original c172x constants
     "aircraft": [{"name": "c172x", "profile": "baseline"}],
-    # structural fidelity (evolution/fidelity.py): rigid | reduced (FD flex v1, 1 bending mode) | full (FD v1, 2 modes)
+    # structural fidelity (evolution/fidelity.py): rigid | reduced (FD flex v1 on the projected v2 genome) | full (FD flex
+    # v2, flexbody) | full_a1 (FD P3-A1, flexbody_a1: 64-strip wings, 4b+3t+2ip; opt-in, separate cache/pins)
     "fidelity": "rigid",
     # screen everyone at `screen`, re-score the top_k by screen cost + all elites at `fidelity` (see README)
-    "multi_fidelity": {"enabled": False, "screen": "reduced", "top_k": 4},
+    "multi_fidelity": {"enabled": False, "screen": "reduced", "top_k": 4, "min_full_frac": None, "mid_k": None},
+    # per-aircraft overrides of evolution.fidelity.DEFAULT_PER_AIRCRAFT: {name: {reduced_gate, min_full_frac}}
+    "fidelity_per_aircraft": {},
     "struct_genes": False,          # append FD's STRUCT_SCHEMA genes (stiffness_scale, torsion_bend_ratio, zeta, nonstruct_scale)
     "viz": "off",                   # on = record a trajectory on EVERY evaluation + live best-of-generation file (slow path)
+    # ---- Phase 2 (all default-off; omitted from the run identity while at their defaults, so old run ids are unchanged)
+    "struct_asymmetric": False,     # with struct_genes: + FD's 2 optional asymmetry genes (14 struct genes)
+    # generation 0: "uniform" (= ga.generation_zero) | "baseline": struct genes = encode(FD baseline) + N(0, sigma),
+    # clipped to [0, 1], after the identical uniform draw (= Genome init_pop.generation_zero); sigma in [0.10, 0.15]
+    "init": {"mode": "uniform", "sigma": 0.10, "blocks": ["struct"]},
+    # per-aircraft multi-fidelity overrides {name: {enabled, screen, top_k, min_full_frac, mid_k}} on top of multi_fidelity
+    "multi_fidelity_per_aircraft": {},
+    # {aircraft: {fidelity: model_version}}: refuse to evaluate / cache / resume unless FD's model_version matches;
+    # every reduced/full fidelity an aircraft uses must be pinned once the aircraft appears here
+    "pin_model_version": {},
 }
+OPTIONAL_DEFAULTS = {"struct_asymmetric": False, "init": {"mode": "uniform", "sigma": 0.10, "blocks": ["struct"]},
+                     "multi_fidelity_per_aircraft": {}, "pin_model_version": {}}
+PIN_PLACEHOLDER = "PENDING-FD-NEW-MODEL-VERSION"
+MF_KEYS = {"enabled", "screen", "top_k", "min_full_frac", "mid_k"}
 AIRCRAFT_KEYS = {"name", "profile", "overrides", "seed"}
 # execution-only settings: cannot change results, so they are excluded from the run-id hash and the resume check
 EXEC_KEYS = ("workers", "schedule", "cache", "viz")
 
 
 def identity(cfg: Dict) -> Dict:
-    return {k: v for k, v in cfg.items() if k not in EXEC_KEYS and k != "run_id"}
+    return {k: v for k, v in cfg.items() if k not in EXEC_KEYS and k != "run_id"
+            and not (k in OPTIONAL_DEFAULTS and v == OPTIONAL_DEFAULTS[k])}
 
 
 # --------------------------------------------------------------------------- config
@@ -85,7 +121,8 @@ def _merge(base: Dict, over: Dict, path: str = "") -> Dict:
             continue  # "_comment" etc.
         if k not in base and path not in ("profiles",):
             raise ValueError(f"unknown config key {path + k!r}")
-        if isinstance(v, dict) and isinstance(base.get(k), dict) and k not in ("profiles",):
+        if isinstance(v, dict) and isinstance(base.get(k), dict) and k not in ("profiles", "fidelity_per_aircraft",
+                                                                                 "multi_fidelity_per_aircraft", "pin_model_version"):
             out[k] = _merge(base[k], v, path + k + ".")
         else:
             out[k] = copy.deepcopy(v)
@@ -109,14 +146,17 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
         raise ValueError(f"fidelity must be one of {fid_mod.FIDELITIES}")
     if cfg["viz"] not in ("on", "off"):
         raise ValueError("viz must be 'on' or 'off'")
-    mf = cfg["multi_fidelity"]
-    if mf["enabled"]:
-        if mf["screen"] not in fid_mod.FIDELITIES or mf["screen"] == cfg["fidelity"]:
-            raise ValueError("multi_fidelity.screen must be a fidelity different from `fidelity` (the authoritative one)")
-        if not (isinstance(mf["top_k"], int) and 1 <= mf["top_k"] <= cfg["ga"]["pop_size"]):
-            raise ValueError("multi_fidelity.top_k must be an int in [1, pop_size]")
+    mf = _validate_mf(cfg["multi_fidelity"], cfg)
+    _validate_phase2(cfg)
+    for nm, d in (cfg.get("fidelity_per_aircraft") or {}).items():
+        if set(d) - {"reduced_gate", "min_full_frac"}:
+            raise ValueError(f"fidelity_per_aircraft.{nm}: unknown keys {sorted(set(d) - {'reduced_gate', 'min_full_frac'})}")
     if cfg["struct_genes"] and cfg["fidelity"] == "rigid" and not mf["enabled"]:
         raise ValueError("struct_genes only matter at reduced/full fidelity")
+    mfa = cfg["multi_fidelity_per_aircraft"] or {}
+    unknown_ac = set(mfa) - {(a if isinstance(a, str) else a["name"]) for a in cfg["aircraft"]}
+    if unknown_ac:
+        raise ValueError(f"multi_fidelity_per_aircraft: aircraft not in the batch: {sorted(unknown_ac)}")
     seen = set()
     acs = []
     for a in cfg["aircraft"]:
@@ -133,6 +173,12 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
         genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)  # validate
         acs.append({"name": a["name"], "profile": pname, "overrides": a.get("overrides", {}),
                     "seed": int(a.get("seed", cfg["seed"])), "resolved_profile": prof.to_dict()})
+        if a["name"] in mfa:   # only then (old configs keep their aircraft entries / run ids)
+            if set(mfa[a["name"]]) - MF_KEYS:
+                raise ValueError(f"multi_fidelity_per_aircraft.{a['name']}: unknown keys {sorted(set(mfa[a['name']]) - MF_KEYS)}")
+            base = {k: v for k, v in cfg["multi_fidelity"].items() if k != "ladder"}
+            acs[-1]["multi_fidelity"] = _validate_mf({**base, **copy.deepcopy(mfa[a["name"]])}, cfg,
+                                                     f"multi_fidelity_per_aircraft.{a['name']}")
     cfg["aircraft"] = acs
     G = cfg["ga"]["generations"]
     tg = cfg["trajectories"]["generations"]
@@ -142,6 +188,98 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
         h = hashlib.sha256(json.dumps(identity(cfg), sort_keys=True).encode()).hexdigest()[:8]
         cfg["run_id"] = f"{stem}-{h}"
     return cfg
+
+
+def _validate_mf(mf: Dict, cfg: Dict, where: str = "multi_fidelity") -> Dict:
+    if mf["enabled"]:
+        scr = [mf["screen"]] if isinstance(mf["screen"], str) else list(mf["screen"])
+        rk = fid_mod.RANK
+        if (not scr or any(f not in fid_mod.FIDELITIES for f in scr)
+                or any(rk[a] >= rk[b] for a, b in zip(scr + [cfg["fidelity"]], scr[1:] + [cfg["fidelity"]]))):
+            raise ValueError(f"{where}.screen: a fidelity or an ascending list of fidelities, all below `fidelity` "
+                             "(the authoritative one), e.g. 'rigid', 'reduced' or ['rigid', 'reduced'] for fidelity 'full'; "
+                             "'rigid' for fidelity 'full_a1'")
+        mf["ladder"] = scr + [cfg["fidelity"]]
+        if mf.get("min_full_frac") is not None and not 0.0 <= float(mf["min_full_frac"]) <= 1.0:
+            raise ValueError(f"{where}.min_full_frac must be in [0, 1] (or null = per-aircraft default)")
+        if not (isinstance(mf["top_k"], int) and 1 <= mf["top_k"] <= cfg["ga"]["pop_size"]):
+            raise ValueError(f"{where}.top_k must be an int in [1, pop_size]")
+    else:
+        mf.pop("ladder", None)
+    return mf
+
+
+def _validate_phase2(cfg: Dict) -> None:
+    ini = cfg["init"]
+    if set(ini) - {"mode", "sigma", "blocks"}:
+        raise ValueError(f"init: unknown keys {sorted(set(ini) - {'mode', 'sigma', 'blocks'})}")
+    if ini["mode"] not in ("uniform", "baseline"):
+        raise ValueError("init.mode must be 'uniform' or 'baseline'")
+    if ini["mode"] == "baseline":
+        if not cfg["struct_genes"]:
+            raise ValueError("init.mode 'baseline' seeds the struct genes: needs struct_genes")
+        if list(ini["blocks"]) != ["struct"]:
+            raise ValueError("init.blocks: only ['struct'] (FD's structure genes) can be seeded")
+        if not 0.10 <= float(ini["sigma"]) <= 0.15:
+            raise ValueError("init.sigma must be in [0.10, 0.15] (normalized units)")
+    if cfg["struct_asymmetric"] and not cfg["struct_genes"]:
+        raise ValueError("struct_asymmetric needs struct_genes")
+    for ac, pins in (cfg["pin_model_version"] or {}).items():
+        if not isinstance(pins, dict) or set(pins) - set(fid_mod.FIDELITIES) or not all(isinstance(v, str) for v in pins.values()):
+            raise ValueError(f"pin_model_version.{ac}: {{fidelity: model_version string}}")
+
+
+def check_pins(cfg: Dict, name: str, fids, mv: Dict, profile_d: Optional[Dict] = None) -> Dict[str, str]:
+    """Refuse (SystemExit, before any evaluation, cache write or checkpoint) unless every reduced/full fidelity this
+    aircraft uses is pinned and equals FD's model_version. Pins are FD's own strings (v2_results/model_versions_*.json),
+    i.e. at FD's default reduced gate 0.9; evolution's reduced string also hashes the per-aircraft reduced_gate (1.0 on
+    swept wings), so a reduced pin is checked against FD's default-gate string of the same model and the run's own
+    gated string is what the cache guard then allows. Returns {fidelity: allowed run model_version}. Aircraft absent
+    from pin_model_version: no check, {}."""
+    pins = (cfg.get("pin_model_version") or {}).get(name)
+    if pins is None:
+        return {}
+    for f in fids:
+        if f != "rigid" and f not in pins:
+            raise SystemExit(f"[{name}] pin_model_version has no entry for fidelity {f!r}; refusing to evaluate or cache")
+    allowed = {}
+    for f, want in pins.items():
+        got = mv.get(f)
+        if got is None:
+            raise SystemExit(f"[{name}] pinned fidelity {f!r} is not used by this run (ladder {list(fids)})")
+        fd_got = got
+        if f == "reduced" and profile_d is not None:
+            fd_got = fid_mod.model_version(profile_d, "reduced", None)   # FD's default gate (what FD publishes)
+        if want == PIN_PLACEHOLDER or want not in (fd_got, got):
+            why = ("placeholder: fill in Flight Dynamics' new model_version" if want == PIN_PLACEHOLDER
+                   else "Flight Dynamics' model changed")
+            raise SystemExit(f"[{name}] model_version pin mismatch for {f}: pinned {want!r}, FD reports {fd_got!r}"
+                             + (f" (run string {got!r})" if got != fd_got else "") + f" ({why}); "
+                             "refusing to evaluate, write cache entries or resume")
+        allowed[f] = got
+    return allowed
+
+
+def model_versions_report(cfg: Dict) -> Dict:
+    """{aircraft: {fidelity: {current, pinned, match}}} for every fidelity of each aircraft's ladder (in-process, read-only;
+    the same eval.describe the batch runs first). Use it to fill pin_model_version once FD sends its new strings: the
+    reduced string includes the per-aircraft reduced_gate (FD's default 0.9; 1.0 on swept wings in evolution)."""
+    rep = {}
+    for ac in cfg["aircraft"]:
+        mf = ac.get("multi_fidelity") or cfg.get("multi_fidelity") or {}
+        fids = list(mf["ladder"]) if mf.get("enabled") else [cfg["fidelity"]]
+        gate = fid_mod.per_aircraft(ac["name"], cfg.get("fidelity_per_aircraft"))["reduced_gate"]
+        d = eval_mod.describe(ac["resolved_profile"], fids, gate)
+        pins = (cfg.get("pin_model_version") or {}).get(ac["name"]) or {}
+        rep[ac["name"]] = {}
+        for f in fids:
+            cur = d["model_version"].get(f)
+            fd = fid_mod.model_version(ac["resolved_profile"], "reduced", None) if f == "reduced" and cur else cur
+            rep[ac["name"]][f] = {"current": cur, **({"fd_default_gate": fd} if fd != cur else {}), "pinned": pins.get(f),
+                                  "match": (pins.get(f) in (cur, fd)) if f in pins else None}
+        if d.get("error"):
+            rep[ac["name"]]["error"] = d["error"]
+    return rep
 
 
 def git_sha(repo: str) -> Dict:
@@ -177,14 +315,30 @@ def _now() -> str:
 
 
 # --------------------------------------------------------------------------- runner
-def full_schema(prof: "sim.Profile", struct_genes: bool):
-    """(schema, groups): controller genes (6, +2 heading) then, with struct_genes, FD's STRUCT_SCHEMA genes."""
+def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = False):
+    """(schema, groups): controller genes (6, +2 heading) then, with struct_genes, FD's v2 struct genes (12, 14 asym)."""
     sch = genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)
     groups = ["gains"] * len(sch)
     if struct_genes:
-        st = fid_mod.struct_schema()
+        st = fid_mod.struct_schema(asymmetric)
         sch, groups = sch + st, groups + ["struct"] * len(st)
     return sch, groups
+
+
+def seed_generation_zero(pop: np.ndarray, rng: np.random.Generator, schema, groups, init: Dict) -> np.ndarray:
+    """init.mode 'baseline' (Phase 2): after the unchanged uniform draw, the struct genes become encode(FD baseline) +
+    sigma * N(0, 1), clipped to [0, 1] (Genome init_pop.generation_zero; mutation/crossover still reach the full
+    ranges). 'uniform' (default): pop returned untouched, no RNG draws (bit-identical to earlier runs)."""
+    if (init or {}).get("mode", "uniform") != "baseline":
+        return pop
+    idx = [j for j, g in enumerate(groups) if g == "struct"]
+    if not idx:
+        return pop
+    base = fid_mod.baseline_u([schema[j] for j in idx])
+    noise = rng.standard_normal((pop.shape[0], len(idx)))
+    pop = pop.copy()
+    pop[:, idx] = np.clip(base + float(init["sigma"]) * noise, 0.0, 1.0)
+    return pop
 
 
 def spearman(a, b) -> Optional[float]:
@@ -318,22 +472,38 @@ class Batch:
             f.flush()
             os.fsync(f.fileno())
 
+    def _mf(self, ac: Dict) -> Dict:
+        """This aircraft's multi-fidelity settings (multi_fidelity_per_aircraft override, else the global block)."""
+        return ac.get("multi_fidelity") or self.mf
+
     def _viz_on(self) -> bool:
         return self.viz in (True, "on")
 
     def _describe_all(self):
         """model_version per aircraft and fidelity (computed in a worker), then run.json."""
-        fids = [self.fidelity] + ([self.mf["screen"]] if self.mf.get("enabled") else [])
-        futs = {ac["name"]: self.pool.submit(eval_mod.describe, ac["resolved_profile"], fids) for ac in self.cfg["aircraft"]}
+        fids_of = {ac["name"]: (list(self._mf(ac)["ladder"]) if self._mf(ac).get("enabled") else [self.fidelity])
+                   for ac in self.cfg["aircraft"]}
+        pa = {ac["name"]: fid_mod.per_aircraft(ac["name"], self.cfg.get("fidelity_per_aircraft")) for ac in self.cfg["aircraft"]}
+        futs = {ac["name"]: self.pool.submit(eval_mod.describe, ac["resolved_profile"], fids_of[ac["name"]],
+                                             pa[ac["name"]]["reduced_gate"])
+                for ac in self.cfg["aircraft"]}
         for ac in self.cfg["aircraft"]:
             d = futs[ac["name"]].result()
+            fids, mfa = fids_of[ac["name"]], self._mf(ac)
+            if not d.get("error") and ac["name"] in (self.cfg.get("pin_model_version") or {}):
+                self.cache.pins[ac["name"]] = check_pins(self.cfg, ac["name"], fids, d["model_version"], ac["resolved_profile"])
             prof = sim.Profile.from_dict(ac["resolved_profile"])
-            sch, groups = full_schema(prof, self.cfg.get("struct_genes", False))
+            sch, groups = full_schema(prof, self.cfg.get("struct_genes", False), self.cfg.get("struct_asymmetric", False))
             self.info[ac["name"]] = {"schema": sch, "groups": groups, "model_files_sha": d["model_files_sha"],
                                      "model_version": d["model_version"].get(self.fidelity),
                                      "mv": d["model_version"], "error": d.get("error")}
-            if self.mf.get("enabled"):
-                self.info[ac["name"]]["screen_model_version"] = d["model_version"].get(self.mf["screen"])
+            if "reduced" in fids or "full" in fids or "full_a1" in fids:
+                self.info[ac["name"]]["reduced_gate"] = pa[ac["name"]]["reduced_gate"]
+            if mfa.get("enabled"):
+                self.info[ac["name"]]["screen_model_version"] = d["model_version"].get(mfa["ladder"][0])
+                self.info[ac["name"]]["ladder_model_version"] = {f: d["model_version"].get(f) for f in fids}
+                mff = mfa.get("min_full_frac")
+                self.info[ac["name"]]["min_full_frac"] = float(pa[ac["name"]]["min_full_frac"] if mff is None else mff)
         rj = os.path.join(self.run_dir, "run.json")
         doc = runinfo.build_run_json(self.cfg, self.prov, self.info, _now())
         if os.path.exists(rj):
@@ -345,21 +515,20 @@ class Batch:
             runinfo.write_json_atomic(rj, doc)
 
     # ---- evaluation
-    KEEP = ("cost", "status", "t_end", "track", "effort", "comfort", "heading_rms", "hdg_drift_deg", "hdg_max_abs_err_deg")
+    KEEP = ("cost", "status", "t_end", "track", "effort", "comfort", "heading_rms", "hdg_drift_deg", "hdg_max_abs_err_deg",
+            "hold_osc", "hold_pp_ft", "draft_residual_ft", "draft_max_err_ft")
 
     def _trim_result(self, r: Dict) -> Dict:
         out = {k: r[k] for k in self.KEEP if k in r}
-        if r.get("pre") is not None:   # flex: margins + structural terms (rigid rows stay exactly as before)
-            pre = r["pre"]
-            out["sim_cost"] = r.get("sim_cost")
-            out["pre"] = {"fail": pre["fail"], "margins_fidelity": pre["margins_fidelity"],
-                          "flutter_margin": pre["margins"].get("flutter_margin"), "div_margin": pre["margins"].get("div_margin"),
-                          "terms": pre["terms"]}
-            out["struct"] = r.get("struct")
-            out["fidelity"], out["model_version"] = r.get("fidelity"), r.get("model_version")
+        if r.get("fidelity", "rigid") != "rigid":   # flex (FD flexeval per-scenario entry); rigid rows stay exactly as before
+            for k in ("sim_cost", "struct", "not_flown", "tip_max_ft", "twist_max_deg", "fidelity", "model_version"):
+                if k in r:
+                    out[k] = r[k]
         return out
 
     def _evaluate(self, st: Dict, pop: np.ndarray, fid: str):
+        if fid != "rigid":
+            return self._evaluate_flex(st, pop, fid)
         ac, prof_d, scs = st["ac"], st["profile_d"], st["scenarios_d"]
         schema, groups = st["schema"], st["groups"]
         mv = st["mv"][fid]
@@ -397,7 +566,7 @@ class Batch:
                 st["live_traj"][k] = tr
             memo[k] = r
             new.append((k, ac["name"], r))
-            cpu += r.get("wall_s", 0.0)
+            cpu += r.get("task_cpu_s", r.get("wall_s", 0.0))
         self.cache.put_many(new)
         results = []
         for row in keys:
@@ -408,8 +577,115 @@ class Batch:
         return results, {"unique_sims": len(need), "sims_computed": len(miss), "cache_hits_mem": mem_hits,
                          "cache_hits_disk": len(disk), "eval_cpu_s": cpu}
 
+    def _ladder(self, st, pop, gen, mf):
+        """Multi-fidelity generation. ladder = screens (ascending) + authoritative fidelity. Stage 0 scores everyone;
+        each later stage scores the best of the previous stage (by that stage's cost) plus every carried elite:
+        the authoritative stage gets k_full = max(top_k, ceil(min_full_frac * pop)) (min_full_frac per aircraft: 0.25 on
+        swept wings), a middle stage mid_k (default 2 * k_full). Ranking: authoritative-scored first (by that cost), then
+        by the highest fidelity reached and its cost. Feasibility is trusted only from the authoritative stage."""
+        ladder = mf["ladder"]
+        n = len(pop)
+        elite = self.cfg["ga"]["elite"]
+        elites = set(range(min(elite, n))) if gen > 0 else set()
+        k_full = min(n, max(int(mf["top_k"]), math.ceil(st["min_full_frac"] * n - 1e-9)))
+        k_mid = min(n, int(mf.get("mid_k") or 2 * k_full))
+        idx = list(range(n))
+        scored: Dict[str, Dict[int, Dict]] = {}
+        stages = {}
+        for si, f in enumerate(ladder):
+            ts = time.perf_counter()
+            res, es_x = self._evaluate(st, pop[idx], f)
+            scored[f] = dict(zip(idx, res))
+            stages[f] = {**es_x, "n": len(idx), "eval_wall_s": time.perf_counter() - ts}
+            if si + 1 < len(ladder):
+                keep = k_full if si + 1 == len(ladder) - 1 else k_mid
+                ordr = sorted(idx, key=lambda i: (scored[f][i]["cost"], i))
+                idx = sorted(set(ordr[:keep]) | elites)
+        top = ladder[-1]
+        full_idx = set(scored[top])
+
+        def level(i):
+            return max(si for si, f in enumerate(ladder) if i in scored[f])
+        sel = [scored[ladder[level(i)]][i] for i in range(n)]
+        order = np.array(sorted(range(n), key=lambda i: (len(ladder) - 1 - level(i), sel[i]["cost"], i)), dtype=int)
+        costs = np.array([r["cost"] for r in sel])
+        es = {k: sum(stages[f][k] for f in ladder) for k in ("unique_sims", "sims_computed", "cache_hits_mem",
+                                                             "cache_hits_disk", "eval_cpu_s")}
+        fl = sorted(full_idx)
+        sp, sp_ok, pairs = {}, {}, {}
+        for f in ladder[:-1]:
+            pr = [[scored[f][i]["cost"], scored[top][i]["cost"]] for i in fl]
+            okp = [p for p, i in zip(pr, fl) if scored[f][i]["agg"]["status"] == "ok" and scored[top][i]["agg"]["status"] == "ok"]
+            sp[f"{f}_vs_{top}"] = spearman([p[0] for p in pr], [p[1] for p in pr])
+            sp_ok[f"{f}_vs_{top}"] = spearman([p[0] for p in okp], [p[1] for p in okp])
+            pairs[f] = pr
+        if len(ladder) == 3:
+            mid = sorted(scored[ladder[1]])
+            pr = [[scored[ladder[0]][i]["cost"], scored[ladder[1]][i]["cost"]] for i in mid]
+            sp[f"{ladder[0]}_vs_{ladder[1]}"] = spearman([p[0] for p in pr], [p[1] for p in pr])
+        extra = {"ladder": ladder, "screen_fidelity": ladder[0], "top_k": mf["top_k"], "k_full": k_full,
+                 "k_mid": k_mid if len(ladder) == 3 else None, "min_full_frac": st["min_full_frac"],
+                 "n_rescored": len(fl), "rescored_idx": fl, "spearman": sp, "spearman_both_ok": sp_ok,
+                 "spearman_screen_vs_full": sp[f"{ladder[0]}_vs_{top}"], "rescored_pairs": pairs[ladder[0]],
+                 "ladder_pairs": pairs, "stages": stages,
+                 "screen": stages[ladder[0]], "full": stages[top],
+                 "eval_wall_s_screen": sum(stages[f]["eval_wall_s"] for f in ladder[:-1]),
+                 "eval_wall_s_full": stages[top]["eval_wall_s"],
+                 "best_screen_cost": float(min(r["cost"] for r in scored[ladder[0]].values())),
+                 "n_ok_authoritative": sum(1 for i in fl if scored[top][i]["agg"]["status"] == "ok")}
+        return sel, order, costs, es, scored, full_idx, extra
+
+    def _evaluate_flex(self, st: Dict, pop: np.ndarray, fid: str):
+        """reduced/full: one FD flexeval.evaluate per genome over all scenarios (margins + model build once per genome);
+        cache key = genome x all scenarios x reduced gate x model_version."""
+        ac, prof_d, scs = st["ac"], st["profile_d"], st["scenarios_d"]
+        schema, groups = st["schema"], st["groups"]
+        mv, gate = st["mv"][fid], st["reduced_gate"]
+        unit = {"scenarios": scs, "reduced_gate": gate if fid == "reduced" else None, "unit": "genome"}
+        keys = [cache_mod.eval_key(ac["name"], g, prof_d, unit, self.cfg["scenario_seed"], self.jsbsim_version,
+                                   self.code_sha, st["model_sha"], fidelity=fid, model_version=mv) for g in pop]
+        need: Dict[str, int] = {}
+        for i, k in enumerate(keys):
+            need.setdefault(k, i)
+        memo = st["memo"]
+        mem_hits = sum(1 for k in need if k in memo)
+        todo = [k for k in need if k not in memo]
+        disk = self.cache.get_many(todo)
+        memo.update(disk)
+        miss = [k for k in todo if k not in disk]
+        viz = self._viz_on()
+        s_idx = self.cfg["trajectories"]["scenario"]
+        futs = {}
+        for k in miss:
+            gains, struct = eval_mod.split_values(genome.decode(pop[need[k]], schema), dict(zip([g.name for g in schema], groups)))
+            futs[self.pool.submit(eval_mod.task_genome, prof_d, gains, struct, scs, fid, gate, viz,
+                                  self.cfg["trajectories"]["sample_hz"])] = k
+        new, cpu = [], 0.0
+        for fu in cf.as_completed(futs):
+            r = fu.result()
+            k = futs[fu]
+            if r.get("fidelity") != fid or r.get("model_version") != mv:
+                raise RuntimeError(f"{ac['name']}: result fidelity/model_version {r.get('fidelity')}/{r.get('model_version')} "
+                                   f"!= expected {fid}/{mv}")
+            trs = r.pop("trajectories", None)
+            if trs and len(trs) > s_idx and trs[s_idx] is not None:
+                st["live_traj"][k] = trs[s_idx]
+            r["per_scenario"] = [self._trim_result(p) for p in r["per_scenario"]]
+            memo[k] = r
+            new.append((k, ac["name"], r))
+            cpu += r.get("task_cpu_s", r.get("wall_s", 0.0))
+        self.cache.put_many(new)
+        results = []
+        for k in keys:
+            r = memo[k]
+            agg = {kk: v for kk, v in r.items() if kk != "per_scenario"}
+            results.append({"cost": r["cost"], "per_scenario": r["per_scenario"], "agg": agg, "keys": [k] * len(scs)})
+        n_s = len(scs)
+        return results, {"unique_sims": len(need) * n_s, "sims_computed": len(miss) * n_s, "cache_hits_mem": mem_hits * n_s,
+                         "cache_hits_disk": len(disk) * n_s, "eval_cpu_s": cpu}
+
     # ---- one aircraft
-    def _rows(self, st, gen, pop_orig, order, sel, scr, full_idx, mf):
+    def _rows(self, st, gen, pop_orig, order, sel, scored, full_idx, mf):
         """genomes.jsonl rows of one generation: individual_id <ac>:g<gen>:r<rank> (r0 = best, as Sim Bridge's adapter),
         index = position in the evaluated population (elites carried from the previous generation are 0..elite-1)."""
         name, schema, groups = st["ac"]["name"], st["schema"], st["groups"]
@@ -422,7 +698,7 @@ class Batch:
             vals = genome.decode(pop_orig[i], schema)
             gains, struct = eval_mod.split_values(vals, dict(zip([g.name for g in schema], groups)))
             row = {"schema": runinfo.GENOMES_SCHEMA, "individual_id": f"{name}:g{gen}:r{rank_of[i]}", "run_id": self.cfg["run_id"],
-                   "aircraft": name, "generation": gen, "index": i, "rank": rank_of[i], "is_best": rank_of[i] == 0,
+                   "aircraft": name, "generation": gen, "eval_seed": self.cfg["scenario_seed"], "index": i, "rank": rank_of[i], "is_best": rank_of[i] == 0,
                    "is_elite": rank_of[i] < elite, "carried_elite": gen > 0 and i < elite,
                    "genome": vals, "genome_norm": [float(x) for x in pop_orig[i]],
                    "gains": gains, "struct": struct, "cost": res["cost"], "fitness": res["cost"],
@@ -433,12 +709,21 @@ class Batch:
                    "model_version": agg["model_version"], "session": self.session}
             if "margins" in agg:
                 row["margins"], row["margins_fidelity"] = agg["margins"], agg["margins_fidelity"]
+            for k in ("mass_total_frac", "mass_lb", "J_mass_fd", "mass_credit_clip", "mass_credit_delta", "task_cpu_s"):
+                if k in agg and agg.get("fidelity", "rigid") != "rigid":   # flex rows only (rigid rows unchanged)
+                    row[k] = agg[k]
             if mf:
+                scr = scored[mf["ladder"][0]]
                 row["rescored_at_full"] = i in full_idx
                 row["screen_cost"] = scr[i]["cost"]
                 row["screen_fidelity"] = scr[i]["agg"]["fidelity"]
                 row["screen_model_version"] = scr[i]["agg"]["model_version"]
                 row["screen_per_scenario_cost"] = [p["cost"] for p in scr[i]["per_scenario"]]
+                row["ladder_cost"] = {f: scored[f][i]["cost"] for f in mf["ladder"] if i in scored[f]}
+                row["ladder_status"] = {f: scored[f][i]["agg"]["status"] for f in mf["ladder"] if i in scored[f]}
+                row["ladder_model_version"] = {f: scored[f][i]["agg"]["model_version"] for f in mf["ladder"] if i in scored[f]}
+                if i not in full_idx:      # feasibility is trusted only from the authoritative fidelity
+                    row["feasible"], row["feasibility_fidelity"] = None, None
             rows.append(row)
         return rows
 
@@ -451,9 +736,13 @@ class Batch:
         gains, struct = eval_mod.split_values(vals, dict(zip([g.name for g in st["schema"]], st["groups"])))
         if tr is None:   # cache hit: re-fly once with the recorder
             r = self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s_idx], self.fidelity,
-                                 True, self.cfg["trajectories"]["sample_hz"]).result()
-        else:
+                                 True, self.cfg["trajectories"]["sample_hz"], st["reduced_gate"], "fd").result()
+        elif self.fidelity == "rigid":
             r = dict(st["memo"][best_key])
+            r["trajectory"] = tr
+        else:
+            g = st["memo"][best_key]
+            r = dict(g["per_scenario"][s_idx], fidelity=g["fidelity"], model_version=g["model_version"])
             r["trajectory"] = tr
         st["live_traj"].clear()
         doc = trajectory.build_doc(run_id=self.cfg["run_id"], aircraft=st["ac"]["name"], jsbsim_version=self.jsbsim_version,
@@ -472,18 +761,23 @@ class Batch:
         prof = sim.Profile.from_dict(ac["resolved_profile"])
         scs = sim.make_scenarios(self.cfg["scenarios"], self.cfg["scenario_seed"], prof)
         info = self.info[name]
-        mf = self.mf if self.mf.get("enabled") else None
+        mf = self._mf(ac) if self._mf(ac).get("enabled") else None
         fid = self.fidelity
         st = {"ac": ac, "profile_d": ac["resolved_profile"], "scenarios_d": [s.to_dict() for s in scs],
               "scenario_ids": [runinfo.scenario_id(name, i) for i in range(len(scs))],
               "schema": info["schema"], "groups": info["groups"], "memo": {}, "live_traj": {},
-              "mv": info["mv"], "model_sha": sim.model_files_sha(name, prof.aircraft_root)}
+              "mv": info["mv"], "model_sha": sim.model_files_sha(name, prof.aircraft_root),
+              "reduced_gate": info.get("reduced_gate"), "min_full_frac": info.get("min_full_frac", 0.0)}
         gcfg = ga.GAConfig(**{k: v for k, v in self.cfg["ga"].items() if k != "generations"})
         out = {"aircraft": name, "profile": ac["profile"], "aircraft_root": prof.aircraft_root,
                "model_files_sha": st["model_sha"], "fidelity": fid, "fidelity_label": fid_mod.label(fid),
                "model_version": info["model_version"]}
         if mf:
-            out["multi_fidelity"] = {**mf, "screen_model_version": info.get("screen_model_version")}
+            out["multi_fidelity"] = {**mf, "screen_model_version": info.get("screen_model_version"),
+                                     "ladder_model_version": info.get("ladder_model_version"),
+                                     "min_full_frac": info.get("min_full_frac")}
+        if info.get("reduced_gate") is not None:
+            out["reduced_gate"] = info["reduced_gate"]
         pre = self.pool.submit(sim.preflight, st["profile_d"], st["scenarios_d"][0]).result()
         out["preflight"] = pre
         if pre.get("socket_io_elements"):
@@ -498,7 +792,8 @@ class Batch:
         ck = self._load_ck(name)
         if ck is None:
             rng = np.random.default_rng(ac["seed"])
-            pop = ga.generation_zero(rng, self.cfg["ga"]["pop_size"], len(st["schema"]))  # 6, 8 with heading hold, +4 struct
+            pop = ga.generation_zero(rng, self.cfg["ga"]["pop_size"], len(st["schema"]))  # 8 with heading hold, +12/14 struct
+            pop = seed_generation_zero(pop, rng, st["schema"], st["groups"], self.cfg.get("init") or {})
             ck = {"aircraft": name, "gen_next": 0, "done": False, "pop": pop.tolist(),
                   "rng_state": rng.bit_generator.state, "history": [], "best_per_gen": []}
         else:
@@ -514,37 +809,17 @@ class Batch:
             gen = ck["gen_next"]
             t0 = time.perf_counter()
             extra = {}
-            scr, full_idx = None, set()
+            scored, full_idx = None, set()
             if not mf:
                 sel, es = self._evaluate(st, pop, fid)
                 costs = np.array([r["cost"] for r in sel])
                 order = ga.rank_order(costs)
             else:
-                ts = time.perf_counter()
-                scr, es_s = self._evaluate(st, pop, mf["screen"])
-                t_scr = time.perf_counter() - ts
-                order_s = ga.rank_order(np.array([r["cost"] for r in scr]))
-                full_idx = {int(i) for i in order_s[:mf["top_k"]]} | (set(range(min(elite, len(pop)))) if gen > 0 else set())
-                fl = sorted(full_idx)
-                tf = time.perf_counter()
-                fres, es_f = self._evaluate(st, pop[fl], fid)
-                t_full = time.perf_counter() - tf
-                fmap = dict(zip(fl, fres))
-                sel = [fmap.get(i, scr[i]) for i in range(len(pop))]
-                order = np.array(sorted(range(len(pop)), key=lambda i: (0, fmap[i]["cost"], i) if i in fmap
-                                        else (1, scr[i]["cost"], i)), dtype=int)
-                costs = np.array([r["cost"] for r in sel])
-                es = {k: es_s[k] + es_f[k] for k in es_s}
-                pairs = [[scr[i]["cost"], fmap[i]["cost"]] for i in fl]
-                extra = {"screen_fidelity": mf["screen"], "top_k": mf["top_k"], "n_rescored": len(fl), "rescored_idx": fl,
-                         "spearman_screen_vs_full": spearman([p[0] for p in pairs], [p[1] for p in pairs]),
-                         "rescored_pairs": pairs, "screen": es_s, "full": es_f,
-                         "eval_wall_s_screen": t_scr, "eval_wall_s_full": t_full,
-                         "best_screen_cost": float(min(r["cost"] for r in scr))}
+                sel, order, costs, es, scored, full_idx, extra = self._ladder(st, pop, gen, mf)
             wall = time.perf_counter() - t0
             for k in tot:
                 tot[k] += es[k]
-            rows = self._rows(st, gen, pop, order, sel, scr, full_idx, mf)
+            rows = self._rows(st, gen, pop, order, sel, scored, full_idx, mf)
             pop, costs, sel = pop[order], costs[order], [sel[i] for i in order]
             invalid = [any(s["status"] != "ok" for s in r["per_scenario"]) for r in sel]
             crash = [any(s["status"] == "crash" for s in r["per_scenario"]) for r in sel]
@@ -563,6 +838,9 @@ class Batch:
                 "best_gains": genome.decode(pop[0], st["schema"]), "session": self.session,
             }
             if fid != "rigid" or mf:
+                fs = [r for r in sel if r["agg"]["fidelity"] == fid]
+                rec["n_scored_authoritative"] = len(fs)
+                rec["feasible_rate_authoritative"] = (sum(1 for r in fs if r["agg"]["status"] == "ok") / len(fs)) if fs else None
                 rec.update({"fidelity": fid, "model_version": info["model_version"],
                             "best_fidelity": sel[0]["agg"]["fidelity"], "best_feasible": sel[0]["agg"]["feasible"],
                             "best_terms": sel[0]["agg"]["terms"], **extra})
@@ -588,8 +866,8 @@ class Batch:
             msg = (f"[{name:>9}] gen {gen:3d}  best {costs[0]:10.4f}  median {np.median(costs):10.4f}  "
                    f"invalid {sum(invalid):3d}/{len(pop)}  sims {es['sims_computed']:3d} hits {hits:3d}  {wall:5.2f}s")
             if mf:
-                sp = extra["spearman_screen_vs_full"]
-                msg += f"  rescored {extra['n_rescored']} rho {'n/a' if sp is None else f'{sp:+.3f}'}"
+                msg += f"  rescored {extra['n_rescored']} rho " + " ".join(
+                    f"{k.split('_vs_')[0]}:{'n/a' if v is None else f'{v:+.3f}'}" for k, v in extra["spearman"].items())
             self.log(msg)
         out["evolve_wall_s_this_session"] = time.perf_counter() - t_ac
         out["this_session"] = tot
@@ -609,7 +887,7 @@ class Batch:
         def submit(norm, s, fidl):
             gains, struct = eval_mod.split_values(genome.decode(norm, st["schema"]), gmap)
             return self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s], fidl, True,
-                                    tcfg["sample_hz"])
+                                    tcfg["sample_hz"], st["reduced_gate"], "sb")
         jobs = {}
         for g in tcfg["generations_resolved"]:
             jobs[("traj", g)] = submit(bests[g]["genome"], s_idx, bests[g].get("fidelity", self.fidelity))
@@ -643,7 +921,7 @@ class Batch:
             else:
                 m = {}
             m["cost"] = r["cost"]
-            for k in ("hdg_drift_deg", "hdg_max_abs_err_deg"):
+            for k in ("hdg_drift_deg", "hdg_max_abs_err_deg", "hold_osc", "hold_pp_ft", "draft_residual_ft", "draft_max_err_ft"):
                 if k in r:
                     m[k] = r[k]
             per_s.append(m)
@@ -668,12 +946,22 @@ class Batch:
 
     # ---- top level
     def run(self) -> Dict:
+        for name, pins in (self.cfg.get("pin_model_version") or {}).items():   # before anything touches the run dir
+            bad = sorted(f for f, v in pins.items() if v == PIN_PLACEHOLDER)
+            if bad:
+                raise SystemExit(f"[{name}] pin_model_version {bad} still {PIN_PLACEHOLDER!r}: fill in Flight Dynamics' "
+                                 "new model_version strings first; refusing to evaluate, write cache entries or resume")
+        # cache guard: pinned aircraft store nothing until check_pins (in _describe_all) allows their run strings
+        self.cache.pins = {n: {} for n in (self.cfg.get("pin_model_version") or {})}
         resumed = self._prepare_run_dir()
         self.log(f"run {self.cfg['run_id']}  dir {self.run_dir}\n  {len(self.cfg['aircraft'])} aircraft, "
                  f"{self.workers} workers, schedule={self.schedule}, cache={'on' if self.cache.enabled else 'off'}, "
                  f"jsbsim {self.jsbsim_version}, code {self.code_sha}, src {self.git['sha'][:10]}\n  "
                  f"fidelity {fid_mod.label(self.fidelity)}, viz {'on' if self._viz_on() else 'off'}"
-                 + (f", multi-fidelity screen={self.mf['screen']} top_k={self.mf['top_k']}" if self.mf.get('enabled') else "")
+                 + (f", multi-fidelity ladder={'->'.join(self.mf['ladder'])} top_k={self.mf['top_k']}" if self.mf.get('enabled') else "")
+                 + "".join(f"\n  {ac['name']}: ladder={'->'.join(ac['multi_fidelity']['ladder'])}"
+                           f" min_full_frac={ac['multi_fidelity'].get('min_full_frac')}"
+                           for ac in self.cfg["aircraft"] if (ac.get("multi_fidelity") or {}).get("enabled"))
                  + (f"\n  resuming: {resumed}" if resumed else ""))
         ctx = mp.get_context("forkserver")
         ctx.set_forkserver_preload(["evolution._fs_guard", "evolution.sim", "evolution.fidelity", "evolution.eval",
@@ -741,13 +1029,18 @@ def main(argv=None):
     ap.add_argument("--viz", choices=["on", "off"], help="on = record a trajectory on every evaluation + live best file "
                                                         "(slow); off (default) = no logging in the hot path, trajectories "
                                                         "re-flown afterwards. Does not change results")
-    ap.add_argument("--fidelity", choices=list(fid_mod.FIDELITIES), help="rigid (default) | reduced | full (= full(v1) "
-                                                                        "until FD v2). Part of the run identity")
+    ap.add_argument("--fidelity", choices=list(fid_mod.FIDELITIES), help="rigid (default) | reduced (FD flexeval: v1 wing "
+                                                                        "on the projected v2 genome) | full (FD flexeval: "
+                                                                        "flex v2) | full_a1 (FD flexeval_a1: P3-A1 64-strip "
+                                                                        "model). Part of the run identity")
     ap.add_argument("--multi-fidelity", action="store_true", help="screen everyone at --screen, re-score top-k + elites "
                                                                  "at --fidelity")
-    ap.add_argument("--screen", choices=list(fid_mod.FIDELITIES), help="screen fidelity for --multi-fidelity (default reduced)")
+    ap.add_argument("--screen", help="screen fidelity for --multi-fidelity (default reduced); comma list for a ladder, "
+                                     "e.g. rigid,reduced (= rigid -> reduced -> full)")
     ap.add_argument("--top-k", type=int, help="individuals re-scored at --fidelity per generation (default 4)")
     ap.add_argument("--struct-genes", action="store_true", help="add FD's structural genes to the genome")
+    ap.add_argument("--model-versions", action="store_true", help="print each aircraft's model_version per fidelity of its "
+                    "ladder next to the config's pin_model_version, then exit (read-only: no run dir, no cache, no flight)")
     a = ap.parse_args(argv)
     ident = a.seed is not None or a.aircraft or a.profile_for or a.fidelity or a.multi_fidelity or a.screen or \
         a.top_k is not None or a.struct_genes
@@ -771,7 +1064,7 @@ def main(argv=None):
             if a.multi_fidelity:
                 mfc["enabled"] = True
             if a.screen:
-                mfc["screen"] = a.screen
+                mfc["screen"] = a.screen.split(",") if "," in a.screen else a.screen
             if a.top_k is not None:
                 mfc["top_k"] = a.top_k
             user["multi_fidelity"] = mfc
@@ -792,7 +1085,13 @@ def main(argv=None):
             if bad:
                 ap.error(f"--aircraft {bad} not in the config (has {names})")
             user["aircraft"] = [x for x, n in zip(user.get("aircraft", DEFAULTS["aircraft"]), names) if n in want]
+            for k in ("multi_fidelity_per_aircraft", "pin_model_version"):
+                if user.get(k):
+                    user[k] = {n: v for n, v in user[k].items() if n in want}
         cfg = resolve_config(user, os.path.splitext(os.path.basename(a.config))[0])
+    if a.model_versions:
+        print(json.dumps(model_versions_report(cfg), indent=1))
+        return
     b = Batch(cfg)
     # execution-only overrides: not part of the resolved config (they cannot change results)
     if a.workers:

@@ -1,0 +1,217 @@
+{
+  "note": "s1 c172x used rigid\u2192reduced\u2192full; s2/s3 rigid\u2192full everywhere. All three seeds pin post-mass model_versions (pre-P2.5 nsm floor 0.8).",
+  "seeds": {
+    "1": {
+      "c172x": {
+        "best_cost": 0.22869443504675724,
+        "mass_frac": -0.04252842569597984,
+        "mass_lb": -14.544721588025105,
+        "flutter": 1.2274183761263775,
+        "controller": 0.20683582508963613,
+        "structural_sum": 0.021858609957121126,
+        "J_mass": -0.012758527708793951,
+        "ladder": "rigid\u2192reduced\u2192full",
+        "model_version": "full:flexv2:11df8fe4",
+        "wing_nsm_floor_frac": {
+          "root": 0.015625,
+          "tip": 0.0
+        }
+      },
+      "T38": {
+        "best_cost": 0.09758223366445218,
+        "mass_frac": -0.036780578710784405,
+        "mass_lb": -76.13579793132372,
+        "flutter": 1.2046579398995503,
+        "controller": 0.09434150488760928,
+        "structural_sum": 0.0032407287768428904,
+        "J_mass": -0.011034173613235321,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:e9535bc7",
+        "wing_nsm_floor_frac": {
+          "root": 0.90625,
+          "tip": 0.921875
+        }
+      },
+      "737": {
+        "best_cost": 0.12593868258480057,
+        "mass_frac": -0.03475679405698619,
+        "mass_lb": -928.0064013215313,
+        "flutter": 1.1994222059591109,
+        "controller": 0.12162570969373473,
+        "structural_sum": 0.0043129728910658366,
+        "J_mass": -0.010427038217095857,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:2c73464b",
+        "wing_nsm_floor_frac": {
+          "root": 0.890625,
+          "tip": 0.90625
+        }
+      }
+    },
+    "2": {
+      "c172x": {
+        "best_cost": 0.2155116412237333,
+        "mass_frac": -0.053256077861777794,
+        "mass_lb": -18.213578628728005,
+        "flutter": 1.2430076418449045,
+        "controller": 0.19973742677872147,
+        "structural_sum": 0.015774214445011835,
+        "J_mass": -0.015976823358533336,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:11df8fe4",
+        "wing_nsm_floor_frac": {
+          "root": 0.203125,
+          "tip": 0.0
+        }
+      },
+      "T38": {
+        "best_cost": 0.0977098132411565,
+        "mass_frac": -0.030269210417672908,
+        "mass_lb": -62.65726556458292,
+        "flutter": 1.2004877605959694,
+        "controller": 0.09264118806237544,
+        "structural_sum": 0.005068625178781066,
+        "J_mass": -0.009080763125301872,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:e9535bc7",
+        "wing_nsm_floor_frac": {
+          "root": 0.890625,
+          "tip": 0.9375
+        }
+      },
+      "737": {
+        "best_cost": 0.1241280669410159,
+        "mass_frac": -0.03429992218965842,
+        "mass_lb": -915.8079224638797,
+        "flutter": 1.1982996166420776,
+        "controller": 0.12125259063490675,
+        "structural_sum": 0.0028754763061091576,
+        "J_mass": -0.010289976656897525,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:2c73464b",
+        "wing_nsm_floor_frac": {
+          "root": 0.796875,
+          "tip": 0.921875
+        }
+      }
+    },
+    "3": {
+      "c172x": {
+        "best_cost": 0.20196082719498798,
+        "mass_frac": -0.0684312230311873,
+        "mass_lb": -23.403478276666057,
+        "flutter": 1.2026430543476345,
+        "controller": 0.19299847717477114,
+        "structural_sum": 0.008962350020216822,
+        "J_mass": -0.02052936690935619,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:11df8fe4",
+        "wing_nsm_floor_frac": {
+          "root": 0.859375,
+          "tip": 0.9375
+        }
+      },
+      "T38": {
+        "best_cost": 0.09209547827265495,
+        "mass_frac": -0.03688824355402431,
+        "mass_lb": -76.35866415683032,
+        "flutter": 1.204379268368402,
+        "controller": 0.08952035931815996,
+        "structural_sum": 0.0025751189544949895,
+        "J_mass": -0.011066473066207292,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:e9535bc7",
+        "wing_nsm_floor_frac": {
+          "root": 0.875,
+          "tip": 0.9375
+        }
+      },
+      "737": {
+        "best_cost": 0.1203781055341893,
+        "mass_frac": -0.03564601591826443,
+        "mass_lb": -951.7486250176603,
+        "flutter": 1.1986853766252756,
+        "controller": 0.11774107581657647,
+        "structural_sum": 0.0026370297176128267,
+        "J_mass": -0.01069380477547933,
+        "ladder": "rigid\u2192full",
+        "model_version": "full:flexv2:2c73464b",
+        "wing_nsm_floor_frac": {
+          "root": 0.875,
+          "tip": 0.890625
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "c172x": {
+      "best_cost_mean": 0.21538896782182618,
+      "best_cost_std": 0.013367226105879123,
+      "mass_frac_mean": -0.05473857552964831,
+      "mass_frac_std": 0.013014879060084994,
+      "flutter_mean": 1.2243563574396388,
+      "flutter_std": 0.02035575962190171,
+      "best_costs": [
+        0.22869443504675724,
+        0.2155116412237333,
+        0.20196082719498798
+      ],
+      "mass_fracs": [
+        -0.04252842569597984,
+        -0.053256077861777794,
+        -0.0684312230311873
+      ],
+      "flutters": [
+        1.2274183761263775,
+        1.2430076418449045,
+        1.2026430543476345
+      ]
+    },
+    "T38": {
+      "best_cost_mean": 0.09579584172608788,
+      "best_cost_std": 0.003205243579312587,
+      "mass_frac_mean": -0.03464601089416054,
+      "mass_frac_std": 0.0037908026508714798,
+      "flutter_mean": 1.2031749896213073,
+      "flutter_std": 0.0023313760596548414,
+      "best_costs": [
+        0.09758223366445218,
+        0.0977098132411565,
+        0.09209547827265495
+      ],
+      "mass_fracs": [
+        -0.036780578710784405,
+        -0.030269210417672908,
+        -0.03688824355402431
+      ],
+      "flutters": [
+        1.2046579398995503,
+        1.2004877605959694,
+        1.204379268368402
+      ]
+    },
+    "737": {
+      "best_cost_mean": 0.12348161835333525,
+      "best_cost_std": 0.0028360934604367122,
+      "mass_frac_mean": -0.03490091072163635,
+      "mass_frac_std": 0.0006845212131997999,
+      "flutter_mean": 1.1988023997421546,
+      "flutter_std": 0.0005703704945843178,
+      "best_costs": [
+        0.12593868258480057,
+        0.1241280669410159,
+        0.1203781055341893
+      ],
+      "mass_fracs": [
+        -0.03475679405698619,
+        -0.03429992218965842,
+        -0.03564601591826443
+      ],
+      "flutters": [
+        1.1994222059591109,
+        1.1982996166420776,
+        1.1986853766252756
+      ]
+    }
+  }
+}

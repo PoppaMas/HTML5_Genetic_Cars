@@ -21,9 +21,23 @@ evolution/runs/*
 !evolution/runs/phase1hdg-s2/
 !evolution/runs/phase1hdg-s3/
 !evolution/runs/bench_jets-j1/
+!evolution/runs/phase1v5-s1/
+!evolution/runs/phase1v5-s2/
+!evolution/runs/phase1v5-s3/
+!evolution/runs/phase1v5-ki05-s1/
+!evolution/runs/phase2-smoke-s1/
+!evolution/runs/phase2-smoke-p25-s1/
+!evolution/runs/phase2-pilot-s1/
+!evolution/runs/phase2-pilot-s2/
+!evolution/runs/phase2-pilot-s3/
+!evolution/runs/phase2-c172x-full-s1/
+!evolution/runs/phase2-bench-rf-s1/
+!evolution/runs/phase2-bench-rrf-s1/
 evolution/runs/*/trajectories/
+evolution/runs/*/trajectories_traj1/
 evolution/runs/*/live/
 evolution/bench_results/fastmode/
+evolution/bench_results/fdv2/runs/
 
 # large generated artifacts
 *.png
@@ -34,9 +48,18 @@ sim-bridge/screenshots/
 sim-bridge/tools/build/node_modules/
 *_standalone.html
 flight-dynamics/_scratch/
+flight-dynamics/v2_results/bench_parallel_pre_taper/
+flight-dynamics/v2_results/bench_seq_wall_only/
+sim-bridge/patches/
 # machine-specific links to the installed jsbsim package (create with flight-dynamics/link_jsbsim_data.py)
 flight-dynamics/jsbsim_root/engine
 flight-dynamics/jsbsim_root/systems
+flight-dynamics/jsbsim_root_v2/engine
+flight-dynamics/jsbsim_root_v2/systems
+evolution/_fd_pin_post_mass/jsbsim_root/engine
+evolution/_fd_pin_post_mass/jsbsim_root/systems
+evolution/_fd_pin_post_mass/jsbsim_root_v2/engine
+evolution/_fd_pin_post_mass/jsbsim_root_v2/systems
 
 # the repo-root .gitignore ignores every "main.js"; the viewer's entry point must stay tracked
 !sim-bridge/viewer/js/main.js

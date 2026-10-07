@@ -32,7 +32,7 @@ def test_index_shape_and_generations(small_run):
 
 def test_doc_fields_units_and_frame(small_run):
     for name, d in _docs(small_run["run_dir"]).items():
-        assert d["schema"] == "ga-flightsim-traj/1"
+        assert d["schema"] == "ga-flightsim-traj/2"
         assert d["units"] == {"phi": "rad", "theta": "rad", "psi": "rad", "controls": "norm -1..1, throttle 0..1"}
         assert d["sample_hz"] == 30 and abs(d["dt_s"] - 1 / 30) < 1e-12
         assert d["channels"][:19] == trajectory.REQUIRED_CHANNELS

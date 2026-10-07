@@ -1,4 +1,4 @@
-"""Best-trajectory export (format ``ga-flightsim-traj/1``) and altitude-hold metrics."""
+"""Best-trajectory export (format ``ga-flightsim-traj/2``; /1 still accepted by validate_traj) and altitude-hold metrics."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 
 import numpy as np
 
-SCHEMA = "ga-flightsim-traj/1"
+SCHEMA = "ga-flightsim-traj/2"  # /2: full FE wings via v2_map + wing*_modal; see FLEX_STATE_SCHEMA /3
 INDEX_SCHEMA = "ga-flightsim-traj-index/1"
 REQUIRED_CHANNELS = ["t", "x", "y", "z", "qw", "qx", "qy", "qz", "vx", "vy", "vz", "alt_msl_m",
                      "phi", "theta", "psi", "throttle", "elevator", "aileron", "rudder"]
@@ -44,7 +44,8 @@ CHANNEL_DOC = {
     "lon_deg": "longitude, deg (position/long-gc-deg).",
 }
 _STRUCT_DOF_DOC = {"dz": "m, body z (+ down), elastic deflection of the elastic axis vs the undeformed (jig) shape incl. the 1-g trim deflection",
-                   "dy": "m, body y (+ right); always 0.0 in FD flexwing v1 (no in-plane modes)",
+                   "dy": "m, body y (+ right); modal wings = 0.0; htail/vtail/fuselage from v2_map",
+                   "dx": "m, body x (+ forward); FE wing in-plane (full, v2_map): dx = -v*0.3048 (FD v + aft)",
                    "twist": "rad, right-hand rotation about the component axis node0->nodeN (wingR + = leading edge up, wingL + = leading edge down)"}
 
 
@@ -60,9 +61,28 @@ def channel_doc(channels: List[str]) -> Dict[str, str]:
             comp, dof, i = c.split(".")
             out[c] = f"structure channel: component {comp}, node {i} (structure.components[].axis_nodes_body_m), {dof}: " \
                      + _STRUCT_DOF_DOC.get(dof, "see structure block")
+        elif c.startswith("flex."):
+            out[c] = _flex_doc(c[5:])
+        elif c.startswith("struct."):
+            out[c] = ("Sim Bridge scalar from sim-bridge v2_map (V2_MAP_VERSION, FD INTERFACE_v2 §11 signs); "
+                      "see structure.v2_map.scalars / SIGN_TABLE")
         else:
             out[c] = "undocumented extra channel"
     return out
+
+
+_FLEX_UNITS = (("_lbft", "lbf*ft"), ("_lbf", "lbf"), ("_deg", "deg"), ("_ft", "ft"), ("_bm", "lbf*ft (root bending moment)"),
+               ("_torque", "lbf*ft (root torque)"), ("_shear", "lbf (root shear)"))
+
+
+def _flex_doc(key: str) -> str:
+    unit = next((u for suf, u in _FLEX_UNITS if suf + "_" in key + "_"), "see flight-dynamics/INTERFACE_v2.md")
+    sign = ""
+    if "twist" in key:
+        sign = "; FD raw sign: + = leading edge up (nose-up) on BOTH wings (Sim Bridge wingL.twist = -this)"
+    elif key.startswith("tip_w") or key.endswith("_w_ft"):
+        sign = "; FD raw sign: + = up (Sim Bridge dz = -0.3048 * this)"
+    return f"Flight Dynamics raw coupler diagnostic '{key}' (FD names and sign convention), {unit}{sign}"
 
 
 def traj_filename(aircraft: str, run_id: str, gen: int) -> str:
@@ -102,8 +122,10 @@ def build_doc(*, run_id: str, aircraft: str, jsbsim_version: str, git_sha: str, 
         "seed": int(seed),
         "generation": int(generation),
         "fitness": float(fitness),
-        "fitness_sense": "minimize (GA cost, mean over scenarios)",
+        "fitness_sense": "min",
+        "fitness_doc": "GA cost, mean over the aircraft's scenarios; lower is better",
         "scenario_index": int(scenario_index),
+        "scenario_id": f"{aircraft}:s{int(scenario_index)}",
         "scenario_cost": float(sim_result["cost"]),
         "status": sim_result["status"],
         "genome": {k: float(v) for k, v in gains.items()},

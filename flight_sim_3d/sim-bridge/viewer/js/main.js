@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { fetchJSON, decodeBuffer, isIndex, parseIndex, parseTrajectory, locate, lerpCh, lerpAngleDeg, quatAt } from 'fv/traj.js';
+import { fetchJSON, decodeBuffer, isIndex, parseIndex, parseTrajectory, locate, normSense, lerpCh, lerpAngleDeg, quatAt } from 'fv/traj.js';
 import { resolvePreset, buildProcedural, buildGltf, applyControls, attachStructure, applyStructure } from 'fv/aircraft.js';
 
 const $ = (id) => document.getElementById(id);
@@ -20,7 +20,7 @@ const DEFAULT_RUNS_URL = params.get('runs') || '../data/runs/runs.json';
 const S = {
   runs: [], indexUrl: null, indexMeta: {}, entries: [], cache: new Map(), localFiles: new Map(),
   mode: 'single', singleIdx: 0, compareSet: new Set(), shown: [], focus: 0,
-  t: 0, tEnd: 1, playing: false, speed: 1, cam: 'chase', exag: 1, mscale: 1, spacing: 25,
+  t: 0, tEnd: 1, playing: false, speed: 1, cam: 'chase', exag: 1, mscale: 1, spacing: 25, dofs: null,
   defl: 1,         // soft-body: structural deflection exaggeration (x)
   layout: 'true',  // 'true' = real positions | 'formation' = along-track distance equalised so all keep station
   vref: 'auto',    // 3D vertical reference: 'abs' (MSL) | 'rel' (relative to own trim altitude) | 'norm' (rel, steps scaled equal) | 'auto'
@@ -196,16 +196,17 @@ function runShort(run) {
 const runFamily = (run) => { const r = String(run ?? ''); const k = r.lastIndexOf('-'); return k > 0 ? r.slice(0, k) : r; };
 const runTag = (run) => (multiRun() ? runShort(run) + ' ' : '');
 // optimisation sense: "min" (cost, ER default and every file so far) unless an index/file says "max"
-const senseOf = (x) => (x && x.sense) || S.indexMeta?.fitness_sense || 'min';
+const senseOf = (x) => normSense((x && x.sense) || S.indexMeta?.fitness_sense || 'min');
 const metricName = (x) => (senseOf(x) === 'max' ? 'fitness' : 'cost');
 const isBetter = (a, b, sense) => (sense === 'max' ? a > b + 1e-12 : a < b - 1e-12);
 // replay indexes: several scenarios / individuals per generation -> tag them (sc<k>, r<rank>)
-const multiScenario = () => new Set(S.entries.map((e) => e.scenario).filter((v) => v != null)).size > 1;
+// ids are opaque (never parsed): a non-best individual is tagged r<rank> (or its full id), a scenario by its position
+const scenKey = (e) => (e.scenarioIndex ?? e.scenario ?? null);
+const multiScenario = () => new Set(S.entries.map(scenKey).filter((v) => v != null)).size > 1;
 const indTag = (e) => {
   let t = '';
-  const r = e.individual ? String(e.individual).split(':').pop() : null;
-  if (r && r !== 'r0') t += ' ' + r;
-  if (e.scenario != null && multiScenario()) t += ' sc' + e.scenario;
+  if (e.isBest === false) t += ' ' + (e.rank != null ? 'r' + e.rank : String(e.individual ?? '?'));
+  if (scenKey(e) != null && multiScenario()) t += ' sc' + scenKey(e);
   return t;
 };
 const genLabel = (e, i) => `${multiAircraft() && e.aircraft ? e.aircraft + ' ' : ''}${runTag(e.run)}${e.generation != null ? 'g' + String(e.generation).padStart(3, '0') : '#' + i}${indTag(e)}  ${e.fitness != null ? Number(e.fitness).toFixed(6) : '?'}${e.status && e.status !== 'ok' ? '  ✗ ' + e.status : ''}${e.verdict && e.verdict !== 'match' ? '  [' + e.verdict + ']' : ''}`;
@@ -214,7 +215,8 @@ function improvementPicks(max = 6) {
   const out = [];
   const best = {}; // per aircraft+run (respecting fitness_sense)
   S.entries.forEach((e, i) => {
-    if (multiScenario() && e.scenario != null && String(e.scenario) !== String(S.entries.find((x) => x.scenario != null).scenario)) return;
+    if (multiScenario() && scenKey(e) != null && String(scenKey(e)) !== String(scenKey(S.entries.find((x) => scenKey(x) != null)))) return;
+    if (e.isBest === false) return;
     const k = (e.aircraft || '') + '|' + (e.run ?? '');
     if (e.fitness != null && (best[k] == null || isBetter(e.fitness, best[k], senseOf(e)))) { best[k] = e.fitness; out.push(i); }
   });
@@ -231,7 +233,7 @@ function spreadPicks(k) {
 }
 
 // token: "12" (generation), "t6texan2:12" (aircraft:generation), optional "@run" (full or short run id),
-// optional "#sc<k>" / "#r<rank>" (replay indexes with several scenarios / individuals per generation)
+// optional "#sc<k>" (scenario position or id) / "#r<rank>" / "#best" / "#<individual_id>" (replay indexes)
 function findEntry(tok) {
   let run = null, tag = null;
   if (tok.includes('@')) [tok, run] = tok.split('@');
@@ -241,7 +243,10 @@ function findEntry(tok) {
     const [ac0, g0] = tok.includes(':') ? tok.split(':') : [null, tok];
     return S.entries.findIndex((e) => String(e.generation) === g0 && (!ac0 || e.aircraft === ac0) &&
       (!run || e.run === run || runShort(e.run) === run) &&
-      want.every((w) => (w.startsWith('sc') ? String(e.scenario) === w.slice(2) : String(e.individual ?? 'r0').split(':').pop() === w)));
+      want.every((w) => (w.startsWith('sc') ? (String(scenKey(e)) === w.slice(2) || String(e.scenario) === w.slice(2))
+        : w === 'best' ? e.isBest !== false
+          : /^r\d+$/.test(w) && e.rank != null ? 'r' + e.rank === w
+            : w === 'r0' ? e.isBest !== false : String(e.individual) === w)));
   }
   const [ac, g] = tok.includes(':') ? tok.split(':') : [null, tok];
   const runOk = (e) => !run || e.run === run || runShort(e.run) === run || (!multiRun() && true);
@@ -554,7 +559,7 @@ function update(dtSec) {
     d.root.quaternion.copy(s.q);
     const c = (n) => lerpCh(d.tr.ch[n], s.i, s.f);
     applyControls(d.model, { elevator: c('elevator'), aileron: c('aileron'), rudder: c('rudder'), throttle: c('throttle') }, s.ended ? 0 : dtSec);
-    if (d.deformer) applyStructure(d.model, d.deformer, (arr) => lerpCh(arr, s.i, s.f), S.defl);
+    if (d.deformer) applyStructure(d.model, d.deformer, (arr) => lerpCh(arr, s.i, s.f), S.defl, S.dofs);
     d.prog.geometry.instanceCount = Math.max(1, s.i + (s.f > 0 ? 1 : 0));
     d.ghost.visible = d.prog.visible = $('show-trail').checked;
     if (d.tline) d.tline.visible = $('show-target').checked;
@@ -706,16 +711,36 @@ function flexHud(tr, i, f) {
   const st = tr.structure;
   if (!st) return '';
   let h = st.synthetic ? '\n<span class="warn">SYNTHETIC structure data (test pattern, not a simulation)</span>' : '';
-  h += `\n<span class="small">flex ×${S.defl} display · tip values true scale${tr.meta.fidelity ? ' · ' + tr.meta.fidelity : ''}</span>`;
+  const fid = tr.meta.fidelity || (tr.meta.replay && tr.meta.replay.fidelity);
+  h += `\n<span class="small">flex ×${S.defl} display · tip values true scale${fid ? ' · ' + fid : ''}</span>`;
+  if (S.dofs) h += `\n<span class="warn">display shows only: ${S.dofs.join(', ')} (rest hidden)</span>`;
+  if (st.estimated && st.estimated.length) h += `\n<span class="warn">ESTIMATED (tip-only, no FD nodes): ${st.estimated.join(', ')}</span>`;
+  else if (!st.synthetic) h += '\n<span class="small">FD nodal data (all components)</span>';
   for (const c of st.components) {
-    const tip = (d) => (c.ch[d] && c.ch[d][c.axis_nodes.length - 1] ? lerpCh(c.ch[d][c.axis_nodes.length - 1], i, f) : NaN);
-    const dz = tip('dz'), dy = tip('dy'), tw = tip('twist');
-    const parts = [];
-    if (Number.isFinite(dz)) parts.push(`dz ${fmtS(dz, 3, 6)} m`);
-    if (Number.isFinite(dy)) parts.push(`dy ${fmtS(dy, 3, 6)} m`);
-    if (Number.isFinite(tw)) parts.push(`tw ${fmtS(tw / D2R, 2, 6)}°`);
-    if (parts.length) h += `\nTIP ${c.name.padEnd(8)} ${parts.join('  ')}`;
+    if ((c.name || '').endsWith('_modal')) continue;  // FE tips shown; modal kept in channels for comparison
+    const last = c.axis_nodes.length - 1;
+    // htail runs left tip -> right tip: show both tips (L/R differ under roll / asymmetric loads)
+    const at = (d, k) => (c.ch[d] && c.ch[d][k] ? lerpCh(c.ch[d][k], i, f) : NaN);
+    const fmt = (k) => {
+      const dz = at('dz', k), dy = at('dy', k), dx = at('dx', k), tw = at('twist', k);
+      const parts = [];
+      if (Number.isFinite(dz)) parts.push(`dz ${fmtS(dz, 3, 6)}`);
+      if (Number.isFinite(dy)) parts.push(`dy ${fmtS(dy, 3, 6)}`);
+      if (Number.isFinite(dx)) parts.push(`dx ${fmtS(dx, 4, 7)}`);
+      if (Number.isFinite(tw)) parts.push(`tw ${fmtS(tw / D2R, 2, 6)}°`);
+      return parts.join(' ');
+    };
+    const est = c.estimated ? ' <span class="warn">est.</span>' : '';
+    if (c.name === 'htail') {
+      const l = fmt(0), r = fmt(last);
+      if (l) h += `\nTIP htail L ${l}${est}`;
+      if (r) h += `\nTIP htail R ${r}${est}`;
+    } else {
+      const p = fmt(last);
+      if (p) h += `\nTIP ${c.name.padEnd(8)} ${p}${est}`;
+    }
   }
+  if (st.components.length) h += '\n<span class="small">m / deg; dz+ down dy+ right dx+ fwd</span>';
   return h;
 }
 
@@ -950,7 +975,7 @@ function animate() {
 
 // ---------------------------------------------------------------- debug / test API
 window.fv = {
-  S, THREE, camera, renderer, scene,
+  S, THREE, camera, renderer, scene, controls,
   get ready() { return S.ready; },
   setTime(t) { S.t = t; update(0); renderer.render(scene, camera); },
   setMode, rebuild,
@@ -975,6 +1000,7 @@ window.fv = {
   if (params.get('exag')) { S.exag = +params.get('exag'); $('exag').value = params.get('exag'); }
   if (params.get('scale')) { S.mscale = +params.get('scale'); $('mscale').value = S.mscale; $('mscale-val').textContent = `${S.mscale}x`; }
   if (params.get('notes') === '1') S.notesOpen = true;
+  if (params.get('dofs')) S.dofs = params.get('dofs').split(',').filter(Boolean);
   if (params.get('defl')) { S.defl = +params.get('defl'); $('defl').value = S.defl; $('defl-val').textContent = `${S.defl}x`; }
   for (const [k, id] of [['layout', 'layout'], ['vref', 'vref'], ['cy', 'cy']]) if (params.get(k)) { S[k] = params.get(k); $(id).value = S[k]; }
   if (params.get('spacing')) { S.spacing = +params.get('spacing'); $('spacing').value = S.spacing; $('spacing-val').textContent = `${S.spacing} m`; }

@@ -1,0 +1,32 @@
+{
+  "_comment": "Experiment: phase1_v5 with the ki_alt upper bound raised to 0.5 (v5-only; v4 keeps 0.05).",
+  "name": "phase1_v5_kialt05",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "shared": "phase1",
+  "heading_hold": true,
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    }
+  },
+  "hold_quality": true,
+  "disturbance_scenario": true,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
+}

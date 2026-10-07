@@ -103,6 +103,10 @@ def evolution_v5_profiles():
         task = adapter.load_task("phase1_v5", {"aircraft": name})
         assert task.fitness.weights["hold_osc"] == hq["weight"] and task.disturbance["downdraft_fps"] == a["disturbance"]["downdraft_fps"]
         prof["_why"] = prof["_why"].replace("HANDOFF_heading_hold.md", "HANDOFF_heading_hold.md and genome/HANDOFF_phase1_v5.md")
+        # v5-only gene-bound overrides from presets/phase1_v5.json (e.g. the ki_alt upper bound); v4 keeps the shared ones
+        for gname in task.raw.get("gene_overrides", {}):
+            g = next(x for x in task.spec.genes if x.name == gname)
+            prof["gain_bounds"][gname] = [g.min, g.max]
         prof.update({
             # --- v5 (needs the evolution/ code change in HANDOFF_phase1_v5.md) ---
             "w_hold": hq["weight"] / sh["task"]["fitness_weights"]["track_alt"],

@@ -1,0 +1,1588 @@
+{
+ "aircraft": "c172x",
+ "er_run": "phase2-smoke-s1",
+ "er_best_id": "c172x:g4:r0",
+ "er_recorded_cost": 0.39455837284417933,
+ "schema_equal": true,
+ "schema_diff": [],
+ "profile_vs_pilot_diff": {},
+ "init": {
+  "er_pilot": {
+   "mode": "baseline",
+   "sigma": 0.1,
+   "blocks": [
+    "struct"
+   ]
+  },
+  "genome": {
+   "mode": "baseline",
+   "sigma": 0.1,
+   "blocks": [
+    "structure_v2"
+   ],
+   "seed_runs": []
+  }
+ },
+ "scenario_diff": [],
+ "encode_max_abs_diff_vs_er_genome_norm": 3.3306690738754696e-16,
+ "evals": {
+  "er_best": {
+   "er_cost": 0.39455837284417933,
+   "genome_cost": 0.39455837284417933,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "ok",
+    [
+     "ok",
+     "ok",
+     "ok"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 0.25569927518046587,
+     "genome": 0.25569927518046587,
+     "bitwise": true,
+     "sim_cost_er": 0.23413534475086534,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.5725079222001065,
+     "genome": 0.5725079222001065,
+     "bitwise": true,
+     "sim_cost_er": 0.5223938256144948,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.3554679211519657,
+     "genome": 0.3554679211519657,
+     "bitwise": true,
+     "sim_cost_er": 0.32767136271959985,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.0002708259915733233,
+     "genome": 0.0002708259915733233,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": -0.0007526196352588206,
+     "genome": -0.0007526196352588206,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.032997124042779616,
+     "genome": 0.032997124042779616,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0001379498786311601,
+     "genome": 0.0001379498786311601,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.00020839205638172457,
+     "genome": 0.00020839205638172457,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.00027568360944753165,
+     "genome": 0.00027568360944753165,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 2.083920563817246e-05,
+     "genome": 2.083920563817246e-05,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.10798544412754586,
+     "genome": 0.10798544412754586,
+     "bitwise": true
+    },
+    "effort": {
+     "er": 0.06638132952178816,
+     "genome": 0.06638132952178816,
+     "bitwise": true
+    },
+    "comfort": {
+     "er": 2.0391516038665376,
+     "genome": 2.0391516038665376,
+     "bitwise": true
+    },
+    "heading": {
+     "er": 1.8694494330537583,
+     "genome": 1.8694494330537583,
+     "bitwise": true
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.1967086416690167,
+     "div_margin": 1.632309956059039,
+     "reversal_margin": 1.4406271556615429
+    },
+    "genome": {
+     "flutter_margin": 1.1967086416690167,
+     "div_margin": 1.632309956059039,
+     "reversal_margin": 1.4406271556615429,
+     "min_margin": 1.1967086416690167,
+     "binding": "wingR.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": -0.002508732117529402,
+    "genome": -0.002508732117529402,
+    "bitwise": true
+   }
+  },
+  "er_best_gains_fd_baseline_struct": {
+   "er_cost": 0.4211725381804851,
+   "genome_cost": 0.4211725381804851,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "ok",
+    [
+     "ok",
+     "ok",
+     "ok"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 0.273830860596013,
+     "genome": 0.273830860596013,
+     "bitwise": true,
+     "sim_cost_er": 0.25228366942595465,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.630968697886882,
+     "genome": 0.630968697886882,
+     "bitwise": true,
+     "sim_cost_er": 0.5782758288060696,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.3587180560585602,
+     "genome": 0.3587180560585602,
+     "bitwise": true,
+     "sim_cost_er": 0.3314318066135367,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.033842103231964744,
+     "genome": 0.033842103231964744,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.12119136166418436,
+     "genome": 0.12119136166418436,
+     "bitwise": true
+    },
+    "effort": {
+     "er": 0.06933563242990597,
+     "genome": 0.06933563242990597,
+     "bitwise": true
+    },
+    "comfort": {
+     "er": 2.1746129735741913,
+     "genome": 2.1746129735741913,
+     "bitwise": true
+    },
+    "heading": {
+     "er": 1.8737159745814498,
+     "genome": 1.8737159745814498,
+     "bitwise": true
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.2279006175548508,
+     "div_margin": 1.6691692082752472,
+     "reversal_margin": 1.4734228795384454
+    },
+    "genome": {
+     "flutter_margin": 1.2279006175548508,
+     "div_margin": 1.6691692082752472,
+     "reversal_margin": 1.4734228795384454,
+     "min_margin": 1.2279006175548508,
+     "binding": "wingR.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": 0.0,
+    "genome": 0.0,
+    "bitwise": true
+   }
+  },
+  "er_overload:c172x:g0:r10": {
+   "er_cost": 1004.4630661469763,
+   "genome_cost": 1004.4630661469763,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "overload",
+    [
+     "ok",
+     "overload",
+     "overload"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 16.16725724431442,
+     "genome": 16.16725724431442,
+     "bitwise": true,
+     "sim_cost_er": 15.850943929449652,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 1565.277637264974,
+     "genome": 1565.277637264974,
+     "bitwise": true,
+     "sim_cost_er": 1565.2777777777778,
+     "status": [
+      "overload",
+      "overload"
+     ]
+    },
+    {
+     "er": 1431.9443039316404,
+     "genome": 1431.9443039316404,
+     "bitwise": true,
+     "sim_cost_er": 1431.9444444444443,
+     "status": [
+      "overload",
+      "overload"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": -0.006407823024955712,
+     "genome": -0.006407823024955712,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.2858857341656061,
+     "genome": 0.2858857341656061,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.025683937104818297,
+     "genome": 0.025683937104818297,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0002921113651315305,
+     "genome": 0.0002921113651315305,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.002718208103483347,
+     "genome": 0.002718208103483347,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.0002718208103483347,
+     "genome": 0.0002718208103483347,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0022441276164201613,
+     "genome": 0.0022441276164201613,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.0007410423257265162,
+     "genome": 0.0007410423257265162,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.00488415639819011,
+     "genome": 0.00488415639819011,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.08500005376635562,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "effort": {
+     "er": 7.125436642197431,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "comfort": {
+     "er": 30.269095997153954,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "heading": {
+     "er": 0.16157914307373505,
+     "genome": NaN,
+     "bitwise": false
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.2107143364894344,
+     "div_margin": 1.6450518448786606,
+     "reversal_margin": 1.4507748744190148
+    },
+    "genome": {
+     "flutter_margin": 1.2107143364894344,
+     "div_margin": 1.6450518448786606,
+     "reversal_margin": 1.4507748744190148,
+     "min_margin": 1.2107143364894344,
+     "binding": "wingR.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": -0.021359410083185707,
+    "genome": -0.021359410083185707,
+    "bitwise": true
+   }
+  }
+ },
+ "raw": {
+  "er": {
+   "profile_vs_pilot_diff": {},
+   "scenarios": [
+    {
+     "seed": 1016164991,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ],
+     "wind_north_fps": 0.0,
+     "wind_east_fps": 0.0,
+     "gust_sigma_fps": 0.0,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": 0.0,
+     "discrete_gust_t_s": 30.0,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    },
+    {
+     "seed": 1099128569,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ],
+     "wind_north_fps": 14.815420728420232,
+     "wind_east_fps": 18.893081885137402,
+     "gust_sigma_fps": 3.8459483414117317,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": -10.96328514280803,
+     "discrete_gust_t_s": 41.554051876408835,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    },
+    {
+     "seed": 669652944,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ],
+     "wind_north_fps": -12.549072662472344,
+     "wind_east_fps": -4.042050948210394,
+     "gust_sigma_fps": 1.082677339729205,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": 11.767003192534947,
+     "discrete_gust_t_s": 31.594634329981844,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    }
+   ],
+   "pilot_init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+     "struct"
+    ]
+   },
+   "schema": [
+    [
+     "kp_alt",
+     0.002,
+     2.0,
+     "log"
+    ],
+    [
+     "ki_alt",
+     1e-06,
+     0.5,
+     "log0"
+    ],
+    [
+     "kd_alt",
+     0.01,
+     3.0,
+     "log"
+    ],
+    [
+     "kp_pitch",
+     0.002,
+     0.5,
+     "log"
+    ],
+    [
+     "ki_pitch",
+     1e-05,
+     0.2,
+     "log0"
+    ],
+    [
+     "kd_pitch",
+     0.0001,
+     0.5,
+     "log"
+    ],
+    [
+     "kp_hdg",
+     0.05,
+     5.0,
+     "log"
+    ],
+    [
+     "ki_hdg",
+     1e-05,
+     0.1,
+     "log0"
+    ],
+    [
+     "wing_ei_root",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "wing_ei_taper_1",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_2",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_3",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_4",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_root",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_tip",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_nsm_root",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "wing_nsm_tip",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "tail_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "fuselage_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "struct_damping_ratio",
+     0.005,
+     0.05,
+     "log"
+    ]
+   ],
+   "evals": {
+    "er_best": {
+     "cost": 0.39455837284417933,
+     "status": "ok",
+     "terms": {
+      "track": 0.10798544412754586,
+      "effort": 0.06638132952178816,
+      "comfort": 2.0391516038665376,
+      "heading": 1.8694494330537583,
+      "hold": 0.0,
+      "J_flutter_margin": 0.0002708259915733233,
+      "J_div_margin": 0.0,
+      "J_mass": -0.0007526196352588206,
+      "J_bm_rms": 0.032997124042779616,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0001379498786311601,
+      "J_wing_bm_limit": 0.00020839205638172457,
+      "J_wing_torque_limit": 0.00027568360944753165,
+      "J_wing_ip_limit": 2.083920563817246e-05,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 0.25569927518046587,
+       "sim_cost": 0.23413534475086534,
+       "status": "ok",
+       "track": 0.11054129892361197,
+       "effort": 0.03134274569723248,
+       "comfort": 0.8205304520921035,
+       "heading_rms": 1.988203182818323
+      },
+      {
+       "cost": 0.5725079222001065,
+       "sim_cost": 0.5223938256144948,
+       "status": "ok",
+       "track": 0.10649551589503832,
+       "effort": 0.10934987490786663,
+       "comfort": 3.64348375237849,
+       "heading_rms": 1.5024372284798648
+      },
+      {
+       "cost": 0.3554679211519657,
+       "sim_cost": 0.32767136271959985,
+       "status": "ok",
+       "track": 0.10691951756398732,
+       "effort": 0.05845136796026536,
+       "comfort": 1.6534406071290193,
+       "heading_rms": 2.1177078878630864
+      }
+     ],
+     "per_scenario_struct": [
+      {
+       "J_bm_rms": 0.021402859323187435,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.0499530254791987,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.02763548732595271,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      }
+     ],
+     "margins": {
+      "flutter_margin": 1.1967086416690167,
+      "div_margin": 1.632309956059039,
+      "reversal_margin": 1.4406271556615429
+     },
+     "mass_total_frac": -0.002508732117529402,
+     "model_version": "full:flexv2:11df8fe4"
+    },
+    "er_best_gains_fd_baseline_struct": {
+     "cost": 0.4211725381804851,
+     "status": "ok",
+     "terms": {
+      "track": 0.12119136166418436,
+      "effort": 0.06933563242990597,
+      "comfort": 2.1746129735741913,
+      "heading": 1.8737159745814498,
+      "hold": 0.0,
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_mass": 0.0,
+      "J_bm_rms": 0.033842103231964744,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 0.273830860596013,
+       "sim_cost": 0.25228366942595465,
+       "status": "ok",
+       "track": 0.1270934735671828,
+       "effort": 0.032012367191688096,
+       "comfort": 0.8235730974752405,
+       "heading_rms": 1.9986806601633589
+      },
+      {
+       "cost": 0.630968697886882,
+       "sim_cost": 0.5782758288060696,
+       "status": "ok",
+       "track": 0.12146195017890894,
+       "effort": 0.12107195930490683,
+       "comfort": 3.9921164523948884,
+       "heading_rms": 1.5064137397602624
+      },
+      {
+       "cost": 0.3587180560585602,
+       "sim_cost": 0.3314318066135367,
+       "status": "ok",
+       "track": 0.11501866124646129,
+       "effort": 0.054922570793122946,
+       "comfort": 1.7081493708524451,
+       "heading_rms": 2.116053523820728
+      }
+     ],
+     "per_scenario_struct": [
+      {
+       "J_bm_rms": 0.02154719117005835,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.0526928690808124,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.027286249445023492,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      }
+     ],
+     "margins": {
+      "flutter_margin": 1.2279006175548508,
+      "div_margin": 1.6691692082752472,
+      "reversal_margin": 1.4734228795384454
+     },
+     "mass_total_frac": 0.0,
+     "model_version": "full:flexv2:11df8fe4"
+    },
+    "er_overload:c172x:g0:r10": {
+     "cost": 1004.4630661469763,
+     "status": "overload",
+     "terms": {
+      "track": 0.08500005376635562,
+      "effort": 7.125436642197431,
+      "comfort": 30.269095997153954,
+      "heading": 0.16157914307373505,
+      "hold": 0.0,
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_mass": -0.006407823024955712,
+      "J_bm_rms": 0.2858857341656061,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_tail_bm_peak": 0.025683937104818297,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0002921113651315305,
+      "J_wing_bm_limit": 0.002718208103483347,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0002718208103483347,
+      "J_tail_bm_limit": 0.0022441276164201613,
+      "J_fus_bm_limit": 0.0007410423257265162,
+      "J_wing_torque_peak": 0.00488415639819011,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 16.16725724431442,
+       "sim_cost": 15.850943929449652,
+       "status": "ok",
+       "track": 0.08500005376635562,
+       "effort": 7.125436642197431,
+       "comfort": 30.269095997153954,
+       "heading_rms": 0.16157914307373505
+      },
+      {
+       "cost": 1565.277637264974,
+       "sim_cost": 1565.2777777777778,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN
+      },
+      {
+       "cost": 1431.9443039316404,
+       "sim_cost": 1431.9444444444443,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN
+      }
+     ],
+     "per_scenario_struct": [
+      {
+       "J_bm_rms": 0.2858857341656061,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.025683937104818297,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.00488415639819011,
+       "J_wing_ip_peak": 0.0
+      },
+      null,
+      null
+     ],
+     "margins": {
+      "flutter_margin": 1.2107143364894344,
+      "div_margin": 1.6450518448786606,
+      "reversal_margin": 1.4507748744190148
+     },
+     "mass_total_frac": -0.021359410083185707,
+     "model_version": "full:flexv2:11df8fe4"
+    }
+   }
+  },
+  "genome": {
+   "schema": [
+    [
+     "kp_alt",
+     0.002,
+     2.0,
+     "log"
+    ],
+    [
+     "ki_alt",
+     1e-06,
+     0.5,
+     "log0"
+    ],
+    [
+     "kd_alt",
+     0.01,
+     3.0,
+     "log"
+    ],
+    [
+     "kp_pitch",
+     0.002,
+     0.5,
+     "log"
+    ],
+    [
+     "ki_pitch",
+     1e-05,
+     0.2,
+     "log0"
+    ],
+    [
+     "kd_pitch",
+     0.0001,
+     0.5,
+     "log"
+    ],
+    [
+     "kp_hdg",
+     0.05,
+     5.0,
+     "log"
+    ],
+    [
+     "ki_hdg",
+     1e-05,
+     0.1,
+     "log0"
+    ],
+    [
+     "wing_ei_root",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "wing_ei_taper_1",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_2",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_3",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_4",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_root",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_tip",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_nsm_root",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "wing_nsm_tip",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "tail_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "fuselage_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "struct_damping_ratio",
+     0.005,
+     0.05,
+     "log"
+    ]
+   ],
+   "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+     "structure_v2"
+    ],
+    "seed_runs": []
+   },
+   "scenarios": [
+    {
+     "seed": 1016164991,
+     "wind_north_fps": 0.0,
+     "wind_east_fps": 0.0,
+     "gust_sigma_fps": 0.0,
+     "discrete_gust_fps": 0.0,
+     "discrete_gust_t_s": 30.0,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ]
+    },
+    {
+     "seed": 1099128569,
+     "wind_north_fps": 14.815420728420232,
+     "wind_east_fps": 18.893081885137402,
+     "gust_sigma_fps": 3.8459483414117317,
+     "discrete_gust_fps": -10.96328514280803,
+     "discrete_gust_t_s": 41.554051876408835,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ]
+    },
+    {
+     "seed": 669652944,
+     "wind_north_fps": -12.549072662472344,
+     "wind_east_fps": -4.042050948210394,
+     "gust_sigma_fps": 1.082677339729205,
+     "discrete_gust_fps": 11.767003192534947,
+     "discrete_gust_t_s": 31.594634329981844,
+     "duration_s": 90.0,
+     "h0_ft": 4000.0,
+     "speed_kts": 100.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       4000.0
+      ],
+      [
+       5.0,
+       4200.0
+      ],
+      [
+       50.0,
+       4000.0
+      ]
+     ]
+    }
+   ],
+   "weights": {
+    "track_alt": 1.0,
+    "effort": 2.0,
+    "comfort": 0.05,
+    "track_heading_rms": 0.01,
+    "structural_v2": 1.0
+   },
+   "params": {
+    "struct_v2_source": "fd",
+    "struct_v2_w_peak": 0.1,
+    "struct_v2_w_rms": 0.5
+   },
+   "warnings": [
+    "override kp_alt: [0.002, 2] log",
+    "override ki_alt: [1e-06, 0.5] log0",
+    "override kd_alt: [0.01, 3] log",
+    "override kp_pitch: [0.002, 0.5] log",
+    "override ki_pitch: [1e-05, 0.2] log0",
+    "override kd_pitch: [0.0001, 0.5] log",
+    "override kp_hdg: [0.05, 5] log",
+    "override ki_hdg: [1e-05, 0.1] log0",
+    "structure_v2 block: FD flex v2 genes from flexbody.gene_schema() (notional structural data, see FD INTERFACE_v2.md)"
+   ],
+   "evals": {
+    "er_best": {
+     "cost": 0.39455837284417933,
+     "per_scenario": [
+      {
+       "cost": 0.25569927518046587,
+       "status": "ok",
+       "track": 0.11054129892361197,
+       "effort": 0.03134274569723248,
+       "comfort": 0.8205304520921035,
+       "heading_rms": 1.988203182818323,
+       "structural_v2": 0.021563930429600527
+      },
+      {
+       "cost": 0.5725079222001065,
+       "status": "ok",
+       "track": 0.10649551589503832,
+       "effort": 0.10934987490786663,
+       "comfort": 3.64348375237849,
+       "heading_rms": 1.5024372284798648,
+       "structural_v2": 0.05011409658561179
+      },
+      {
+       "cost": 0.3554679211519657,
+       "status": "ok",
+       "track": 0.10691951756398732,
+       "effort": 0.05845136796026536,
+       "comfort": 1.6534406071290193,
+       "heading_rms": 2.1177078878630864,
+       "structural_v2": 0.027796558432365802
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.0002708259915733233,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": -0.0007526196352588206,
+      "J_smooth": 0.0001379498786311601,
+      "J_wing_bm_limit": 0.00020839205638172457,
+      "J_wing_torque_limit": 0.00027568360944753165,
+      "J_wing_ip_limit": 2.083920563817246e-05,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.032997124042779616,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 0.00016107110641309146,
+     "objectives": {
+      "track_alt": 0.10798544412754586,
+      "effort": 0.06638132952178816,
+      "comfort": 2.0391516038665376,
+      "track_heading_rms": 1.8694494330537583,
+      "structural_v2": 0.03315819514919271,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.1967086416690167,
+      "div_margin": 1.632309956059039,
+      "reversal_margin": 1.4406271556615429,
+      "min_margin": 1.1967086416690167,
+      "binding": "wingR.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": -0.002508732117529402,
+     "encode": [
+      0.5865183268255314,
+      0.8396846036089424,
+      0.7264736103123705,
+      0.5525499503986501,
+      0.49500065705476165,
+      0.36769956969000656,
+      0.10973466400669674,
+      0.2032415440873966,
+      0.4146129121303731,
+      0.7660860582394723,
+      0.9124687399801906,
+      0.8382268577775716,
+      0.9015301097013272,
+      0.45863985380270783,
+      0.5602639991966268,
+      0.42795960860881355,
+      0.4536444907346661,
+      0.5369123451916754,
+      0.4431576583190168,
+      0.6081806855361573
+     ]
+    },
+    "er_best_gains_fd_baseline_struct": {
+     "cost": 0.4211725381804851,
+     "per_scenario": [
+      {
+       "cost": 0.273830860596013,
+       "status": "ok",
+       "track": 0.1270934735671828,
+       "effort": 0.032012367191688096,
+       "comfort": 0.8235730974752405,
+       "heading_rms": 1.9986806601633589,
+       "structural_v2": 0.02154719117005835
+      },
+      {
+       "cost": 0.630968697886882,
+       "status": "ok",
+       "track": 0.12146195017890894,
+       "effort": 0.12107195930490683,
+       "comfort": 3.9921164523948884,
+       "heading_rms": 1.5064137397602624,
+       "structural_v2": 0.0526928690808124
+      },
+      {
+       "cost": 0.3587180560585602,
+       "status": "ok",
+       "track": 0.11501866124646129,
+       "effort": 0.054922570793122946,
+       "comfort": 1.7081493708524451,
+       "heading_rms": 2.116053523820728,
+       "structural_v2": 0.027286249445023492
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": 0.0,
+      "J_smooth": 0.0,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.033842103231964744,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 0.0,
+     "objectives": {
+      "track_alt": 0.12119136166418436,
+      "effort": 0.06933563242990597,
+      "comfort": 2.1746129735741913,
+      "track_heading_rms": 1.8737159745814498,
+      "structural_v2": 0.033842103231964744,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.2279006175548508,
+      "div_margin": 1.6691692082752472,
+      "reversal_margin": 1.4734228795384454,
+      "min_margin": 1.2279006175548508,
+      "binding": "wingR.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": 0.0,
+     "encode": [
+      0.5865183268255314,
+      0.8396846036089424,
+      0.7264736103123705,
+      0.5525499503986501,
+      0.49500065705476165,
+      0.36769956969000656,
+      0.10973466400669674,
+      0.2032415440873966,
+      0.424283357506555,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.5714285714285715,
+      0.5714285714285715,
+      0.5,
+      0.5,
+      0.424283357506555,
+      0.424283357506555,
+      0.6020599913279623
+     ]
+    },
+    "er_overload:c172x:g0:r10": {
+     "cost": 1004.4630661469763,
+     "per_scenario": [
+      {
+       "cost": 16.16725724431442,
+       "status": "ok",
+       "track": 0.08500005376635562,
+       "effort": 7.125436642197431,
+       "comfort": 30.269095997153954,
+       "heading_rms": 0.16157914307373505,
+       "structural_v2": 0.3163133148647687
+      },
+      {
+       "cost": 1565.277637264974,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN,
+       "structural_v2": NaN
+      },
+      {
+       "cost": 1431.9443039316404,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN,
+       "structural_v2": NaN
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": -0.006407823024955712,
+      "J_smooth": 0.0002921113651315305,
+      "J_wing_bm_limit": 0.002718208103483347,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0002718208103483347,
+      "J_tail_bm_limit": 0.0022441276164201613,
+      "J_fus_bm_limit": 0.0007410423257265162,
+      "J_bm_rms": 0.2858857341656061,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.025683937104818297,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.00488415639819011,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": -0.00014051280384582223,
+     "objectives": {
+      "track_alt": NaN,
+      "effort": NaN,
+      "comfort": NaN,
+      "track_heading_rms": NaN,
+      "structural_v2": NaN,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.2107143364894344,
+      "div_margin": 1.6450518448786606,
+      "reversal_margin": 1.4507748744190148,
+      "min_margin": 1.2107143364894344,
+      "binding": "wingR.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": -0.021359410083185707,
+     "encode": [
+      0.5118216247002567,
+      0.9504636963259353,
+      0.14415961271963373,
+      0.9486494471372439,
+      0.3118314520104855,
+      0.4233264489725756,
+      0.8277025938204418,
+      0.4091991363691612,
+      0.38765665562152984,
+      0.8218615941366199,
+      0.693201513323428,
+      0.8298238549204486,
+      0.6665846742893913,
+      0.7106424114831212,
+      0.563328876287802,
+      0.4358042275304027,
+      0.40916618817164285,
+      0.3858403100857354,
+      0.4019754106635122,
+      0.4976088947668262
+     ]
+    }
+   }
+  }
+ },
+ "er_recompute_equals_recorded": {
+  "er_best": true,
+  "er_overload:c172x:g0:r10": true
+ }
+}

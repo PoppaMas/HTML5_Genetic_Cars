@@ -1,5 +1,5 @@
 {
- "jsbsim_root": "/workspace/flight-sim-team/flight-dynamics/jsbsim_root",
+ "jsbsim_root": "flight-dynamics/jsbsim_root",
  "zero_force_identical_to_stock": true,
  "force_cmd": [
   10.0,

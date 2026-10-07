@@ -1,0 +1,108 @@
+{
+ "tip_bm_eta": 0.875,
+ "nsm_ranges": {
+  "wing_nsm_root": {
+   "lo": 1.0,
+   "hi": 1.25,
+   "scale": "log",
+   "default": 1.0,
+   "rejects_0p9": true
+  },
+  "wing_nsm_tip": {
+   "lo": 1.0,
+   "hi": 1.25,
+   "scale": "log",
+   "default": 1.0,
+   "rejects_0p9": true
+  }
+ },
+ "cases": {
+  "c172x": {
+   "baseline_tip_term": 0.0,
+   "baseline_tip_ratio": 1.0,
+   "taper4_0p75": {
+    "J_wing_tip_bm_limit": 0.017509318343313852,
+    "J_wing_bm_limit": 4.224513086771585e-06,
+    "tip_ratio": 1.1323227808932153,
+    "mass_frac": -0.0031655114945693275
+   },
+   "taper3_4_0p75": {
+    "J_wing_tip_bm_limit": 0.3747616507679232,
+    "tip_ratio": 1.6121777934292645
+   },
+   "nsm_1p25": {
+    "J_wing_tip_bm_limit": 0.0,
+    "mass_frac": 0.05921052631578949
+   },
+   "allowable_tip_bm_lbft": 150.36759107667115
+  },
+  "T38": {
+   "baseline_tip_term": 0.0,
+   "baseline_tip_ratio": 1.0,
+   "taper4_0p75": {
+    "J_wing_tip_bm_limit": 0.006700027171744591,
+    "J_wing_bm_limit": 9.187388284235107e-07,
+    "tip_ratio": 1.0818536936964032,
+    "mass_frac": -0.0011677399544398166
+   },
+   "taper3_4_0p75": {
+    "J_wing_tip_bm_limit": 0.2901650501414626,
+    "tip_ratio": 1.5386697041243944
+   },
+   "nsm_1p25": {
+    "J_wing_tip_bm_limit": 0.0,
+    "mass_frac": 0.04347826086956523
+   },
+   "allowable_tip_bm_lbft": 685.1689364719302
+  },
+  "737": {
+   "baseline_tip_term": 0.0,
+   "baseline_tip_ratio": 1.0,
+   "taper4_0p75": {
+    "J_wing_tip_bm_limit": 0.007253350227415875,
+    "J_wing_bm_limit": 1.9387867147101777e-06,
+    "tip_ratio": 1.0851666027701932,
+    "mass_frac": -0.0014327113568331164
+   },
+   "taper3_4_0p75": {
+    "J_wing_tip_bm_limit": 0.3008892739363935,
+    "tip_ratio": 1.5485337491316222
+   },
+   "nsm_1p25": {
+    "J_wing_tip_bm_limit": 0.0,
+    "mass_frac": 0.04424157303370788
+   },
+   "allowable_tip_bm_lbft": 10375.846812120202
+  },
+  "f16": {
+   "baseline_tip_term": 0.0,
+   "baseline_tip_ratio": 1.0,
+   "taper4_0p75": {
+    "J_wing_tip_bm_limit": 0.006775777127979805,
+    "J_wing_bm_limit": 1.0775364251701284e-06,
+    "tip_ratio": 1.0823151087466925,
+    "mass_frac": -0.0011385405101338648
+   },
+   "taper3_4_0p75": {
+    "J_wing_tip_bm_limit": 0.2915860300920544,
+    "tip_ratio": 1.5399870647451237
+   },
+   "nsm_1p25": {
+    "J_wing_tip_bm_limit": 0.0,
+    "mass_frac": 0.03789473684210528
+   },
+   "allowable_tip_bm_lbft": 1997.0305724055313
+  }
+ },
+ "model_versions": {},
+ "uniform_init_nsm_min_over_64": 1.0003325578110087,
+ "TERM_KEYS_count": 24,
+ "SIZING_TERMS": [
+  "J_wing_bm_limit",
+  "J_wing_torque_limit",
+  "J_wing_ip_limit",
+  "J_wing_tip_bm_limit",
+  "J_tail_bm_limit",
+  "J_fus_bm_limit"
+ ]
+}

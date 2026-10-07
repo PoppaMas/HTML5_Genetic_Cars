@@ -20,7 +20,7 @@ evolution/
   ga.py, genome.py  vendored from flight_sim/ (ga.py unchanged; genome.py adds per-profile gain-bound / kind
                     overrides and the log0 kind)
   cache.py          sqlite evaluation cache + key definition
-  trajectory.py     ga-flightsim-traj/1 export + altitude-hold metrics
+  trajectory.py     ga-flightsim-traj/2 export + altitude-hold metrics
   validate_traj.py  stand-alone format validator (python -m evolution.validate_traj)
   bench.py          benchmark driver (fresh run + cache rerun + schedule comparison -> table)
   configs/          c172x_equiv.json, bench_baseline.json, bench_ic.json, bench_adjusted.json,
@@ -39,8 +39,8 @@ Uses the existing venv (`jsbsim 1.3.1`, numpy, pytest). Run from the parent
 directory so that `evolution` is importable:
 
 ```bash
-cd flight_sim_3d
-PY=python   # any Python with flight_sim_3d/requirements.txt installed
+cd flight_sim_3d          # (team layout: the team folder holding evolution/ and flight-dynamics/)
+PY=python                 # a venv with ../requirements.txt installed
 
 $PY -m evolution.batch --config evolution/configs/bench_adjusted.json          # a batch of 4 aircraft
 $PY -m evolution.batch --config evolution/configs/bench_adjusted.json          # same command again: resumes, or no-op if finished
@@ -55,7 +55,8 @@ $PY -m evolution.bench --tag T --schedules evolution/configs/bench_{baseline,ic,
 # heading hold (opt-in config), fast mode and fidelity (see the sections below)
 $PY -m evolution.batch --config evolution/configs/phase1_hdg.json --seed 1 --run-id phase1hdg-s1
 $PY -m evolution.batch --config X.json --viz on                                  # record every eval + live best file (slow)
-$PY -m evolution.batch --config X.json --fidelity full --struct-genes             # FD flex v1, 2 bending modes ("full(v1)")
+$PY -m evolution.batch --config X.json --fidelity full --struct-genes             # FD flexeval flex v2 (+ FD's 12 v2 struct genes)
+$PY -m evolution.batch --config X.json --fidelity full --struct-genes --multi-fidelity --screen rigid,reduced   # ladder rigid->reduced->full
 $PY -m evolution.batch --config X.json --fidelity full --struct-genes --multi-fidelity --screen rigid --top-k 4
 $PY -m evolution.runinfo --backfill evolution/runs/phase1-s1                      # run.json + best-of-gen rows for old runs
 ```
@@ -67,6 +68,23 @@ checkpoints and computes nothing. Use `--run-id` to get a fresh run directory.
 The exit code is 1 if any aircraft raised an error. An aircraft that fails to
 trim or load is *skipped*, its reason goes into `summary.json`, and that is not
 treated as an error.
+
+### Paths (both layouts)
+
+The code has no absolute `/workspace` defaults that a repo push would break (ported from the push snapshot):
+* **Team root** `sim.TEAM_ROOT` = the directory that holds `evolution/` and `flight-dynamics/` (`flight_sim_3d/` in the
+  repo, `/workspace/flight-sim-team` here); override `$EVOLUTION_TEAM_ROOT` (or Sim Bridge's `$FLIGHT_SIM_TEAM_ROOT`).
+* `sim.abs_root()`: a relative `aircraft_root` (e.g. `"flight-dynamics/jsbsim_root"`, as genome/'s v5 export now
+  writes it) is resolved against the team root.
+  `Profile.from_dict` stores the absolute path, so cache keys are the same for relative and absolute spellings (the raw
+  config text is in the run-id hash, so the default run id differs). Each config spells the root exactly as genome/'s
+  export does (v4/phase1: absolute; v5: relative).
+* **run.json** writes `aircraft_root` (also inside `resolved_profile`) and `git.repo` relative to the team root
+  (`runinfo.team_rel`; `paths_relative_to` says so). `sim.abs_root` / Sim Bridge's `paths.resolve_model_root` resolve them.
+* `fidelity.FD_DIR` = `$EVOLUTION_FD_DIR`, else `<team root>/flight-dynamics` (no absolute default).
+* `batch.DEFAULT_SOURCE_REPO` = `$EVOLUTION_SOURCE_REPO`, else the repo root when it has `flight_sim/`, else the sandbox
+  clone (team layout, same value as before).
+* `tests/test_equivalence.py` finds the prototype at `$FLIGHT_SIM_DIR`, else `<source repo>/flight_sim`.
 
 ## Config schema (`batch.json`)
 
@@ -85,12 +103,13 @@ Keys starting with `_` are comments and are ignored. Unknown keys are errors.
 | `ga` | `pop_size 24, generations 15, elite 2, selection_p 0.2, crossover uniform, blx_alpha 0.3, mutation_rate 0.15, mutation_sigma 0.08, mutation_mode gauss` | same meaning as in `flight_sim/evolve.py` |
 | `trajectories` | `{"generations": "auto", "scenario": 0, "sample_hz": 30}` | `auto` = `[0, (G-1)//2, G-1]`. A list adds generations; the final one is always saved |
 | `metrics` | `{"band_ft": 20, "hold_after_s": 20}` | settling band, and the start of the "hold" window after each target step |
-| `source_repo` | the sandbox clone | its git sha / branch / dirty flag are recorded |
+| `source_repo` | `$EVOLUTION_SOURCE_REPO`, else the repo root (push layout `<repo>/flight_sim_3d/evolution`), else the sandbox clone | its git sha / branch / dirty flag are recorded |
 | `profiles` | `{"baseline": {}}` | name -> `sim.Profile` overrides |
 | `aircraft` | `[{"name": "c172x", "profile": "baseline"}]` | list of `{name, profile, overrides?, seed?}`. Each JSBSim model may appear once per batch |
-| `fidelity` | `"rigid"` | `rigid` (JSBSim only) / `reduced` (FD flex v1, 1 bending mode + torsion, margin gate 0.9) / `full` (FD flex v1, 2 bending modes two-way, gate 1.0; labelled `full(v1)` until FD v2) |
+| `fidelity` | `"rigid"` | `rigid` (JSBSim only) / `reduced` (FD flexeval: v1 wing on the projected v2 genome, per-aircraft gate) / `full` (FD flexeval: flex v2, gate 1.0) / `full_a1` (FD flexeval_a1: P3-A1 64-strip model, gate 1.0) |
+| `fidelity_per_aircraft` | `{}` | `{name: {reduced_gate, min_full_frac}}` overrides of `fidelity.DEFAULT_PER_AIRCRAFT` (c172x 0.9 / 0.0; 737, T38, f16 1.0 / 0.25) |
 | `struct_genes` | `false` | append FD's `STRUCT_SCHEMA` genes (`stiffness_scale`, `torsion_bend_ratio`, `zeta`, `nonstruct_scale`) to the genome |
-| `multi_fidelity` | `{"enabled": false, "screen": "reduced", "top_k": 4}` | screen everyone at `screen`, re-score top-k + elites at `fidelity` |
+| `multi_fidelity` | `{"enabled": false, "screen": "reduced", "top_k": 4, "min_full_frac": null, "mid_k": null}` | ladder screen(s) → `fidelity`; `screen` = a fidelity or an ascending list; full re-scores max(top_k, ⌈min_full_frac·pop⌉) + elites (min_full_frac null = per aircraft) |
 | `viz` | `"off"` | `on` = trajectory recorded on every evaluation + `runs/<id>/live/<aircraft>.json` each generation (*execution-only*) |
 
 *Execution-only* keys can't change results. They are excluded from the run-id
@@ -162,7 +181,7 @@ its turbulence seed), scenario_seed, jsbsim version, code_sha})`
 i.e. the code that is actually executed on the evaluation path. Since the
 fast-mode work the key also holds the `fidelity` and the `model_version` the
 worker returned (`rigid:jsbsim1.3.1:<sha8>`, `reduced:flexv1:<sha8>`,
-`full:flexv1:<sha8>`); the batch checks every computed result's
+`full:flexv2:<sha8>`, both from FD's flexeval); the batch checks every computed result's
 fidelity/model_version against the expected one before caching it. The source clone's git sha is
 recorded in every run, but it isn't part of the key. The GA `seed` is
 deliberately **not** in the key: it decides *which* genomes get evaluated, not
@@ -249,7 +268,7 @@ are bit-identical to the stock model (`tests/test_sanitize.py`, plus re-flying
 the earlier benchmark's 737 elite). This applies to the stock package only: an explicit
 `aircraft_root` with socket elements is refused (see "Socket policy" below).
 
-## Trajectory format `ga-flightsim-traj/1`
+## Trajectory format `ga-flightsim-traj/2` (`/1` still accepted by `validate_traj`)
 
 One file per saved best individual. By default the runner saves the best of
 generation 0, of the midpoint `(G-1)//2`, and of the final generation for
@@ -259,7 +278,7 @@ records.
 
 ```jsonc
 {
-  "schema": "ga-flightsim-traj/1",
+  "schema": "ga-flightsim-traj/2",
   "run_id": "...", "aircraft": "f16", "jsbsim_version": "1.3.1", "git_sha": "<source clone sha>",
   "seed": 1, "generation": 19, "fitness": 0.0727,          // GA cost, lower is better (see fitness_sense)
   "fitness_sense": "minimize (GA cost, mean over scenarios)", "scenario_index": 0, "scenario_cost": 0.06, "status": "ok",
@@ -306,7 +325,7 @@ accepts a bare top-level list). Each entry has exactly `{generation, fitness,
 aircraft, file}`, with `file` relative to `trajectories/`:
 
 ```json
-{"schema": "ga-flightsim-traj-index/1", "traj_schema": "ga-flightsim-traj/1", "run_id": "...",
+{"schema": "ga-flightsim-traj-index/1", "traj_schema": "ga-flightsim-traj/2", "run_id": "...",
  "entries": [{"generation": 0, "fitness": 0.18, "aircraft": "f16", "file": "traj_f16_<run_id>_g0.json"}, ...]}
 ```
 
@@ -789,71 +808,210 @@ refuse loudly.
 * Results are bit-identical on/off: same genomes.jsonl costs, history and
   checkpoints (`test_viz_on_off_bit_identical`).
 
-### `--fidelity {rigid,reduced,full}` (config key `fidelity`, part of the run identity)
+### `--fidelity {rigid,reduced,full,full_a1}` (config key `fidelity`, part of the run identity)
 
-The single adapter is `evolution/fidelity.py`. It imports FD's
-`flexwing.py`/`coupled_sim.py` with bytecode writing off, never forks them, and
-never calls `ensure_root`/`prepare_aircraft`.
+The single adapter is `evolution/fidelity.py`. Since 06:41 PT it wires `reduced` and `full` to **Flight Dynamics'
+`flexeval.evaluate`** (`flight-dynamics/flexeval.py`, spec `flight-dynamics/INTERFACE_v2.md`). FD's code is
+**imported, never copied**: `flexeval`, `flexbody`, `flexwing` and `coupled_sim` are loaded from FD's folder with
+bytecode writing off. The earlier `full(v1)` stand-in (our own n_bend = 2 coupler) is gone. Its numbers stay below only
+as a labelled historical benchmark; the code is in a local team backup (`evolution-pre-fdv2-0648.tgz`, not in the repo).
 
-| fidelity | what | model_version | margin gate |
+| fidelity | what (FD flexeval) | model_version (from FD's result) | margin gate |
 |---|---|---|---|
-| `rigid` | JSBSim only, `sim.simulate` unchanged; bit-identical to phase1 runs | `rigid:jsbsim1.3.1:<sha8>` (sha over the loaded model files) | – |
-| `reduced` | FD flexwing v1, n_bend = 1 + 1st torsion, two-way, 2 Newmark substeps | `reduced:flexv1:<sha8>` | fail below 0.9 (screen tolerance) |
-| `full` | FD v2 when it lands; until then v1 n_bend = 2 + torsion, two-way ("full(v1)") | `full:flexv1:<sha8>` (v2: `full:flexv2:…`) | fail below 1.0 (FD's rule) |
+| `rigid` | JSBSim only; our `sim.simulate` unchanged, bit-identical to every rigid run so far | `rigid:jsbsim1.3.1:<sha8>` (FD computes the same string) | – |
+| `reduced` | v1 FlexWing (1 bending + 1 torsion mode) on the v2 genome projected by FD's `project_to_reduced` | `reduced:flexv1:<sha8>` (FD's sha includes the gate) | **per aircraft**: c172x 0.9; 737 / T38 / f16 1.0 |
+| `full` | flex v2 (`flexbody.py`: 25-DOF wings + empennage + fuselage), flown on `jsbsim_root_v2` | `full:flexv2:<sha8>` | 1.0 |
+| `full_a1` | P3-A1, opt-in (INTERFACE_v2 §13): FD `flexeval_a1.evaluate` / `flexbody_a1.FlexBodyModelA1` — 64 strips, 4b+3t+2ip per semi-wing, tails/fuselage as full (31 DOF); `J_wing_tip_bm_limit` station-exact at η 0.875; flown on `jsbsim_root_v2`; FE wings have 65 nodes in flex_state / trajectories | `full_a1:flexv2a1:<sha8>` (pins: `model_versions_post_p3a1.json`) | 1.0 |
 
-* **Flex sha8** covers FD's code (flexwing.py + coupled_sim.py), the resolved
-  WingParams, the coupler mode / n_bend / substeps, the StructWeights, the gate
-  and every loaded file of the prepared aircraft directory. The cache key uses
-  the fidelity and model_version *returned* by the worker.
-* **Agreed hook**: `fidelity.evaluate(gains, struct_genome, scenarios, model, *,
-  fidelity, root=None, dt=None, record=False)` → `{cost, terms, terms_available,
-  status, feasible, feasibility_fidelity, margins, margins_fidelity, fidelity,
-  model_version, per_scenario, telemetry?}`.
-* **Term keys** are uniform: `track, effort, comfort, heading, J_flutter_margin,
-  J_div_margin, J_mass, J_bm_rms, J_bm_peak, J_tip, J_twist`. Inapplicable terms
-  are 0.0 (never NaN) and are left out of `terms_available`.
-* **Cost composition** (all fidelities):
-  * per-scenario cost = rigid altitude-hold cost + response terms (`fail_cost`
-    on structural_ultimate) + pre terms;
-  * a margin-gate fail = `fail_cost` (2·fail_base), not flown;
-  * genome cost = `float(np.mean(per-scenario costs))`.
+* **full vs full_a1.** Costs are not interchangeable (denser model, station-exact tip term). The cache key carries
+  fidelity + model_version, so the two never share an entry, and `cache.eval_key` refuses a model_version whose prefix is
+  not `<fidelity>:`. `full_a1` may be a ladder top rung (`rigid->full_a1`); it cannot screen for `full`. Configs:
+  `analysis/make_phase2_configs.py --p3a1` → `configs/phase3a1_smoke.json` / `phase3a1_pilot.json`.
 
-  This is FD's `evaluate_flex` composition rearranged (FD adds the pre terms once
-  to the mean), so it is mathematically equal and may differ in the last bit.
-* **Projection**: `reduced` calls FD's `project_to_reduced` when FD provides it.
-  v1 has none, so it uses "identity (v1 genes)", which is logged.
-* **`--struct-genes`** appends FD's `STRUCT_SCHEMA` (stiffness_scale,
-  torsion_bend_ratio, zeta, nonstruct_scale) to the genome.
-* **Checks**: one-way coupling at the baseline structure reproduces the rigid
-  cost bit for bit (`test_oneway_coupling_reproduces_rigid…`). The margin gates
-  are tested with a flutter margin of 0.95: reduced ok, full fails at 2000.
+* **FD's folder stays read-only.** FD's `evaluate` calls `ensure_root` / `ensure_root_v2`, which write only when a
+  prepared root is stale. We run the same staleness tests read-only first (`fidelity.check_prepared`) and refuse if a
+  root is stale. In our processes `flexwing.prepare_aircraft` and `flexbody.prepare_aircraft_v2` are replaced by
+  functions that raise; FD's files themselves are untouched.
+* **Reduced gate per aircraft.** Config `fidelity_per_aircraft: {name: {reduced_gate, min_full_frac}}` overrides
+  `fidelity.DEFAULT_PER_AIRCRAFT` (c172x 0.9 / 0.0; 737, T38, f16 1.0 / 0.25; unknown aircraft 1.0 / 0.25). The swept
+  wings get 1.0 because FD measured the reduced flutter margin about +0.09 optimistic on the 737. The adapter sets FD's
+  `MARGIN_GATE["reduced"]` for the duration of each call and restores it afterwards. FD's `model_version` hashes the
+  gate, so the cache and run identity follow it. `run.json` records `aircraft[].reduced_gate`, and replays use it.
+* **Unit of work.** Rigid stays per scenario. Reduced and full are one `flexeval.evaluate` call **per genome over all
+  scenarios**, so margins and the model build happen once per genome. Their cache key is genome × all scenarios × gate ×
+  model_version. A one-scenario call (`fidelity.evaluate_scenario`, used by the export and live viz) equals that
+  scenario's entry of the all-scenario call bit for bit (tested).
+* **Result** (`fidelity.evaluate_genome`): `cost` (= mean of FD's per-scenario costs), `status`, FD's 23 `terms`
+  (`track, effort, comfort, heading, hold, J_flutter_margin, J_div_margin, J_mass, J_bm_rms, J_bm_peak, J_tip, J_twist,
+  J_reversal_margin, J_tail_bm_peak, J_fus_bm_peak, J_smooth`, plus FD's §12 sizing terms `J_wing_bm_limit,
+  J_wing_torque_limit, J_wing_ip_limit, J_tail_bm_limit, J_fus_bm_limit` and full-only `J_wing_torque_peak, J_wing_ip_peak`,
+  added by FD at ~07:56 PT; inapplicable = 0.0, not in `terms_available`),
+  `margins` (flutter, divergence, reversal), `margins_fidelity`, `margin_gate`, `reduced_gate`, `mass_total_frac`,
+  `projection` (reduced) and `per_scenario` (cost, sim_cost, status, struct terms, tip / twist maxima). A margin-gate
+  fail is not flown: cost = fail_cost = 2·fail_base, with one aligned `not_flown` entry per scenario.
+* **Feasibility.** `feasible` = status ok at the fidelity scored (`feasibility_fidelity`). In multi-fidelity runs
+  feasibility is trusted only from full: screen-only rows get `feasible: null`.
+* **`--struct-genes`** appends FD's 12 v2 genes (`flexbody.gene_schema(False)`: wing_ei_root, wing_ei_taper_1..4,
+  wing_gj_ratio_root/tip, wing_nsm_root/tip, tail_stiffness_scale, fuselage_stiffness_scale, struct_damping_ratio).
+  Decoded values are clamped to FD's [lo, hi], because a log decode at u = 1 can overshoot by 1 ulp and FD rejects it.
+* **Agreed hook (pass-through):** `fidelity.evaluate(gains, struct_genome, scenarios, model, *, fidelity, root, dt,
+  record)`.
+* **Checks** (`tests/test_eval.py`):
+  * our reduced/full results equal a direct `flexeval.evaluate` call bit for bit;
+  * model_version formats, and the gate in the reduced sha;
+  * a flutter margin of 0.95 passes reduced at gate 0.9 and fails at 1.0 (cost 2·fail_base, not flown);
+  * a recorder changes nothing.
 
-### Multi-fidelity (`--multi-fidelity --screen {rigid,reduced} --top-k K`)
+### Multi-fidelity (`--multi-fidelity --screen S[,S2] --top-k K`, config `multi_fidelity`)
 
-Each generation:
+`screen` is one fidelity or an ascending list. The ladder is screen(s) + `fidelity`, e.g. rigid→full, reduced→full,
+rigid→reduced→full. Each generation:
 
-1. Everyone is scored at `screen`.
-2. The top K by screen cost, plus the carried elites (gen > 0, indices
-   0..elite−1), are re-scored at `fidelity`.
-3. Ranking puts the full-scored individuals first (by full cost), then the rest
-   by screen cost. Elites and the best are therefore always full-scored verdicts.
+1. Stage 0 scores everyone.
+2. Each later stage scores the best of the previous stage (by that stage's cost) **plus every carried elite**:
+   * the authoritative (full) stage scores k_full = max(top_k, ⌈min_full_frac·pop⌉) individuals. min_full_frac is per
+     aircraft: **0.25 on swept wings**, so ≥ 8 of 32 plus elites; c172x uses top_k (4);
+   * a middle stage scores mid_k (default 2·k_full).
+3. Ranking: full-scored first (by full cost), then the rest by the highest fidelity reached and its cost. Elites and the
+   best are therefore always full verdicts. Feasibility comes only from full.
 
 Logging:
+* **genomes.jsonl:** `rescored_at_full`, `screen_cost` / `screen_fidelity` (first stage), `ladder_cost`,
+  `ladder_status` and `ladder_model_version` ({fidelity: …} for every stage the genome reached). A row's `cost`,
+  `fidelity` and `model_version` are those of the **highest stage it reached** (full when `rescored_at_full`, else the
+  middle or screen stage); each fidelity has its own model_version.
+* **history.jsonl:**
+  * `ladder`, `k_full`, `k_mid`, `n_rescored`, `rescored_idx`;
+  * `spearman {"rigid_vs_full", "reduced_vs_full", "rigid_vs_reduced"}` over the re-scored set, plus
+    `spearman_both_ok` (pairs where both statuses are ok, matching FD's "both ok" column);
+  * `ladder_pairs`, `stages{fid: sims, cpu, wall, n}`;
+  * `n_scored_authoritative`, `feasible_rate_authoritative`.
 
-* Every genomes.jsonl row has `rescored_at_full`, `screen_cost`,
-  `screen_fidelity`, `screen_model_version` and `feasibility_fidelity`.
-* history.jsonl has `n_rescored`, `rescored_idx`, `rescored_pairs`
-  ([screen, full] per re-scored genome), `spearman_screen_vs_full` (average-rank
-  Spearman over the re-scored set, so it can be checked against FD's v2 numbers
-  from the pairs), per-fidelity sims/cpu and `eval_wall_s_screen/full`.
+The rule is deterministic and resumable (kill-between-rows-and-checkpoint test).
 
-It is deterministic (keys, not completion order) and resumable. The test kills
-the run between a generation's rows and its checkpoint, then resumes, and the
-rows equal an uninterrupted run.
+### Benchmark: FD v2 ladders (c172x + 737)
 
-### Benchmark (c172x + T38, pop 32 × 3 gens, seed 1, cache off, 8 workers)
+> **FD changed v2 after this benchmark.** INTERFACE_v2 §12 (limit-load sizing, minimum gauge, margin shaping;
+> flexeval/flexbody edited 07:45–07:56 PT) changes reduced/full costs and model_versions. Every number below is
+> pre-§12 (runs 06:59–07:40 PT). FD notes that runtimes are unaffected and Spearman values shift slightly.
 
-@@BENCH@@
+`analysis/bench_fdv2.py` (pop 32 × 4 gens, c172x + 737, struct genes, cache off, 8 workers, seeds 1–3; seed 1 06:59–07:15 PT,
+seeds 2–3 07:18–07:40 PT, box load 1-min 6.5–23). Raw: `bench_results/fdv2/results{,-s2,-s3}.json`; counterfactual +
+tables: `report{,-s2}.md` (`analysis/bench_fdv2_report.py`); across seeds: `seeds.md` (`analysis/bench_fdv2_seeds.py`).
+Full write-up: `analysis/STATUS_C.md`. The seed-3 counterfactual was not run: Flight Dynamics edited `flexeval.py` /
+`flexbody.py` at 07:45–07:46 PT and our model_version guard stopped it (`report-s3.log`).
+
+| case | c172x best full cost s1/s2/s3 (mean, Δ vs full-only) | feasible (full-scored) | task CPU s | 737 best s1/s2/s3 (mean, Δ) | feasible | task CPU s |
+|---|---|---|---|---|---|---|
+| full-only (viz off) | 0.2568 / 0.2889 / 0.3926 (0.3128) | 0.78/0.73/0.70 | 577/545/556 | 0.2048 / 0.1621 / 0.1892 (0.1854) | 0.77/0.80/0.74 | 535/557/501 |
+| rigid→full | 0.2817 / 0.3529 / 0.3866 (0.3404, +0.028) | 0.90/0.78/0.95 | 145/133/155 | 0.1914 / 0.1990 / 0.1967 (0.1957, +0.010) | 0.89/0.97/0.92 | 209/213/220 |
+| reduced→full | 0.3055 / 0.2994 / 0.3416 (0.3155, +0.003) | 1/1/1 | 525/522/513 | 0.2216 / 0.1803 / 0.1978 (0.1999, +0.015) | 0.94/0.97/0.97 | 556/561/576 |
+| rigid→reduced→full | 0.2826 / 0.2793 / 0.3402 (0.3007, −0.012) | 1/1/1 | 245/275/276 | 0.2676 / 0.2001 / 0.2231 (0.2303, +0.045) | 0.94/1/0.91 | 427/436/425 |
+
+* **viz on vs off** (seed 1, full-only): task CPU 1193 → 1113 s (−6.7 %), gen wall c172x 61.8 → 79.4 s / 737 60.2 → 67.0 s
+  (load rose 11.8 → 18.7 during the pair, so wall is load-dominated); identical costs.
+* **Speedup vs full-only viz on** (seed 1, wall / CPU): full viz off 0.93× / 1.07×, rigid→full 4.74× / 3.37×, reduced→full
+  1.99× / 1.10×, rigid→reduced→full 2.84× / 1.78×.
+* **CPU per 90 s scenario**: rigid 0.17–0.23 s, reduced 1.04–1.18 s, full 0.89–1.65 s (FD: 0.2 / 1.2 / 1.7).
+* **Spearman** over the whole 32-genome populations (counterfactual, seeds 1–2, 8 gens): reduced vs full c172x median +0.94
+  (both ok +0.96; FD 0.94 / 0.91–0.92), 737 +0.69 (both ok +0.87; FD 0.84–0.87 / 0.59–0.62). Logged per generation on the
+  re-scored top set: rigid vs full ≈ 0 and unstable (−0.60…+1.00), as FD found.
+* **Elite sets**: the final elites of every ladder run differ from full-only (overlap 0; the GA trajectories diverge). On
+  identical populations the ladder's rule picks a different elite set in 0–2 of 8 generations.
+* **Recommendation**: c172x rigid→reduced→full (rigid→full for quick exploration); swept wings (737; T38/f16 by extension)
+  full-only for authoritative runs and rigid→full (≥ 25 % re-scored) as the fast mode. Reduced costs about as much as full
+  and ranks the 737 poorly, so it does not belong in swept-wing ladders.
+
+### HISTORICAL benchmark against the full(v1) stand-in (c172x + T38, pop 32 × 3 gens, seed 1, cache off, 8 workers)
+
+Kept for the record. It measured our own v1 n_bend = 2 stand-in, which FD's v2 has replaced. Code: a local team backup (`evolution-pre-fdv2-0648.tgz`, not in the repo); scripts `analysis/bench_fastmode*.py` / `microbench_fidelity.py` (marked historical).
+
+Measured 2026-10-06 06:24–06:36 PT. Box load (1-min) stayed at 7.6–9.2 throughout. Other teams' jobs were
+still on the box, so absolute times are about 2× an idle box, but every case saw the same load.
+
+* **Setup.** `analysis/bench_fastmode.py` runs the cases one after another. Each run is `bench_results/fastmode/runs/bench-*`
+  and has its own `run.json` + `genomes.jsonl`. Raw results are in `results.json`; `analysis/bench_fastmode_report.py` writes
+  `report.md` / `report.json`.
+* **Genes.** The flex cases use struct genes (12 genes). Rigid uses 8, so rigid gen 0 is a different population.
+* **Loaded-box run.** An earlier full run at load 9–38 (05:57–06:22 PT, `results_loaded_0557-0622.json`) is kept for
+  reference only. Its times are not comparable across cases.
+
+| case | wall s | speedup vs full(v1)+viz on | sims | cpu s/sim | mean gen wall s | load 1-min start→end | c172x best | T38 best | Δbest vs full(v1) viz off (c172x / T38) |
+|---|---|---|---|---|---|---|---|---|---|
+| rigid-vizon | 20.1 | 4.85× | 540 | 0.275 | 5.81 | 7.6→7.8 | 0.24381 | 0.11201 | – |
+| rigid-vizoff | 17.6 | 5.55× | 540 | 0.245 | 5.2 | 7.8→8.0 | 0.24381 | 0.11201 | – |
+| reduced-vizoff | 86.3 | 1.13× | 552 | 1.195 | 25.65 | 8.0→8.3 | 0.35189 | 0.12860 | – |
+| full-vizoff | 80.5 | 1.21× | 549 | 1.114 | 23.65 | 8.3→8.7 | 0.40717 | 0.19691 | +0.00000 / +0.00000 |
+| full-vizon | 97.6 | 1.0× | 549 | 1.323 | 28.13 | 8.7→8.9 | 0.40717 | 0.19691 | +0.00000 / +0.00000 |
+| mf-red-k4 | 100.7 | 0.97× | 621 | 1.249 | 32.63 | 8.9→8.9 | 0.35297 | 0.12093 | -0.05420 / -0.07598 |
+| mf-red-k8 | 116.9 | 0.83× | 681 | 1.322 | 37.72 | 8.9→9.2 | 0.35297 | 0.12473 | -0.05420 / -0.07218 |
+| mf-rigid-k4 | 25.6 | 3.81× | 615 | 0.29 | 7.47 | 9.2→8.2 | 0.39444 | 0.15214 | -0.01273 / -0.04477 |
+| mf-rigid-k8 | 43.6 | 2.24× | 684 | 0.457 | 12.74 | 8.2→8.7 | 0.38061 | 0.16468 | -0.02656 / -0.03223 |
+
+| aircraft | gen-0 Spearman reduced vs full(v1) | rigid vs full(v1) | (feasible-at-full only: n, reduced, rigid) |
+|---|---|---|---|
+| c172x | +0.794 | +0.709 | 18, +1.000, +0.990 |
+| T38 | +0.944 | +0.911 | 26, +0.999, +0.977 |
+
+| multi-fidelity case | per-gen Spearman over the re-scored set (c172x; T38) | full sims (c172x/T38) | screen sims |
+|---|---|---|---|
+| mf-red-k4 | +1.00, +1.00, +0.94; +1.00, +1.00, +1.00 | 36/33 | 276/276 |
+| mf-red-k8 | +1.00, +0.98, +1.00; +0.98, +1.00, +0.86 | 66/63 | 276/276 |
+| mf-rigid-k4 | +0.00, -0.50, +0.60; +0.80, +0.60, +0.20 | 33/30 | 276/276 |
+| mf-rigid-k8 | +0.38, +0.03, +0.15; +0.21, +0.57, +0.30 | 66/66 | 276/276 |
+
+**Per-simulation timing** (`analysis/microbench_fidelity.py`, `microbench.json`). One 90 s scenario (wind +
+turbulence), with the configurations interleaved round-robin. Load was about 8. Values are min / median of 3, in
+seconds:
+
+| | rigid off / on | reduced off / on | full(v1) off / on |
+|---|---|---|---|
+| c172x | 0.223 / 0.289 | 1.206 / 1.446 | 1.246 / 1.302 |
+| T38 | 0.194 / 0.241 | 1.206 / 1.302 | 1.207 / 1.359 |
+
+Costs are identical with viz on and off in every configuration.
+
+Reading:
+
+* **Viz off** saves 4–23 % per sim (most at rigid, where recording is a larger share of the work) and 12 % (rigid) /
+  18 % (full(v1)) of batch wall time. Results are identical.
+* **Rigid vs full(v1)** is 5–6× faster. FD's own c172x figures on their loaded box are rigid 0.65 s and v1 n_bend=2
+  2.6–3.3 s per scenario.
+* **Reduced is not cheaper than full(v1).** It costs the same per sim (1.2 s; batch 86 s vs 81 s). The 2×2 path uses
+  `np.linalg.inv`, while the 3×3 uses FD's closed-form `_inv`, and per-step Python overhead dominates. FD's v2 timings
+  show the same thing: v2-reduced 3.44 s vs v1 n_bend=2 2.6–3.3 s per scenario.
+
+  As a result, `--multi-fidelity --screen reduced` is slower than plain full(v1): 0.97× at k = 4 and 0.83× at k = 8.
+  The screen costs as much as the full pass and then the top-k are flown again.
+* **`--screen rigid`** is the fast option: 3.8× at k = 4 and 2.2× at k = 8. But rigid cannot see the structural genes,
+  so the Spearman over the re-scored set is low (−0.5 to +0.8).
+* **Gen-0 Spearman over the same 32 genomes:**
+  * reduced vs full(v1): +0.79 (c172x) / +0.94 (T38);
+  * rigid vs full(v1): +0.71 / +0.91;
+  * among genomes feasible at full: reduced 1.000 / 0.999, rigid 0.990 / 0.977.
+
+  So the rank disagreement is almost entirely feasibility. Margins between 0.9 and 1.0 pass the reduced screen
+  (gate 0.9) and fail full (gate 1.0, fail_cost).
+* **Best costs.** The Δbest values in the table are GA-trajectory differences after 3 generations with 1 seed (the
+  ranking changes the population). They are not a fidelity bias. Every multi-fidelity best is a full(v1)-scored verdict.
+* **Spearman logs** use FD's method (stable argsort, average ranks for ties, Pearson on ranks; FD `v2_compare._spearman`).
+  `rescored_pairs` in history.jsonl lets anyone recompute them.
+
+
+### FD v2 integration status (06:41 PT hand-off)
+
+Done:
+* `full` / `reduced` → `flexeval` (import);
+* model_version from FD;
+* per-aircraft reduced gate;
+* swept-wing ≥ 25 % full re-score;
+* the 3-level ladder;
+* v2 struct genes;
+* the recorder via FD's `FlexHookV2` (below).
+
+Still open on FD's side:
+* flex_state for the tail and fuselage as node geometry (their raw `flex.*` diagnostics are passed through);
+* in-plane wing modes (we send dy = 0).
 
 ## Replay interface (Sim Bridge): `run.json`, `genomes.jsonl`, `eval.py`
 
@@ -872,7 +1030,10 @@ rows equal an uninterrupted run.
   * `target_semantics`, the aggregate rule, and the eval entry point.
 * **`runs/<id>/genomes.jsonl`** (`ga-flightsim-genomes/1`): one row per
   individual per generation. Fields:
-  * `individual_id` `<ac>:g<gen>:r<rank>` (r0 = best), `index`, `rank`,
+  * `individual_id` **`<aircraft>:g<generation>:r<rank>`** (string, r0 = best of the generation; backfilled best-only
+    rows use `<aircraft>:g<generation>:best`). Ids are opaque and stable across resumes; match them exactly, don't parse
+    them. run.json carries the format in `individual_id_format` (and `scenario_id_format`: `<aircraft>:s<index>`);
+  * `eval_seed` (= run.json `eval_seed` = scenario_seed), `index`, `rank`,
     `is_best`, `is_elite`, `carried_elite`;
   * `genome {name: value}`, `genome_norm`, `gains`, `struct`;
   * `cost`, `per_scenario_cost`, `scenario_ids`, `status`, `feasible`,
@@ -888,9 +1049,9 @@ rows equal an uninterrupted run.
   final-generation row replays exactly.
 * **`evolution/eval.py`**: `evaluate(genome, aircraft, scenario, run_cfg,
   recorder=None, *, fidelity=None)`.
-  * It is the single evaluation path. The batch workers call `eval.task`, which
-    goes through the same `evaluate_one` → `fidelity.evaluate_scenario` →
-    `sim.simulate`.
+  * It is the single evaluation path. The batch workers call `eval.task` (rigid, per scenario: `sim.simulate`) or
+    `eval.task_genome` (reduced/full, per genome: FD's `flexeval.evaluate`). Replays go through the same
+    `fidelity.evaluate_genome`; at reduced/full they use the aircraft's logged `reduced_gate`.
   * `genome` is the row's `genome` dict (or a normalized list).
   * `scenario` is a run.json entry (dict, used **as given**, never re-drawn), an
     id, an index, a list, or None (= all of the aircraft's).
@@ -900,9 +1061,12 @@ rows equal an uninterrupted run.
     logged one.
   * `eval.scenario_object(...)` gives a `sim.Scenario` (target / target_cmd /
     target_rate) without re-drawing.
-  * Tested: evaluate reproduces genomes.jsonl costs exactly, at rigid and at
-    reduced. A single-scenario call returns `per_scenario_cost[i]`, and an
-    edited scenario changes the cost.
+  * Tested: evaluate reproduces genomes.jsonl costs exactly at rigid, reduced and full (multi-fidelity rows). A
+    single-scenario call returns `per_scenario_cost[i]`, and an edited scenario changes the cost.
+  * Checked by hand at 07:19 PT on `bench_results/fdv2/runs/fdv2-rigid-full` (`737:g3:r0`, full v2) with a recorder:
+    * cost 0.19141775547450582 and per-scenario costs equal the row bit for bit, `model_version_match`;
+    * `telemetry_check` bit-identical in all 3 scenarios;
+    * the recorder got t = 0 with a schema /2 flex_state (80 channels), and `final` at 90 s.
 
 ### Recorder protocol
 
@@ -926,43 +1090,199 @@ for every non-core channel (no renames). `target_alt_m` = the **reference**
 (ramped, what is tracked and scored); `target_cmd_alt_m` = the **commanded**
 step; `target_rate_mps` = d(reference)/dt.
 
-### `flex_state` (schema `evolution-flex-state/1`, `evolution/fidelity.py`)
+**Trajectory header ids**: `fitness_sense` is exactly `"min"` (`fitness_doc` explains), `scenario_index` is the position
+in the aircraft's `scenario_ids` (= `sim.make_scenarios` order), and `scenario_id` = `<aircraft>:s<scenario_index>`.
 
-* `.structure` (static):
-  * components `wingR`, `wingL`, each with `axis_nodes_body_m` = 9 nodes along
-    FD's elastic axis (root → tip) in **body FRD metres, origin at the CG**;
-  * `dof: ["dz","dy","twist"]`, `node_span_frac`, units and sign docs.
-* `.channels()`: `{"<component>.<dof>.<node_idx>": value}`, e.g.
-  `wingR.dz.0 … wingL.twist.8`.
-  * dz is in m (body z, + down) and includes the 1-g trim deflection.
-  * dy = 0 in v1.
-  * twist is in rad.
-* `.eta` (FD modal coordinates, row 0 right, row 1 left), `.raw` (FD
-  `coupler.last`), `.as_dict()`.
-* At reduced/full, trajectory files carry the channels and a `structure` block.
-* The FD → SB mapping is one function, `fidelity.fd_to_structure_channels`:
-  `dz = −w·0.3048`, `dy = 0`, `wingR.twist = +θ_R`, `wingL.twist = −θ_L`.
+**Ids and seeds.** Individual ids are unique per run (one per aircraft × generation × rank) and stable across resumes
+(rows are truncated to the checkpoint and regenerated deterministically; the resume tests compare them). `:best`
+appears only in backfilled runs (`runinfo --backfill`), which have best-of-generation rows only and no population
+ranking; new runs log every individual as `:r<rank>`, so `:r0` is the best. The difference is intended. Every row
+carries `eval_seed`; a run has one scenario seed, so a row without it (older files) uses run.json `eval_seed`.
 
-**Twist sign.**
+**model_version (rigid)** = `rigid:jsbsim<ver>:sha8({"model_files": sha16 of every file in <root>/aircraft/<model>/})`.
+It covers the whole model directory, non-physics files (`flexwing_meta.json`, init/reset XMLs) included. FD's
+`flexeval.rigid_model_version` computes the same string with its own code, so narrowing it on one side would desync the
+two. phase1-s1 (04:29–04:37 PT) logged c172x `01333e0c`; today it is `e0a73fc9` because FD edited `c172x.xml` itself at
+04:57 PT (0 lb flex point masses, flight-neutral, hence bit-exact costs) and `flexwing_meta.json`. T38 and 737 changed at
+04:48 PT (`T38.xml` / `737.xml` re-prepared, 737 socket I/O removed; today T38 `69ac40f7`, 737 `19463d4b`; phase1-s1 f16
+used the stock model, today FD's root). These are real model-file edits, so a hash narrowed to XMLs would have
+changed too. run.json flags it per aircraft (`model_files_current_differs`).
 
-* *FD raw convention:* `θ = PsiT·η` (and `tip_twist_deg_R/L`) is + = leading
-  edge up (nose-up, increases local α, `G = cosΛ·PsiT − sinΛ·dPhiW`) on **both**
-  semi-wings, each in its own local frame.
-* *SB convention:* a right-hand rotation about root → tip, so wingR + = LE up
-  and wingL + = LE down.
-* *Adapter:* negates the left wing.
-* *Tests:*
-  * `test_twist_convention_known_nose_up_case`: a pure +10 ft·lbf/ft nose-up
-    torque about the EA gives FD η_torsion > 0 and local α up. FD's own external
-    loads (lift ahead of the EA) give raw θ > 0 on both wings. The mapping yields
-    wingR.twist = +θ_R > 0, wingL.twist = −θ_L < 0, and dz < 0.
-  * `test_flex_state_shape_t0_probe_and_twist_sign`: the same holds in a real
-    flight at the c172x 1-g trim (tip twist ≈ +0.67° nose-up).
+### `flex_state` (schema `evolution-flex-state/3`, `evolution/fidelity.py`)
+
+At reduced/full a recorder rides a **second flight with FD's own `FlexHookV2`** (identical physics), wrapped by our
+`SBHook`. The cost still comes from `flexeval.evaluate`, and the telemetry flight's sim cost must equal FD's
+per-scenario `sim_cost` bit for bit (`result["telemetry_check"]`). Live viz (`--viz on`) instead uses FD's own
+`record=True` trajectories from the same flight (raw `flex.*` channels only).
+
+**Schema /3 (2026-10-06).** Trajectory files are `ga-flightsim-traj/2`. Branch on these strings.
+
+* **full fidelity (source of truth = FD FE nodes via Sim Bridge `v2_map` 2.0.0):**
+  * shared channel names `wingR.*` / `wingL.*` are FE nodal (dof `dz`, `dx`, `twist`; in-plane `dx = -v·0.3048`);
+  * plus `htail.*`, `vtail.*`, `fuselage.*` and `struct.*` scalars (FD §11 signs);
+  * the previous 9-node modal wings are kept as `wingR_modal.*` / `wingL_modal.*` (`node_span_frac` in the structure
+    header; dof `dz`, `dy=0`, `twist`).
+* **reduced:** modal `wingR` / `wingL` only (unchanged names); no v2_map components.
+* Import: `fidelity.v2_map_mod()` loads `sim-bridge/sim_bridge/v2_map.py` read-only (stdlib only; no package import).
+
+**Public FlexState API** (Sim Bridge can stop using `_aircraft_entry` / `_struct_obj`):
+
+| member | meaning |
+|---|---|
+| `.schema` | `"evolution-flex-state/3"` |
+| `.structure` | static header (components, units, `v2_map` block at full) |
+| `.fidelity` / `.model_version` | as flown |
+| `.eta` / `.raw` | FD modal state / `coupler.last` |
+| `.fd_model` | FD `FlexBodyModel` (full) or `FlexWing` (reduced); read-only |
+| `.nodes()` | current-frame FE nodal values `{body: {field: [float]}}`, or `None` at reduced |
+| `.node_layout()` | FD `node_layout` (body FRD ft, origin CG), or `None` at reduced |
+| `.v2_geometry` / `.v2_map_version` | v2_map geometry / `"2.0.0"` at full, else `None` |
+| `.channels()` | SB channels + `flex.*` |
+| `.as_dict()` | JSON-able snapshot |
+
+Also public: `fidelity.make_fd_model(profile_d, struct, fidelity)` builds the FD model without private helpers.
+Private `_struct_obj` / `_aircraft_entry` remain for the batch path until Sim Bridge switches.
+
+**Twist / signs.** Unchanged for modal wings (`fd_to_structure_channels`). FE wings / empennage use v2_map's
+`SIGN_TABLE` (= FD INTERFACE_v2 §11). Tests: `test_v2_map.py`, `test_recorder_inert_t0_flex_state_and_twist_sign`,
+`test_twist_convention_known_nose_up_case`.
+
+**`eval.evaluate(..., pin=<model_version>)`:** raises `RuntimeError` on mismatch. Batch/`pin_model_version` still
+enforced separately by `batch.check_pins` and the cache guard.
+
+## Phase-1 v5 candidate (`configs/phase1_v5.json`, runs `phase1v5-s{1,2,3}`)
+
+This implements `genome/HANDOFF_phase1_v5.md`. The profiles are `genome/exports/evolution_phase1_v5_profiles.json`,
+which is v4 plus 4 keys and, since genome's handoff section 6 (~07:30 PT), a **v5-only ki_alt upper bound of 0.5** (v4 keeps
+0.05). `configs/phase1_v5.json` equals the updated export (repo-relative `aircraft_root`). The reference genomes still
+re-fly bit for bit. **The `phase1v5-s{1,2,3}` runs below used the old 0.05 bound.** With the new bound, `phase1v5-ki05-s1` (seed 1, 07:54–08:00 PT,
+379 s, load 0.9→21.3) gives c172x 0.225146 (ki_alt 0.074), T38 **0.0877912874821699** (ki_alt 0.0656, equal to genome's
+`runs/v5_kialt05_t38_s1` bit for bit), and 737 0.137911 (ki_alt 0.0013, kp_pitch at max, downdraft residual +3.0 ft; worse
+than the old-bound 0.111260 on this seed). See `analysis/STATUS_E.md`. **v4 (`phase1_hdg.json`) stays the default.** v5 is a separate, opt-in config with
+c172x/T38/737 only (f16 is not in the v5 export).
+
+* **`w_hold`, `hold_ref_ft`, `hold_settle_s`** (defaults 0 / 5 / 5).
+  * `cost += w_hold · hold_osc`, added after the heading term.
+  * `hold_osc` is the RMS, over hold samples, of (e − mean of e in its window), with e = h_cmd − h, divided by
+    `hold_ref_ft`.
+  * A hold sample is one where the reference equals the command (|ref − cmd| < 1e-6 ft) and the reference rate is 0,
+    excluding the first `hold_settle_s` of each stretch.
+  * `sim.hold_osc_term` is a verbatim port of genome's code. `t` is built as `k·DT`.
+  * Reported, not in the cost: `hold_osc`, `hold_pp_ft` (max ptp(e) over the windows), and `draft_residual_ft` /
+    `draft_max_err_ft` for the downdraft scenario.
+* **`disturbance_scenario`** `{downdraft_fps, onset_t_s, onset_ramp_s, steps_rel_ft}` (default None).
+  * `make_scenarios` appends one scenario after the n standard ones: a copy of the calm one that holds h0, with no
+    wind or gusts, plus `draft_fps / draft_t_s / draft_ramp_s`. It consumes no RNG draws, so scenarios 0..n−1 are
+    unchanged.
+  * `vertical_gust_series` adds `draft·0.5·(1 − cos(π·clip((t − t0)/ramp, 0, 1)))` to wind-down (+ = down).
+  * The cost is the mean of all n + 1 scenarios. Downdraft sizes (V_TAS·tan 1.5°): c172x 4.69, T38 15.43, 737
+    12.86 ft/s.
+* **Flags off = bit-identical.**
+  * `Scenario.to_dict` omits the three draft keys when `draft_fps == 0`, so v4 scenario dicts, run.json and
+    scenario cache keys are unchanged.
+  * The v4 / phase1 / baseline tests still reproduce genome's costs bit for bit.
+  * Cache keys change for every new profile key and for a downdraft scenario (`test_v5.py`).
+* **run.json** lists the downdraft scenario as `<ac>:s3` with its draft fields, and `fitness_cfg` documents the hold
+  term and the disturbance.
+* **Term key `hold`** was added to the uniform term keys (0.0 unless `w_hold > 0`). FD's `flexeval.TERM_KEYS` doesn't
+  have it yet.
+
+**Bit-identical check** (`test_reproduces_genome_v5_reference_genomes_bitwise`, handoff section 3). Every
+per-scenario cost (calm, wind 1, wind 2, downdraft), the mean of 4, and hold_osc per scenario (6 digits) equal
+genome's:
+
+| genome | cost (mean of 4) |
+|---|---|
+| c172x v5 s1 | 0.20625113824760744 |
+| T38 v5 s1 | 0.08778028702197657 |
+| 737 v5 s1 | 0.11126020207078736 |
+| c172x v4 genome on v5 | 0.22748161325788208 |
+
+Runs `phase1v5-s{1,2,3}` (`configs/phase1_v5.json`, GA seed 1/2/3, scenario_seed 1, 8 workers): s1 06:38–06:42, s2 06:42–06:47,
+s3 06:47–06:57 PT. Walls: 235 s (load 5.6→12.0), 323 s (12.0→17.2), 618 s (17.2→43.3; other agents' jobs pushed the box to 62).
+0 re-sim mismatches. All 27 trajectory files (gens 0 / 9 / 19 per aircraft) validate. Every run.json carries the 4th scenario
+`<ac>:s3` (downdraft 4.69 / 15.43 / 12.86 ft/s). Report: `analysis/phase1v5_report.py` → `logs/phase1v5_report.json`.
+
+| aircraft | seed | best (v5 task) | hold p-p calm / worst ft | downdraft residual / max err ft | ki_alt | ki_pitch | v4 genome on v5 | v5 genome on v4 (v4 best) |
+|---|---|---|---|---|---|---|---|---|
+| c172x | s1 | 0.222942 | 5.94 / 10.22 | -0.40 / 6.48 | 0.05 | 0.00265 | 0.2431 | 0.2004 (0.1975) |
+| c172x | s2 | 0.205943 | 3.41 / 10.68 | +0.15 / 4.76 | 0.05 | 0.000103 | 0.2159 | 0.2086 (0.1954) |
+| c172x | s3 | 0.232252 | 5.30 / 8.60 | +2.01 / 4.76 | 0 | 0 | 0.2598 | 0.2290 (0.2009) |
+| c172x | mean ± std (pop.) | 0.22038 ± 0.01089 | | | | | | |
+| T38 | s1 | 0.087780 | 0.39 / 5.94 | -0.00 / 5.73 | 0.05 | 0.00572 | 0.1401 | 0.0870 (0.0966) |
+| T38 | s2 | 0.111430 | 0.13 / 5.25 | +3.26 / 3.67 | 7.36e-07 | 0 | 0.1345 | 0.1008 (0.0930) |
+| T38 | s3 | 0.091581 | 0.93 / 6.17 | -0.00 / 4.92 | 0.05 | 1.26e-05 | 0.1297 | 0.0931 (0.0925) |
+| T38 | mean ± std (pop.) | 0.09693 ± 0.01037 | | | | | | |
+| 737 | s1 | 0.111260 | 0.93 / 6.96 | +0.01 / 6.57 | 0.0278 | 0.002 | 0.1087 | 0.1116 (0.1068) |
+| 737 | s2 | 0.108847 | 1.05 / 7.40 | -0.00 / 6.86 | 0.0354 | 0.00525 | 0.1535 | 0.1069 (0.1106) |
+| 737 | s3 | 0.113551 | 1.22 / 6.47 | -0.00 / 5.10 | 0.05 | 1.72e-05 | 0.1433 | 0.1187 (0.1089) |
+| 737 | mean ± std (pop.) | 0.11122 ± 0.00192 | | | | | | |
+
+Compared with Genome's reported v5 results (HANDOFF_phase1_v5.md):
+
+* **T38 s1 and 737 s1 reproduce Genome bit for bit.** Our best costs are 0.08778028702197657 and 0.11126020207078736, the
+  exact reference values, with the same genes.
+  * T38: **ki_alt = 0.05** (at its upper bound) and **downdraft residual −0.00 ft**, as Genome reports (0.0 / 5.7 ft).
+  * T38 s3 also lands at ki_alt 0.05 with residual −0.00 ft. T38 s2 found another basin: ki_alt 7.4e-07, residual +3.26 ft,
+    cost 0.1114.
+* **c172x does not match**, and this is the same budget difference as with v4. Genome's c172x v5 run (`runs/v5_sweep_w01`) used
+  **pop 48 × 40 generations**; ours is the phase1 GA (pop 32 × 20).
+  * Their reference genome scores 0.20625 on our v5 code (bit-identical, `test_v5`). Our seeds reach 0.2229 / 0.2059 / 0.2323.
+  * Calm hold p-p: Genome 3.9 / 3.7 / 3.2 ft; ours 5.94 / 3.41 / 5.30 ft. Only s2 falls inside Genome's 3.2–3.9 ft band.
+    Genome's s2/s3 also changed the scenario seed, so only s1 is directly comparable.
+* **The downdraft term does what Genome describes on the jets.** Every v4 genome re-flown on v5 shows a +5.8 to +7.2 ft
+  residual on T38 / 737 (except 737 s1, −0.00). The v5 optima drive it to about 0 when ki_alt is near its bound.
+* **Not adopted as the default**, as agreed: v4 (`phase1_hdg.json`) stays the default.
+
+## Phase 2 wiring (Genome `phase2_flex`, FD v2 after the §12 mass fix)
+
+Configs, all generated by `analysis/make_phase2_configs.py` from `configs/phase1_hdg.json`:
+- `configs/phase2_pilot.json`: 64 × 60, seed 1, viz off.
+- `configs/phase2_smoke.json`: 16 × 5, full fidelity only.
+- `configs/phase2_bench_rf.json` and `configs/phase2_bench_rrf.json`: 32 × 8, cache off, ladders rigid→full and rigid→reduced→full.
+
+What every config sets:
+- **Genome (20 genes).** The v4 controller (8 genes, from `phase1_hdg`, with v5's `ki_alt` upper bound of 0.5) plus FD's 12 v2 struct genes from `flexbody.gene_schema()`. Bounds, scale and baseline (`Gene.default`) are read from FD at load time.
+- **`struct_asymmetric`.** Defaults to false. Set it to true to add FD's 2 asymmetry genes (14 struct genes).
+- **`init`.** `{"mode": "baseline", "sigma": 0.10, "blocks": ["struct"]}`, where sigma must be in [0.10, 0.15] (normalized). Generation 0 is the usual uniform draw. Then the struct columns are set to `clip(encode(FD baseline) + sigma·N(0,1), 0, 1)`. This is Genome's `init_pop.generation_zero` algorithm, but Genome uses sigma 0.05. The default `"uniform"` leaves generation 0 bit-identical to earlier runs.
+- **Roots.** `aircraft_root` is `"flight-dynamics/jsbsim_root"`, team-relative. `sim.abs_root` resolves it under `EVOLUTION_FD_DIR` when that is set, otherwise under the team root. Full fidelity uses `<root>_v2` (FD's `flexbody.ROOT_V2`). The configs contain no absolute paths.
+- **Ladders and gates.**
+  - `multi_fidelity` is global: rigid→full with `min_full_frac` 0.25, so at least 25 % of the population plus the elites are re-scored at full.
+  - `multi_fidelity_per_aircraft` overrides any of `enabled`, `screen`, `top_k`, `min_full_frac` and `mid_k` for one aircraft. The pilot uses it for c172x: rigid→reduced→full.
+  - `fidelity_per_aircraft` reduced gates: c172x 0.9, T38/737 1.0. The full gate is FD's 1.0.
+  - Feasibility is trusted only from the authoritative stage, which is full.
+- **`pin_model_version`** (`{aircraft: {fidelity: FD model_version}}`). The values come from FD's `v2_results/model_versions_post_mass.json`.
+  - `Batch.run()` refuses (SystemExit) in these cases:
+    - a pin still reads `PENDING-FD-NEW-MODEL-VERSION`; this happens before the run dir is touched;
+    - a reduced/full fidelity in the aircraft's ladder is unpinned;
+    - FD's current string differs from the pin; this is checked right after the per-aircraft describe step, before run.json, any evaluation, cache write or checkpoint.
+  - Resuming re-checks the pins.
+  - Reduced pins are FD's default-gate (0.9) strings. Evolution's reduced string also hashes the per-aircraft gate, so for T38/737 at gate 1.0 the run's own string differs: `reduced:flexv1:87b7e096` / `67224a27`, against FD's `52be19ae` / `870ff0b7`. `check_pins` accepts a pin that matches either FD's default-gate string or the run's own string. It then allows exactly the run's string in the cache guard.
+  - The cache guard is `EvalCache.pins`. It refuses to store any reduced/full result whose model_version is not allowed.
+  - `python -m evolution.batch --config C --model-versions` prints the current and pinned strings and whether they match. It is read-only.
+- **Mass-credit clip** (`Profile.flex_mass_credit_clip`, a subset of `["ht", "vt", "fus"]`): Genome's interim `fd_bridge.mass_term_v2` clip, applied as `fidelity.apply_mass_credit_clip`.
+  - It replaces FD's `J_mass` with the clipped value in every per-scenario cost and records `J_mass_fd` and `mass_credit_delta`.
+  - It is bit-identical when no clipped body loses mass.
+  - It is off in all Phase 2 configs, matching Genome's `phase2_flex` since 08:15 PT, where FD's §12 fix replaced it. `make_phase2_configs.py --clip` turns it on for an A/B comparison.
+- **Cost.** The cost is FD's `flexeval` cost, not reweighted: sim cost (track, effort, comfort, heading, hold) plus every FD pre-flight and flown term at `StructWeightsV2` weights. That is 23 `TERM_KEYS`, including the 5 §12 sizing terms and the 2 full-only flown peak terms.
+- **Flex rows** in `genomes.jsonl` also carry `mass_total_frac`, `mass_lb` (FD `mass_summary`, per-body Δlb), `task_cpu_s`, and the clip fields when the clip is set.
+
+Checks (read-only):
+- `$PY evolution/analysis/phase2_check.py RUN_DIR [--compare RUN_DIR_B] [--json OUT]`, on the last generation:
+  - flags a negative structural cost (sum of `J_*` terms) at the optimum, and any negative term;
+  - prints the fraction of the final population within 2 % (normalized) of each struct gene's floor;
+  - flags a stiffness gene where ≥ 25 % of the population sits at its floor;
+  - reports the invalid rate;
+  - exits 1 on any flag.
+- `$PY evolution/analysis/phase2_fidelity_bench.py RUN_DIR [--per-aircraft 16]`: re-scores a sample of the run's genomes at rigid, reduced and full, outside the cache. It reports CPU per scenario, Spearman reduced-vs-full and rigid-vs-full, and checks full against the logged costs bit for bit.
 
 ## Tests
 
-`python -m pytest evolution/tests -q`: 64 tests, ~60–115 s on 8 cores depending on box load
-(64 passed in 113.96 s at load ~16, 2026-10-06 05:55 PT; `logs/pytest_integ2.log`).
+`python -m pytest evolution/tests -q`: **80 passed** in 89.3 s (2026-10-06 08:03–08:05 PT, load 4.0→3.5; log `logs/pytest_final4.log`).
+
+* `test_paths.py` (5): abs_root / team_rel inverse, relative == absolute profile, FD_DIR default, source repo in both layouts.
+* `test_eval.py` replay test also checks: id formats + `individual_id_format`, `eval_seed` per row, team-relative
+  run.json paths, trajectory `fitness_sense == "min"` and `scenario_id`.
 
 * `test_equivalence.py`: `sim.simulate` is bit-identical to the prototype's,
   and a whole batch equals the prototype's `evolve.run` (best cost, gains,
@@ -1012,19 +1332,32 @@ step; `target_rate_mps` = d(reference)/dt.
   validation; `phase1_hdg.json` == genome's export; the eval key changes for 6
   heading variants; batch gen 0 has 8 genes; socket guard (refuse for an explicit
   root, strip loudly for package data, FD root has 0 elements).
-* `test_eval.py` (13):
+* `test_eval.py` (15):
   * Recorder: bit-identity, the t = 0 call, pre_step controls, the read-only FDM.
   * Trajectory docs: `channel_doc` / `controls_timing` (reference vs command).
-  * Fidelity: model_version formats and uniform never-NaN terms; one-way
-    coupling == rigid bit for bit; flex recorder inert; flex_state shape, t = 0
-    probe and twist sign; the twist-convention known case; margin gates (0.95:
-    reduced ok, full fails).
-  * Replay: `eval.evaluate` reproduces genomes.jsonl exactly (rigid; scenario
-    used as given; single-scenario call; edited scenario changes the cost);
-    viz on/off identical (+ live file only with viz on); a reduced run
-    reproduces.
-  * Multi-fidelity: ranking, re-scoring of top-k + carried elites,
-    feasibility_fidelity, Spearman in history, and kill-between-rows-and-
-    checkpoint + resume == an uninterrupted run.
+  * Fidelity (FD flexeval v2):
+    * model_version formats (`full:flexv2`), FD's 23 never-NaN terms, the gate in the reduced sha, FD's MARGIN_GATE
+      restored, per-aircraft defaults;
+    * our reduced/full == a direct `flexeval.evaluate` call bit for bit, and one scenario == its entry in the
+      all-scenario call; FD's prepare functions are disabled in-process;
+    * flex recorder inert with `telemetry_check` bit-identical; flex_state shape, t = 0 probe, SB tip == FD raw tip
+      (dz and twist sign);
+    * the twist-convention known cases (v1 and v2);
+    * per-aircraft margin gates (0.95: gate 0.9 ok, gate 1.0 fails, not flown, 2·fail_base).
+  * Replay: `eval.evaluate` reproduces genomes.jsonl exactly (rigid; scenario used as given; single-scenario call; edited
+    scenario changes the cost); viz on/off identical at rigid and at full (+ live file only with viz on); a reduced run
+    reproduces and records `reduced_gate`.
+  * Multi-fidelity (rigid → full with 20 genes): ranking, re-scoring of top-k + carried elites, feasibility only from
+    full (`feasible: null` otherwise), full rows replay exactly, Spearman in history, and kill-between-rows-and-
+    checkpoint + resume == an uninterrupted run. 3-level ladder rigid → reduced → full with min_full_frac 0.6 (k_full =
+    3 of 5), all three Spearman pairs, `ladder_cost`, run.json ladder versions; a descending ladder is rejected.
   * Backfill of a phase1-s1 copy replays exactly.
+* `test_v5.py` (8):
+  * genome's four v5 reference genomes re-fly bit for bit (per-scenario costs, mean of 4, hold_osc);
+  * `phase1_v5.json` == genome's export == v4 + 4 keys;
+  * flags off are inert, v4 scenario dicts are unchanged, and the hold-alone / downdraft-alone compositions bisect
+    exactly;
+  * downdraft onset shape, and no RNG draws consumed;
+  * validation, and the cache key changes for each new key;
+  * run.json carries the 4th scenario and the fitness doc.
 

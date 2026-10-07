@@ -166,6 +166,24 @@ STRUCTURE_FIXED_ZERO = {"aspect_ratio_delta": 0.0, "sweep_delta_deg": 0.0}
 
 ALL_GENES: Dict[str, GeneSpec] = {g.name: g for b in BLOCK_ORDER for g in BLOCKS[b]}
 
+# Phase 2 (flex v2): the structure_v2 block is NOT a static table here. Its genes are built at task-load time from
+# Flight Dynamics' flexbody.gene_schema() (fd_bridge.gene_schema_v2), so the encoding tracks FD's spec exactly
+# (same names, ranges, log/linear scales and baselines; decode lo*(hi/lo)**u / lo + u*(hi-lo) like FD's). It is
+# appended after the canonical blocks and only exists in tasks that enable it, so no other task's spec (genes,
+# fixed values, layout) changes.
+STRUCTURE_V2_BLOCK = "structure_v2"
+
+
+def genes_from_fd_schema(fd_schema, block: str = STRUCTURE_V2_BLOCK) -> Tuple[GeneSpec, ...]:
+    """GeneSpecs for FD's v2 structure genes (flexbody.GeneV2: name, lo, hi, scale log|linear, default, doc)."""
+    out = []
+    for g in fd_schema:
+        if g.scale not in ("log", "linear"):
+            raise ValueError(f"FD gene {g.name}: unsupported scale {g.scale!r}")
+        out.append(GeneSpec(g.name, block, float(g.lo), float(g.hi), g.scale, float(g.default), "x" if g.scale == "log" else "-",
+                            g.doc, "none"))
+    return tuple(out)
+
 
 @dataclass
 class GenomeSpec:
@@ -250,7 +268,8 @@ def build_spec(enabled: Iterable[str],
                range_factors: Optional[Mapping[str, float]] = None,
                overrides: Optional[Mapping[str, Mapping]] = None,
                legacy_pitch_ranges: bool = False,
-               gene_subsets: Optional[Mapping[str, Sequence[str]]] = None) -> GenomeSpec:
+               gene_subsets: Optional[Mapping[str, Sequence[str]]] = None,
+               extra_genes: Optional[Sequence[GeneSpec]] = None) -> GenomeSpec:
     """Assemble a GenomeSpec.
 
     enabled             blocks to evolve (canonical order is enforced, so the layout is stable)
@@ -259,6 +278,8 @@ def build_spec(enabled: Iterable[str],
     legacy_pitch_ranges use flight_sim/genome.py's original ranges for the pitch block (legacy preset)
     gene_subsets        {block: [gene, ...]}: evolve only these genes of an enabled block; its other genes are held
                         at their (scaled) defaults like a disabled block (e.g. heading hold = outer loop only)
+    extra_genes         genes of a dynamic block appended after the canonical ones (Phase 2: structure_v2 from FD's
+                        gene_schema(); never range-scaled or overridden -- FD's ranges are the spec)
     """
     enabled = list(enabled)
     unknown = set(enabled) - set(BLOCKS)
@@ -299,4 +320,26 @@ def build_spec(enabled: Iterable[str],
                 fixed[g.name] = g.default
     if any(g.block == "structure" for g in genes):
         notes.append("structure block: FD flex-wing parameters (notional structural data, see FD INTERFACE.md)")
+    if extra_genes:
+        extra = list(extra_genes)
+        blocks_x = []
+        for g in extra:
+            if g.block in BLOCKS or g.block in blocks_x and blocks_x[-1] != g.block:
+                raise ValueError(f"extra gene {g.name}: block {g.block!r} must be new and contiguous")
+            if g.block not in blocks_x:
+                blocks_x.append(g.block)
+        names = [g.name for g in genes]
+        clash = [g.name for g in extra if g.name in names]
+        if clash:
+            raise ValueError(f"extra genes {clash} clash with evolved genes of the canonical blocks "
+                             "(e.g. structure and structure_v2 together)")
+        if set(overrides) & {g.name for g in extra} - set(ALL_GENES):
+            raise ValueError(f"no overrides for {sorted(set(overrides) & {g.name for g in extra})}: FD's schema is the spec")
+        for g in extra:
+            fixed.pop(g.name, None)  # e.g. struct_damping_ratio is evolved here, not held at the v1 default
+        genes = genes + extra
+        enabled = enabled + blocks_x
+        if STRUCTURE_V2_BLOCK in blocks_x:
+            notes.append("structure_v2 block: FD flex v2 genes from flexbody.gene_schema() (notional structural data, "
+                         "see FD INTERFACE_v2.md)")
     return GenomeSpec(genes, fixed, tuple(enabled), notes)

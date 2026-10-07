@@ -330,3 +330,20 @@ working altitude integrator on the T38, no loss on max pitch / g / heading), but
 much, does not fix the early plateau, pins ki_alt at its bound on 3 of 5 runs, and isn't implemented in evolution/ yet.
 Suggested gate for making it the default: ki_alt bound decision (v5-only), a seeded or larger-budget rerun showing
 the GA beats the v4 genomes on the v5 task, your bit-for-bit check in section 3, and team sign-off.
+
+## 6. ki_alt bound (v5 only), added 2026-10-06 ~07:30 MST
+
+Approved: v5-only override. `presets/phase1_v5.json` now has `"gene_overrides": {"ki_alt": {"max": 0.5}}` (log0,
+lower bounds unchanged). phase1_v4 and the shared set keep 0.05 (tests pin the v4 runs bit for bit, and the v5
+bests still score their recorded costs: the bound only widens the search). `exports/evolution_phase1_v5_profiles.json`
+now carries `gain_bounds.ki_alt = [min, 0.5]`; the v4 export is unchanged. **Your side:** use 0.5 as the v5 ki_alt
+upper bound.
+
+Why 0.5 (`ki_alt_scan.py` → `runs/ki_alt_scan.json`, plus T38 reruns `runs/v5_kialt02|05_t38_s1`):
+- One-at-a-time scan on the v5 bests (other genes fixed, own + unseen scenario seed): the cost minimum is interior
+  and ≤ 0.1 on every aircraft (c172x ≈ 0.05, T38 0.05–0.1, 737 ≈ 0.02–0.05). Above ~0.3 (T38) / 0.2 (737) the hold
+  limit-cycles (hold_osc ≈ 3, cost ≈ 1), so a higher bound only adds search volume the GA rejects quickly.
+- T38 GA reruns (32 × 20, seed 1): bound 0.2 → ki_alt 0.062, cost 0.0904 (flagged near_upper by at_bounds);
+  bound 0.5 → ki_alt 0.066, cost 0.0878 (no gene at a bound; the 0.05-bound run had 0.0878 with ki_alt pinned at 0.05).
+  So the GA wants slightly more than 0.05 but gains no cost on this seed; 0.5 is the smallest round bound that
+  leaves its preferred value clearly interior. Not rerun with the new bound: c172x and 737 (one-at-a-time scan only).

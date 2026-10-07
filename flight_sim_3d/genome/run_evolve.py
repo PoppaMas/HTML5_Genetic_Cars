@@ -87,6 +87,10 @@ def main(argv=None):
     sys.path.insert(0, FLIGHT_SIM_DIR)
     import evolve  # the original, unmodified file; binds to the shims
     assert evolve.genome is sys.modules["genome"] and evolve.sim is sys.modules["sim"]
+    if task.init:  # Phase 2: seeded generation 0 (init_pop.py); tasks without "init" use evolve.py's draw unchanged
+        import init_pop
+        evolve.ga = init_pop.seeded_ga(evolve.ga, task)
+        print(f"[genome] generation 0: {task.init}")
     cfg = evolve.parse_args(rest)
     summary = evolve.run(cfg)
     if not a.no_post:

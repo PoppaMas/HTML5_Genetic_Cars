@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate ga-flightsim-traj/1 trajectory files and their index.json.
+"""Validate ga-flightsim-traj/{1,2} trajectory files and their index.json.
 
 usage:
     python -m evolution.validate_traj PATH [PATH ...] [--min-gens-per-aircraft 3]
@@ -29,7 +29,8 @@ from typing import Dict, List
 
 import numpy as np
 
-SCHEMA = "ga-flightsim-traj/1"
+SCHEMA = "ga-flightsim-traj/2"
+KNOWN_SCHEMAS = {"ga-flightsim-traj/1", "ga-flightsim-traj/2"}
 REQUIRED_CHANNELS = ["t", "x", "y", "z", "qw", "qx", "qy", "qz", "vx", "vy", "vz", "alt_msl_m",
                      "phi", "theta", "psi", "throttle", "elevator", "aileron", "rudder"]
 UNITS = {"phi": "rad", "theta": "rad", "psi": "rad", "controls": "norm -1..1, throttle 0..1"}
@@ -83,8 +84,8 @@ def validate_doc(doc: Dict, name: str = "") -> List[str]:
             E(f"field {k!r} has type {type(doc[k]).__name__}")
     if err:
         return err
-    if doc["schema"] != SCHEMA:
-        E(f"schema {doc['schema']!r} != {SCHEMA!r}")
+    if doc["schema"] not in KNOWN_SCHEMAS:
+        E(f"schema {doc['schema']!r} not in {sorted(KNOWN_SCHEMAS)}")
     if doc["units"] != UNITS:
         E(f"units {doc['units']!r} != {UNITS!r}")
     for k, ty in FRAME.items():

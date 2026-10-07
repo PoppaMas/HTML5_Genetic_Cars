@@ -1,0 +1,847 @@
+{
+ "generated": "2026-10-06 07:42:58 MST",
+ "counterfactual_jobs": 512,
+ "counterfactual_wall_s": 143.16034953901544,
+ "counterfactual_load_start": [
+  11.8935546875,
+  17.1748046875,
+  17.9296875
+ ],
+ "counterfactual_load_end": [
+  8.50244140625,
+  13.8076171875,
+  16.55517578125
+ ],
+ "cases": {
+  "full-vizoff": {
+   "wall_s": 307.5257196710445,
+   "batch_wall_s": 307.31767053803196,
+   "task_cpu_s_total": 1101.5225793020002,
+   "start": "07:18:37",
+   "end": "07:23:44",
+   "load_start": 6.47802734375,
+   "load_end": 22.2373046875,
+   "speedup_vs_full_vizon_wall": 1.0,
+   "speedup_vs_full_vizon_cpu": 1.0,
+   "per_aircraft": {
+    "c172x": {
+     "mean_gen_wall_s": 74.02296960924286,
+     "gen_wall_s": [
+      58.60092168697156,
+      72.16751209401991,
+      92.90526621497702,
+      72.41817844100296
+     ],
+     "task_cpu_s": 544.7702570900001,
+     "best_final_full": 0.28892249439822354,
+     "best_final_minus_full_only": 0.0,
+     "best_per_gen": [
+      0.3925943287844847,
+      0.35285951806047483,
+      0.30546783687738516,
+      0.28892249439822354
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 0.734375,
+     "n_full_scored": 128,
+     "final_elite_set_same_as_full_only": true,
+     "final_elite_overlap_with_full_only": 1.0,
+     "spearman_per_gen": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "spearman_both_ok_per_gen": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "n_rescored": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "stage_cpu_s": null,
+     "stage_n": null,
+     "resim_mismatches": []
+    },
+    "737": {
+     "mean_gen_wall_s": 64.06631509625004,
+     "gen_wall_s": [
+      30.82153215300059,
+      68.59848211699864,
+      74.3460390229593,
+      82.49920709204162
+     ],
+     "task_cpu_s": 556.7523222120001,
+     "best_final_full": 0.1620784518860609,
+     "best_final_minus_full_only": 0.0,
+     "best_per_gen": [
+      0.32920854677777966,
+      0.2948506537111561,
+      0.1730238949262178,
+      0.1620784518860609
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 0.796875,
+     "n_full_scored": 128,
+     "final_elite_set_same_as_full_only": true,
+     "final_elite_overlap_with_full_only": 1.0,
+     "spearman_per_gen": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "spearman_both_ok_per_gen": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "n_rescored": [
+      null,
+      null,
+      null,
+      null
+     ],
+     "stage_cpu_s": null,
+     "stage_n": null,
+     "resim_mismatches": []
+    }
+   }
+  },
+  "rigid-full": {
+   "wall_s": 111.63130579300923,
+   "batch_wall_s": 111.25326052599121,
+   "task_cpu_s_total": 346.048260582,
+   "start": "07:23:44",
+   "end": "07:25:36",
+   "load_start": 22.2373046875,
+   "load_end": 23.13623046875,
+   "speedup_vs_full_vizon_wall": 2.762325068812125,
+   "speedup_vs_full_vizon_cpu": 3.1831472796580695,
+   "per_aircraft": {
+    "c172x": {
+     "mean_gen_wall_s": 23.064334265247453,
+     "gen_wall_s": [
+      26.667774306959473,
+      18.286691154004075,
+      17.273984712024685,
+      30.02888688800158
+     ],
+     "task_cpu_s": 133.24514870500005,
+     "best_final_full": 0.35285951806047483,
+     "best_final_minus_full_only": 0.06393702366225129,
+     "best_per_gen": [
+      0.3925943287844847,
+      0.35285951806047483,
+      0.35285951806047483,
+      0.35285951806047483
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 0.7777777777777778,
+     "n_full_scored": 18,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "rigid_vs_full": 0.39999999999999997
+      },
+      {
+       "rigid_vs_full": 0.39999999999999997
+      },
+      {
+       "rigid_vs_full": 0.632455532033676
+      },
+      {
+       "rigid_vs_full": 0.6
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "rigid_vs_full": 1.0
+      },
+      {
+       "rigid_vs_full": 1.0
+      },
+      {
+       "rigid_vs_full": null
+      },
+      {
+       "rigid_vs_full": 0.6
+      }
+     ],
+     "n_rescored": [
+      4,
+      5,
+      4,
+      5
+     ],
+     "stage_cpu_s": {
+      "rigid": 85.35395429300004,
+      "full": 47.891194412000004
+     },
+     "stage_n": {
+      "rigid": 128,
+      "full": 18
+     },
+     "resim_mismatches": []
+    },
+    "737": {
+     "mean_gen_wall_s": 26.06625850900309,
+     "gen_wall_s": [
+      28.408962968969718,
+      26.765969634987414,
+      28.197412724024616,
+      20.89268870803062
+     ],
+     "task_cpu_s": 212.803111877,
+     "best_final_full": 0.19901942824064833,
+     "best_final_minus_full_only": 0.03694097635458743,
+     "best_per_gen": [
+      0.32920854677777966,
+      0.2948506537111561,
+      0.23682648350645677,
+      0.19901942824064833
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 0.96875,
+     "n_full_scored": 32,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "rigid_vs_full": 0.5952380952380953
+      },
+      {
+       "rigid_vs_full": 0.5714285714285715
+      },
+      {
+       "rigid_vs_full": 0.6428571428571429
+      },
+      {
+       "rigid_vs_full": 0.5476190476190477
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "rigid_vs_full": 0.5714285714285715
+      },
+      {
+       "rigid_vs_full": 0.5714285714285715
+      },
+      {
+       "rigid_vs_full": 0.6428571428571429
+      },
+      {
+       "rigid_vs_full": 0.5476190476190477
+      }
+     ],
+     "n_rescored": [
+      8,
+      8,
+      8,
+      8
+     ],
+     "stage_cpu_s": {
+      "rigid": 70.90279596799996,
+      "full": 141.90031590900003
+     },
+     "stage_n": {
+      "rigid": 128,
+      "full": 32
+     },
+     "resim_mismatches": []
+    }
+   }
+  },
+  "reduced-full": {
+   "wall_s": 172.2435111789964,
+   "batch_wall_s": 171.96176438999828,
+   "task_cpu_s_total": 1083.287391463,
+   "start": "07:25:36",
+   "end": "07:28:28",
+   "load_start": 23.13623046875,
+   "load_end": 16.31494140625,
+   "speedup_vs_full_vizon_wall": 1.787127921303803,
+   "speedup_vs_full_vizon_cpu": 1.0168331949422704,
+   "per_aircraft": {
+    "c172x": {
+     "mean_gen_wall_s": 40.187664926750585,
+     "gen_wall_s": [
+      44.671997005003504,
+      40.007412685023155,
+      36.83149264095118,
+      39.2397573760245
+     ],
+     "task_cpu_s": 521.868690532,
+     "best_final_full": 0.29944245867779734,
+     "best_final_minus_full_only": 0.010519964279573801,
+     "best_per_gen": [
+      0.3925943287844847,
+      0.35285951806047483,
+      0.29944245867779734,
+      0.29944245867779734
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 1.0,
+     "n_full_scored": 19,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "reduced_vs_full": 1.0
+      },
+      {
+       "reduced_vs_full": 0.9999999999999999
+      },
+      {
+       "reduced_vs_full": 0.8999999999999998
+      },
+      {
+       "reduced_vs_full": 0.0
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "reduced_vs_full": 1.0
+      },
+      {
+       "reduced_vs_full": 0.9999999999999999
+      },
+      {
+       "reduced_vs_full": 0.8999999999999998
+      },
+      {
+       "reduced_vs_full": 0.0
+      }
+     ],
+     "n_rescored": [
+      4,
+      5,
+      5,
+      5
+     ],
+     "stage_cpu_s": {
+      "reduced": 449.46509555899996,
+      "full": 72.40359497300003
+     },
+     "stage_n": {
+      "reduced": 128,
+      "full": 19
+     },
+     "resim_mismatches": []
+    },
+    "737": {
+     "mean_gen_wall_s": 41.51616450099391,
+     "gen_wall_s": [
+      49.81612493598368,
+      38.9561825459823,
+      38.104587290028576,
+      39.18776323198108
+     ],
+     "task_cpu_s": 561.4187009310001,
+     "best_final_full": 0.18033940860286043,
+     "best_final_minus_full_only": 0.01826095671679953,
+     "best_per_gen": [
+      0.32920854677777966,
+      0.2948506537111561,
+      0.19575852035250474,
+      0.18033940860286043
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 0.9705882352941176,
+     "n_full_scored": 34,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "reduced_vs_full": 0.7857142857142858
+      },
+      {
+       "reduced_vs_full": 0.4047619047619048
+      },
+      {
+       "reduced_vs_full": 0.45
+      },
+      {
+       "reduced_vs_full": -0.39999999999999997
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "reduced_vs_full": 0.7857142857142858
+      },
+      {
+       "reduced_vs_full": 0.4047619047619048
+      },
+      {
+       "reduced_vs_full": 0.30952380952380953
+      },
+      {
+       "reduced_vs_full": -0.39999999999999997
+      }
+     ],
+     "n_rescored": [
+      8,
+      8,
+      9,
+      9
+     ],
+     "stage_cpu_s": {
+      "reduced": 420.589994491,
+      "full": 140.82870644000005
+     },
+     "stage_n": {
+      "reduced": 128,
+      "full": 34
+     },
+     "resim_mismatches": []
+    }
+   }
+  },
+  "rigid-reduced-full": {
+   "wall_s": 110.79510964197107,
+   "batch_wall_s": 110.57383729697904,
+   "task_cpu_s_total": 710.496692852,
+   "start": "07:28:28",
+   "end": "07:30:19",
+   "load_start": 16.31494140625,
+   "load_end": 15.8330078125,
+   "speedup_vs_full_vizon_wall": 2.779298232299189,
+   "speedup_vs_full_vizon_cpu": 1.5503556742542823,
+   "per_aircraft": {
+    "c172x": {
+     "mean_gen_wall_s": 22.74134682949807,
+     "gen_wall_s": [
+      22.944400537002366,
+      21.157395687012468,
+      25.10274348099483,
+      21.760847612982616
+     ],
+     "task_cpu_s": 274.651656139,
+     "best_final_full": 0.27926271454996066,
+     "best_final_minus_full_only": -0.009659779848262884,
+     "best_per_gen": [
+      0.3925943287844847,
+      0.35285951806047483,
+      0.3306543375322854,
+      0.27926271454996066
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 1.0,
+     "n_full_scored": 19,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "rigid_vs_full": 1.0,
+       "reduced_vs_full": 1.0,
+       "rigid_vs_reduced": 0.5000000000000001
+      },
+      {
+       "rigid_vs_full": 0.9999999999999999,
+       "reduced_vs_full": 0.9999999999999999,
+       "rigid_vs_reduced": 0.45
+      },
+      {
+       "rigid_vs_full": 0.09999999999999999,
+       "reduced_vs_full": 0.7999999999999999,
+       "rigid_vs_reduced": 0.0
+      },
+      {
+       "rigid_vs_full": 0.7999999999999999,
+       "reduced_vs_full": 0.7999999999999999,
+       "rigid_vs_reduced": 0.7
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "rigid_vs_full": 1.0,
+       "reduced_vs_full": 1.0
+      },
+      {
+       "rigid_vs_full": 0.9999999999999999,
+       "reduced_vs_full": 0.9999999999999999
+      },
+      {
+       "rigid_vs_full": 0.09999999999999999,
+       "reduced_vs_full": 0.7999999999999999
+      },
+      {
+       "rigid_vs_full": 0.7999999999999999,
+       "reduced_vs_full": 0.7999999999999999
+      }
+     ],
+     "n_rescored": [
+      4,
+      5,
+      5,
+      5
+     ],
+     "stage_cpu_s": {
+      "rigid": 89.73640786000003,
+      "reduced": 106.33086800000001,
+      "full": 78.584380279
+     },
+     "stage_n": {
+      "rigid": 128,
+      "reduced": 34,
+      "full": 19
+     },
+     "resim_mismatches": []
+    },
+    "737": {
+     "mean_gen_wall_s": 26.056789164998918,
+     "gen_wall_s": [
+      29.402589978009928,
+      26.269821164023597,
+      25.256961067963857,
+      23.29778444999829
+     ],
+     "task_cpu_s": 435.84503671300007,
+     "best_final_full": 0.20011915137832312,
+     "best_final_minus_full_only": 0.038040699492262214,
+     "best_per_gen": [
+      0.32920854677777966,
+      0.2948506537111561,
+      0.289474941706823,
+      0.20011915137832312
+     ],
+     "best_feasible_final": true,
+     "feasible_rate_full_scored": 1.0,
+     "n_full_scored": 34,
+     "final_elite_set_same_as_full_only": false,
+     "final_elite_overlap_with_full_only": 0.0,
+     "spearman_per_gen": [
+      {
+       "rigid_vs_full": 0.7142857142857144,
+       "reduced_vs_full": 0.7857142857142858,
+       "rigid_vs_reduced": 0.8035322263676802
+      },
+      {
+       "rigid_vs_full": 0.4523809523809524,
+       "reduced_vs_full": 0.1666666666666667,
+       "rigid_vs_reduced": 0.8911764705882352
+      },
+      {
+       "rigid_vs_full": -0.11666666666666665,
+       "reduced_vs_full": 0.18333333333333335,
+       "rigid_vs_reduced": 0.9441176470588234
+      },
+      {
+       "rigid_vs_full": 0.7999999999999999,
+       "reduced_vs_full": 0.5,
+       "rigid_vs_reduced": 0.5882352941176471
+      }
+     ],
+     "spearman_both_ok_per_gen": [
+      {
+       "rigid_vs_full": 0.7142857142857144,
+       "reduced_vs_full": 0.7857142857142858
+      },
+      {
+       "rigid_vs_full": 0.4523809523809524,
+       "reduced_vs_full": 0.1666666666666667
+      },
+      {
+       "rigid_vs_full": -0.11666666666666665,
+       "reduced_vs_full": 0.18333333333333335
+      },
+      {
+       "rigid_vs_full": 0.7999999999999999,
+       "reduced_vs_full": 0.5
+      }
+     ],
+     "n_rescored": [
+      8,
+      8,
+      9,
+      9
+     ],
+     "stage_cpu_s": {
+      "rigid": 69.13057669400006,
+      "reduced": 216.00068278999998,
+      "full": 150.71377722900002
+     },
+     "stage_n": {
+      "rigid": 128,
+      "reduced": 64,
+      "full": 34
+     },
+     "resim_mismatches": []
+    }
+   }
+  }
+ },
+ "per_aircraft": {
+  "c172x": {
+   "k_full": 4,
+   "k_mid": 8,
+   "reduced_gate": 0.9,
+   "gens": [
+    {
+     "generation": 0,
+     "n": 32,
+     "n_full_ok": 15,
+     "n_reduced_ok": 20,
+     "n_rigid_ok": 22,
+     "spearman_rigid_vs_full": 0.6791532789009007,
+     "spearman_rigid_vs_full_both_ok": 0.9857142857142854,
+     "n_both_ok_rigid": 15,
+     "spearman_reduced_vs_full": 0.8605639257394748,
+     "spearman_reduced_vs_full_both_ok": 0.9857142857142854,
+     "n_both_ok_reduced": 15,
+     "reduced_ok_full_fail": 5,
+     "reduced_fail_full_ok": 0,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 1,
+     "n": 32,
+     "n_full_ok": 20,
+     "n_reduced_ok": 25,
+     "n_rigid_ok": 25,
+     "spearman_rigid_vs_full": 0.640391718533328,
+     "spearman_rigid_vs_full_both_ok": 0.9368421052631579,
+     "n_both_ok_rigid": 19,
+     "spearman_reduced_vs_full": 0.837151889820323,
+     "spearman_reduced_vs_full_both_ok": 0.9543859649122807,
+     "n_both_ok_reduced": 19,
+     "reduced_ok_full_fail": 6,
+     "reduced_fail_full_ok": 1,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 2,
+     "n": 32,
+     "n_full_ok": 28,
+     "n_reduced_ok": 27,
+     "n_rigid_ok": 28,
+     "spearman_rigid_vs_full": 0.9758064516129032,
+     "spearman_rigid_vs_full_both_ok": 0.9644225506294472,
+     "n_both_ok_rigid": 28,
+     "spearman_reduced_vs_full": 0.9893695014662756,
+     "spearman_reduced_vs_full_both_ok": 0.985958485958486,
+     "n_both_ok_reduced": 27,
+     "reduced_ok_full_fail": 0,
+     "reduced_fail_full_ok": 1,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 3,
+     "n": 32,
+     "n_full_ok": 31,
+     "n_reduced_ok": 30,
+     "n_rigid_ok": 31,
+     "spearman_rigid_vs_full": 0.9142228739002932,
+     "spearman_rigid_vs_full_both_ok": 0.9056451612903227,
+     "n_both_ok_rigid": 31,
+     "spearman_reduced_vs_full": 0.9589442815249266,
+     "spearman_reduced_vs_full_both_ok": 0.950166852057842,
+     "n_both_ok_reduced": 30,
+     "reduced_ok_full_fail": 0,
+     "reduced_fail_full_ok": 1,
+     "rigid-full_elite_same": false,
+     "rigid-full_best_same": false,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": false,
+     "reduced-full_best_same": false,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": false,
+     "rigid-reduced-full_best_same": false,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    }
+   ],
+   "counterfactual": {
+    "rigid-full": {
+     "gens_elite_set_differs": 1,
+     "of_gens": 4,
+     "mean_elite_overlap": 0.875,
+     "gens_best_same": 3
+    },
+    "reduced-full": {
+     "gens_elite_set_differs": 1,
+     "of_gens": 4,
+     "mean_elite_overlap": 0.875,
+     "gens_best_same": 3
+    },
+    "rigid-reduced-full": {
+     "gens_elite_set_differs": 1,
+     "of_gens": 4,
+     "mean_elite_overlap": 0.875,
+     "gens_best_same": 3
+    }
+   },
+   "fd_reference": {
+    "reduced_vs_full": "0.942 / 0.940 (genomes / joint)",
+    "both_ok": "0.909 (27) / 0.920 (29)",
+    "rigid_vs_full": "undefined / -0.047"
+   }
+  },
+  "737": {
+   "k_full": 8,
+   "k_mid": 16,
+   "reduced_gate": 1.0,
+   "gens": [
+    {
+     "generation": 0,
+     "n": 32,
+     "n_full_ok": 16,
+     "n_reduced_ok": 21,
+     "n_rigid_ok": 25,
+     "spearman_rigid_vs_full": 0.7066365743358712,
+     "spearman_rigid_vs_full_both_ok": 0.6911764705882353,
+     "n_both_ok_rigid": 16,
+     "spearman_reduced_vs_full": 0.821816601493014,
+     "spearman_reduced_vs_full_both_ok": 0.6970588235294117,
+     "n_both_ok_reduced": 16,
+     "reduced_ok_full_fail": 5,
+     "reduced_fail_full_ok": 0,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 1,
+     "n": 32,
+     "n_full_ok": 31,
+     "n_reduced_ok": 32,
+     "n_rigid_ok": 32,
+     "spearman_rigid_vs_full": 0.9277859237536655,
+     "spearman_rigid_vs_full_both_ok": 0.9318548387096776,
+     "n_both_ok_rigid": 31,
+     "spearman_reduced_vs_full": 0.9215542521994134,
+     "spearman_reduced_vs_full_both_ok": 0.9197580645161291,
+     "n_both_ok_reduced": 31,
+     "reduced_ok_full_fail": 1,
+     "reduced_fail_full_ok": 0,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 2,
+     "n": 32,
+     "n_full_ok": 28,
+     "n_reduced_ok": 29,
+     "n_rigid_ok": 29,
+     "spearman_rigid_vs_full": 0.840252959261741,
+     "spearman_rigid_vs_full_both_ok": 0.8235653235653235,
+     "n_both_ok_rigid": 27,
+     "spearman_reduced_vs_full": 0.8741636916926795,
+     "spearman_reduced_vs_full_both_ok": 0.8711843711843712,
+     "n_both_ok_reduced": 27,
+     "reduced_ok_full_fail": 2,
+     "reduced_fail_full_ok": 1,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    },
+    {
+     "generation": 3,
+     "n": 32,
+     "n_full_ok": 27,
+     "n_reduced_ok": 32,
+     "n_rigid_ok": 32,
+     "spearman_rigid_vs_full": 0.6415728773995282,
+     "spearman_rigid_vs_full_both_ok": 0.9682539682539683,
+     "n_both_ok_rigid": 27,
+     "spearman_reduced_vs_full": 0.5571070721322751,
+     "spearman_reduced_vs_full_both_ok": 0.9810744810744811,
+     "n_both_ok_reduced": 27,
+     "reduced_ok_full_fail": 5,
+     "reduced_fail_full_ok": 0,
+     "rigid-full_elite_same": true,
+     "rigid-full_best_same": true,
+     "rigid-full_elites_feasible": 2,
+     "reduced-full_elite_same": true,
+     "reduced-full_best_same": true,
+     "reduced-full_elites_feasible": 2,
+     "rigid-reduced-full_elite_same": true,
+     "rigid-reduced-full_best_same": true,
+     "rigid-reduced-full_elites_feasible": 2,
+     "true_elites_feasible": 2
+    }
+   ],
+   "counterfactual": {
+    "rigid-full": {
+     "gens_elite_set_differs": 0,
+     "of_gens": 4,
+     "mean_elite_overlap": 1.0,
+     "gens_best_same": 4
+    },
+    "reduced-full": {
+     "gens_elite_set_differs": 0,
+     "of_gens": 4,
+     "mean_elite_overlap": 1.0,
+     "gens_best_same": 4
+    },
+    "rigid-reduced-full": {
+     "gens_elite_set_differs": 0,
+     "of_gens": 4,
+     "mean_elite_overlap": 1.0,
+     "gens_best_same": 4
+    }
+   },
+   "fd_reference": {
+    "reduced_vs_full": "0.843 / 0.870",
+    "both_ok": "0.617 (23) / 0.585 (20)",
+    "rigid_vs_full": "undefined / 0.158"
+   }
+  }
+ }
+}

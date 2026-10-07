@@ -1,0 +1,614 @@
+{
+ "method": "Spearman rank correlation of the genome total cost (3 Phase-1 scenarios x 90 s, c.f. v2_compare.py docstring); ties -> average ranks; fail_cost genomes included (ties) and, separately, excluded",
+ "sets": {
+  "c172x/genomes": {
+   "n": 32,
+   "spearman_reduced_vs_full": 0.9423445926772693,
+   "spearman_rigid_vs_full": null,
+   "n_both_ok": 27,
+   "spearman_reduced_vs_full_both_ok": 0.9090354090354089,
+   "spearman_rigid_vs_full_both_ok": null,
+   "status_full": {
+    "ok": 27,
+    "flutter": 5
+   },
+   "status_reduced": {
+    "ok": 31,
+    "flutter": 1
+   },
+   "gate_agreement": 0.875,
+   "margins": {
+    "flutter_reduced_minus_full_overall": {
+     "mean": 0.03675121485070669,
+     "max_abs": 0.12357462371998174
+    },
+    "flutter_reduced_minus_full_wingR_block": {
+     "mean": 0.02898925701520917,
+     "max_abs": 0.07277631179207655
+    },
+    "spearman_flutter_reduced_vs_full_wingR": 0.9952346041055717,
+    "div_reduced_minus_full": {
+     "mean": 0.020026261162794302,
+     "max_abs": 0.0626965789434537
+    },
+    "sample": [
+     {
+      "i": 0,
+      "reduced": {
+       "flutter_margin": 1.6506293289197884,
+       "div_margin": 2.178022518048953
+      },
+      "full": {
+       "flutter_margin": 1.5376606476276287,
+       "div_margin": 2.1672146182805636,
+       "reversal_margin": 1.9272870821982149
+      },
+      "full_wingR_flutter": 1.6310896308064202
+     },
+     {
+      "i": 1,
+      "reduced": {
+       "flutter_margin": 1.10010381549208,
+       "div_margin": 1.5142630098627525
+      },
+      "full": {
+       "flutter_margin": 1.0890369732918226,
+       "div_margin": 1.5066900065206719,
+       "reversal_margin": 1.326614868500832
+      },
+      "full_wingR_flutter": 1.0890369732918226
+     },
+     {
+      "i": 2,
+      "reduced": {
+       "flutter_margin": 1.5656947001057533,
+       "div_margin": 2.0909060532886663
+      },
+      "full": {
+       "flutter_margin": 1.5378688653232906,
+       "div_margin": 2.07340349625296,
+       "reversal_margin": 1.839566111342623
+      },
+      "full_wingR_flutter": 1.5378688653232906
+     },
+     {
+      "i": 3,
+      "reduced": {
+       "flutter_margin": 1.1928188317204584,
+       "div_margin": 1.6520507951581351
+      },
+      "full": {
+       "flutter_margin": 1.178812894149977,
+       "div_margin": 1.6473364902244352,
+       "reversal_margin": 1.4536360779032476
+      },
+      "full_wingR_flutter": 1.178812894149977
+     },
+     {
+      "i": 4,
+      "reduced": {
+       "flutter_margin": 1.0180375819301617,
+       "div_margin": 1.3954528251664735
+      },
+      "full": {
+       "flutter_margin": 1.0003010725450951,
+       "div_margin": 1.3812471420293462,
+       "reversal_margin": 1.213003366987798
+      },
+      "full_wingR_flutter": 1.0003010725450951
+     },
+     {
+      "i": 5,
+      "reduced": {
+       "flutter_margin": 1.2566847008945206,
+       "div_margin": 1.7104707653954332
+      },
+      "full": {
+       "flutter_margin": 1.1906820643558023,
+       "div_margin": 1.6505719118636983,
+       "reversal_margin": 1.451748220522496
+      },
+      "full_wingR_flutter": 1.1906820643558023
+     },
+     {
+      "i": 6,
+      "reduced": {
+       "flutter_margin": 1.2591235148351057,
+       "div_margin": 1.6983548311355061
+      },
+      "full": {
+       "flutter_margin": 1.22784163018958,
+       "div_margin": 1.6760802113605586,
+       "reversal_margin": 1.4764146694609157
+      },
+      "full_wingR_flutter": 1.22784163018958
+     },
+     {
+      "i": 7,
+      "reduced": {
+       "flutter_margin": 1.4526510516733848,
+       "div_margin": 1.97671276128957
+      },
+      "full": {
+       "flutter_margin": 1.4170870989846984,
+       "div_margin": 1.9558173082438073,
+       "reversal_margin": 1.7305903831435503
+      },
+      "full_wingR_flutter": 1.4170870989846984
+     }
+    ]
+   },
+   "first_mode_freq_error_reduced_vs_full_pct": {
+    "bending1": {
+     "mean": -5.653768483230669,
+     "max_abs": 12.21581195645955
+    },
+    "torsion1": {
+     "mean": -4.042207973438067,
+     "max_abs": 9.530343856466562
+    }
+   },
+   "wall_s_mean": {
+    "rigid": 2.3429664199938998,
+    "reduced": 18.32426766900062,
+    "full": 21.254665196591304
+   }
+  },
+  "c172x/joint": {
+   "n": 32,
+   "spearman_reduced_vs_full": 0.9402274192857615,
+   "spearman_rigid_vs_full": -0.047304733653612804,
+   "n_both_ok": 29,
+   "spearman_reduced_vs_full_both_ok": 0.9201970443349751,
+   "spearman_rigid_vs_full_both_ok": 0.0073891625615763535,
+   "status_full": {
+    "ok": 29,
+    "flutter": 3
+   },
+   "status_reduced": {
+    "ok": 32
+   },
+   "gate_agreement": 0.90625,
+   "margins": {
+    "flutter_reduced_minus_full_overall": {
+     "mean": 0.033523025741549334,
+     "max_abs": 0.13317406411799637
+    },
+    "flutter_reduced_minus_full_wingR_block": {
+     "mean": 0.029308656199939487,
+     "max_abs": 0.07166040013357056
+    },
+    "spearman_flutter_reduced_vs_full_wingR": 0.9934017595307918,
+    "div_reduced_minus_full": {
+     "mean": 0.02052049805203099,
+     "max_abs": 0.057397118588595974
+    },
+    "sample": [
+     {
+      "i": 0,
+      "reduced": {
+       "flutter_margin": 1.0938405256415231,
+       "div_margin": 1.5004610368337523
+      },
+      "full": {
+       "flutter_margin": 1.0800513044189302,
+       "div_margin": 1.4953323369477476,
+       "reversal_margin": 1.3164734112170653
+      },
+      "full_wingR_flutter": 1.0800513044189302
+     },
+     {
+      "i": 1,
+      "reduced": {
+       "flutter_margin": 1.4715447914260513,
+       "div_margin": 2.008512893133133
+      },
+      "full": {
+       "flutter_margin": 1.4183986350996869,
+       "div_margin": 1.9696935273250225,
+       "reversal_margin": 1.7421871570789547
+      },
+      "full_wingR_flutter": 1.4183986350996869
+     },
+     {
+      "i": 2,
+      "reduced": {
+       "flutter_margin": 1.159043384653021,
+       "div_margin": 1.6391944479044178
+      },
+      "full": {
+       "flutter_margin": 1.1179929692724295,
+       "div_margin": 1.613361142662383,
+       "reversal_margin": 1.419831577193412
+      },
+      "full_wingR_flutter": 1.1179929692724295
+     },
+     {
+      "i": 3,
+      "reduced": {
+       "flutter_margin": 1.24060657615514,
+       "div_margin": 1.6922517319683534
+      },
+      "full": {
+       "flutter_margin": 1.1707205209398577,
+       "div_margin": 1.6354108769148639,
+       "reversal_margin": 1.438286084975989
+      },
+      "full_wingR_flutter": 1.1707205209398577
+     },
+     {
+      "i": 4,
+      "reduced": {
+       "flutter_margin": 1.4314699568181162,
+       "div_margin": 1.9375944786047454
+      },
+      "full": {
+       "flutter_margin": 1.416293063702078,
+       "div_margin": 1.9292436332812395,
+       "reversal_margin": 1.7084580195071937
+      },
+      "full_wingR_flutter": 1.416293063702078
+     },
+     {
+      "i": 5,
+      "reduced": {
+       "flutter_margin": 0.9953487103934178,
+       "div_margin": 1.3584793398492194
+      },
+      "full": {
+       "flutter_margin": 0.9550909731952764,
+       "div_margin": 1.3266284645055562,
+       "reversal_margin": 1.1627486194848644
+      },
+      "full_wingR_flutter": 0.9550909731952764
+     },
+     {
+      "i": 6,
+      "reduced": {
+       "flutter_margin": 1.501136837564564,
+       "div_margin": 2.03000622337893
+      },
+      "full": {
+       "flutter_margin": 1.3679627734465676,
+       "div_margin": 2.026110046347654,
+       "reversal_margin": 1.800121610394977
+      },
+      "full_wingR_flutter": 1.4972394459767104
+     },
+     {
+      "i": 7,
+      "reduced": {
+       "flutter_margin": 1.1499318514328598,
+       "div_margin": 1.586758537096531
+      },
+      "full": {
+       "flutter_margin": 1.12455577672926,
+       "div_margin": 1.570843432668011,
+       "reversal_margin": 1.382569408489658
+      },
+      "full_wingR_flutter": 1.12455577672926
+     }
+    ]
+   },
+   "first_mode_freq_error_reduced_vs_full_pct": {
+    "bending1": {
+     "mean": -5.904722796086898,
+     "max_abs": 13.334911790298111
+    },
+    "torsion1": {
+     "mean": -4.149809863271951,
+     "max_abs": 9.421027902179638
+    }
+   },
+   "wall_s_mean": {
+    "rigid": 3.0712340818772645,
+    "reduced": 17.794433545846914,
+    "full": 22.33977591175062
+   }
+  },
+  "737/genomes": {
+   "n": 32,
+   "spearman_reduced_vs_full": 0.8432693304005288,
+   "spearman_rigid_vs_full": null,
+   "n_both_ok": 23,
+   "spearman_reduced_vs_full_both_ok": 0.6166007905138341,
+   "spearman_rigid_vs_full_both_ok": null,
+   "status_full": {
+    "ok": 23,
+    "flutter": 9
+   },
+   "status_reduced": {
+    "ok": 32
+   },
+   "gate_agreement": 0.71875,
+   "margins": {
+    "flutter_reduced_minus_full_overall": {
+     "mean": 0.12221303258586166,
+     "max_abs": 0.47012752090891996
+    },
+    "flutter_reduced_minus_full_wingR_block": {
+     "mean": 0.08675312252974166,
+     "max_abs": 0.1294080667054166
+    },
+    "spearman_flutter_reduced_vs_full_wingR": 0.9915689149560116,
+    "div_reduced_minus_full": {
+     "mean": 0.0,
+     "max_abs": 0.0
+    },
+    "sample": [
+     {
+      "i": 0,
+      "reduced": {
+       "flutter_margin": 0.9914706264665502,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.9141419907935264,
+       "div_margin": 3.0,
+       "reversal_margin": 1.0251259655566074
+      },
+      "full_wingR_flutter": 0.9141419907935264
+     },
+     {
+      "i": 1,
+      "reduced": {
+       "flutter_margin": 1.1789430930697378,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.0340997509423144,
+       "div_margin": 3.0,
+       "reversal_margin": 1.21966144292744
+      },
+      "full_wingR_flutter": 1.0923818587168561
+     },
+     {
+      "i": 2,
+      "reduced": {
+       "flutter_margin": 0.9578478091563187,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.8687907572778131,
+       "div_margin": 3.0,
+       "reversal_margin": 0.9907800981281083
+      },
+      "full_wingR_flutter": 0.8687907572778131
+     },
+     {
+      "i": 3,
+      "reduced": {
+       "flutter_margin": 1.056304099771702,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.9638849023968086,
+       "div_margin": 3.0,
+       "reversal_margin": 1.0619401279454903
+      },
+      "full_wingR_flutter": 0.9638849023968086
+     },
+     {
+      "i": 4,
+      "reduced": {
+       "flutter_margin": 1.0875469178569621,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.9581388511515455,
+       "div_margin": 3.0,
+       "reversal_margin": 1.0717021069996182
+      },
+      "full_wingR_flutter": 0.9581388511515455
+     },
+     {
+      "i": 5,
+      "reduced": {
+       "flutter_margin": 1.097063362476778,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.0108240805640412,
+       "div_margin": 3.0,
+       "reversal_margin": 1.1368185612550912
+      },
+      "full_wingR_flutter": 1.0108240805640412
+     },
+     {
+      "i": 6,
+      "reduced": {
+       "flutter_margin": 1.1663607701083323,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.0410511598880503,
+       "div_margin": 3.0,
+       "reversal_margin": 1.1740121420752085
+      },
+      "full_wingR_flutter": 1.0410511598880503
+     },
+     {
+      "i": 7,
+      "reduced": {
+       "flutter_margin": 1.1562429905500264,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.0703766278328137,
+       "div_margin": 3.0,
+       "reversal_margin": 1.1802285518045592
+      },
+      "full_wingR_flutter": 1.0873491525422398
+     }
+    ]
+   },
+   "first_mode_freq_error_reduced_vs_full_pct": {
+    "bending1": {
+     "mean": -5.347825813596019,
+     "max_abs": 9.303329608546994
+    },
+    "torsion1": {
+     "mean": -3.6518250057770203,
+     "max_abs": 7.051168888802371
+    }
+   },
+   "wall_s_mean": {
+    "rigid": 2.070220122986939,
+    "reduced": 17.855133201997887,
+    "full": 17.632595057695653
+   }
+  },
+  "737/joint": {
+   "n": 32,
+   "spearman_reduced_vs_full": 0.8695037837151754,
+   "spearman_rigid_vs_full": 0.1581600645995555,
+   "n_both_ok": 20,
+   "spearman_reduced_vs_full_both_ok": 0.5849624060150376,
+   "spearman_rigid_vs_full_both_ok": -0.03458646616541353,
+   "status_full": {
+    "ok": 20,
+    "flutter": 12
+   },
+   "status_reduced": {
+    "ok": 32
+   },
+   "gate_agreement": 0.625,
+   "margins": {
+    "flutter_reduced_minus_full_overall": {
+     "mean": 0.1168424471462929,
+     "max_abs": 0.5149287462521114
+    },
+    "flutter_reduced_minus_full_wingR_block": {
+     "mean": 0.09311671810491268,
+     "max_abs": 0.5149287462521114
+    },
+    "spearman_flutter_reduced_vs_full_wingR": 0.9673753665689149,
+    "div_reduced_minus_full": {
+     "mean": 0.0,
+     "max_abs": 0.0
+    },
+    "sample": [
+     {
+      "i": 0,
+      "reduced": {
+       "flutter_margin": 1.2015355245617878,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.1164861458760813,
+       "div_margin": 3.0,
+       "reversal_margin": 1.2493773733921407
+      },
+      "full_wingR_flutter": 1.1164861458760813
+     },
+     {
+      "i": 1,
+      "reduced": {
+       "flutter_margin": 1.212383296602968,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.116058843532549,
+       "div_margin": 3.0,
+       "reversal_margin": 1.2259702645444681
+      },
+      "full_wingR_flutter": 1.116058843532549
+     },
+     {
+      "i": 2,
+      "reduced": {
+       "flutter_margin": 1.3242810854318217,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.2404959380678002,
+       "div_margin": 3.0,
+       "reversal_margin": 1.3522393741243846
+      },
+      "full_wingR_flutter": 1.2404959380678002
+     },
+     {
+      "i": 3,
+      "reduced": {
+       "flutter_margin": 1.1417607416901887,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.072350105005447,
+       "div_margin": 3.0,
+       "reversal_margin": 1.1752748361725907
+      },
+      "full_wingR_flutter": 1.072350105005447
+     },
+     {
+      "i": 4,
+      "reduced": {
+       "flutter_margin": 1.3603519564513362,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 1.2640622943451518,
+       "div_margin": 3.0,
+       "reversal_margin": 1.3916594358696357
+      },
+      "full_wingR_flutter": 1.3005189361045413
+     },
+     {
+      "i": 5,
+      "reduced": {
+       "flutter_margin": 1.0606711140735887,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.9589741075737215,
+       "div_margin": 3.0,
+       "reversal_margin": 1.0643424076221861
+      },
+      "full_wingR_flutter": 0.9589741075737215
+     },
+     {
+      "i": 6,
+      "reduced": {
+       "flutter_margin": 1.0312142419612451,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.9495716504968457,
+       "div_margin": 3.0,
+       "reversal_margin": 1.035990994503088
+      },
+      "full_wingR_flutter": 0.9495716504968457
+     },
+     {
+      "i": 7,
+      "reduced": {
+       "flutter_margin": 0.9233359508342567,
+       "div_margin": 3.0
+      },
+      "full": {
+       "flutter_margin": 0.8497267114400278,
+       "div_margin": 3.0,
+       "reversal_margin": 0.9437379491607519
+      },
+      "full_wingR_flutter": 0.8497267114400278
+     }
+    ]
+   },
+   "first_mode_freq_error_reduced_vs_full_pct": {
+    "bending1": {
+     "mean": -4.073716465622198,
+     "max_abs": 8.238828209629558
+    },
+    "torsion1": {
+     "mean": -2.6617617125481505,
+     "max_abs": 6.000991048098302
+    }
+   },
+   "wall_s_mean": {
+    "rigid": 2.4514807254690822,
+    "reduced": 17.264014228496308,
+    "full": 15.384735829906276
+   }
+  }
+ }
+}

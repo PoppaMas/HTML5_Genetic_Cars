@@ -196,11 +196,11 @@ def test_phase1_config_matches_genome_export():
                 continue
             if isinstance(v, dict) and k in ("gain_bounds", "gene_kinds"):
                 v = {g: x for g, x in v.items() if g not in skip_genes}
-            if k == "aircraft_root":   # the export is repo-relative; resolve_config makes it absolute
-                v = sim.abs_root(v)
             if k in ("thr_kp", "thr_ki"):   # export rounds to 6 digits; we use the full-precision adapter values
                 assert p[k] == pytest.approx(v, rel=2e-5), (name, k)
             else:
+                if k == "aircraft_root":   # the export is repo-relative; resolve_config makes it absolute
+                    v = sim.abs_root(v)
                 assert json.loads(json.dumps(p[k])) == v, (name, k)
 
 

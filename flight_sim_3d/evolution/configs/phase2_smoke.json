@@ -1,0 +1,361 @@
+{
+ "_comment": "Phase 2 SMOKE: 16 x 5 per aircraft, every evaluation at full fidelity (no ladder), same genome / init / clip as phase2_pilot.json.",
+ "seed": 1,
+ "scenario_seed": 1,
+ "scenarios": 3,
+ "metrics": {
+  "band_ft": 20,
+  "hold_after_s": 20
+ },
+ "fidelity": "full",
+ "struct_genes": true,
+ "struct_asymmetric": false,
+ "init": {
+  "mode": "baseline",
+  "sigma": 0.1,
+  "blocks": [
+   "struct"
+  ]
+ },
+ "fidelity_per_aircraft": {
+  "c172x": {
+   "reduced_gate": 0.9
+  },
+  "T38": {
+   "reduced_gate": 1.0
+  },
+  "737": {
+   "reduced_gate": 1.0
+  }
+ },
+ "viz": "off",
+ "profiles": {
+  "phase2_c172x": {
+   "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 55.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -1.0,
+    3.8
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -8.0,
+    12.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.05,
+   "thr_ki": 0.01,
+   "throttle_max": 1.0,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.002,
+     2.0
+    ],
+    "ki_alt": [
+     1e-06,
+     0.5
+    ],
+    "kd_alt": [
+     0.01,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     0.5
+    ],
+    "ki_pitch": [
+     1e-05,
+     0.2
+    ],
+    "kd_pitch": [
+     0.0001,
+     0.5
+    ],
+    "kp_hdg": [
+     0.05,
+     5.0
+    ],
+    "ki_hdg": [
+     1e-05,
+     0.1
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.05,
+   "roll_kd": 0.02,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 16.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  },
+  "phase2_T38": {
+   "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 180.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -3.0,
+    7.33
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -10.0,
+    15.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.036674370574350905,
+   "thr_ki": 0.007334874114870181,
+   "throttle_max": 0.5,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.000608,
+     0.608
+    ],
+    "ki_alt": [
+     3.04e-07,
+     0.5
+    ],
+    "kd_alt": [
+     0.00304,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     2.48
+    ],
+    "ki_pitch": [
+     1e-05,
+     0.992
+    ],
+    "kd_pitch": [
+     0.0001,
+     2.48
+    ],
+    "kp_hdg": [
+     0.164,
+     16.4
+    ],
+    "ki_hdg": [
+     3.29e-05,
+     0.329
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.11802009775780833,
+   "roll_kd": 0.04720803910312333,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 25.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  },
+  "phase2_737": {
+   "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 195.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -1.0,
+    2.5
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -5.0,
+    10.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.0350554435483871,
+   "thr_ki": 0.007011088709677419,
+   "throttle_max": 1.0,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.00073,
+     0.73
+    ],
+    "ki_alt": [
+     3.65e-07,
+     0.5
+    ],
+    "kd_alt": [
+     0.00365,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     7.51
+    ],
+    "ki_pitch": [
+     1e-05,
+     3.01
+    ],
+    "kd_pitch": [
+     0.0001,
+     7.51
+    ],
+    "kp_hdg": [
+     0.137,
+     13.7
+    ],
+    "ki_hdg": [
+     2.74e-05,
+     0.274
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.616155991923067,
+   "roll_kd": 0.2464623967692268,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 25.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  }
+ },
+ "_pin_source": "flight-dynamics/v2_results/model_versions_post_mass.json (Flight Dynamics, post mass-credit fix, 2026-10-06 08:13 PT); reduced pins are FD's default-gate strings, accepted for the run's own gated string (batch.check_pins)",
+ "aircraft": [
+  {
+   "name": "c172x",
+   "profile": "phase2_c172x"
+  },
+  {
+   "name": "T38",
+   "profile": "phase2_T38"
+  },
+  {
+   "name": "737",
+   "profile": "phase2_737"
+  }
+ ],
+ "ga": {
+  "pop_size": 16,
+  "generations": 5
+ },
+ "pin_model_version": {
+  "c172x": {
+   "full": "full:flexv2:11df8fe4"
+  },
+  "T38": {
+   "full": "full:flexv2:e9535bc7"
+  },
+  "737": {
+   "full": "full:flexv2:2c73464b"
+  }
+ }
+}

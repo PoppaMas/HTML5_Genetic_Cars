@@ -1,0 +1,111 @@
+{
+  "best": [
+    {
+      "gene": "wing_ei_taper_1",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 0.7541106724843879,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 0.769668945725526,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_gj_ratio_root",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 1.1375614690561249,
+      "range": [
+        0.8,
+        1.15
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "fuselage_stiffness_scale",
+      "block": "structure_v2",
+      "bound": "lower",
+      "fraction": 1.0,
+      "value": 0.6047935696665403,
+      "range": [
+        0.6,
+        2.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "wing_ei_taper_1",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.5,
+      "value": 0.7561895000000001,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.5,
+      "value": 0.769669,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_gj_ratio_root",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.625,
+      "value": 1.13756,
+      "range": [
+        0.8,
+        1.15
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "fuselage_stiffness_scale",
+      "block": "structure_v2",
+      "bound": "lower",
+      "fraction": 0.375,
+      "value": 0.604794,
+      "range": [
+        0.6,
+        2.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {
+    "fuselage_stiffness_scale": {
+      "bound": "lower",
+      "suggested_range": [
+        0.15,
+        2.0
+      ]
+    }
+  }
+}

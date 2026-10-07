@@ -109,3 +109,28 @@ def test_downdraft_needs_integrator_to_null_residual():
         res[ki] = F.diagnostics(r)["draft_residual_ft"]
     assert res[0.0] > 1.0                 # P-D only: standing offset below the commanded altitude
     assert abs(res[0.0141]) < 0.5 * res[0.0]
+
+
+# ----------------------------------------------------------------------------------------------- ki_alt (v5 only)
+def test_ki_alt_upper_bound_raised_for_v5_only():
+    for ac in ("c172x", "t38", "b737"):
+        v4, v5 = adapter.load_task("phase1_v4", {"aircraft": ac}), adapter.load_task("phase1_v5", {"aircraft": ac})
+        k4, k5 = (next(g for g in t.spec.genes if g.name == "ki_alt") for t in (v4, v5))
+        assert k4.max == 0.05 and k5.max == 0.5 and k4.min == k5.min and k4.scale == k5.scale == "log0"
+        assert [g for g in v4.spec.genes if g.name != "ki_alt"] == [g for g in v5.spec.genes if g.name != "ki_alt"]
+    ex = json.load(open(os.path.join(HERE, "exports", "evolution_phase1_v5_profiles.json")))
+    assert all(p["gain_bounds"]["ki_alt"][1] == 0.5 for p in ex["profiles"].values())
+    ex4 = json.load(open(os.path.join(HERE, "exports", "evolution_phase1_profiles.json")))
+    assert all(p["gain_bounds"]["ki_alt"][1] == 0.05 for p in ex4["profiles"].values())
+
+
+@pytest.mark.sim
+@pytest.mark.parametrize("ac,run", [("c172x", "v5_sweep_w01"), ("t38", "v5_t38_s1"), ("b737", "v5_b737_s1")])
+def test_v5_costs_unchanged_by_wider_bound(ac, run):
+    # the bound only widens the search space: the v5 bests (gains) still score exactly the same
+    f = os.path.join(HERE, "runs", run, "best_gains.json")
+    if not os.path.exists(f):
+        pytest.skip("v5 run not present")
+    g = json.load(open(f))
+    t = adapter.load_task("phase1_v5", {"aircraft": ac})
+    assert t.evaluate(g["gains"], t.make_scenarios(3, g["config"]["scenario_seed"]))["cost"] == g["best_cost"]

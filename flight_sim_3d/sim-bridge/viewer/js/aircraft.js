@@ -327,12 +327,14 @@ export function applyControls(model, c, dtSec) {
 
 // ---------------------------------------------------------------- soft-body v2 (structure block)
 // structure = {components: [{name: 'wingL'|'wingR'|'htail'|'vtail'|'fuselage', axis_nodes_body_m: [[x,y,z],...],
-//   dof: ['dz','dy','twist']}]}, channels '<component>.<dof>.<node_idx>' (metres / rad, body FRD).
+//   dof: ['dz','dy','dx','twist']}]}, channels '<component>.<dof>.<node_idx>' (metres / rad, body FRD).
 // Every vertex of the component's procedural meshes is projected (at rest, controls neutral) onto the node polyline;
 // its displacement is the linear interpolation of the node values at that station:
-//   dz, dy: translation along body z (down) / y (right);
+//   dz, dy, dx: translation along body z (down) / y (right) / x (forward; wing in-plane bending);
 //   twist:  rotation about the local axis tangent (node i -> i+1 direction, right-hand rule) through the axis point.
-// `exag` multiplies all deflections (twist included). Meshes not in a component are untouched.
+// `exag` multiplies all deflections (twist included). `dofs` (optional list of DOF names, component names or
+// '<component>.<dof>', e.g. ['dx'] or ['htail','vtail']) shows only those (URL ?dofs=dx isolates wing in-plane bending
+// at a large exaggeration; ?dofs=htail,vtail,fuselage the tail). Meshes not in a component are untouched.
 const _m4 = new THREE.Matrix4(), _m4b = new THREE.Matrix4(), _m3 = new THREE.Matrix3(), _v = new THREE.Vector3();
 
 export function attachStructure(model, structure) {
@@ -383,26 +385,28 @@ export function attachStructure(model, structure) {
 }
 
 // value(arr) -> interpolated channel value at the current time (arr may be null)
-export function applyStructure(model, deformer, value, exag = 1) {
+export function applyStructure(model, deformer, value, exag = 1, dofs = null) {
   if (!deformer) return;
   model.root.updateMatrixWorld(true);
   const modelInv = _m4.copy(model.model.matrixWorld).invert();
   const q = new THREE.Quaternion(), rv = new THREE.Vector3();
   for (const c of deformer.comps) {
     const node = (dof) => {
-      const arrs = c.ch[dof];
+      const shown = !dofs || dofs.includes(dof) || dofs.includes(c.name) || dofs.includes(`${c.name}.${dof}`);
+      const arrs = shown ? c.ch[dof] : null;
       const out = new Float32Array(c.nNodes);
       if (arrs) for (let i = 0; i < c.nNodes; i++) { const v = arrs[i] ? value(arrs[i]) : 0; out[i] = Number.isFinite(v) ? v * exag : 0; }
       return out;
     };
-    const dz = node('dz'), dy = node('dy'), tw = node('twist');
+    const dz = node('dz'), dy = node('dy'), dx = node('dx'), tw = node('twist');
     for (const mm of c.meshes) {
       const m = mm.mesh, pos = m.geometry.attributes.position, a = pos.array;
       _m3.setFromMatrix4(_m4b.multiplyMatrices(modelInv, m.matrixWorld)).invert(); // body -> mesh-local (linear part)
       for (let k = 0; k < pos.count; k++) {
         const j = mm.seg[k], t = mm.u[k];
         const lz = dz[j] + (dz[j + 1] - dz[j]) * t, ly = dy[j] + (dy[j + 1] - dy[j]) * t, th = tw[j] + (tw[j + 1] - tw[j]) * t;
-        _v.set(0, ly, lz);
+        const lx = dx[j] + (dx[j + 1] - dx[j]) * t;
+        _v.set(lx, ly, lz);
         if (th) {
           rv.set(mm.r[3 * k], mm.r[3 * k + 1], mm.r[3 * k + 2]);
           const r0 = rv.clone();

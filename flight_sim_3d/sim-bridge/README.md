@@ -44,18 +44,33 @@ sim-bridge/
     c172x_seed1-pop48_standalone.html       self-contained viewer + 8 generations @10 Hz (3 MB)
     bench_jets-j1_standalone.html           self-contained 4-aircraft bench (c172x/T38/737/f16, g0/g9/g19 @10 Hz, 2.5 MB)
     phase1_standalone.html                  phase-1 seeds s1/s2/s3 (36 files) + bench_jets-j1 g19 (4 files) @10 Hz, 6.6 MB
-    replays/<run_id>/<replay_id>/           replay.py output (trajectories/, index.json, replay_manifest.json, viewer.html)
+    phase2_pilot_s1_standalone.html         phase2-pilot-s1 full nodal soft-body, gen 0/29/59 × {c172x,T38,737} @10 Hz
+    replays/<run_id>/<replay_id>/           replay.py output (trajectories/, index.json, replay_manifest.json, viewer.html);
+                                            v2nodes-full-g19[-sc1] = real FD v2 full fidelity with nodal data
     examples/synthetic_softbody_test.json   SYNTHETIC soft-body test pattern (sinusoids, not a simulation) + _standalone.html
   replay.py             CLI wrapper -> sim_bridge.replay
-  sim_bridge/           importable package: replay.py (tool), er_adapter.py (shim for ER's current artifacts),
-                        recorder.py (read-only per-step recorder), trajdiff.py (channel-by-channel trajectory diff)
-  tests/test_replay.py  replay tests (adapter exact, agreed-interface fixture, real ER interface once it ships)
-  tests/fixtures/       er_interface/phase1-s1/{run.json,genomes.jsonl} + fake_evolution_eval.py (agreed contract)
+  sim_bridge/           importable package: replay.py (tool; ER's real run.json/genomes.jsonl + evolution.eval),
+                        er_adapter.py (fallback for legacy runs without run.json), recorder.py (read-only per-step
+                        recorder), trajdiff.py (channel-by-channel trajectory diff), paths.py (repo-relative defaults
+                        + env overrides), v2_map.py (FD v2 telemetry + FD nodes -> struct.* scalars + wing/tail/fin/
+                        fuselage node channels; stdlib only, ER imports it read-only), fd_nodes.py (FD's exact nodal
+                        values per frame from flex_state.eta, same FlexBodyModel ER evaluates)
+  tests/test_replay.py  replay integration tests (real evolution.eval, adapter fallback, protocol fixture)
+  tests/test_ids.py     unit tests: opaque string ids, mixed aircraft, elite/best selection, paths
+  tests/test_v2_map.py  unit tests for v2_map (synthetic fixture in the documented FD v2 format)
+  tests/test_v2_signs.py every sign convention vs flight-dynamics/v2_results/sign_probe.json + live FD mode probes
+  tests/fixtures/       er_interface/phase1-s1/{run.json,genomes.jsonl} (copy of ER's real files, aircraft_root
+                        made relative) + fake_evolution_eval.py (protocol edge cases) + v2_synthetic_raw.json (SYNTHETIC)
+  patches/              replay-er-format.patch (all of this work relative to the phase-1 staging snapshot);
+                        v2-nodes.patch (only the FD/ER-answers update, on top of the previous replay-er-format.patch)
   screenshots/          PNGs from tools/screenshots.py (bench_jets_*.png = jet bench, phase1_*.png = phase 1,
-                        replay_*.png = replay proof viewer, softbody_synthetic_*.png = synthetic soft-body test)
+                        replay_*.png = replay proof viewer, softbody_synthetic_*.png = synthetic soft-body test,
+                        v2_*.png = real FD v2 full-fidelity replay, v2nodes_*.png = FD nodal data: wing in-plane,
+                        tail L/R, fin bending, phase2_pilot_*.png = phase2-pilot-s1 full soft-body)
   tools/screenshots.py  headless checks + screenshots (--bench for a standalone multi-aircraft file)
   tools/check_traj.py   read-only data sanity report for a run (fitness ordering, tracking, trim, quat/Euler, NaNs)
   tools/compare_traj.py channel-by-channel diff of two trajectory directories
+  tools/verify_fd_nodes.py  re-fly with FD's evaluate(record=True); compare its node export with a replay file
   tools/make_synthetic_softbody.py  writes data/examples/synthetic_softbody_test.json
   tools/build/          esbuild script for viewer/dist (only needed if you change viewer JS)
 ```
@@ -65,12 +80,12 @@ sim-bridge/
 The sandbox venv already has jsbsim 1.3.1, numpy, and matplotlib:
 
 ```bash
-cd flight_sim_3d/sim-bridge
+cd sim-bridge                      # from the team root (flight_sim_3d/ in the repo)
 PY=python   # any Python with flight_sim_3d/requirements.txt installed
 
 # The project's committed example config: seed 1, pop 48, 40 generations, 3 scenarios, uniform crossover.
 # This takes about 100 s on 8 idle cores and reproduces flight_sim/results/example/fitness_history.csv exactly.
-$PY export_run.py --config ../../flight_sim/config.example.json \
+$PY export_run.py --config ${SIMBRIDGE_SANDBOX:-../../flight_sim}/config.example.json \
     --run-id seed1-pop48
 ```
 
@@ -98,12 +113,12 @@ $PY trajlog.py --genome 0.88,0.34,0.36,0.55,0.13,0.44 --scenarios 3 --scenario-s
 $PY trajlog.py --best-gains ... --aircraft f16 --speed-kts 350 --out /tmp/f16.json   # another JSBSim model
 ```
 
-To point at another clone of `flight_sim/`, use `--flight-sim-dir DIR` or set `FLIGHT_SIM_DIR`.
+To point at another clone of `flight_sim/`, use `--flight-sim-dir DIR` or set `SIMBRIDGE_SANDBOX` (alias `FLIGHT_SIM_DIR`); the default is `<team root>/../flight_sim`.
 
 ## View locally
 
 ```bash
-cd flight_sim_3d/sim-bridge
+cd sim-bridge
 python3 -m http.server 8000
 # open http://localhost:8000/viewer/
 ```
@@ -113,7 +128,7 @@ The page opens the first run in `data/runs/runs.json` and shows the last generat
 To view Evolution Runner's output as well, serve the team root:
 
 ```bash
-cd flight_sim_3d && python3 -m http.server 8000
+cd .. && python3 -m http.server 8000      # from sim-bridge/: the team root (flight_sim_3d/ in the repo)
 # http://localhost:8000/sim-bridge/viewer/?index=/evolution/runs/<run_id>/trajectories/index.json
 ```
 
@@ -249,7 +264,7 @@ so the defaults are set up for that:
 Rebuild it (read-only on Evolution Runner's files):
 
 ```bash
-cd flight_sim_3d/sim-bridge
+cd sim-bridge
 # only if viewer/js changed: (cd tools/build && node bundle.mjs)
 python3 colab_viewer.py ../evolution/runs/bench_jets-j1/trajectories/index.json \
   --out data/bench_jets-j1_standalone.html --gens all --hz 10 --slim \
@@ -306,8 +321,8 @@ comparable between the two runs.
 Rebuild (read-only on Evolution Runner's files):
 
 ```bash
-cd flight_sim_3d/sim-bridge
-E=../evolution/runs
+cd sim-bridge
+E=${SIMBRIDGE_RUNS_ROOT:-../evolution/runs}
 # only if viewer/js changed: (cd tools/build && node bundle.mjs)
 python3 colab_viewer.py $E/phase1-s1/trajectories/index.json $E/phase1-s2/trajectories/index.json \
   $E/phase1-s3/trajectories/index.json "$E/bench_jets-j1/trajectories/index.json@19" \
@@ -349,143 +364,327 @@ Screenshots:
   * seed 1 (the only seed with a real `ki_alt`, 0.026) has a lightly damped ±8 ft oscillation in the holds;
   * seed 1 doesn't settle within 5% of the step in segment 1.
 
+## Paths and environment variables
+
+No absolute paths are baked in. Every default is relative to the checkout, and each one can be overridden
+(`sim_bridge/paths.py`). The layout is the same locally (`flight-sim-team/`) and in the repo (`flight_sim_3d/`):
+
+| variable | meaning | default |
+|---|---|---|
+| `FLIGHT_SIM_TEAM_ROOT` | team / repo root (contains `evolution/`, `flight-dynamics/`, `sim-bridge/`) | the parent of `sim-bridge/` |
+| `SIMBRIDGE_EVOLUTION_ROOT` (alias `EVOLUTION_DIR`) | Evolution Runner package dir (imported read-only) | `<team root>/evolution` |
+| `SIMBRIDGE_RUNS_ROOT` | ER runs (`replay.py --run <id>` looks here) | `<evolution root>/runs` |
+| `FLIGHT_DYNAMICS_DIR` | Flight Dynamics dir; a relative `flight-dynamics/...` root in run.json resolves here (other relative paths against the team root), and a foreign absolute `.../flight-dynamics/...` path is remapped here | `<team root>/flight-dynamics` |
+| `SIMBRIDGE_SANDBOX` (alias `FLIGHT_SIM_DIR`) | prototype `flight_sim/` checkout used by `trajlog.py` / `export_run.py` | `<team root>/../flight_sim` |
+| `SIMBRIDGE_DATA_DIR` | sim-bridge outputs (replays) | `sim-bridge/data` |
+| `SIMBRIDGE_FD_MODEL_VERSIONS` | FD's published current model_versions (replay's `model_version_current`) | `<FD>/v2_results/model_versions_post_mass.json` |
+
+The commands below assume `cd sim-bridge` from the team root (`flight_sim_3d/sim-bridge` in the repo) and
+`PY=python`, meaning any Python that has jsbsim + numpy installed (ER's venv or `flight_sim_3d/requirements.txt`).
+
 ## Replay: `replay.py` / `sim_bridge.replay`
 
-Re-flies logged genomes of an Evolution Runner (ER) run with a per-step read-only recorder and writes viewer
-trajectories. It also checks that the replay reproduces the logged cost, and it compares channel by channel
-against any trajectories ER already wrote. Nothing is written into ER's tree: the default output is
-`data/replays/<run_id>/<replay_id>/`, and the tool refuses an ER path unless you pass `--out`. Run it with the
-sandbox venv (jsbsim + numpy) and `PYTHONDONTWRITEBYTECODE=1` so that importing ER's modules leaves no `__pycache__` in ER's tree.
+Replay re-flies logged genomes of an Evolution Runner (ER) run with a per-step, read-only recorder and writes
+viewer trajectories. It checks that each replay reproduces the logged cost, and it compares the result channel by
+channel against any trajectories ER already wrote.
+
+Nothing is written into ER's tree. The default output is `$SIMBRIDGE_DATA_DIR/replays/<run_id>/<replay_id>/`, and
+the tool refuses an ER path unless you pass `--out`. Run it with `PYTHONDONTWRITEBYTECODE=1` so that importing ER's
+and FD's modules leaves no `__pycache__` in their trees.
 
 ```bash
-cd flight_sim_3d/sim-bridge
-PY=python   # any Python with flight_sim_3d/requirements.txt installed
+cd sim-bridge                      # from the team root (flight_sim_3d/ in the repo)
+PY=python                          # any Python with jsbsim + numpy (ER's venv / flight_sim_3d/requirements.txt)
 export PYTHONDONTWRITEBYTECODE=1
-$PY replay.py --run phase1-s1 --gens 0,9,19 --html --replay-id proof-g0.9.19        # the proof below
-$PY replay.py --run phase1-s3 --gens 19 --elites                                     # best + elites of g19
-$PY replay.py --run phase1-s2 --best-per-gen --aircraft f16 --scenario 0             # one scenario, every gen
-$PY replay.py --run phase1-s1 --ids T38:g19:r0,c172x:g19:r1 --hz 60
+$PY replay.py --run phase1-s1 --gens 0,9,19 --html             # best of g0/g9/g19, all scenarios, ER's evolution.eval
+$PY replay.py --run phase1-s1 --best-per-gen                   # 80 genomes x 3 scenarios
+$PY replay.py --run phase1v5-s1 --gens 0,19 --elites           # best + elites (ER logs every individual)
+$PY replay.py --run phase1v5-s1 --ids T38:g19:r1,c172x:g3:r0 --scenario 2   # opaque ids, scenario position 2
+$PY replay.py --run phase1v5-s1 --gens 19 --scenario 0 --fidelity full --html   # real FD v2 flight, FD nodal data
+$PY replay.py --run phase2-smoke-s1 --gens 4                  # ER's full-fidelity run: costs exact at full
+$PY replay.py --run bench_jets-j1 --gens 0,19                  # legacy run without run.json -> adapter fallback
 # full syntax
 $PY replay.py --run <run_id|dir> [--runs-root DIR] (--gens 0,9,19 | --best-per-gen | --ids a,b) [--elites]
-              [--aircraft a,b] [--scenario all|<id>] [--fidelity rigid|reduced|full] [--hz 30] [--html]
-              [--out DIR] [--replay-id ID] [--interface auto|er|adapter] [--eval-module evolution.eval|file.py]
-              [--recorder-timing auto|pre|post] [--compare-traj DIR|none] [--workers N] [--tol 1e-6]
+              [--aircraft a,b] [--scenario all|<scenario id>|<position>] [--fidelity rigid|reduced|full] [--hz 30]
+              [--html] [--out DIR] [--replay-id ID] [--interface auto|er|adapter] [--eval-module evolution.eval|file.py]
+              [--recorder-timing auto|pre|post] [--compare-traj DIR|none] [--workers N] [--tol 1e-6] [--no-nodes]
 ```
 
-Output (`<out>/`):
-* `trajectories/traj_<ac>_<run>_g<gen>[_r<rank>][_sc<k>].json` and `index.json`. Index entries carry `cost`,
-  `fitness` (equal to cost), `scenario`, `individual_id`, `logged_cost` and `verdict`; the index carries
-  `fitness_sense`.
-* `replay_manifest.json` holds:
-  - interface used (`er`/`adapter`) and the evaluate module;
-  - `fitness_sense`;
-  - per genome: logged vs replayed cost (mean and per scenario), relative error, fidelity, and logged vs replay
-    `model_version`;
-  - `trajectory_check` (per file: rows compared, bit-identical channels, max |diff| per channel, verdict);
-  - provenance: the run's git sha, code_sha and jsbsim version, the replay's jsbsim and Python versions, argv;
-  - start/finish timestamps and recorder timing.
-* `viewer.html` (with `--html`): a standalone viewer built by `colab_viewer`. Labels show `r<rank>` and `sc<k>`,
-  and the HUD shows the replay id, fidelity and model_version. Address a scenario with `gens=T38:19#sc1`.
+### ER's real format (primary path, `--interface er`, auto-selected when `run.json` exists)
+* `run.json` (`ga-flightsim-run/1`) provides `fitness_sense` (`"min"`), `fidelity`, `eval_seed`, and
+  `model_version` per aircraft. `aircraft[]` carries `scenario_ids` (`"c172x:s0"`, ...), the resolved profile
+  (with `aircraft_root`) and the genes. `scenarios[]` holds full entries (id, steps, ramp, wind, ...).
+* `genomes.jsonl` is one row per individual:
+  - identity: `individual_id`, `generation`, `aircraft`, `rank`, `is_best`, `is_elite`;
+  - costs: `cost` (= `fitness`) and `per_scenario_cost`, aligned with the row's `scenario_ids`;
+  - provenance: `fidelity`, `model_version`, `eval_seed` (backfilled runs), or `screen_cost` /
+    `screen_fidelity` / `ladder_cost` (multi-fidelity).
 
-Verdicts and exit codes:
+  The backfilled phase1-s1..s3 rows are best-only, with ids like `c172x:g19:best`. Newer runs log every individual
+  (`T38:g19:r0` … `r29`).
+* `evolution.eval.evaluate(genome, aircraft, scenario_entry, run_cfg, recorder=rec)` flies it.
+  `evolution.eval.scenario_object` supplies the targets for the `target_*` channels. ER calls the recorder once at
+  t=0 after trim, then after every step, and finally `recorder.final(t_end, fdm)`. With flex active it passes
+  `flex_state` too.
+* **Ids are opaque strings everywhere.** Selection is exact string match, and a row's scenarios are its own
+  `scenario_ids` (else its aircraft's). Logged per-scenario costs are looked up by **position** in that list.
+  `scenario_index` (our field) is that position, which is also what ER writes in its trajectory files;
+  `scenario_id` is the string. File names use a sanitised copy of the ids; the index and manifest keep the raw
+  strings.
+* The cost compared depends on the fidelity:
+  - at the row's `fidelity`: `cost` / `per_scenario_cost` / `model_version`;
+  - at `screen_fidelity`: `screen_cost` / `screen_per_scenario_cost` / `screen_model_version`;
+  - else `ladder_cost[fid]`;
+  - else "not comparable".
+* A relative `aircraft_root` (ER's newer runs) resolves with `evolution.sim.abs_root` (else
+  `paths.resolve_model_root`), and a foreign absolute path is remapped to `FLIGHT_DYNAMICS_DIR`. This happens in
+  memory only, and the manifest records it in `path_notes`.
+* `model_version`: see "model_version handling" below (logged / current / pinned).
+* Full fidelity: the recorder adds FD's nodal structure (v2 section); `replay.node_status` per component is
+  `fd_nodes` or `estimated`. Versus ER's own full-fidelity files, components with a different node layout (FD
+  33-node wings vs ER's 9-node modal wings) are compared at coincident span fractions and reported under
+  `trajectory_check.files[*].rediscretised_components` (informational); every other channel must be bit-identical.
+* `fitness_sense` is normalised: anything starting with `max` is maximise, everything else is minimise (ER's
+  trajectory files write `"minimize (GA cost, mean over scenarios)"`).
+* **Adapter fallback** (`sim_bridge.er_adapter`) is used only for runs without `run.json`, such as bench_jets-j1
+  (`config.json` + `checkpoints/`). It mirrors the real format: per-aircraft scenario ids `"<ac>:s<k>"`, best rows
+  `<ac>:g<N>:r0`, and the final population `r1..`. It passes the recorder straight to ER's `sim.simulate` (post-step
+  + t=0), or uses a pre-step proxy on older ER code. It supports rigid only; any other fidelity exits 3.
+
+Output (`<out>/`):
+* `trajectories/traj_<ac>_<run>_g<gen>[__<individual id>][__<scenario id>].json` plus `index.json`.
+  - The individual id is added unless the file is the only (best) row of its generation. The scenario id is added
+    unless the scenario is at position 0.
+  - Index entries carry `cost`, `fitness`, `scenario` (= `scenario_id`), `scenario_index`, `individual_id`,
+    `rank`, `is_best`, `is_elite`, `logged_cost` and `verdict`.
+* `replay_manifest.json` (schema `sim-bridge-replay-manifest/2`; paths relative to `FLIGHT_SIM_TEAM_ROOT`) holds:
+  - the interface and evaluate module, the fallback reason, and `path_notes`;
+  - per genome: logged vs replayed cost (mean and per scenario id, with position), relative error, fidelity,
+    logged vs replay `model_version`, and `model_version_match`;
+  - `trajectory_check` (per file: rows compared, bit-identical channels, max |diff| per channel, verdict);
+  - provenance and recorder timing.
+* `viewer.html` (with `--html`). Labels show `r<rank>` for non-best rows and `sc<k>` for scenario positions.
+  Address entries with `gens=T38:19#sc1`, `#r2`, `#best` or `#<full individual id>`.
 
 | verdict | meaning |
 |---|---|
-| `match` | replayed cost is within `--tol` (relative) of the logged cost, at the row's fidelity |
-| `MISMATCH` | outside tolerance with the same `model_version`; **exit 2** |
-| `mismatch expected (model_version differs)` | outside tolerance, logged and replay model_version differ (both recorded); exit 0 |
-| `not comparable (fidelity differs)` | `--fidelity` differs from the row's fidelity; exit 0 |
-| `no logged cost` | e.g. non-best population members in ER's legacy checkpoints |
+| `match` | replayed cost within `--tol` (relative) of the logged cost at that fidelity. A differing `model_version` with an exact cost is still `match`; the manifest says `model_version_match: false` |
+| `MISMATCH` | outside tolerance with the same `model_version`; **exit 2** (also for a channel mismatch vs ER's trajectories) |
+| `mismatch expected (model_version differs)` | outside tolerance, model_version differs (both recorded); exit 0 |
+| `not comparable (fidelity differs, nothing logged at it)` | `--fidelity` with no logged cost at that fidelity; exit 0 |
+| `no logged cost` | e.g. non-best members of a legacy population |
 
-Evaluate errors (e.g. `--fidelity full` through the adapter) exit with code 3. Cost is the metric:
-`fitness_sense` comes from run.json (`"min"`), and older files fall back to `fitness`/min.
+Evaluate errors (e.g. `--fidelity full` through the adapter, FD root missing) exit with code 3.
 
-### Interface: agreed with ER vs what is implemented now
+### Proof (ER's real `evolution.eval`, 2026-10-06)
+| run / selection | genomes x scenarios | costs | trajectories vs ER's files |
+|---|---|---|---|
+| phase1-s1 `--gens 0,9,19` | 12 x 3 | 12/12 exact (rel. err 0.0) | 12/12 files, 2701/2701 rows, 29/29 channels bit-identical |
+| phase1-s1 `--best-per-gen` | 80 x 3 | 80/80 exact | 12/12 bit-identical |
+| phase1v5-s1 `--best-per-gen` | 60 x 4 | 60/60 exact | 9/9 bit-identical |
+| phase1v5-s1 `--gens 0,19 --elites` | 12 x 4 (best + r1) | 12/12 exact | 6/6 (best files) bit-identical |
+| phase1-f16fd-s1 / phase1hdg-s1 `--best-per-gen` | 20 x 3 / 80 x 3 | all exact | 3/3 and 12/12 bit-identical |
+| bench_jets-j1 (adapter, no run.json) `--gens 0,19` | 8 x 3 | 8/8 exact | 8/8, 27/27 channels bit-identical |
+| phase2-smoke-s1 (ER full fidelity, FD v2 post-mass) `--gens 4` | 3 x 3 | 3/3 exact at full | 3/3 files, 61/61 channels bit-identical (+ wings compared at 9 coincident nodes) |
+| phase1v5-ki05-s1 (team-relative roots) `--gens 19` | 3 x 4 | exact | bit-identical |
+| phase1v5-s1 / phase1v5-ki05-s1 `--gens 19 --fidelity full --scenario 0` (and `--scenario 1`) | 3 x 1 | not logged at full; mv = FD current (`e9535bc7` / `2c73464b` / `11df8fe4`) | all five components `fd_nodes`; FD export cross-check max 5.0e-7 |
 
-| | agreed (ER will ship) | implemented / used today |
-|---|---|---|
-| run config | `runs/<run>/run.json` with `fitness_sense:"min"`, GA `seed`, `eval_seed` (scenario seed), aircraft, scenarios | **adapter** builds the same dict from `config.json` + `summary.json` (`eval_seed = scenario_seed = 1`) |
-| genomes | `genomes.jsonl`, ALL individuals, `cost`, `per_scenario_cost`, `fidelity`, `model_version`, `is_best`, `is_elite`, optional `screen_cost`/`screen_fidelity` | adapter: best-per-gen rows from `checkpoints/<ac>.json` (`<ac>:g<N>:r0`, costs logged) + the final population of the last gen (`r1..`, no logged cost, `is_elite` = rank < elite) |
-| evaluate | `evolution.eval.evaluate(genome, aircraft, scenario, run_cfg, recorder=None)` | `sim_bridge.er_adapter.evaluate`, same signature, wraps `evolution.sim.simulate` (rigid only) |
-| recorder | `recorder(t, fdm)` after each step, `recorder(t, fdm, flex_state)` with flex; read-only | `TrajRecorder` handles both: `timing="post"` (agreed) fills each sampled row's controls from the next call, which reproduces ER's convention exactly. The adapter uses `timing="pre"` (proxy FDM calls before `run()`) |
-| fidelity | `rigid|reduced|full`; `full` = v1 flex for now (`full(v1)`) | adapter: `rigid` only (others exit 3 with a message) |
-| model_version | per row; exact match expected at any fidelity when equal | adapter: `evolution.sim@<config.provenance.code_sha>` (phase1 = `b46f27784c2131b4` = current code; bench_jets-j1 = `40bd11dda99e1fdf`, which still replays bit-exactly) |
+In phase1-s1 the logged `model_version` of c172x / T38 / 737 (e.g. `rigid:jsbsim1.3.1:01333e0c`) differs from the
+current one (`…:e0a73fc9`), because FD's jsbsim_root changed after that run. The costs are still bit-exact. f16 and
+the newer runs match.
 
-`--interface auto` picks `er` when `run.json` + `genomes.jsonl` exist and `evolution.eval` imports; otherwise it
-uses the adapter. `--interface er --eval-module path/to/file.py` targets any module with that contract.
-`tests/fixtures/fake_evolution_eval.py` is such a module (ER's current sim with the agreed post-step callback), and
-`tests/fixtures/er_interface/phase1-s1/` holds run.json + genomes.jsonl written by `er_adapter.export_interface`.
+### Answered by ER / FD (2026-10-06, implemented)
+* ER: `scenario_index` = position in the aircraft's `scenario_ids`; trajectory headers carry `scenario_id`
+  (`<ac>:s<i>`), which `trajdiff` now keys on. Individual ids are `<ac>:g<gen>:r<rank>` (`r0` = best; `:best` only
+  in backfilled runs); ids stay opaque strings here. `fitness_sense` is exactly `"min"` (we still normalise by
+  prefix for older files).
+* ER: `aircraft_root` / `git.repo` are team-relative; replay resolves them with `evolution.sim.abs_root` (else
+  `paths.resolve_model_root`), recorded in `path_notes`.
+* ER: a stale rigid `model_version` with exact costs is legitimate (the hash covers the whole `aircraft/<model>/`
+  folder): verdict `match`, `model_version_match: false`, as before.
+* ER: rows not rescored at full keep the highest stage's cost / fidelity / mv; per-stage versions are in
+  `ladder_model_version`; a missing `eval_seed` means run.json's. See the model_version rule below.
+* FD: all sign conventions (table in the v2 section), independent htL, elastic tail twists, in-plane tip
+  deflection, feedback axes, and node exports. INTERFACE_v2 §11 now documents the node mapping.
 
-### What ER still needs to ship (missing today)
-1. `run.json` and `genomes.jsonl` (all individuals with `cost`, `per_scenario_cost`, `fidelity`, `model_version`,
-   `is_best`, `is_elite`). Today only best-of-gen costs are logged; non-best rows cannot be checked.
-2. `evolution/eval.py` with `evaluate(...)` as agreed. It does not exist yet, so the real-interface path is
-   **untested on ER's code**. `tests/test_replay.py::test_real_er_interface_when_available` runs automatically
-   once the module and files exist.
-3. A scenario helper (`evolution.eval.scenario_object(aircraft, scenario, run_cfg)` or `make_scenario`). The
-   recorder needs the reference/command/rate at t for `target_*` channels. Today we rebuild ER's `Scenario`
-   through `evolution.sim.make_scenarios`.
-4. One `recorder(0.0, fdm)` call after trim, before the first step. Without it the t=0 row is missing and the
-   origin falls back to JSBSim's `ic/*` properties. That fallback is bit-identical today, but it is an assumption.
-5. A `flex_state` format: a dict `{'<component>.<dof>.<node>': value}` (or an object with `.channels()`), plus a
-   `structure` attribute/key with the component axes (see the soft-body section below).
-6. An explicit `model_version` string for `full(v1)`/v2. The adapter's `evolution.sim@code_sha` is a stand-in.
+### model_version handling
+* **Logged** (what the row was scored with), first hit wins: row `ladder_model_version[fid]` > row
+  `model_version` (when the row's `fidelity` is the replay fidelity) > `screen_model_version` (screen fidelity) >
+  aircraft `ladder_model_version[fid]` > run.json `model_version[ac]`. Recorded as `logged_model_version` +
+  `logged_model_version_source`.
+* **Current**: FD's published post-mass-fix strings, `flight-dynamics/v2_results/model_versions_post_mass.json`
+  (override: `SIMBRIDGE_FD_MODEL_VERSIONS`). Each genome / trajectory records `fd_current_model_version` and
+  `model_version_current` (replay mv == FD's published one); the manifest lists `model_versions.not_current`.
+* **Pinned**: run.json `pin_model_version[ac][fid]` (phase2 runs) is reported as `pinned_model_version` /
+  `pinned_model_version_match` (not flagged: a replay after an FD change legitimately differs).
+* Trajectory comparison keys include the fidelity and mv (`trajdiff.doc_key`: aircraft, gen, scenario_id,
+  individual, `fid:mv`; rigid = untagged), so a full-fidelity replay is never matched to a rigid file.
 
-### Proof (adapter path, phase1-s1 g0/g9/g19 x 4 aircraft x 3 scenarios = 36 flights)
-* Costs: 12/12 `match`. Logged and replayed costs are identical (relative error 0.0), e.g. f16 g19
-  0.09009480210402053, c172x g0 0.33164794391949093.
-* Trajectories vs ER's `runs/phase1-s1/trajectories/*.json` (best of gen, scenario 0): 12/12 files,
-  2701/2701 rows, **29/29 channels bit-identical** (max |diff| 0 for every channel). Metadata (`fitness`,
-  `scenario_cost`, `genome`, `frame`, `target`, `events`) is identical too.
-* bench_jets-j1 g0/g19 (older code_sha): 8/8 costs exact; 8/8 files, 27/27 shared channels bit-identical.
-* Agreed-interface fixture (post-step recorder, no t=0 call): 12/12 costs exact; 29/29 channels bit-identical on
-  the 2700 shared rows (only the t=0 row is absent). With the t=0 call: 2701/2701 rows bit-identical.
-* `tests/test_replay.py`: 6 passed, 1 skipped (the real ER interface, not shipped yet).
+### Open questions for ER and FD (remaining, 2026-10-06)
 
-## Soft-body v2 (structure block): viewer groundwork
+ER (answered by NOTE_v2_map / STATUS_v2_map, 09:44 PT — implemented on our side):
+- `ladder_model_version` stays `{fidelity: mv}` (confirmed).
+- FlexState `/3` public API (`.fd_model`, `.nodes()`, `.node_layout()`, `.v2_geometry`) — recorder uses these.
+- `evaluate(..., pin=)` raises on mismatch — replay passes run.json `pin_model_version`.
+- Traj schema `/2` at full with FE `wingR`/`wingL` + `wing*_modal`; reduced keeps modal names.
+
+Still open:
+1. phase2-pilot-s1 on-disk traj files are still `/1` with 9-node `wingR`/`wingL` (written before the wiring). Will
+   ER re-export them as `/2`? Until then trajdiff rediscretises against the old files.
+2. `fd_to_structure_channels`: change `name == "wingR"` → `name.startswith("wingR")` so `wingR_modal.twist` keeps
+   the right-wing sign after the /3 rename (FE `wingR.twist` is correct; modal tip shows the flipped sign in the HUD).
+
+FD:
+1. Node coordinates have no dihedral and no HT height (documented in §11). Is a 3-D layout planned?
+2. HT nodes are relative to the fusV tip (vertical). We also carry fusL + `vt_sideslip` into `htail.dy`: confirm.
+3. Node frames start after the first coupler step (no t=0). Recorder fills t=0 from trim eta.
+4. Reduced fidelity still uses v1 key names — only a few `struct.*` scalars map there.
+4. Reduced fidelity (flexwing v1) has no node export and no tail / fuselage bodies: those files keep ER's modal
+   wings only (no estimated tail components; `v2_map.available_components`). Its v1 key names
+   (`root_bm_lbft_R`, `tip_twist_deg_R`, ...) differ from v2's, so only `struct.wing*_tip_dz` and
+   `struct.elastic_dlift/dpitch/droll` are mapped there. Will reduced move to v2 key names?
+
+## Phase 2 pilot: `phase2-pilot-s1` (full soft-body, FD nodal)
+
+ER's phase-2 pilot (60 gens, multi-fidelity screen→full, pinned post-mass model_versions). Trajectories written by ER
+during the run are still `ga-flightsim-traj/1` with 9-node modal wings only (pre-v2_map wiring). Our replay at full
+fidelity through FlexState /3 produces `ga-flightsim-traj/2` with FE nodal wings (incl. `dx`), empennage, fuselage,
+`struct.*`, and `wing*_modal` kept for comparison.
+
+```bash
+# re-fly gens 0 / 29 / 59 at full (costs exact; nodal structure)
+PYTHONDONTWRITEBYTECODE=1 $PY replay.py --run phase2-pilot-s1 --gens 0,29,59 --fidelity full --html \
+  --replay-id phase2-pilot-s1-full-g0.29.59
+# standalone (scenario 0, default = gen 59 formation, flex ×8, chart = ramp error)
+# -> data/phase2_pilot_s1_standalone.html
+.venv-shots/bin/python tools/screenshots.py --bench data/phase2_pilot_s1_standalone.html \
+  --shots phase2 --prefix phase2_pilot_
+```
+
+| aircraft | g0 cost | g29 | g59 | Δ g0→59 |
+|---|---:|---:|---:|---:|
+| c172x | 0.383367 | 0.236099 | 0.228694 | −0.155 |
+| T38 | 0.155968 | 0.099236 | 0.097582 | −0.058 |
+| 737 | 0.264272 | 0.128061 | 0.125939 | −0.138 |
+
+Seeds: **s1 only** in the standalone (s2 exists under `evolution/runs/` but has no trajectories yet; s3 absent).
+When s2/s3 land with traj files, rebuild as `phase2_pilot_standalone.html` covering all three (same pattern as
+`phase1_standalone.html`).
+
+Replay proof (2026-10-06): 9/9 costs exact at full with `pin=`; 9/9 traj files match ER's (61/61 channels
+bit-identical; wings compared at 9 coincident nodes because ER's on-disk files are still 9-node modal under
+`wingR`/`wingL`). FlexState API used: `flex_api=flexstate3`.
+
+### FlexState /3 migration (recorder)
+- Prefer `flex_state.nodes()`, `.v2_geometry`, `.node_layout()`, `.v2_map_version` (no private helpers on the hot path).
+- `NodeSource.for_genome` kept as fallback for older FlexState; builds via public `fidelity.make_fd_model` when present.
+- `evaluate(..., pin=)` passed from run.json `pin_model_version[ac][fid]` (raises on mismatch).
+- Trajectory schema written: `ga-flightsim-traj/2` (viewer accepts `/1` and `/2`).
+- Known ER quirk: `fd_to_structure_channels` keys the twist sign on `name == "wingR"`, so after the rename to
+  `wingR_modal` the modal right-wing twist is written with the left-wing sign. FE `wingR.twist` is correct; we
+  undo the flip only in the modal-vs-nodal comparison metric.
+
+## Soft-body v2: FD v2 node mapping (`sim_bridge/v2_map.py`, version 2.0.0)
 
 A trajectory may carry an optional `structure` block plus channels named `<component>.<dof>.<node_idx>`:
 
 ```json
-"structure": {"components": [
-  {"name": "wingR", "axis_nodes_body_m": [[x, y, z], ...], "dof": ["dz", "dy", "twist"]},
-  ...]},
-"channels": [..., "wingR.dz.0", ..., "wingR.twist.5", ...]
+"structure": {"schema": "sim-bridge-structure/2", "components": [
+  {"name": "wingR", "axis_nodes_body_m": [[x, y, z], ...], "dof": ["dz", "dx", "twist"],
+   "node_span_frac": [...], "estimated": false, "node_values": "FD nodal values (fd-flexbody-nodes/1) ..."},
+  ...], "v2_map": {"version": "2.0.0", "sign_table": [...], "scalars": {...}, "estimated_components": []}},
+"channels": [..., "wingR.dz.0", ..., "wingR.dx.32", ..., "htail.twist.25", ..., "struct.wingR_root_bm", ...]
 ```
 
-* Components: `wingL`, `wingR`, `htail`, `vtail`, `fuselage`. Nodes are given in body FRD metres, with the origin at
-  the trajectory's reference point (CG).
-* `dz` and `dy` are translations along body z (down) and y (right), in metres.
-* `twist` is in radians: a right-hand rotation about the node0→nodeN axis direction. So `wingR` + means leading edge
-  up, and `wingL` + means leading edge down. ER/FD should confirm this sign convention.
-* The viewer projects every vertex of the component's procedural meshes (engines, pylons and struts go with their
-  wing) onto the node polyline at rest. The displacement is interpolated linearly along it.
-* The **Flex deflection** slider (URL `defl=`, 0–50×) exaggerates the display; it is shown only when a structure
-  is loaded.
-* The HUD shows true-scale tip values per component (`TIP wingR dz … dy … tw …°`). When `structure.synthetic`
-  or the file's `synthetic` is set it adds a red "SYNTHETIC" line.
-* Files without the block render exactly as before: no deformer, slider hidden. All bench/phase1/replay
-  screenshot runs pass.
-* `colab_viewer --slim` keeps structure channels, at 5 decimals.
+Viewer conventions: body FRD metres, origin CG; `dz` + down, `dy` + right, `dx` + forward (new: wing in-plane);
+`twist` rad, right-hand about node i → i+1 (wings root → tip, `htail` left tip → right tip, `vtail` root → tip).
 
-**Plug-in point.**
-1. v2 arrives as a new `model_version` of fidelity `full` through ER's `evolution.eval.evaluate`.
-2. With flex active, evaluate calls `recorder(t, fdm, flex_state)`.
-3. `sim_bridge.recorder.TrajRecorder` appends `flex_state`'s `<component>.<dof>.<node>` values as channels and
-   copies `flex_state.structure` into the file's `structure` block.
-4. ER maps FD's modal output onto those names.
+**Nodal data replaces the assumed shapes.** At full fidelity the recorder gets FD's exact nodal values every frame
+(`sim_bridge/fd_nodes.py`: the same `FlexBodyModel` ER evaluates, `flexbody.node_values(mdl, eta)` /
+`node_layout`; identical to FD's `telemetry[i]['nodes']`), maps node coordinates into `axis_nodes_body_m`
+(FRD m) and values into `<component>.<dof>.<i>`:
 
-The plumbing is tested end to end with the fixture: `FAKE_EVAL_SYNTH_FLEX=1` gives synthetic channels in the
-replayed file, which the viewer then picks up. `--fidelity full` is rejected (exit 3) until ER's eval exists.
+| component | nodes | DOFs | built from (FD bodies) |
+|---|---|---|---|
+| `wingR`, `wingL` | 33 | dz, dx, twist | wingR / wingL `w`, `v`, `theta` (replaces ER's 9-node modal wings) |
+| `htail` | 26 (htL reversed + htR) | dz, dy, twist | htR / htL own `w`, `theta` (independent L/R) + fusV tip `w` + ht_incidence carry; fusL tip `w` + vt_sideslip carry (dy) |
+| `vtail` | 13 | dy, dz, twist | vt own `w`, `theta` + fusL tip `w` + vt_sideslip carry; fusV tip `w` + ht_incidence carry (dz) |
+| `fuselage` | 13 | dz, dy | fusV `w` (dz), fusL `w` (dy) |
 
-**Synthetic test file.** `data/examples/synthetic_softbody_test.json` carries `synthetic: true` everywhere. It is a
-made-up straight 737-class cruise with sinusoidal bending and twist, written by
-`tools/make_synthetic_softbody.py`. **It is not simulation output; do not quote numbers from it.**
-`data/examples/synthetic_softbody_standalone.html` is the viewer for it. Screenshots: `screenshots/softbody_synthetic_*.png`.
+Carry about `x_tail` (fusV tip x): `htail dz = −FT(w_own + w_fusV,tip) − inc·(x − x_tail)`,
+`dy = FT·w_fusL,tip + vs·(x − x_tail)`; `vtail dy = FT(w_own + w_fusL,tip) + vs·(x − x_tail)`,
+`dz = −FT·w_fusV,tip − inc·(x − x_tail)` (FT = 0.3048, inc = ht_incidence rad, vs = vt_sideslip rad).
+The tail twist is elastic only (`ht_incidence` never enters `htail.twist`).
+
+**Fallback (estimate)**: full-fidelity files without nodes (pre-node telemetry, `replay --no-nodes`) map tip
+scalars onto assumed shapes φ = ξ²(3−ξ)/2 (bending, in-plane), ψ = ξ(2−ξ) (torsion); htL mirrors htR when
+`htL_tip_w_ft` is absent. Such components carry `"estimated": true`, are listed in
+`structure.v2_map.estimated_components`, `replay.node_status` = `estimated`, and the HUD says
+`ESTIMATED (tip-only, no FD nodes): …` with an `est.` tag per tip line.
+
+**Sign mapping (as implemented, `v2_map.SIGN_TABLE`; each row tested against `flight-dynamics/v2_results/sign_probe.json`
+and live FD mode probes in `tests/test_v2_signs.py`)**
+
+| FD quantity | Sim Bridge | + means |
+|---|---|---|
+| wing / HT / fusV `w_ft` (+ up) | `dz = −w·0.3048` | down |
+| VT / fusL `w_ft` (+ toward body +y) | `dy = +w·0.3048` | right |
+| wing `v_ft`, `wing*_tip_ip_ft` (+ aft) | `dx = −v·0.3048` | forward |
+| wingR `theta` (+ LE up) | `wingR.twist = +θ` | LE up |
+| wingL `theta` (+ LE up) | `wingL.twist = −θ` | LE down (right-hand about −y) |
+| htR / htL `theta`, `ht_tip_twist_deg`, `htL_tip_twist_deg` (+ LE up) | `htail.twist = +θ` (elastic only) | LE up |
+| vt `theta`, `vt_tip_twist_deg` (+ LE toward +y) | `vtail.twist = −θ` | LE toward −y |
+| `ht_incidence_deg` (+ nose-up) | `struct.ht_incidence` (rad); carry `−inc·(x − x_tail)` in dz | nose-up |
+| `vt_sideslip_deg` (= −w′, + fin LE toward +y) | `struct.vt_incidence = +rad`, `struct.vt_sideslip_equiv = −rad` (β sense); carry `+vs·(x − x_tail)` in dy | fin LE toward +y |
+| root `*_bm` / `*_torque` / `*_ip_bm` (lbf·ft) | `struct.*_root_*` N·m, FD sign | + toward the body's + direction / nose-up about the EA / aft load |
+| `dL`, `dY` (lbf), `dRoll`, `dPitch`, `dYaw` (lbf·ft) | `struct.elastic_dlift/dside` N, `struct.elastic_droll/dpitch/dyaw` N·m | dL up ⟂ V, dY body +y; l/m/n as JSBSim; at / about the AERORP |
+
+All 32 scalar channels (26 diagnostics + 6 telemetry, plus `struct.vt_sideslip_equiv`) are documented with unit, +
+direction, source key and factor in `v2_map.scalar_doc()` / `structure.v2_map.scalars`.
+
+**Wing: FD nodal vs ER modal** (same flight, ER's 9 modal nodes vs FD's nodes at the same span fractions; 2701 frames,
+phase1v5-s1 g19 s0; both wings ≈ equal):
+
+| aircraft | max abs dz diff | max abs dz | max abs twist diff | max abs twist | in-plane dx (ER: none, dy = 0) |
+|---|---|---|---|---|---|
+| T38 | 1.71e-5 m | 0.0611 m (0.03 %) | 5.4e-6 rad | 7.07e-3 rad (0.08 %) | 7.7e-4 m |
+| 737 | 1.60e-4 m | 0.536 m (0.03 %) | 1.37e-5 rad | 1.90e-2 rad (0.07 %) | 5.9e-3 m |
+| c172x | 3.5e-5 m | 0.0958 m (0.04 %) | 7.9e-6 rad | 1.31e-2 rad (0.06 %) | 1.1e-3 m |
+
+Against ER's own written phase2-smoke-s1 g4 trajectories (rounded to 1e-6): dz 1.5e-4 / 1.7e-5 / 3.6e-5 m, twist
+1.3e-5 / 6e-6 / 8e-6 rad (737 / T38 / c172x). ER's linear strip interpolation is the source; the nodal values are
+FD's exact FE nodes.
+
+**Checks**: the last node equals the FD tip scalar every frame (max 1.6e-9 ft); the recorder's channels equal FD's
+own `evaluate(record=True)` node export mapped by `v2_map` (`tools/verify_fd_nodes.py`, max 5.0e-7 = FD's 9-decimal
+rounding, layout distance 0, cost bit-identical) for T38 / 737 / c172x on phase1v5-s1 and phase1v5-ki05-s1.
+
+**Public API for ER** (`sim_bridge/v2_map.py`: stdlib only, imports nothing from `evolution` or `sim_bridge`; safe to
+import read-only; `V2_MAP_VERSION = "2.0.0"`, bumped on any output change):
+* `map_v2_record(telemetry_row, geometry=None, nodes=None, *, components=None, scalars=True) -> dict` — one frame:
+  `telemetry_row` = FD raw keys (coupler `last`: DIAG_KEYS_V2 + TELEMETRY_KEYS_V2), `nodes` = `{body: {w_ft,
+  theta_deg, v_ft}}` for that frame (`nodes_frame(values, k)` slices FD's export); returns `{channel: value}`
+  (`struct.*` + `<component>.<dof>.<i>` for `components`, default all five; ER would pass
+  `components=("htail", "vtail", "fuselage")`).
+* `structure_block(geometry, *, components=None, estimated=None, base=None, synthetic=False, extra=None) -> dict` —
+  the `structure` header (`base` = ER's wing components to keep).
+* `geometry_from_layout(nodes_doc_or_layout, aircraft=None)` (FD node layout → geometry) and
+  `geometry_estimated(aircraft, *, fdm=None, ...)` (fallback); `component_status(geo, nodes)`;
+  `scalars_from_raw(raw)`, `scalar_doc()`, `validate_structure(structure, channels)`,
+  `convert_traj(doc, nodes_doc=None, ...)`.
+* Constants: `V2_MAP_VERSION`, `SCHEMA`, `STRUCTURE_SCHEMA`, `NODES_SCHEMA`, `COMPONENTS`, `FD_BODIES`, `DOFS`,
+  `COMPONENT_DOFS`, `SCALARS`, `SIGN_TABLE`.
+* `tests/test_v2_map.py::test_standalone_imports_nothing_from_evolution_or_sim_bridge` imports it in a clean subprocess.
+
+Other entry points: `TrajRecorder(..., node_source=fd_nodes.NodeSource...)` (replay builds it at full fidelity),
+`replay --no-nodes` (estimate, for comparison), `tools/verify_fd_nodes.py <traj.json>` (FD export cross-check).
+Viewer: `defl=` exaggeration (URL accepts > 50), `dofs=` display filter (e.g. `dofs=dx`, `dofs=htail,vtail` or
+`dofs=htail.dz`; HUD warns "display shows only …"). Screenshots: `screenshots/v2nodes_*.png`.
+`tests/fixtures/v2_synthetic_raw.json` and `data/examples/synthetic_softbody_test.json` are SYNTHETIC.
 
 ## Trajectory format v1: `ga-flightsim-traj/1`
 
-This is the format shared with Evolution Runner (`flight_sim_3d/evolution/trajectory.py`).
+This is the format shared with Evolution Runner (`evolution/trajectory.py`; `flight_sim_3d/evolution/trajectory.py` in the repo).
 All files here pass their `evolution/validate_traj.py`, including its independent quaternion
 check, `R(q)·v_body == v_ENU`. One file holds one saved best individual:
 
@@ -627,7 +826,20 @@ python3 -m venv .venv-shots && .venv-shots/bin/pip install playwright==1.48.0
   and Evolution Runner runs all work. There are no console errors.
 * **Replay** (`--bench data/replays/phase1-s1/proof-g0.9.19/viewer.html --shots replay --prefix replay_`): 4 shots,
   no console/page errors; HUD shows `cost … (lower=better; scenario k: …)` and the replay/fidelity/model_version line.
-  `tests/test_replay.py`: 6 passed, 1 skipped (ER's real `evolution.eval` not shipped).
+* **Tests** (`PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -p no:cacheprovider tests/`): 51 passed
+  (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15; FlexState /3 + pin= path exercised).
+* **Phase 2 pilot** (`--bench data/phase2_pilot_s1_standalone.html --shots phase2 --prefix phase2_pilot_`): 8 shots,
+  no console/page errors; gen 59 formation with FD nodal flex; g0 vs g59 per aircraft; mid+final c172x.
+  (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15; test_replay and test_v2_signs run ER's real
+  `evolution.eval` / FD's real flexbody).
+* **FD v2 nodal** (`--bench data/replays/phase1v5-s1/v2nodes-full-g19/viewer.html --shots v2nodes --prefix v2nodes_`
+  and `--bench data/replays/phase1v5-s1/v2nodes-full-g19-sc1/viewer.html --shots v2nodes_gust --prefix v2nodes_`):
+  10 shots, no console/page errors: wing in-plane bending (top view, `dofs=dx`), HT left/right difference in the
+  gust scenario (`dofs=htail.dz,htail.twist`; c172x L 6.1 mm vs R 4.7 mm at t = 0.2 s), fin bending both ways
+  (737 vt tip dy +0.115 m at t = 0.1 s, −0.028 m at t = 2.03 s), true-scale reference shots.
+* **FD v2** (`--bench data/replays/phase1v5-s1/v2nodes-full-g19/viewer.html --shots v2 --prefix v2_`): 5 shots,
+  PASS, now on the nodal data. All other suites (c172x live viewer, bench, phase1, replay, replay_v5, softbody)
+  re-run with the new bundle swapped into their standalone pages: PASS.
 * **Soft-body** (`--bench data/examples/synthetic_softbody_standalone.html --shots softbody --prefix softbody_synthetic_`):
   4 shots, no console/page errors; max vertex displacement scales with `defl` (wingL 0.91 / 4.55 / 9.10 m at ×1/×5/×10
   for a 0.89 m tip value). The bench, phase1 and c172x suites were re-run on the same bundle: PASS, slider hidden.

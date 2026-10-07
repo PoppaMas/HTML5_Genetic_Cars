@@ -202,6 +202,137 @@ objects and sim.py's stock c172x path (re-verified IDENTICAL against results/exa
 3. *Score*: structural objective in the table in §4; root moment > 1.5× limit (ultimate) → scenario fails with cost 2000.
 Cost: ~1.2 s per 90 s scenario coupled vs ~0.25 s rigid on this box today (FD measured 3.5 s vs 0.6 s under load).
 
+## 3c. Phase 2: `phase2_flex` on FD flex v2 (2026-10-06)
+
+**Source of truth.** The structure genes are built at load time from FD's `flexbody.gene_schema(asymmetric)`
+(`genome_schema.genes_from_fd_schema`; block `structure_v2`), appended after the phase1_v4 controller genes, so names,
+order, ranges, log/linear scale and baselines track FD's spec (INTERFACE_v2.md). 12 genes, or 14 with
+`flex.asymmetric: true` (FD's wing_asym_ei_delta / wing_asym_nsm_delta). **Off by default and not for Phase 2 runs:**
+they only matter once lateral or roll scenarios exist (FD), and the current scenario sets have none; the adapter
+warns when they are switched on (`experiments/phase2_flex_asym.json`). Every decoded structure genome goes through FD's `decode_genome_v2`, which raises on unknown, v1, fixed, NaN,
+out-of-range or unflagged asymmetric keys; a task cannot override v2 ranges (`gene_overrides` on a v2 name raises), and
+`structure` (v1) + `structure_v2` together raise. The v1 path (`phase1_flex`) is untouched.
+
+**Config.** `"blocks": {"pitch_altitude": true, "structure_v2": true}`,
+`"flex": {"enabled": true, "version": 2, "asymmetric": false, "substeps": 2}` (two-way only). Chord axes and tip mass
+stay FD's fixed per-aircraft values (task keys for them raise). The adapter checks FD's prepared v2 root read-only
+(`fd_bridge.require_root_v2`; we never call FD's `ensure_root_v2`, which writes).
+
+**Flight.** `sim_ext` mirrors FD's `FlexHookV2`: `apply_mass_v2` before the IC (structural mass change in JSBSim),
+`FlexBodyFDM(FlexBodyCoupler(model, "twoway", substeps))` after trim, `response_terms_v2` after the flight. We use our own
+`sim_ext` (bit-identical to the Phase 1 sim) instead of `flexeval.evaluate`, which imports evolution/sim.py.
+
+**Constraints (once per genome, before flying).** `fd_bridge.precheck_v2` takes FD's per-block `margins_v2` (wingR, wingL,
+empennage_pitch, empennage_yaw) and recomputes the conservative minimum over bodies and methods:
+flutter = min over blocks of min(flutter_margin_qs, coalescence_margin, flutter_margin); divergence = min div_margin;
+reversal = min of every `<ctrl>_reversal_margin`. Every value is FD's capped one (cap 3.0); a not-found flag means "no
+instability below the cap", so the value used is the cap and the flag is reported (`aeroelastic.not_found_below_cap`);
+nothing uses an uncapped margin. Non-finite values or `margin_error` → margin 0.
+- min < 1.0 (FD's full-fidelity gate) → not flown, every scenario `aeroelastic_<kind>`, cost 2000 (FAIL_COST).
+- 1.0 ≤ m < 1.2 → `w·((1.2−m)/0.2)²` per kind (FD's weights: flutter 1, divergence 1, reversal 1), added once.
+- m ≥ 1.2 → exactly 0: no reward for more margin (FD, 2026-10-06). Margins enter the cost only through this hinge and
+  the gate (`fd_bridge.margin_penalties_v2`); not-found = the 3.0 cap = 0. phase1_flex (v1) uses FD's
+  `flexwing.margin_terms`, which has the same shape (tests: `test_v2_margins_penalised_only_below_1p2_never_rewarded_above`,
+  `test_v1_margins_penalised_only_below_1p2_never_rewarded_above`).
+- The conservative values are never higher than FD's overall ones (tested); at the baseline they equal FD's table
+  (c172x 1.228/1.669/1.473; T38 J_flutter 0.0361; 737 0.0132).
+
+**P2.5 (2026-10-06 ~13:50 MST, Corleone approved before P3-A).** FD added `J_wing_tip_bm_limit` (weight 1.0) to
+`SIZING_TERMS` / `TERM_KEYS` (now 24 keys) and raised `wing_nsm_root` / `wing_nsm_tip` floors to **1.0–1.25** (decode
+rejects < 1.0). Genome picks sizing keys from FD live (`fd_bridge.sizing_terms_v2()` / `flexbody.SIZING_TERMS`); NSM
+ranges come from `gene_schema()` (no copied JSON). Recorded model_versions = `model_versions_post_p25.json`; the
+previous post-mass set is accepted with a warning only (ER pilots still pin those; raise only on unknown). Phase 2
+pilots stay as-is for Corleone's push plan; Phase 3 sketch unchanged. Soft `wing_ei_taper_4=0.75` → tip term ≈ 0.0175
+on c172x (baseline tip = 0). `struct_v2_source` still defaults to `"fd"`.
+
+**ER alignment (2026-10-06 08:35, decisions sent to Evolution Runner for the Phase 2 pilot).** phase2_flex =
+ER `configs/phase2_pilot.json`: `fitness.params.struct_v2_source: "fd"`, init σ 0.10, ki_alt ≤ 0.5 (phase2-only
+`gene_overrides`; the shared v4 bound stays 0.05), mass-credit clip off. Controller terms exactly v4 (track 1, effort 2,
+comfort 0.05, heading 0.01; 600 fpm ramp, 0.1 g corners, feed-forward). Cross-checked bit for bit against ER's evaluator
+(CROSSCHECK_phase2.md, `crosscheck_phase2.py`, `test_fd_mode_reproduces_evolution_phase2_smoke_costs_bitwise`).
+
+**`struct_v2_source: "fd"` (phase2_flex default).** structural_v2 = FD flexeval's structural cost, nothing of ours:
+per scenario `Σ response_terms_v2 (8: J_bm_rms, J_bm_peak, J_tip, J_twist, J_tail_bm_peak, J_fus_bm_peak,
+J_wing_torque_peak, J_wing_ip_peak)` + the pre-flight sum over `PRE_TERMS["full"]` (J_flutter/div/reversal_margin,
+J_mass, J_smooth, 5 sizing terms; once per genome, carried by every scenario). FD weights (StructWeightsV2 defaults).
+- Gate and margin terms are FD's (`margin_terms_v2(..., gate=1.0)`: FD's margins, FD's hinge²); our separate
+  aeroelastic margin penalty is 0 in this mode (it would count FD's J_*_margin twice). Our conservative minimum is
+  still reported; on 288 sampled genomes (3 aircraft × uniform / seeded σ 0.10) it gave the same gate decision and
+  the same margin penalty as FD's in every case.
+- Cost composition is flexeval's, in flexeval's order: ok scenario `sim_cost + Σresp + pre_sum`; envelope failure
+  `sim fail cost + pre_sum`; FD ultimate fail `2000 + pre_sum`; gate fail: not flown, 2000. Mean over scenarios.
+  With a structural_v2 weight ≠ 1 the adapter warns (no longer flexeval's cost).
+- **flexeval contents check.** flexeval's TERM_KEYS has 23 keys, 5 of them controller terms (track, effort,
+  comfort, heading, hold) and flexeval's `cost` includes the Runner's whole sim cost (the controller cost). So
+  flexeval's total cost must NOT be used as structural_v2 (it would count the controller twice); we take only the
+  J_* add-on (18 terms). hold = 0 in v4 (w_hold 0). FD's J_bm_rms (wing RMS / 1-g moment) depends on the controller's
+  load alleviation, but it is a structural term and our own RMS/peak terms are off in this mode, so nothing is
+  counted twice.
+- Reported: `fd_struct_terms` (FD's structural J_* as flexeval reports them, 19 after P2.5 tip term: pre-flight once, flown = mean over ok flights),
+  `fd_pre_sum`, and our formula's terms as `genome_structural_v2_terms` (diagnostic only).
+- The clip cannot be combined with "fd" (load error). `"genome"` = the formula below, kept for A/B.
+
+**Structural objective `structural_v2`, `struct_v2_source: "genome"`** (A/B only), per scenario:
+`0.1·mean_b(peak_b/limit_b) + 0.5·mean_b(RMS_b(M−M₁g)/limit_b) + J_mass + J_smooth + FD sizing terms + FD flown hinge
+terms`, over the five root moments b ∈ {wing (worse side), HT (worse side), VT, aft fuselage vertical, aft fuselage
+lateral}, limits from FD (`bm_allow` for the wing, `allowables_v2` for tail/fuselage; strength scales with stiffness,
+as in FD).
+- `J_mass = 0.3·Σ_b Δm_b/m_flexible` over b ∈ {wing, HT, VT, fuselage}, from FD's per-body `mass_summary()`; equals
+  FD's J_mass exactly (tested). Since FD §12 (08:02 MST) the structural mass is `0.5 + 0.5·s` of baseline
+  (minimum-gauge floor), so a fully softened body saves at most half its mass.
+- **FD §12 sizing terms** (pre-flight, once per genome, injected into every scenario): `J_wing_bm_limit`,
+  `J_tail_bm_limit`, `J_fus_bm_limit` (w 1.0), `J_wing_torque_limit`, `J_wing_ip_limit` (w 0.1), each
+  `w·max(0, design demand / (baseline design load × s) − 1)²`, from `margin_terms_v2(...)["terms"]`, FD weights and
+  values unchanged (`fd_bridge.SIZING_TERMS_V2`, names tested against `flexbody.SIZING_TERMS`). 0 at the baseline;
+  all stiffness genes 0.6 → ≈1.47 against a mass credit of ≈−0.03 (c172x/T38/737, tested). Note: they are 0 only
+  when every body's gene is ≥ 1; a stiffer (heavier) tail raises the fuselage demand (c172x tail 1.5, fuselage 1.0 →
+  J_fus_bm_limit 3·10⁻⁴), which FD's "0 for genes ≥ 1" wording does not mention.
+- **FD flown hinge terms** (`V2_HINGE_TERMS`): J_bm_peak, J_tip, J_twist, J_tail_bm_peak, J_fus_bm_peak and the §12
+  full-fidelity-only J_wing_torque_peak, J_wing_ip_peak (w 0.1), as FD computes them. A term missing from FD's
+  result (e.g. at reduced fidelity) counts 0 (`.get(k, 0)`, tested). FD's J_bm_rms is left out (our RMS ratio covers it).
+- `J_smooth` = FD's 0.05 EI-taper smoothness term.
+- **Mass-credit clip (off; A/B only).** `fitness.params.struct_v2_mass_credit_clip: ["ht","vt","fus"]` (Δm_b →
+  max(0, Δm_b) for tails/fuselage) was the interim fix for the tail/fuselage mass exploit, 08:00–08:15 MST. FD §12
+  (minimum gauge + sizing terms) supersedes it, so phase2_flex no longer sets it; the code path stays for A/B runs
+  and prints a warning when set. As-run record: `experiments/phase2_flex_uniform_init_clip.json`.
+- **Double counting (proposal, weights not changed).** Our `0.1·peak/limit` and FD's `J_*_bm_limit` both penalise
+  soft structure, but not identically: FD's is a pre-flight hinge on the design load (0 for s ≥ 1, steep below);
+  ours is linear in the flown peak over the stiffness-scaled limit, so it keeps rewarding stiffness above s = 1 and
+  also carries the controller's load alleviation. They overlap for s < 1. The RMS term (fatigue / load alleviation)
+  has no FD counterpart. Proposal: keep `load_rms`; change `load_peak` to use the baseline (unscaled) limit so it
+  measures only load alleviation by the controller, or drop it (w_peak 0) and rely on FD's sizing + J_bm_peak.
+  Not applied: needs the team's agreement.
+- **FD model_version.** `fd_bridge.FD_V2_MODEL_VERSIONS` records FD's P2.5 versions (v2_results/
+  model_versions_post_p25.json: full c172x e11b8214, T38 8bf7a250, 737 eeb82fb9, f16 8baca00c; reduced 68dc59aa /
+  ce107fcf / d3198780 / 66a7d816). Previous post-mass strings are kept in `FD_V2_MODEL_VERSIONS_PREV_POST_MASS` and
+  only warn (never raise) during the ER pilot transition. Completely unknown versions warn by default and raise when
+  `flex.model_version_check: "raise"`. Stored in `flex_constants_used` with fidelity and gate.
+- **Fidelity.** phase2_flex flies FD's **full** fidelity (flexbody v2 two-way) with hard gate 1.0 = FD's
+  `MARGIN_GATE["full"]`. FD's reduced gate 0.9 belongs to the Runner's reduced path (v1 FlexWing on the projected
+  genome), which genome does not use; `fd_bridge.V2_MARGIN_GATES` mirrors FD's table for a future reduced mode.
+  phase1_flex stays the v1 contract (v1 genes, flexwing gate 1.0, bit-identical). At reduced fidelity FD applies
+  only the projected v1 wing point masses to JSBSim (no floor, no tail/fuselage), while J_mass and the sizing
+  terms come from the v2 floored model, so FDM mass and J_mass disagree there; FD documents this (§7: keeps v1
+  bit-identical). It does not affect phase2_flex (full applies the floored v2 masses).
+- FD's ultimate check (`structural_ultimate*`) fails the scenario (cost 2000).
+- Weights. At the baseline structure with the v4 c172x best gains the load ratios are peak 0.07–0.45, RMS 0.01–0.03;
+  the terms are 0.018 (peak) + 0.009 (RMS) ≈ 11 % of the controller cost (0.21). If every body reached its limit the
+  peak term would be 0.1, half the controller cost; ±10 % structural mass is ±0.03 (FD's w_mass kept). So the
+  controller still dominates while load and mass trade-offs are visible. In the first c172x smoke runs (before
+  FD's floor and sizing) the GA used the mass credit (fuselage stiffness toward its 0.6 floor, Δm −6 to −13 %)
+  while peaks stayed ≤ 0.65 of limit; see README "Phase 2 smoke test" for the clip and post-§12 reruns.
+
+**Generation 0 (`init`).** `init_pop.py`. evolve.py's first draw `rng.random((pop, n))` is kept, so the controller genes
+start exactly as in the current presets; with `mode: "baseline"` the `structure_v2` genes are replaced by
+encode(FD baseline) + N(0, σ) (normalized units, clipped; σ 0.10 in phase2_flex since 08:35 = ER's pilot, was 0.05). Ranges stay FD's full ranges.
+`seed_runs: {aircraft: [run dirs]}` copies earlier best genomes (e.g. v4) into the first individuals (structure at
+the exact baseline). Without `init`, run_evolve does not touch `evolve.ga` (legacy, v4, v5 and phase1_flex unchanged).
+`evolve_pareto.py` honours the same config.
+
+**ki_alt (v5 and phase2_flex).** `presets/phase1_v5.json` and `presets/phase2_flex.json` raise the ki_alt upper
+bound to 0.5 (gene_overrides, task-local); phase1_v4 and the shared set keep 0.05 (test pins v4 bit for bit). See
+HANDOFF_phase1_v5.md.
+
 ## 4. Multi-objective fitness
 
 Each scenario is flown once. Every objective declares the telemetry channels it needs.

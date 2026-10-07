@@ -1,0 +1,335 @@
+{
+  "aircraft": "c172x",
+  "best_cost": 0.24771696466471319,
+  "initial_best_cost": 0.32015750618841593,
+  "gains": {
+    "kp_alt": 0.20791002961405233,
+    "ki_alt": 0.05,
+    "kd_alt": 0.19978138051124547,
+    "kp_pitch": 0.06913376225095647,
+    "ki_pitch": 0.00014774514393945762,
+    "kd_pitch": 0.007930527519039485,
+    "kp_hdg": 0.11196285569113296,
+    "ki_hdg": 0.0002738361773262944,
+    "wing_ei_root": 1.0284503980823578,
+    "wing_ei_taper_1": 0.9662782682281899,
+    "wing_ei_taper_2": 1.0147039647750198,
+    "wing_ei_taper_3": 1.0138486170769259,
+    "wing_ei_taper_4": 0.9535501281611856,
+    "wing_gj_ratio_root": 0.999557244237878,
+    "wing_gj_ratio_tip": 0.978080772156285,
+    "wing_nsm_root": 0.9383906979265536,
+    "wing_nsm_tip": 1.041311473760947,
+    "tail_stiffness_scale": 0.9969058495398926,
+    "fuselage_stiffness_scale": 0.7164349820486607,
+    "struct_damping_ratio": 0.017606755461882766
+  },
+  "gain_units": {
+    "kp_alt": "deg/ft",
+    "ki_alt": "deg/(ft*s)",
+    "kd_alt": "deg/(ft/s)",
+    "kp_pitch": "elev/deg",
+    "ki_pitch": "elev/(deg*s)",
+    "kd_pitch": "elev/(deg/s)",
+    "kp_hdg": "deg bank/deg hdg",
+    "ki_hdg": "deg bank/(deg*s)",
+    "wing_ei_root": "x",
+    "wing_ei_taper_1": "-",
+    "wing_ei_taper_2": "-",
+    "wing_ei_taper_3": "-",
+    "wing_ei_taper_4": "-",
+    "wing_gj_ratio_root": "-",
+    "wing_gj_ratio_tip": "-",
+    "wing_nsm_root": "x",
+    "wing_nsm_tip": "x",
+    "tail_stiffness_scale": "x",
+    "fuselage_stiffness_scale": "x",
+    "struct_damping_ratio": "x"
+  },
+  "genome": [
+    0.672281814870042,
+    1.0,
+    0.5250267855672366,
+    0.6416591701836156,
+    0.30831895053558056,
+    0.5134678232710247,
+    0.17505198129231087,
+    0.39140407059240856,
+    0.44758388506944835,
+    0.7209275607606328,
+    0.8823465492500662,
+    0.8794953902564195,
+    0.6785004272039518,
+    0.5701635549653655,
+    0.5088022061608144,
+    0.3575157247140184,
+    0.5907060745060342,
+    0.4217094229212355,
+    0.14731050690791345,
+    0.5467093280750761
+  ],
+  "per_scenario": [
+    {
+      "cost": 0.13172250463919383,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.05670786999478903,
+      "effort": 0.014266400487182019
+    },
+    {
+      "cost": 0.39225132684717834,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.08229882724836034,
+      "effort": 0.05088883579202165
+    },
+    {
+      "cost": 0.21917706250776736,
+      "status": "ok",
+      "t_end": 90.0,
+      "track": 0.0684446990767191,
+      "effort": 0.028432356719278892
+    }
+  ],
+  "initial_best_gains": {
+    "kp_alt": 0.22148552759364099,
+    "ki_alt": 8.486657062612094e-05,
+    "kd_alt": 0.1075282816046347,
+    "kp_pitch": 0.09985791712349074,
+    "ki_pitch": 0.00014774514393945762,
+    "kd_pitch": 0.007930527519039485,
+    "kp_hdg": 0.16611905351044237,
+    "ki_hdg": 0.0002738361773262944,
+    "wing_ei_root": 0.9634774872612973,
+    "wing_ei_taper_1": 0.9852705151631551,
+    "wing_ei_taper_2": 1.0147039647750198,
+    "wing_ei_taper_3": 1.0138486170769259,
+    "wing_ei_taper_4": 1.019084676205591,
+    "wing_gj_ratio_root": 0.999557244237878,
+    "wing_gj_ratio_tip": 1.0048016779315274,
+    "wing_nsm_root": 0.9871757155406524,
+    "wing_nsm_tip": 0.9746440437010195,
+    "tail_stiffness_scale": 1.0272752254942283,
+    "fuselage_stiffness_scale": 1.0162869052725778,
+    "struct_damping_ratio": 0.017606755461882766
+  },
+  "scenarios": [
+    {
+      "seed": 1016164991,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 0.0,
+      "wind_east_fps": 0.0,
+      "gust_sigma_fps": 0.0,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 0.0,
+      "discrete_gust_t_s": 30.0,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "c172x",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -8.0,
+        12.0
+      ],
+      "min_kcas": 55.0,
+      "nz_limits": [
+        -1.0,
+        3.8
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": "v2",
+      "flex_substeps": 2,
+      "flex_asymmetric": false,
+      "bank_cmd_limit_deg": 16.0,
+      "hdg_i_limit_deg": 10.0,
+      "draft_fps": 0.0,
+      "draft_t_s": 10.0,
+      "draft_ramp_s": 4.0
+    },
+    {
+      "seed": 1099128569,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": 14.815420728420232,
+      "wind_east_fps": 18.893081885137402,
+      "gust_sigma_fps": 3.8459483414117317,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": -10.96328514280803,
+      "discrete_gust_t_s": 41.554051876408835,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "c172x",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -8.0,
+        12.0
+      ],
+      "min_kcas": 55.0,
+      "nz_limits": [
+        -1.0,
+        3.8
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": "v2",
+      "flex_substeps": 2,
+      "flex_asymmetric": false,
+      "bank_cmd_limit_deg": 16.0,
+      "hdg_i_limit_deg": 10.0,
+      "draft_fps": 0.0,
+      "draft_t_s": 10.0,
+      "draft_ramp_s": 4.0
+    },
+    {
+      "seed": 669652944,
+      "duration_s": 90.0,
+      "h0_ft": 4000.0,
+      "speed_kts": 100.0,
+      "steps": [
+        [
+          0.0,
+          4000.0
+        ],
+        [
+          5.0,
+          4200.0
+        ],
+        [
+          50.0,
+          4000.0
+        ]
+      ],
+      "wind_north_fps": -12.549072662472344,
+      "wind_east_fps": -4.042050948210394,
+      "gust_sigma_fps": 1.082677339729205,
+      "gust_tau_s": 2.0,
+      "discrete_gust_fps": 11.767003192534947,
+      "discrete_gust_t_s": 31.594634329981844,
+      "discrete_gust_len_s": 3.0,
+      "label": "",
+      "payload_delta_lb": 0.0,
+      "payload_index": 0,
+      "cg_shift_in": 0.0,
+      "noise_alt_ft": 0.0,
+      "noise_hdot_fps": 0.0,
+      "noise_theta_deg": 0.0,
+      "noise_q_dps": 0.0,
+      "noise_seed": 0,
+      "heading_steps": [
+        [
+          0.0,
+          0.0
+        ]
+      ],
+      "aircraft": "c172x",
+      "ramp_fpm": 600.0,
+      "alt_ref_ff": true,
+      "ramp_accel_g": 0.1,
+      "alt_err_scale_ft": 100.0,
+      "max_alt_err_ft": 1000.0,
+      "pitch_cmd_limits_deg": [
+        -8.0,
+        12.0
+      ],
+      "min_kcas": 55.0,
+      "nz_limits": [
+        -1.0,
+        3.8
+      ],
+      "throttle_max": null,
+      "use_fd_root": true,
+      "flex_mode": "v2",
+      "flex_substeps": 2,
+      "flex_asymmetric": false,
+      "bank_cmd_limit_deg": 16.0,
+      "hdg_i_limit_deg": 10.0,
+      "draft_fps": 0.0,
+      "draft_t_s": 10.0,
+      "draft_ramp_s": 4.0
+    }
+  ],
+  "config": {
+    "pop_size": 24,
+    "generations": 8,
+    "elite": 2,
+    "selection_p": 0.2,
+    "crossover": "uniform",
+    "blx_alpha": 0.3,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "seed": 1,
+    "scenarios": 3,
+    "scenario_seed": 1,
+    "workers": 4,
+    "out": "runs/p2_smoke_c172x_base_s1"
+  }
+}

@@ -433,3 +433,16 @@ Margins (×V_D, cap 3.0; coupled modes 7.9 / 28.0 / 36.6 Hz):
   feasibility at the default; the s 0.6 / r 0.8 corner stays between 0.94 and 1.05 for all of them.
 - Not modelled: AIM-9 tip launchers/missiles and underwing stores, which dominate real F-16 flutter/LCO behaviour (they would
   enter as a fixed tip mass, which Phase 1 keeps at 0).
+
+---
+
+## v2 (flex v2, opt-in): see [INTERFACE_v2.md](INTERFACE_v2.md)
+
+The v1 contract above is unchanged and still valid. Flex v2 (`flexbody.py`, `flexeval.py`) adds:
+- spanwise EI/GJ/NSM genes;
+- flexible HT/VT/fuselage;
+- control-effectiveness and reversal margins;
+- the `rigid` / `reduced` / `full` fidelity contract.
+
+Its gene list, outputs, fidelity contract, runtimes and validation are documented in INTERFACE_v2.md (appended, v1 text
+untouched).

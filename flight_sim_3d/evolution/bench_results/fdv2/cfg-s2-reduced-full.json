@@ -1,0 +1,431 @@
+{
+ "_comment": "Phase-1 + heading hold (genome/HANDOFF_heading_hold.md): c172x/T38/737 heading_hold on with genome's exported keys; f16 heading_hold off (FD jsbsim_root, throttle_max 0.5). Same task/GA budget as configs/phase1.json, which is unchanged (heading hold is opt-in).",
+ "seed": 2,
+ "scenario_seed": 1,
+ "scenarios": 3,
+ "ga": {
+  "pop_size": 32,
+  "generations": 4
+ },
+ "metrics": {
+  "band_ft": 20,
+  "hold_after_s": 20
+ },
+ "profiles": {
+  "phase1_c172x": {
+   "_why": "= genome/exports/evolution_phase1_profiles.json phase1_c172x (generated from genome/aircraft_profiles/phase1_shared.json) + the items that needed code here: 600 fpm ramp with 0.1 g corners, climb-rate FF, comfort 0.05, log0 on ki_alt/ki_pitch, profile-scaled roll gains (genome adapter sim_fixed), FD jsbsim_root | heading hold from genome/HANDOFF_heading_hold.md (export 04:50 PT): heading_hold, bank_limit_deg, hdg_i_limit_deg, w_heading, hdg_rms_ref_deg, kp_hdg (log) / ki_hdg (log0) bounds verbatim.",
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 55.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -1.0,
+    3.8
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -8.0,
+    12.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.05,
+   "thr_ki": 0.01,
+   "throttle_max": 1.0,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.002,
+     2.0
+    ],
+    "ki_alt": [
+     1e-06,
+     0.05
+    ],
+    "kd_alt": [
+     0.01,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     0.5
+    ],
+    "ki_pitch": [
+     1e-05,
+     0.2
+    ],
+    "kd_pitch": [
+     0.0001,
+     0.5
+    ],
+    "kp_hdg": [
+     0.05,
+     5.0
+    ],
+    "ki_hdg": [
+     1e-05,
+     0.1
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.05,
+   "roll_kd": 0.02,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 16.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  },
+  "phase1_T38": {
+   "_why": "= genome/exports/evolution_phase1_profiles.json phase1_T38 (generated from genome/aircraft_profiles/phase1_shared.json) + the items that needed code here: 600 fpm ramp with 0.1 g corners, climb-rate FF, comfort 0.05, log0 on ki_alt/ki_pitch, profile-scaled roll gains (genome adapter sim_fixed), FD jsbsim_root; thr_kp/thr_ki at full precision (genome adapter sim_fixed): the export rounds them to 6 digits, which moves costs by 1e-8..5e-7 relative; with full precision genome's best genomes re-fly bit-identically | heading hold from genome/HANDOFF_heading_hold.md (export 04:50 PT): heading_hold, bank_limit_deg, hdg_i_limit_deg, w_heading, hdg_rms_ref_deg, kp_hdg (log) / ki_hdg (log0) bounds verbatim.",
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 180.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -3.0,
+    7.33
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -10.0,
+    15.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.036674370574350905,
+   "thr_ki": 0.007334874114870181,
+   "throttle_max": 0.5,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.000608,
+     0.608
+    ],
+    "ki_alt": [
+     3.04e-07,
+     0.05
+    ],
+    "kd_alt": [
+     0.00304,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     2.48
+    ],
+    "ki_pitch": [
+     1e-05,
+     0.992
+    ],
+    "kd_pitch": [
+     0.0001,
+     2.48
+    ],
+    "kp_hdg": [
+     0.164,
+     16.4
+    ],
+    "ki_hdg": [
+     3.29e-05,
+     0.329
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.11802009775780833,
+   "roll_kd": 0.04720803910312333,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 25.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  },
+  "phase1_737": {
+   "_why": "= genome/exports/evolution_phase1_profiles.json phase1_737 (generated from genome/aircraft_profiles/phase1_shared.json) + the items that needed code here: 600 fpm ramp with 0.1 g corners, climb-rate FF, comfort 0.05, log0 on ki_alt/ki_pitch, profile-scaled roll gains (genome adapter sim_fixed), FD jsbsim_root; thr_kp/thr_ki at full precision (genome adapter sim_fixed): the export rounds them to 6 digits, which moves costs by 1e-8..5e-7 relative; with full precision genome's best genomes re-fly bit-identically | heading hold from genome/HANDOFF_heading_hold.md (export 04:50 PT): heading_hold, bank_limit_deg, hdg_i_limit_deg, w_heading, hdg_rms_ref_deg, kp_hdg (log) / ki_hdg (log0) bounds verbatim.",
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 195.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -1.0,
+    2.5
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -5.0,
+    10.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.0350554435483871,
+   "thr_ki": 0.007011088709677419,
+   "throttle_max": 1.0,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.00073,
+     0.73
+    ],
+    "ki_alt": [
+     3.65e-07,
+     0.05
+    ],
+    "kd_alt": [
+     0.00365,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     7.51
+    ],
+    "ki_pitch": [
+     1e-05,
+     3.01
+    ],
+    "kd_pitch": [
+     0.0001,
+     7.51
+    ],
+    "kp_hdg": [
+     0.137,
+     13.7
+    ],
+    "ki_hdg": [
+     2.74e-05,
+     0.274
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0",
+    "ki_hdg": "log0"
+   },
+   "roll_kp": 0.616155991923067,
+   "roll_kd": 0.2464623967692268,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": true,
+   "bank_limit_deg": 25.0,
+   "hdg_i_limit_deg": 10.0,
+   "w_heading": 0.01,
+   "hdg_rms_ref_deg": 5.0
+  },
+  "phase1_f16": {
+   "_why": "NOT in the shared set (genome/ALIGNMENT.md covers c172x/T38/737 only). Loads Flight Dynamics' prepared f16 from jsbsim_root (INTERFACE.md s5: zero-weight payload_placeholder at point-mass index 0, Pilot moved to 1, zero flex force/mass; no network sockets, so no stripped copy is needed). Trim 350 KCAS / 10000 ft, gear up, mode 1: alpha 1.045 deg, throttle 0.2836 (dry, pos 0.567), identical to FD's s5b. throttle_max 0.5 = MIL, no afterburner (same convention as the T38). Phase-1 task/fitness rules as the others. Envelope as bench_jets-j1 (min 200 KCAS, n +9/-3). Clamp, helper-loop gains (speed PI, roll) and gene ranges from genome's adapter for f16 (control-power scaled; same KCAS => ~same qbar), ranges = union with the prototype ranges, as ALIGNMENT #11 does for the other jets. Note (FD s5d): the f16 stick is an FBW pitch-rate/g demand, not a surface deflection. | heading_hold false: f16 aileron-cmd-norm is a FBW roll-rate demand (FD INTERFACE \u00a75d); needs its own derivation (genome handoff).",
+   "h0_ft": 10000.0,
+   "speed_kts": 350.0,
+   "duration_s": 90.0,
+   "steps_rel_ft": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     200.0
+    ],
+    [
+     50.0,
+     0.0
+    ]
+   ],
+   "min_agl_ft": 500.0,
+   "min_kcas": 200.0,
+   "max_abs_theta_deg": 30.0,
+   "max_abs_phi_deg": 45.0,
+   "nz_limits": [
+    -3.0,
+    9.0
+   ],
+   "max_alt_err_ft": 1000.0,
+   "pitch_cmd_limits_deg": [
+    -10.0,
+    15.0
+   ],
+   "alt_i_limit_deg": 5.0,
+   "pitch_i_limit": 0.4,
+   "thr_kp": 0.0200426944971537,
+   "thr_ki": 0.00400853889943074,
+   "throttle_max": 0.5,
+   "throttle_all_engines": true,
+   "gear_up": true,
+   "alt_err_scale_ft": 100.0,
+   "itae_t0_s": 10.0,
+   "itae_cap_s": 30.0,
+   "w_effort": 2.0,
+   "gain_bounds": {
+    "kp_alt": [
+     0.0004426098125953916,
+     0.5
+    ],
+    "ki_alt": [
+     2.2130490629769578e-07,
+     0.05
+    ],
+    "kd_alt": [
+     0.0022130490629769578,
+     3.0
+    ],
+    "kp_pitch": [
+     0.002,
+     0.707070913949984
+    ],
+    "ki_pitch": [
+     1e-05,
+     0.28282836557999363
+    ],
+    "kd_pitch": [
+     0.0001,
+     0.707070913949984
+    ]
+   },
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "alt_ref_ff": true,
+   "w_comfort": 0.05,
+   "comfort_params": {
+    "pitch_free_deg": 5.0,
+    "q_free_dps": 3.0
+   },
+   "gene_kinds": {
+    "ki_alt": "log0",
+    "ki_pitch": "log0"
+   },
+   "roll_kp": 0.03450027543310525,
+   "roll_kd": 0.0138001101732421,
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "heading_hold": false
+  }
+ },
+ "aircraft": [
+  {
+   "name": "c172x",
+   "profile": "phase1_c172x"
+  },
+  {
+   "name": "737",
+   "profile": "phase1_737"
+  }
+ ],
+ "runs_dir": "/workspace/flight-sim-team/evolution/bench_results/fdv2/runs",
+ "cache": {
+  "enabled": false,
+  "path": "cache/unused.sqlite"
+ },
+ "trajectories": {
+  "generations": [
+   0,
+   3
+  ],
+  "scenario": 0,
+  "sample_hz": 30
+ },
+ "run_id": "fdv2-s2-reduced-full",
+ "fidelity": "full",
+ "viz": "off",
+ "struct_genes": true,
+ "multi_fidelity": {
+  "enabled": true,
+  "screen": "reduced",
+  "top_k": 4
+ }
+}

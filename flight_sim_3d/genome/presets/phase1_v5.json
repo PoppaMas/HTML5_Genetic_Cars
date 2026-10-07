@@ -1,5 +1,5 @@
 {
-  "_comment": "Phase-1 v5 candidate (not the default): v4 + hold-quality term (hold_osc, weight from phase1_shared.json task.v5) + one extra calm scenario with a sustained downdraft scaled per aircraft (V_TAS*tan 1.5 deg), aggregated with the others (mean). See DESIGN.md 3a and HANDOFF_phase1_v5.md.",
+  "_comment": "Phase-1 v5 candidate (not the default): v4 + hold-quality term (hold_osc, weight from phase1_shared.json task.v5) + one extra calm scenario with a sustained downdraft scaled per aircraft (V_TAS*tan 1.5 deg), aggregated with the others (mean). See DESIGN.md 3a and HANDOFF_phase1_v5.md. ki_alt upper bound 0.5 for v5 only (approved 2026-10-06; v4 keeps the shared 0.05): ki_alt sat at its 0.05 bound in 3 of 5 v5 runs; see HANDOFF_phase1_v5.md 'ki_alt bound (v5 only)'.",
   "name": "phase1_v5",
   "aircraft": "c172x",
   "blocks": {
@@ -23,5 +23,10 @@
     }
   },
   "hold_quality": true,
-  "disturbance_scenario": true
+  "disturbance_scenario": true,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
 }

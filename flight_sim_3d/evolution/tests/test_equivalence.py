@@ -5,9 +5,9 @@ import sys
 import numpy as np
 import pytest
 
-from evolution import sim
+from evolution import batch, sim
 
-ORIG = os.environ.get("FLIGHT_SIM_DIR", os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))), "flight_sim"))
+ORIG = os.environ.get("FLIGHT_SIM_DIR", os.path.join(batch.DEFAULT_SOURCE_REPO, "flight_sim"))  # repo-relative in the push layout
 pytestmark = pytest.mark.skipif(not os.path.isdir(ORIG), reason="original clone not available")
 
 

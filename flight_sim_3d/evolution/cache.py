@@ -12,6 +12,11 @@ JSON of everything that can change that simulation's result:
     aircraft/<model>/ directory that is actually loaded (so an in-place edit
     of a model, e.g. Flight Dynamics updating jsbsim_root, is a cache miss).
 
+full vs full_a1 (P3-A1): both fly the same prepared <root>_v2 files, so model_files alone would not separate them; the
+key carries "fidelity" ('full' / 'full_a1') AND FD's model_version ('full:flexv2:..' / 'full_a1:flexv2a1:..'), so the two
+key spaces are disjoint, and eval_key refuses a model_version whose prefix is not "<fidelity>:" (a full string can never
+be filed under full_a1 or vice versa). The payload itself is unchanged, so rigid / reduced / full keys are as before.
+
 The GA seed is deliberately NOT in the key: it only decides *which* genomes get
 evaluated, not what a given genome scores, so different GA seeds can share
 results. Anything that does change a result (scenario seed, profile, code,
@@ -53,6 +58,8 @@ def jsbsim_version() -> str:
 def eval_key(aircraft: str, genome: np.ndarray, profile_d: Dict, scenario_d: Dict, scenario_seed: int,
              jsbsim_ver: str, code: str, model_sha: str = "", fidelity: Optional[str] = None,
              model_version: Optional[str] = None) -> str:
+    if fidelity is not None and model_version is not None and not str(model_version).startswith(f"{fidelity}:"):
+        raise ValueError(f"cache key: model_version {model_version!r} does not belong to fidelity {fidelity!r}")
     payload = {
         "fidelity": fidelity,            # the fidelity + model_version the worker returned (checked by the batch)
         "model_version": model_version,
@@ -74,6 +81,7 @@ class EvalCache:
         self.path = path
         self._lock = threading.Lock()
         self._db = None
+        self.pins: Dict[str, Dict[str, str]] = {}   # {aircraft: {fidelity: model_version}} (config pin_model_version)
         if path:
             os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
             self._db = sqlite3.connect(path, check_same_thread=False, timeout=60)
@@ -104,6 +112,12 @@ class EvalCache:
         """items: [(key, aircraft, result_dict)]"""
         if not self._db or not items:
             return
+        for k, a, r in items:   # second line of defence behind batch.check_pins: never store an unpinned model's result
+            pin = self.pins.get(a)
+            fid = r.get("fidelity", "rigid")
+            if pin is not None and fid != "rigid" and pin.get(fid) != r.get("model_version"):
+                raise RuntimeError(f"cache: refusing to store {a} {fid} result with model_version "
+                                   f"{r.get('model_version')!r} (pinned {pin.get(fid)!r})")
         with self._lock:
             self._db.executemany("INSERT OR IGNORE INTO evals (key, aircraft, result) VALUES (?, ?, ?)",
                                  [(k, a, json.dumps(r)) for k, a, r in items])

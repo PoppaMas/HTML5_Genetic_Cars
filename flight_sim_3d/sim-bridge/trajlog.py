@@ -31,8 +31,12 @@ import numpy as np
 
 SCHEMA = "ga-flightsim-traj/1"
 INDEX_SCHEMA = "ga-flightsim-traj-index/1"
-DEFAULT_FLIGHT_SIM_DIR = os.environ.get(
-    "FLIGHT_SIM_DIR", os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "flight_sim"))
+if os.path.dirname(os.path.abspath(__file__)) not in sys.path:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from sim_bridge import paths as _paths  # noqa: E402
+
+# prototype flight_sim checkout: $SIMBRIDGE_SANDBOX or $FLIGHT_SIM_DIR, default <team root>/../flight_sim
+DEFAULT_FLIGHT_SIM_DIR = _paths.SANDBOX_DIR
 
 FT = 0.3048
 KT = 0.514444
@@ -88,7 +92,7 @@ def import_flight_sim(flight_sim_dir: Optional[str] = None):
     """Import the project's sim/genome/ga/evolve modules from its directory (no copies)."""
     d = os.path.abspath(flight_sim_dir or DEFAULT_FLIGHT_SIM_DIR)
     if not os.path.isfile(os.path.join(d, "sim.py")):
-        raise FileNotFoundError(f"sim.py not found in {d} (set --flight-sim-dir or FLIGHT_SIM_DIR)")
+        raise FileNotFoundError(f"sim.py not found in {d} (set --flight-sim-dir, SIMBRIDGE_SANDBOX or FLIGHT_SIM_DIR)")
     if d not in sys.path:
         sys.path.insert(0, d)
     mods = {}

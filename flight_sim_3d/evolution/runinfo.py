@@ -26,6 +26,10 @@ from . import genome as genome_mod
 from . import sim
 
 RUN_SCHEMA = "ga-flightsim-run/1"
+# Ids are opaque, stable strings (never renumbered across resumes); consumers must match them exactly, not parse them.
+INDIVIDUAL_ID_FORMAT = ("'<aircraft>:g<generation>:r<rank>' (string; rank 0 = best of that generation by the generation's "
+                        "ranking; unique per (aircraft, generation)); backfilled best-only rows use '<aircraft>:g<generation>:best'")
+SCENARIO_ID_FORMAT = "'<aircraft>:s<index>' (string; index = position in the aircraft's scenario_ids)"
 GENOMES_SCHEMA = "ga-flightsim-genomes/1"
 PKG_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -77,7 +81,25 @@ def fitness_cfg(profile_d: Dict) -> Dict:
          "w_effort": P.w_effort, "w_comfort": P.w_comfort, "comfort_params": P.comfort_params,
          "comfort_weights": P.comfort_weights, "fail_base": P.fail_base,
          "heading_hold": P.heading_hold, "w_heading": P.w_heading, "hdg_rms_ref_deg": P.hdg_rms_ref_deg}
+    if P.w_hold > 0 or P.disturbance_scenario:
+        f["per_scenario"] += " (+ w_hold*hold_osc, v5)"
+        f.update({"w_hold": P.w_hold, "hold_ref_ft": P.hold_ref_ft, "hold_settle_s": P.hold_settle_s,
+                  "hold_osc": "RMS over hold samples of (e - mean of e in its window), e = h_cmd - h, / hold_ref_ft; hold "
+                              "= reference == command (|ref-cmd| < 1e-6 ft) and reference rate 0, minus the first "
+                              "hold_settle_s of each stretch",
+                  "disturbance_scenario": P.disturbance_scenario,
+                  "disturbance_doc": "one extra calm scenario appended last (index = scenarios): holds h0 in a sustained "
+                                     "downdraft w = draft_fps*0.5*(1-cos(pi*clip((t-draft_t_s)/draft_ramp_s,0,1))) added "
+                                     "to wind-down-fps (+ = down); cost = mean over all scenarios"})
     return f
+
+
+def team_rel(path: Optional[str]) -> Optional[str]:
+    """Absolute path -> relative to the team root (sim.TEAM_ROOT, the dir holding evolution/ and flight-dynamics/);
+    relative paths and None pass through. sim.abs_root() is the inverse (Sim Bridge resolves the same way)."""
+    if not path or not os.path.isabs(path):
+        return path
+    return os.path.relpath(path, sim.TEAM_ROOT)
 
 
 def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str) -> Dict:
@@ -90,33 +112,57 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
         info = per_ac.get(a["name"], {})
         ents = scenario_entries(a["name"], a["resolved_profile"], cfg["scenarios"], cfg["scenario_seed"])
         scen += ents
-        e = {"name": a["name"], "profile": a["profile"], "seed": a["seed"], "resolved_profile": a["resolved_profile"],
-             "aircraft_root": a["resolved_profile"].get("aircraft_root"), "scenario_ids": [s["id"] for s in ents],
+        rp = dict(a["resolved_profile"])
+        if rp.get("aircraft_root"):
+            rp["aircraft_root"] = team_rel(rp["aircraft_root"])
+        e = {"name": a["name"], "profile": a["profile"], "seed": a["seed"], "resolved_profile": rp,
+             "aircraft_root": rp.get("aircraft_root"), "scenario_ids": [s["id"] for s in ents],
              "genes": gene_entries(info["schema"], info.get("groups")) if "schema" in info else None,
              "model_files_sha": info.get("model_files_sha"), "model_version": info.get("model_version"),
              "fitness_cfg": fitness_cfg(a["resolved_profile"])}
         if info.get("screen_model_version"):
             e["screen_model_version"] = info["screen_model_version"]
-        for k in ("model_files_sha_source", "model_files_current_differs"):
+        if a.get("multi_fidelity"):   # multi_fidelity_per_aircraft override (else the run-level block applies)
+            e["multi_fidelity"] = a["multi_fidelity"] if a["multi_fidelity"].get("enabled") else None
+        for k in ("reduced_gate", "ladder_model_version", "min_full_frac", "model_files_sha_source",
+                  "model_files_current_differs"):
             if k in info:
                 e[k] = info[k]
         acs.append(e)
-    labels = {"rigid": "rigid", "reduced": "reduced", "full": "full(v1)"}
+    labels = {"rigid": "rigid", "reduced": "reduced(flexv1 on projected v2 genome)", "full": "full(flexv2)",
+              "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)"}
+    ladders = [list(m.get("ladder") or []) for m in [mf] + [a.get("multi_fidelity") or {} for a in cfg["aircraft"]]
+               if m.get("enabled")]
+    uses_a1 = fid == "full_a1" or any("full_a1" in ld for ld in ladders)
     return {
         "schema": RUN_SCHEMA, "run_id": cfg["run_id"], "created": created,
-        "git_sha": prov.get("git_sha"), "git": prov.get("git"), "jsbsim_version": prov.get("jsbsim_version"),
+        "git_sha": prov.get("git_sha"),
+        "git": dict(prov["git"], repo=team_rel(prov["git"].get("repo"))) if isinstance(prov.get("git"), dict) else prov.get("git"),
+        "paths_relative_to": "team root: the directory holding evolution/ and flight-dynamics/ (flight_sim_3d/ in the repo); "
+                             "resolve with evolution.sim.abs_root", "jsbsim_version": prov.get("jsbsim_version"),
         "code_sha": prov.get("code_sha"), "seed": cfg["seed"], "eval_seed": cfg["scenario_seed"],
         "scenario_seed": cfg["scenario_seed"], "fitness_sense": "min", "sim_dt_s": sim.DT,
         "fidelity": fid, "fidelity_label": labels.get(fid, fid),
         "multi_fidelity": mf if mf.get("enabled") else None,
         "struct_genes": bool(cfg.get("struct_genes", False)),
+        **({"struct_asymmetric": True} if cfg.get("struct_asymmetric") else {}),
+        **({"init": cfg["init"]} if (cfg.get("init") or {}).get("mode", "uniform") != "uniform" else {}),
+        **({"pin_model_version": cfg["pin_model_version"]} if cfg.get("pin_model_version") else {}),
         "model_version": {a["name"]: a["model_version"] for a in acs},
         "aircraft": acs, "scenarios": scen, "target_semantics": TARGET_SEMANTICS,
         "fitness_cfg": {"sense": "min", "aggregate": "cost = float(numpy.mean(per_scenario_cost)) over the aircraft's "
                         "scenario_ids, at every fidelity",
-                        "flex": "reduced/full per-scenario cost = rigid cost + J_bm_rms + J_bm_peak + J_tip + J_twist "
-                                "(fail_cost if structural_ultimate) + J_flutter_margin + J_div_margin + J_mass; fail_cost "
-                                "(not flown) if a margin is below the fidelity's gate (full 1.0, reduced 0.9)",
+                        "flex": "reduced/full = Flight Dynamics flexeval.evaluate (flight-dynamics/INTERFACE_v2.md): "
+                                "per-scenario cost = rigid sim cost + response terms (fail_cost on a structural-ultimate "
+                                "fail) + pre-flight terms (margins, mass, smoothness); a genome with a margin below the "
+                                "gate is not flown (cost = fail_cost = 2 * fail_base). Gates: full 1.0; reduced = "
+                                "aircraft[].reduced_gate (c172x 0.9, swept wings 1.0)",
+                        **({"flex_a1": "full_a1 = Flight Dynamics flexeval_a1.evaluate (INTERFACE_v2.md section 13): the "
+                                       "full contract (gate 1.0, same 24 terms, <root>_v2, 2 substeps) on the P3-A1 model "
+                                       "flexbody_a1.FlexBodyModelA1 (64 strips, 4b+3t+2ip per semi-wing); "
+                                       "J_wing_tip_bm_limit is station-exact at eta 0.875, so full_a1 costs are not "
+                                       "comparable with full costs and never share a cache entry with them"}
+                           if uses_a1 else {}),
                         "per_aircraft": "aircraft[].fitness_cfg"},
         "ga": cfg.get("ga"), "generations": cfg["ga"]["generations"], "pop_size": cfg["ga"]["pop_size"],
         "trajectories": cfg.get("trajectories"),
@@ -127,6 +173,8 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
                              "recorder.final(t_end, fdm[, flex_state]); read-only",
                  "controls_timing": "pre_step (see trajectory files' controls_timing_doc)"},
         "genomes_file": "genomes.jsonl", "genomes_schema": GENOMES_SCHEMA,
+        "individual_id_format": INDIVIDUAL_ID_FORMAT,
+        "scenario_id_format": SCENARIO_ID_FORMAT,
     }
 
 
@@ -222,7 +270,7 @@ def backfill(run_dir: str, force: bool = False, log=print) -> Dict:
             sids = [scenario_id(a["name"], i) for i in range(cfg["scenarios"])]
             for b in ck["best_per_gen"]:
                 row = {"generation": b["generation"], "individual_id": f"{a['name']}:g{b['generation']}:best",
-                       "aircraft": a["name"], "scenario_ids": sids, "cost": b["fitness"],
+                       "aircraft": a["name"], "eval_seed": cfg["scenario_seed"], "scenario_ids": sids, "cost": b["fitness"],
                        "per_scenario_cost": [s["cost"] for s in b["per_scenario"]],
                        "per_scenario_status": [s["status"] for s in b["per_scenario"]],
                        "genome": genome_mod.decode(b["genome"], schema), "genome_norm": b["genome"],

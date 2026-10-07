@@ -91,6 +91,15 @@ class Profile:
     hdg_i_limit_deg: float = 10.0
     w_heading: float = 0.0              # cost += w_heading * RMS(e_psi) / hdg_rms_ref_deg
     hdg_rms_ref_deg: float = 5.0
+    # Phase-1 v5 candidate (genome/HANDOFF_phase1_v5.md): hold-quality term + sustained-downdraft scenario; all off
+    w_hold: float = 0.0                  # cost += w_hold * hold_osc (0 = not computed)
+    hold_ref_ft: float = 5.0
+    hold_settle_s: float = 5.0
+    disturbance_scenario: Optional[Dict] = None   # {"downdraft_fps", "onset_t_s", "onset_ramp_s", "steps_rel_ft"}
+    # Phase 2 (reduced/full only): bodies whose structural mass DECREASE earns no J_mass credit (dm -> max(0, dm)), an
+    # increase still costs; = Genome's fitness.params.struct_v2_mass_credit_clip (fd_bridge.mass_term_v2). None = FD's
+    # J_mass unchanged (omitted from to_dict, so existing profile dicts / cache keys / run ids are unchanged).
+    flex_mass_credit_clip: Optional[Tuple[str, ...]] = None
     # reference shaping (Phase-1); None/False = instant steps, prototype outer loop
     ramp_fpm: Optional[float] = None
     ramp_accel_g: Optional[float] = None   # needs ramp_fpm; None = linear ramp with sharp corners
@@ -128,8 +137,26 @@ class Profile:
         if "steps_rel_ft" in d:
             d["steps_rel_ft"] = [tuple(float(x) for x in s) for s in d["steps_rel_ft"]]
         if d.get("aircraft_root"):
-            d["aircraft_root"] = abs_root(d["aircraft_root"])  # configs use "flight-dynamics/jsbsim_root" (relative to flight_sim_3d/)
+            d["aircraft_root"] = abs_root(d["aircraft_root"])  # "flight-dynamics/jsbsim_root" is relative to the team/repo root
+        if d.get("flex_mass_credit_clip") is not None:
+            clip = tuple(str(b) for b in d["flex_mass_credit_clip"])
+            if set(clip) - {"ht", "vt", "fus"} or len(set(clip)) != len(clip):
+                raise ValueError(f"flex_mass_credit_clip: bodies from ht, vt, fus (the wing credit is never clipped), got {clip}")
+            d["flex_mass_credit_clip"] = tuple(sorted(clip, key=["ht", "vt", "fus"].index))
+        if d.get("disturbance_scenario") is not None:
+            ds = dict(d["disturbance_scenario"])
+            unknown_ds = set(ds) - {"downdraft_fps", "onset_t_s", "onset_ramp_s", "steps_rel_ft"}
+            if unknown_ds or "downdraft_fps" not in ds:
+                raise ValueError(f"disturbance_scenario needs downdraft_fps; unknown keys {sorted(unknown_ds)}")
+            ds = {"downdraft_fps": float(ds["downdraft_fps"]), "onset_t_s": float(ds.get("onset_t_s", 10.0)),
+                  "onset_ramp_s": float(ds.get("onset_ramp_s", 4.0)),
+                  "steps_rel_ft": [tuple(float(x) for x in st) for st in ds.get("steps_rel_ft", [(0.0, 0.0)])]}
+            if not (math.isfinite(ds["downdraft_fps"]) and ds["onset_ramp_s"] > 0 and ds["onset_t_s"] >= 0):
+                raise ValueError("disturbance_scenario: need finite downdraft_fps, onset_ramp_s > 0, onset_t_s >= 0")
+            d["disturbance_scenario"] = ds
         p = cls(**d)
+        if not (p.w_hold >= 0 and p.hold_ref_ft > 0 and p.hold_settle_s >= 0):
+            raise ValueError("need w_hold >= 0, hold_ref_ft > 0, hold_settle_s >= 0")
         if p.ramp_accel_g is not None and p.ramp_fpm is None:
             raise ValueError("ramp_accel_g needs ramp_fpm")
         if p.ramp_fpm is not None and not p.ramp_fpm > 0 or p.ramp_accel_g is not None and not p.ramp_accel_g > 0:
@@ -148,6 +175,13 @@ class Profile:
         d["nz_limits"] = list(self.nz_limits)
         d["pitch_cmd_limits_deg"] = list(self.pitch_cmd_limits_deg)
         d["steps_rel_ft"] = [list(s) for s in self.steps_rel_ft]
+        if self.flex_mass_credit_clip is None:
+            del d["flex_mass_credit_clip"]
+        else:
+            d["flex_mass_credit_clip"] = list(self.flex_mass_credit_clip)
+        if self.disturbance_scenario is not None:
+            d["disturbance_scenario"] = dict(self.disturbance_scenario,
+                                             steps_rel_ft=[list(s) for s in self.disturbance_scenario["steps_rel_ft"]])
         return d
 
 
@@ -167,6 +201,9 @@ class Scenario:
     discrete_gust_len_s: float = 3.0
     ramp_fpm: Optional[float] = None
     ramp_accel_g: Optional[float] = None
+    draft_fps: float = 0.0               # v5: sustained vertical wind (+ = down) with a 1-cos onset
+    draft_t_s: float = 10.0
+    draft_ramp_s: float = 4.0
 
     def target_cmd(self, t: float) -> Tuple[float, float]:
         """Commanded altitude (instant steps) and time of the last command change."""
@@ -291,11 +328,18 @@ class Scenario:
             t = np.arange(n) * DT
             m = (t >= self.discrete_gust_t_s) & (t < self.discrete_gust_t_s + self.discrete_gust_len_s)
             w[m] += 0.5 * self.discrete_gust_fps * (1 - np.cos(2 * np.pi * (t[m] - self.discrete_gust_t_s) / self.discrete_gust_len_s))
+        if self.draft_fps:
+            t = np.arange(n) * DT
+            x = np.clip((t - self.draft_t_s) / self.draft_ramp_s, 0.0, 1.0)
+            w = w + self.draft_fps * 0.5 * (1.0 - np.cos(np.pi * x))
         return w
 
     def to_dict(self) -> Dict:
         d = asdict(self)
         d["steps"] = [list(s) for s in self.steps]
+        if not self.draft_fps:   # v4 scenario dicts (cache keys, run.json) unchanged when there is no downdraft
+            for k in ("draft_fps", "draft_t_s", "draft_ramp_s"):
+                del d[k]
         return d
 
     @classmethod
@@ -327,6 +371,64 @@ def make_scenarios(n: int, seed: int, profile: Optional[Profile] = None) -> List
             s.steps = [(float(t), float(profile.h0_ft + dh)) for t, dh in profile.steps_rel_ft]
             s.ramp_fpm = None if profile.ramp_fpm is None else float(profile.ramp_fpm)
             s.ramp_accel_g = None if profile.ramp_accel_g is None else float(profile.ramp_accel_g)
+    ds = profile.disturbance_scenario if profile is not None else None
+    if ds:   # v5: a copy of the calm scenario holding h0 in a sustained downdraft, appended last (no RNG draws)
+        calm = out[0]
+        d = Scenario(**{**calm.to_dict(), "steps": [(float(t), float(profile.h0_ft + dh)) for t, dh in ds["steps_rel_ft"]]})
+        d.wind_north_fps = d.wind_east_fps = 0.0
+        d.gust_sigma_fps = 0.0
+        d.discrete_gust_fps = 0.0
+        d.draft_fps = float(ds["downdraft_fps"])
+        d.draft_t_s = float(ds["onset_t_s"])
+        d.draft_ramp_s = float(ds["onset_ramp_s"])
+        out.append(d)
+    return out
+
+
+def hold_osc_term(t, h, ref, cmd, rate, settle_s, ref_ft):
+    """v5 hold-oscillation term: verbatim port of genome's fitness.hold_mask / hold_windows / obj_hold_osc."""
+    done = (np.abs(ref - cmd) < 1e-6) & (rate == 0.0)
+    m = np.zeros(t.size, bool)
+    start = None
+    for i, d in enumerate(done):
+        if d and start is None:
+            start = t[i]
+        elif not d:
+            start = None
+        if d and t[i] >= start + settle_s - 1e-9:
+            m[i] = True
+    idx = np.flatnonzero(m)
+    if idx.size == 0:
+        return 0.0
+    wins = np.split(idx, np.flatnonzero(np.diff(idx) > 1) + 1)
+    e = cmd - h
+    dev = np.concatenate([e[w] - np.mean(e[w]) for w in wins])
+    return float(np.sqrt(np.mean(dev ** 2))) / ref_ft
+
+
+def hold_diagnostics(t, h, ref, cmd, rate, settle_s, draft_t_s=None, duration_s=None) -> Dict[str, float]:
+    """Reporting only (not in the cost), as genome reports them: hold_pp_ft = max over hold windows of ptp(e);
+    with a downdraft: draft_residual_ft = mean(e) over the last 20 s (+ = below), draft_max_err_ft = max |e| after onset."""
+    done = (np.abs(ref - cmd) < 1e-6) & (rate == 0.0)
+    m = np.zeros(t.size, bool)
+    start = None
+    for i, d in enumerate(done):
+        if d and start is None:
+            start = t[i]
+        elif not d:
+            start = None
+        if d and t[i] >= start + settle_s - 1e-9:
+            m[i] = True
+    e = cmd - h
+    idx = np.flatnonzero(m)
+    out = {"hold_pp_ft": 0.0}
+    if idx.size:
+        out["hold_pp_ft"] = float(max(np.ptp(e[w]) for w in np.split(idx, np.flatnonzero(np.diff(idx) > 1) + 1)))
+    if draft_t_s is not None:
+        last = t >= duration_s - 20.0 - 1e-9
+        after = t >= draft_t_s
+        out["draft_residual_ft"] = float(np.mean(e[last])) if last.any() else float("nan")
+        out["draft_max_err_ft"] = float(np.max(np.abs(e[after]))) if after.any() else float("nan")
     return out
 
 
@@ -369,15 +471,27 @@ def comfort_score(terms: Dict[str, float], weights: Optional[Dict[str, float]] =
 
 
 _OUT_DIR = os.path.join(tempfile.gettempdir(), "evolution_jsbsim_out")
-TEAM_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # flight_sim_3d/
+# team / repo root = the directory holding evolution/ and flight-dynamics/: flight_sim_3d/ (push layout) or
+# /workspace/flight-sim-team (team layout). Override: $EVOLUTION_TEAM_ROOT (or Sim Bridge's $FLIGHT_SIM_TEAM_ROOT).
+TEAM_ROOT = os.path.abspath(os.environ.get("EVOLUTION_TEAM_ROOT") or os.environ.get("FLIGHT_SIM_TEAM_ROOT")
+                            or os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def fd_dir() -> str:
+    """Flight Dynamics' folder: $EVOLUTION_FD_DIR, else <TEAM_ROOT>/flight-dynamics (no absolute default)."""
+    return os.path.abspath(os.environ.get("EVOLUTION_FD_DIR") or os.path.join(TEAM_ROOT, "flight-dynamics"))
 
 
 def abs_root(src_root: Optional[str]) -> Optional[str]:
-    """A relative aircraft_root (e.g. "flight-dynamics/jsbsim_root" in the configs) is relative to flight_sim_3d/."""
+    """A relative aircraft_root (e.g. "flight-dynamics/jsbsim_root") is relative to the directory holding evolution/
+    and flight-dynamics/ (flight_sim_3d/ in the repo, /workspace/flight-sim-team in the team layout). A path under
+    "flight-dynamics/" follows $EVOLUTION_FD_DIR when it is set (so jsbsim_root and jsbsim_root_v2 move with FD_DIR)."""
     if src_root is None or os.path.isabs(src_root):
         return src_root
+    parts = os.path.normpath(src_root).split(os.sep)
+    if parts[0] == "flight-dynamics" and os.environ.get("EVOLUTION_FD_DIR"):
+        return os.path.normpath(os.path.join(fd_dir(), *parts[1:]))
     return os.path.normpath(os.path.join(TEAM_ROOT, src_root))
-
 
 
 class SimSetupError(Exception):
@@ -805,6 +919,11 @@ def simulate(gains: Dict[str, float], sc: Scenario, profile: Optional[Profile] =
     c_nz: List[float] = []
     c_th: List[float] = []
     c_q: List[float] = []
+    hold_on = P.w_hold > 0
+    c_h: List[float] = []
+    c_ref: List[float] = []
+    c_cmd: List[float] = []
+    c_rate: List[float] = []
 
     i_alt = 0.0
     i_pitch = 0.0
@@ -853,6 +972,11 @@ def simulate(gains: Dict[str, float], sc: Scenario, profile: Optional[Profile] =
             c_nz.append(nz)
             c_th.append(theta)
             c_q.append(q)
+        if hold_on:
+            c_h.append(h)
+            c_ref.append(target)
+            c_cmd.append(sc.target_cmd(t)[0])
+            c_rate.append(h_ref_dot)
 
         if ki_a > 0:
             lim = P.alt_i_limit_deg / ki_a
@@ -917,6 +1041,11 @@ def simulate(gains: Dict[str, float], sc: Scenario, profile: Optional[Profile] =
             e = (0.0 - np.asarray(c_psi) + 180.0) % 360.0 - 180.0   # exactly genome's numpy form (pairwise np.mean)
             heading_rms = float(np.sqrt(np.mean(e ** 2))) / P.hdg_rms_ref_deg
             cost = cost + P.w_heading * heading_rms
+        if hold_on:
+            hold_osc = hold_osc_term(np.asarray([k * DT for k in range(len(c_h))]), np.asarray(c_h),
+                                     np.asarray(c_ref), np.asarray(c_cmd), np.asarray(c_rate),
+                                     P.hold_settle_s, P.hold_ref_ft)
+            cost = cost + P.w_hold * hold_osc
     else:
         track = effort = float("nan")
         cost = P.fail_base + P.fail_base * (1.0 - k_end / n)
@@ -932,6 +1061,12 @@ def simulate(gains: Dict[str, float], sc: Scenario, profile: Optional[Profile] =
             e_end = (c_psi[-1] - c_psi[0] + 180.0) % 360.0 - 180.0
             out["hdg_drift_deg"] = float(e_end)   # wrap180(psi_last_step - psi_0) over the steps flown
             out["hdg_max_abs_err_deg"] = float(np.max(np.abs((0.0 - np.asarray(c_psi) + 180.0) % 360.0 - 180.0)))
+    if hold_on:
+        out["hold_osc"] = hold_osc if status == "ok" else float("nan")
+        if status == "ok":
+            out.update(hold_diagnostics(np.asarray([k * DT for k in range(len(c_h))]), np.asarray(c_h), np.asarray(c_ref),
+                                        np.asarray(c_cmd), np.asarray(c_rate), P.hold_settle_s,
+                                        sc.draft_t_s if sc.draft_fps else None, sc.duration_s))
     if flex is not None:
         out["_flex"] = flex.finish(status)   # structural response terms (stripped by evolution.fidelity)
     if record:

@@ -78,7 +78,11 @@ def main(argv=None):
 
     hist = []
     with mp.Pool(a.workers or os.cpu_count(), initializer=_init, initargs=(task, scen)) as pool:
-        pop = ga.generation_zero(rng, a.pop_size, task.spec.n_genes)
+        if task.init:  # Phase 2 seeded generation 0 (init_pop.py); unchanged for tasks without "init"
+            import init_pop
+            pop = init_pop.generation_zero(rng, a.pop_size, task.spec.n_genes, task.spec, task.init)
+        else:
+            pop = ga.generation_zero(rng, a.pop_size, task.spec.n_genes)
         res, F, V = evaluate_all(pool, pop)
         for gen in range(a.generations):
             order = nsga2.rank_population(F, V)

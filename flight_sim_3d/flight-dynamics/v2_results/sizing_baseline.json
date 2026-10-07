@@ -1,0 +1,186 @@
+{
+ "c172x": {
+  "allowables_lbft": {
+   "wingR_bm": 15081.46123770345,
+   "wingR_torque": 1679.2396937276394,
+   "wingR_ip": 1508.1461237703452,
+   "wingL_bm": 15081.46123770345,
+   "wingL_torque": 1679.2396937276394,
+   "wingL_ip": 1508.1461237703452,
+   "ht": 962.1417453071149,
+   "vt": 912.5670661786693,
+   "fusV": 18672.7699983947,
+   "fusL": 6474.146641009352
+  },
+  "ratios": {
+   "wingR_bm": 1.0,
+   "wingR_torque": 1.0,
+   "wingR_ip": 1.0,
+   "wingL_bm": 1.0,
+   "wingL_torque": 1.0,
+   "wingL_ip": 1.0,
+   "ht": 1.0,
+   "vt": 1.0,
+   "fusV": 1.0,
+   "fusL": 1.0
+  },
+  "terms": {
+   "J_wing_bm_limit": 0.0,
+   "J_wing_torque_limit": 0.0,
+   "J_wing_ip_limit": 0.0,
+   "J_tail_bm_limit": 0.0,
+   "J_fus_bm_limit": 0.0
+  },
+  "ip_floor_binding": true,
+  "torque_over_bm": 0.11134462816703482,
+  "all_0p6": {
+   "terms": {
+    "J_wing_bm_limit": 0.48843196812488304,
+    "J_wing_torque_limit": 0.04349544090857489,
+    "J_wing_ip_limit": 0.048843196812488276,
+    "J_tail_bm_limit": 0.44444444444444453,
+    "J_fus_bm_limit": 0.44444444444444453
+   },
+   "total_frac": -0.11350877192982452
+  },
+  "baseline_total_frac": 0.0
+ },
+ "T38": {
+  "allowables_lbft": {
+   "wingR_bm": 97013.23141938016,
+   "wingR_torque": 25848.801021358602,
+   "wingR_ip": 9701.323141938015,
+   "wingL_bm": 97013.23141938016,
+   "wingL_torque": 25848.801021358602,
+   "wingL_ip": 9701.323141938015,
+   "ht": 7777.25925447279,
+   "vt": 41128.96872410161,
+   "fusV": 181290.7483145772,
+   "fusL": 160421.88495323138
+  },
+  "ratios": {
+   "wingR_bm": 1.0,
+   "wingR_torque": 1.0,
+   "wingR_ip": 1.0,
+   "wingL_bm": 1.0,
+   "wingL_torque": 1.0,
+   "wingL_ip": 1.0,
+   "ht": 1.0,
+   "vt": 1.0,
+   "fusV": 1.0,
+   "fusL": 1.0
+  },
+  "terms": {
+   "J_wing_bm_limit": 0.0,
+   "J_wing_torque_limit": 0.0,
+   "J_wing_ip_limit": 0.0,
+   "J_tail_bm_limit": 0.0,
+   "J_fus_bm_limit": 0.0
+  },
+  "ip_floor_binding": true,
+  "torque_over_bm": 0.26644613980145015,
+  "all_0p6": {
+   "terms": {
+    "J_wing_bm_limit": 0.47804309499483094,
+    "J_wing_torque_limit": 0.04404890847356034,
+    "J_wing_ip_limit": 0.04780430949948313,
+    "J_tail_bm_limit": 0.44444444444444453,
+    "J_fus_bm_limit": 0.44444444444444453
+   },
+   "total_frac": -0.10516908212560384
+  },
+  "baseline_total_frac": 0.0
+ },
+ "737": {
+  "allowables_lbft": {
+   "wingR_bm": 1355132.1070494764,
+   "wingR_torque": 131376.7545794995,
+   "wingR_ip": 135513.21070494765,
+   "wingL_bm": 1355132.1070494764,
+   "wingL_torque": 131376.7545794995,
+   "wingL_ip": 135513.21070494765,
+   "ht": 195493.43703806872,
+   "vt": 382961.4582703525,
+   "fusV": 3628970.1127613694,
+   "fusL": 1793849.448453253
+  },
+  "ratios": {
+   "wingR_bm": 1.0,
+   "wingR_torque": 1.0,
+   "wingR_ip": 1.0,
+   "wingL_bm": 1.0,
+   "wingL_torque": 1.0,
+   "wingL_ip": 1.0,
+   "ht": 1.0,
+   "vt": 1.0,
+   "fusV": 1.0,
+   "fusL": 1.0
+  },
+  "terms": {
+   "J_wing_bm_limit": 0.0,
+   "J_wing_torque_limit": 0.0,
+   "J_wing_ip_limit": 0.0,
+   "J_tail_bm_limit": 0.0,
+   "J_fus_bm_limit": 0.0
+  },
+  "ip_floor_binding": true,
+  "torque_over_bm": 0.09694756245245018,
+  "all_0p6": {
+   "terms": {
+    "J_wing_bm_limit": 0.4868451855582676,
+    "J_wing_torque_limit": 0.04382204842038004,
+    "J_wing_ip_limit": 0.04868451855582676,
+    "J_tail_bm_limit": 0.44444444444444453,
+    "J_fus_bm_limit": 0.44444444444444453
+   },
+   "total_frac": -0.09651685393258423
+  },
+  "baseline_total_frac": 0.0
+ },
+ "f16": {
+  "allowables_lbft": {
+   "wingR_bm": 270033.93868164404,
+   "wingR_torque": 91375.05982621426,
+   "wingR_ip": 27003.393868164407,
+   "wingL_bm": 270033.93868164404,
+   "wingL_torque": 91375.05982621426,
+   "wingL_ip": 27003.393868164407,
+   "ht": 13257.196959780405,
+   "vt": 46062.08975927659,
+   "fusV": 487273.0264777276,
+   "fusL": 190873.47433741696
+  },
+  "ratios": {
+   "wingR_bm": 1.0,
+   "wingR_torque": 1.0,
+   "wingR_ip": 1.0,
+   "wingL_bm": 1.0,
+   "wingL_torque": 1.0,
+   "wingL_ip": 1.0,
+   "ht": 1.0,
+   "vt": 1.0,
+   "fusV": 1.0,
+   "fusL": 1.0
+  },
+  "terms": {
+   "J_wing_bm_limit": 0.0,
+   "J_wing_torque_limit": 0.0,
+   "J_wing_ip_limit": 0.0,
+   "J_tail_bm_limit": 0.0,
+   "J_fus_bm_limit": 0.0
+  },
+  "ip_floor_binding": true,
+  "torque_over_bm": 0.3383836130833195,
+  "all_0p6": {
+   "terms": {
+    "J_wing_bm_limit": 0.47776286969666054,
+    "J_wing_torque_limit": 0.04387182033961042,
+    "J_wing_ip_limit": 0.04777628696966603,
+    "J_tail_bm_limit": 0.44444444444444453,
+    "J_fus_bm_limit": 0.44444444444444425
+   },
+   "total_frac": -0.10473684210526313
+  },
+  "baseline_total_frac": 0.0
+ }
+}

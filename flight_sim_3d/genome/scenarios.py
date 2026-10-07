@@ -75,7 +75,7 @@ def make_scenarios(n: int, seed: int, cfg: Dict = None) -> List:
 CONDITION_KEYS = ("aircraft", "h0_ft", "speed_kts", "ramp_fpm", "alt_ref_ff", "pitch_cmd_limits_deg", "min_kcas", "nz_limits",
                   "throttle_max", "flex_mode", "flex_substeps", "ramp_accel_g",
                   "steps_rel_ft", "duration_s", "alt_err_scale_ft", "max_alt_err_ft",
-                  "bank_cmd_limit_deg", "hdg_i_limit_deg")
+                  "bank_cmd_limit_deg", "hdg_i_limit_deg", "flex_asymmetric")
 
 
 def apply_conditions(scens: List, cond: Dict) -> List:

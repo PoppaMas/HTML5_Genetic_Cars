@@ -1,0 +1,842 @@
+[
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.0,
+  "scenario_seed": 1,
+  "cost": 0.23768343252595098,
+  "track_alt": 0.07860198915234197,
+  "hold_osc": 0.34910736846605683,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.0,
+  "scenario_seed": 101,
+  "cost": 0.24922879401726974,
+  "track_alt": 0.08569550069558615,
+  "hold_osc": 0.4490642052018568,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.02,
+  "scenario_seed": 1,
+  "cost": 0.22230305827470706,
+  "track_alt": 0.06353292141655718,
+  "hold_osc": 0.3426505275032956,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.02,
+  "scenario_seed": 101,
+  "cost": 0.22220549201402315,
+  "track_alt": 0.06076276981940726,
+  "hold_osc": 0.42146887110693626,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.05,
+  "scenario_seed": 1,
+  "cost": 0.20625113824760744,
+  "track_alt": 0.045724510351831144,
+  "hold_osc": 0.3730478106232902,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.05,
+  "scenario_seed": 101,
+  "cost": 0.21327800828663457,
+  "track_alt": 0.04752928729254293,
+  "hold_osc": 0.46879043488696304,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.1,
+  "scenario_seed": 1,
+  "cost": 0.21796414279255188,
+  "track_alt": 0.04303059004855717,
+  "hold_osc": 0.4170252507501288,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.1,
+  "scenario_seed": 101,
+  "cost": 0.22696017748502267,
+  "track_alt": 0.04516767410985113,
+  "hold_osc": 0.5385360792178508,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.15,
+  "scenario_seed": 1,
+  "cost": 0.23820751166321483,
+  "track_alt": 0.04520476704903096,
+  "hold_osc": 0.4801053259450005,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.15,
+  "scenario_seed": 101,
+  "cost": 0.23970737499334735,
+  "track_alt": 0.04578504058694654,
+  "hold_osc": 0.5712301518519254,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.2,
+  "scenario_seed": 1,
+  "cost": 0.2543754201665632,
+  "track_alt": 0.04749982133844144,
+  "hold_osc": 0.5078980853498046,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.2,
+  "scenario_seed": 101,
+  "cost": 0.254875177996269,
+  "track_alt": 0.04785722026048549,
+  "hold_osc": 0.5839346658231868,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.3,
+  "scenario_seed": 1,
+  "cost": 0.2894042868662795,
+  "track_alt": 0.05452958143895163,
+  "hold_osc": 0.5822861463134146,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.3,
+  "scenario_seed": 101,
+  "cost": 0.28895594333379154,
+  "track_alt": 0.05364138707239859,
+  "hold_osc": 0.6245799806208415,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.5,
+  "scenario_seed": 1,
+  "cost": 0.35669149341597395,
+  "track_alt": 0.05793028234419455,
+  "hold_osc": 0.7061180658846544,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.5,
+  "scenario_seed": 101,
+  "cost": 0.3645673637828575,
+  "track_alt": 0.06092584983766819,
+  "hold_osc": 0.7437588782840789,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.75,
+  "scenario_seed": 1,
+  "cost": 0.5097192615199775,
+  "track_alt": 0.07807347567480258,
+  "hold_osc": 0.9858598964508067,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 0.75,
+  "scenario_seed": 101,
+  "cost": 0.5124278474868892,
+  "track_alt": 0.07960952025037385,
+  "hold_osc": 0.9935841305076135,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 1.0,
+  "scenario_seed": 1,
+  "cost": 0.6164808472328817,
+  "track_alt": 0.08112703933502474,
+  "hold_osc": 1.0182356305762235,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "c172x",
+  "ki_alt": 1.0,
+  "scenario_seed": 101,
+  "cost": 0.5949913017131967,
+  "track_alt": 0.07902450990501944,
+  "hold_osc": 0.9866497382889601,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.0,
+  "scenario_seed": 1,
+  "cost": 0.1344777646768282,
+  "track_alt": 0.06243509896997271,
+  "hold_osc": 0.20256832233231992,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.0,
+  "scenario_seed": 101,
+  "cost": 0.1365718972901368,
+  "track_alt": 0.06438019706019989,
+  "hold_osc": 0.22767296120997071,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.02,
+  "scenario_seed": 1,
+  "cost": 0.10236462423885206,
+  "track_alt": 0.02849256406608176,
+  "hold_osc": 0.21284760151139884,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.02,
+  "scenario_seed": 101,
+  "cost": 0.103485764875448,
+  "track_alt": 0.02829103835461955,
+  "hold_osc": 0.2488439083324958,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.05,
+  "scenario_seed": 1,
+  "cost": 0.08778028702197657,
+  "track_alt": 0.01565657930530194,
+  "hold_osc": 0.18091821073441214,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.05,
+  "scenario_seed": 101,
+  "cost": 0.09092976605900666,
+  "track_alt": 0.01693044817318148,
+  "hold_osc": 0.2223391158787568,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.1,
+  "scenario_seed": 1,
+  "cost": 0.09148355805815199,
+  "track_alt": 0.01496178946809874,
+  "hold_osc": 0.19293822112629674,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.1,
+  "scenario_seed": 101,
+  "cost": 0.09340572678427421,
+  "track_alt": 0.015546247808320236,
+  "hold_osc": 0.22772143663566377,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.15,
+  "scenario_seed": 1,
+  "cost": 0.10191617702128045,
+  "track_alt": 0.017565682177206905,
+  "hold_osc": 0.22265764392142057,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.15,
+  "scenario_seed": 101,
+  "cost": 0.1058274576326142,
+  "track_alt": 0.018527782842584013,
+  "hold_osc": 0.26345332432938706,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.2,
+  "scenario_seed": 1,
+  "cost": 0.12600940589475668,
+  "track_alt": 0.023285593278044837,
+  "hold_osc": 0.30724766972652817,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.2,
+  "scenario_seed": 101,
+  "cost": 0.13811758897695492,
+  "track_alt": 0.0260138922528059,
+  "hold_osc": 0.37408508560905523,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.3,
+  "scenario_seed": 1,
+  "cost": 1.0349905199068086,
+  "track_alt": 0.2277561546450017,
+  "hold_osc": 2.8153653986840443,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.3,
+  "scenario_seed": 101,
+  "cost": 1.011446470042808,
+  "track_alt": 0.22530676783194364,
+  "hold_osc": 2.7721944031396357,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.5,
+  "scenario_seed": 1,
+  "cost": 1.6840897097796177,
+  "track_alt": 0.2758421938501433,
+  "hold_osc": 3.0999884593781153,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.5,
+  "scenario_seed": 101,
+  "cost": 1.700074239104619,
+  "track_alt": 0.2779368398617858,
+  "hold_osc": 3.073838990553135,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.75,
+  "scenario_seed": 1,
+  "cost": 2.098000805931287,
+  "track_alt": 0.27676259574799744,
+  "hold_osc": 3.064384791307769,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 0.75,
+  "scenario_seed": 101,
+  "cost": 2.09497368822911,
+  "track_alt": 0.27635740029739597,
+  "hold_osc": 3.074608787523147,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 1.0,
+  "scenario_seed": 1,
+  "cost": 2.3562702009214114,
+  "track_alt": 0.27364272652868693,
+  "hold_osc": 3.058291834236581,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "t38",
+  "ki_alt": 1.0,
+  "scenario_seed": 101,
+  "cost": 2.336440399240458,
+  "track_alt": 0.2721280280787939,
+  "hold_osc": 3.020123571061099,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.0,
+  "scenario_seed": 1,
+  "cost": 0.15100636510493232,
+  "track_alt": 0.06841074976048689,
+  "hold_osc": 0.22684461933169575,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.0,
+  "scenario_seed": 101,
+  "cost": 0.15601628018794295,
+  "track_alt": 0.07186421814657185,
+  "hold_osc": 0.26355883213906756,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.02,
+  "scenario_seed": 1,
+  "cost": 0.1167846726427347,
+  "track_alt": 0.03246261752841341,
+  "hold_osc": 0.23440845084187595,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.02,
+  "scenario_seed": 101,
+  "cost": 0.12099896457965875,
+  "track_alt": 0.03342472553265567,
+  "hold_osc": 0.2873087513337355,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.05,
+  "scenario_seed": 1,
+  "cost": 0.12574512355443662,
+  "track_alt": 0.0306854949284707,
+  "hold_osc": 0.3138184122806108,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.05,
+  "scenario_seed": 101,
+  "cost": 0.12817478047342784,
+  "track_alt": 0.03231793279394479,
+  "hold_osc": 0.3452652089378727,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.1,
+  "scenario_seed": 1,
+  "cost": 0.18473885872901996,
+  "track_alt": 0.051254171968181904,
+  "hold_osc": 0.5966001279187529,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.1,
+  "scenario_seed": 101,
+  "cost": 0.17257291071844438,
+  "track_alt": 0.04763466444949504,
+  "hold_osc": 0.5552853298187955,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.15,
+  "scenario_seed": 1,
+  "cost": 0.3319191351130521,
+  "track_alt": 0.10086456565288968,
+  "hold_osc": 1.1811004050420184,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.15,
+  "scenario_seed": 101,
+  "cost": 0.3342265506619514,
+  "track_alt": 0.10344378080180366,
+  "hold_osc": 1.203151450400369,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.2,
+  "scenario_seed": 1,
+  "cost": 0.8369819500585545,
+  "track_alt": 0.2641338359012865,
+  "hold_osc": 3.04602265939355,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.2,
+  "scenario_seed": 101,
+  "cost": 0.8520326366754808,
+  "track_alt": 0.2698333787735264,
+  "hold_osc": 3.1528966921163946,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.3,
+  "scenario_seed": 1,
+  "cost": 0.959675451451893,
+  "track_alt": 0.2887573972377685,
+  "hold_osc": 3.1361788857663573,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.3,
+  "scenario_seed": 101,
+  "cost": 0.9488088815726905,
+  "track_alt": 0.28427803095035586,
+  "hold_osc": 3.085467748205856,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.5,
+  "scenario_seed": 1,
+  "cost": 1.0113732581847574,
+  "track_alt": 0.2829835671940811,
+  "hold_osc": 3.081552216569629,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.5,
+  "scenario_seed": 101,
+  "cost": 0.9961833707609191,
+  "track_alt": 0.28061980653460683,
+  "hold_osc": 2.963955222299444,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.75,
+  "scenario_seed": 1,
+  "cost": 1.0281648205671428,
+  "track_alt": 0.27471074307579074,
+  "hold_osc": 2.9928460695480457,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 0.75,
+  "scenario_seed": 101,
+  "cost": 1.0277553805783988,
+  "track_alt": 0.2761223652216242,
+  "hold_osc": 2.9560479996965494,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 1.0,
+  "scenario_seed": 1,
+  "cost": 1.0432368497790419,
+  "track_alt": 0.27245755589162274,
+  "hold_osc": 2.947394621877158,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ },
+ {
+  "aircraft": "b737",
+  "ki_alt": 1.0,
+  "scenario_seed": 101,
+  "cost": 1.041685693479457,
+  "track_alt": 0.27356557214764377,
+  "hold_osc": 2.9189218506275596,
+  "status": [
+   "ok",
+   "ok",
+   "ok",
+   "ok"
+  ]
+ }
+]

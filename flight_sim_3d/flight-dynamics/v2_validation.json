@@ -1,0 +1,461 @@
+{
+ "hand_calcs_default_truncation": {
+  "f_bend1_hz": {
+   "fe": 11.191824293033566,
+   "exact": 11.191823379133407,
+   "pct": 8.165784324376648e-06
+  },
+  "f_tors1_hz": {
+   "fe": 86.6112354323405,
+   "exact": 86.60254037844386,
+   "pct": 0.010040183415675976
+  },
+  "q_div_psf": {
+   "fe": 9821.423860821196,
+   "exact": 9817.477042468103,
+   "pct": 0.04020196162436099
+  },
+  "q_reversal_psf": {
+   "fe": 8647.319068775269,
+   "exact": 8643.813338463893,
+   "pct": 0.04055768182516517
+  },
+  "tip_defl_uniform_load_ft": {
+   "fe": 0.006249978811600809,
+   "exact": 0.00625,
+   "pct": -0.0003390143870629636
+  }
+ },
+ "fe_mesh_convergence": {
+  "8": {
+   "f_bend1_hz": 0.00021562954329992963,
+   "f_tors1_hz": 0.16071457196976435,
+   "q_div_psf": 0.6460795026863126,
+   "q_reversal_psf": 0.646188751122992,
+   "tip_defl_uniform_load_ft": -0.24108586813099964
+  },
+  "16": {
+   "f_bend1_hz": 2.0433338328546025e-05,
+   "f_tors1_hz": 0.040164346870332414,
+   "q_div_psf": 0.16085770294211427,
+   "q_reversal_psf": 0.1611756014695445,
+   "tip_defl_uniform_load_ft": -0.04848577180979752
+  },
+  "32": {
+   "f_bend1_hz": 8.165784324376648e-06,
+   "f_tors1_hz": 0.010040183415675976,
+   "q_div_psf": 0.04020196162436099,
+   "q_reversal_psf": 0.04055768182516517,
+   "tip_defl_uniform_load_ft": -0.0003390143870629636
+  },
+  "64": {
+   "f_bend1_hz": 1.4813361382330305e-06,
+   "f_tors1_hz": 0.0025099902792963913,
+   "q_div_psf": 0.01004509057571787,
+   "q_reversal_psf": 0.010440855933550838,
+   "tip_defl_uniform_load_ft": 0.011709576033011593
+  }
+ },
+ "modal_truncation": {
+  "tolerance_pct": 2.0,
+  "cases": {
+   "c172x/baseline": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": -0.006460321549101588,
+     "static_tip_w": -0.007428216853535762,
+     "gust_peak_root_bm": -0.010028202380026838,
+     "gust_peak_tip_w": -0.011376638906344681,
+     "flutter_keas_min_4VD": 0.002546342024231354
+    },
+    "pct_N+2": {
+     "static_root_bm": -0.006460321549101588,
+     "static_tip_w": -0.007428216853535762,
+     "gust_peak_root_bm": -0.010028202386412746,
+     "gust_peak_tip_w": -0.01137663891011291,
+     "flutter_keas_min_4VD": 0.002546342024244218
+    },
+    "max_abs_pct": 0.01137663891011291
+   },
+   "c172x/soft_tip": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": -0.01031805384968288,
+     "static_tip_w": -0.01394285049559587,
+     "gust_peak_root_bm": -0.012508896917475698,
+     "gust_peak_tip_w": -0.01695475419209034,
+     "flutter_keas_min_4VD": 0.002051068127366444
+    },
+    "pct_N+2": {
+     "static_root_bm": -0.01031805384968288,
+     "static_tip_w": -0.01394285049559587,
+     "gust_peak_root_bm": -0.012508897005575356,
+     "gust_peak_tip_w": -0.016954754192820227,
+     "flutter_keas_min_4VD": 0.002051068127366444
+    },
+    "max_abs_pct": 0.016954754192820227
+   },
+   "T38/baseline": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.0,
+     "static_tip_w": 0.0,
+     "gust_peak_root_bm": 0.0,
+     "gust_peak_tip_w": 0.0,
+     "flutter_keas_min_4VD": 0.0
+    },
+    "pct_N+2": {
+     "static_root_bm": 0.10697479274965323,
+     "static_tip_w": 0.5677175472984122,
+     "gust_peak_root_bm": 0.10001652315443064,
+     "gust_peak_tip_w": 0.5250015469300128,
+     "flutter_keas_min_4VD": -0.06011889772690749
+    },
+    "max_abs_pct": 0.5677175472984122
+   },
+   "T38/soft_tip": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.0,
+     "static_tip_w": 0.0,
+     "gust_peak_root_bm": 0.0,
+     "gust_peak_tip_w": 0.0,
+     "flutter_keas_min_4VD": 1.7836601682458665e-09
+    },
+    "pct_N+2": {
+     "static_root_bm": 0.007970191364218029,
+     "static_tip_w": 0.7521237362142115,
+     "gust_peak_root_bm": 0.006312699973586415,
+     "gust_peak_tip_w": 0.7104209442949233,
+     "flutter_keas_min_4VD": -0.03243310514215353
+    },
+    "max_abs_pct": 0.7521237362142115
+   },
+   "737/baseline": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.0,
+     "static_tip_w": 0.0,
+     "gust_peak_root_bm": 0.0,
+     "gust_peak_tip_w": 0.0,
+     "flutter_keas_min_4VD": 5.077272379127233e-10
+    },
+    "pct_N+2": {
+     "static_root_bm": 0.080596382320454,
+     "static_tip_w": 0.3902226638183823,
+     "gust_peak_root_bm": 0.0604387333226482,
+     "gust_peak_tip_w": 0.25067839626798355,
+     "flutter_keas_min_4VD": -0.017890751637172863
+    },
+    "max_abs_pct": 0.3902226638183823
+   },
+   "737/soft_tip": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.0,
+     "static_tip_w": 0.0,
+     "gust_peak_root_bm": 3.36873998313393e-10,
+     "gust_peak_tip_w": 8.867288664396328e-12,
+     "flutter_keas_min_4VD": 6.040544907278843e-10
+    },
+    "pct_N+2": {
+     "static_root_bm": -0.007042265760477265,
+     "static_tip_w": 0.4493499636945986,
+     "gust_peak_root_bm": -0.0018736847482494488,
+     "gust_peak_tip_w": 0.3210729658248789,
+     "flutter_keas_min_4VD": -0.012426762330092917
+    },
+    "max_abs_pct": 0.4493499636945986
+   },
+   "f16/baseline": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.015796319536837085,
+     "static_tip_w": 0.5803350051206586,
+     "gust_peak_root_bm": 0.015478273977039676,
+     "gust_peak_tip_w": 0.5357497146567841,
+     "flutter_keas_min_4VD": -0.0005030463776410459
+    },
+    "pct_N+2": {
+     "static_root_bm": 0.015796319536821108,
+     "static_tip_w": 0.5803350051206586,
+     "gust_peak_root_bm": 0.015478274015429911,
+     "gust_peak_tip_w": 0.5357497146472303,
+     "flutter_keas_min_4VD": -0.0005030458144391903
+    },
+    "max_abs_pct": 0.5803350051206586
+   },
+   "f16/soft_tip": {
+    "N": 6,
+    "pct_N+1": {
+     "static_root_bm": 0.0,
+     "static_tip_w": 0.0,
+     "gust_peak_root_bm": 0.0,
+     "gust_peak_tip_w": 0.0,
+     "flutter_keas_min_4VD": 2.904159688331331e-09
+    },
+    "pct_N+2": {
+     "static_root_bm": 0.020160410886322783,
+     "static_tip_w": 0.6648198508261851,
+     "gust_peak_root_bm": 0.020000651323988733,
+     "gust_peak_tip_w": 0.6257828964825797,
+     "flutter_keas_min_4VD": 0.0016046273156836769
+    },
+    "max_abs_pct": 0.6648198508261851
+   }
+  }
+ },
+ "openaerostruct": {
+  "setup": {
+   "oas_version": "2.12.0",
+   "openmdao": "3.45.1",
+   "semi_span_m": 10.0,
+   "chord_m": 2.0,
+   "AR": 10.0,
+   "EI_Nm2": 1890688.9987466766,
+   "GJ_Nm2": 1620590.5703542943,
+   "elastic_axis_frac": 0.35,
+   "alpha_deg": 2.0,
+   "strip_lift_slope": "OAS rigid VLM CL_alpha = 4.9028 /rad, uniform along the span",
+   "units": "SI (flexbody's linear algebra is unit-agnostic)"
+  },
+  "divergence_fit_windows": {
+   "q<0.26qD": {
+    "n": 4,
+    "q_D_oas_Pa": 20688.998219290042,
+    "q_D_flexbody_same_fit_Pa": 19885.49157031851,
+    "pct_flexbody_eig_vs_oas": -1.4071120581542826,
+    "pct_same_fit": -3.883738789354996
+   },
+   "q<0.37qD": {
+    "n": 5,
+    "q_D_oas_Pa": 20166.754498996983,
+    "q_D_flexbody_same_fit_Pa": 19953.60229825072,
+    "pct_flexbody_eig_vs_oas": 1.146075991799275,
+    "pct_same_fit": -1.0569484582006692
+   },
+   "q<0.55qD": {
+    "n": 6,
+    "q_D_oas_Pa": 19020.63267909319,
+    "q_D_flexbody_same_fit_Pa": 20032.910970864912,
+    "pct_flexbody_eig_vs_oas": 7.240811463941057,
+    "pct_same_fit": 5.322001159742619
+   }
+  },
+  "rows": [
+   {
+    "v_mps": 30.0,
+    "q_Pa": 551.25,
+    "q_over_qD_strip": 0.02702486618963333,
+    "oas": {
+     "CL": 0.17489420161170224,
+     "tip_w_m": 0.11158072022698935,
+     "tip_twist_rad": 0.0011740789736305226
+    },
+    "flexbody_strip": {
+     "CL": 0.1750394818245404,
+     "tip_w_m": 0.12854246293270552,
+     "tip_twist_rad": 0.0011903255865667642
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": 0.08306748394135477,
+     "tip_w_m": 15.201320327750878,
+     "tip_twist_rad": 1.3837751378856014
+    }
+   },
+   {
+    "v_mps": 50.0,
+    "q_Pa": 1531.2500000000002,
+    "q_over_qD_strip": 0.07506907274898149,
+    "oas": {
+     "CL": 0.1821409227826744,
+     "tip_w_m": 0.32596221164039196,
+     "tip_twist_rad": 0.003424272135182401
+    },
+    "flexbody_strip": {
+     "CL": 0.18252983805859319,
+     "tip_w_m": 0.37736254823827037,
+     "tip_twist_rad": 0.0034839845041616897
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": 0.2135243799016109,
+     "tip_w_m": 15.768802260608135,
+     "tip_twist_rad": 1.7437974150996554
+    }
+   },
+   {
+    "v_mps": 70.0,
+    "q_Pa": 3001.25,
+    "q_over_qD_strip": 0.14713538258800368,
+    "oas": {
+     "CL": 0.19468298939051626,
+     "tip_w_m": 0.693310944280579,
+     "tip_twist_rad": 0.007263157308185202
+    },
+    "flexbody_strip": {
+     "CL": 0.1953318242685614,
+     "tip_w_m": 0.8077990593429515,
+     "tip_twist_rad": 0.007424284064741683
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": 0.3332776428369137,
+     "tip_w_m": 16.51324214724061,
+     "tip_twist_rad": 2.218412044785252
+    }
+   },
+   {
+    "v_mps": 90.0,
+    "q_Pa": 4961.250000000001,
+    "q_over_qD_strip": 0.24322379570670002,
+    "oas": {
+     "CL": 0.2157567808802611,
+     "tip_w_m": 1.2976664888672218,
+     "tip_twist_rad": 0.013531092053266601
+    },
+    "flexbody_strip": {
+     "CL": 0.21615971390311092,
+     "tip_w_m": 1.519263276415118,
+     "tip_twist_rad": 0.013878326532116242
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": 0.18675335310710062,
+     "tip_w_m": 17.076559304643496,
+     "tip_twist_rad": 2.5661970037799953
+    }
+   },
+   {
+    "v_mps": 110.0,
+    "q_Pa": 7411.25,
+    "q_over_qD_strip": 0.36333431210507033,
+    "oas": {
+     "CL": 0.25424796829446744,
+     "tip_w_m": 2.3539442612603216,
+     "tip_twist_rad": 0.02432729004081049
+    },
+    "flexbody_strip": {
+     "CL": 0.2509679760647138,
+     "tip_w_m": 2.730424022813561,
+     "tip_twist_rad": 0.024750472946763975
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": -1.2900760827141637,
+     "tip_w_m": 15.99357162992759,
+     "tip_twist_rad": 1.7395398552143384
+    }
+   },
+   {
+    "v_mps": 130.0,
+    "q_Pa": 10351.25,
+    "q_over_qD_strip": 0.5074669317831147,
+    "oas": {
+     "CL": 0.3514394638764597,
+     "tip_w_m": 4.7688636172326575,
+     "tip_twist_rad": 0.04809602918610101
+    },
+    "flexbody_strip": {
+     "CL": 0.3150139593516883,
+     "tip_w_m": 5.002849724644189,
+     "tip_twist_rad": 0.04492498301168697
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": -10.36465971208513,
+     "tip_w_m": 4.906538039083463,
+     "tip_twist_rad": -6.593155876016513
+    }
+   },
+   {
+    "v_mps": 150.0,
+    "q_Pa": 13781.25,
+    "q_over_qD_strip": 0.6756216547408332,
+    "oas": {
+     "CL": 1.8789561939768193,
+     "tip_w_m": 52.64044246332138,
+     "tip_twist_rad": 0.17225915164995914
+    },
+    "flexbody_strip": {
+     "CL": 0.461375659462065,
+     "tip_w_m": 10.293130203765159,
+     "tip_twist_rad": 0.0914043924813973
+    },
+    "pct_diff_flexbody_vs_oas": {
+     "CL": -75.4451082499395,
+     "tip_w_m": -80.4463455812759,
+     "tip_twist_rad": -46.937859843210845
+    }
+   }
+  ],
+  "divergence": {
+   "q_D_strip_flexbody_Pa": 20397.880830635087,
+   "q_D_strip_closed_form_Pa": 20389.689638215,
+   "q_D_oas_fit_Pa": 19020.63267909319,
+   "q_D_flexbody_same_fit_Pa": 20032.910970864912,
+   "fit_points_q_Pa": [
+    551.25,
+    1531.2500000000002,
+    3001.25,
+    4961.250000000001,
+    7411.25,
+    10351.25
+   ],
+   "pct_flexbody_vs_oas": 7.240811463941057,
+   "pct_flexbody_vs_closed_form": 0.040173207956704475,
+   "note": "OAS q_D extrapolated from q/theta_tip = (1 - q/q_D)/th1 over q < 0.55 q_D(strip); OAS itself has no divergence eigen-solver (its coupled solve blows up near q_D: v = 150 m/s)."
+  },
+  "summary_pct_at_lowest_q": {
+   "CL": 0.08306748394135477,
+   "tip_w_m": 15.201320327750878,
+   "tip_twist_rad": 1.3837751378856014
+  },
+  "summary": "same EI/GJ/EA and the OAS rigid CL_alpha: total CL and tip twist agree to a few %, tip deflection is ~15-17 % higher in strip theory (uniform spanwise lift slope vs VLM tip loss -> more outboard load); q_D: flexbody's eigenvalue result is within -1.4 .. +7.2 % of the OAS extrapolation depending on the fit window (+-1.5 % in the near-linear windows), see divergence_fit_windows; OAS deflections become large (>20 % semi-span at 0.36 q_D) so the far points are geometrically nonlinear"
+ },
+ "reduced_projection_first_mode_freq_error": {
+  "c172x": {
+   "bending1_pct": {
+    "mean": -5.295839039736758,
+    "max_abs": 10.424636536901035
+   },
+   "torsion1_pct": {
+    "mean": -3.9328609018430294,
+    "max_abs": 7.599989436459938
+   },
+   "n": 32,
+   "baseline_bending1_pct": 0.003594125697734222
+  },
+  "T38": {
+   "bending1_pct": {
+    "mean": -4.8349872677817345,
+    "max_abs": 9.492089504907867
+   },
+   "torsion1_pct": {
+    "mean": -2.197134744745273,
+    "max_abs": 5.96100111191833
+   },
+   "n": 32,
+   "baseline_bending1_pct": 0.0027550757402013105
+  },
+  "737": {
+   "bending1_pct": {
+    "mean": -4.806505865194776,
+    "max_abs": 9.527213741036375
+   },
+   "torsion1_pct": {
+    "mean": -3.095629410244537,
+    "max_abs": 6.409942087707177
+   },
+   "n": 32,
+   "baseline_bending1_pct": 0.0019580290320393963
+  },
+  "f16": {
+   "bending1_pct": {
+    "mean": -4.861603787220683,
+    "max_abs": 9.575854946533081
+   },
+   "torsion1_pct": {
+    "mean": -2.2895875307762177,
+    "max_abs": 4.5432992997098465
+   },
+   "n": 32,
+   "baseline_bending1_pct": 0.006982148668090963
+  }
+ }
+}

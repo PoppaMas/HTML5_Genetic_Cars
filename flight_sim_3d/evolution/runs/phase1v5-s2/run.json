@@ -1,0 +1,1697 @@
+{
+ "schema": "ga-flightsim-run/1",
+ "run_id": "phase1v5-s2",
+ "created": "2026-10-06T06:42:08-07:00",
+ "git_sha": "5850721fb45c474b7af6351863f782661ce6ddf8",
+ "git": {
+  "sha": "5850721fb45c474b7af6351863f782661ce6ddf8",
+  "dirty": false,
+  "branch": "flight-sim-prototype",
+  "repo": "/workspace/sandbox-run-20261006-023947/HTML5_Genetic_Cars"
+ },
+ "jsbsim_version": "1.3.1",
+ "code_sha": "e4f6468854c56e1d",
+ "seed": 2,
+ "eval_seed": 1,
+ "scenario_seed": 1,
+ "fitness_sense": "min",
+ "sim_dt_s": 0.008333333333333333,
+ "fidelity": "rigid",
+ "fidelity_label": "rigid",
+ "multi_fidelity": null,
+ "struct_genes": false,
+ "model_version": {
+  "c172x": "rigid:jsbsim1.3.1:e0a73fc9",
+  "T38": "rigid:jsbsim1.3.1:69ac40f7",
+  "737": "rigid:jsbsim1.3.1:19463d4b"
+ },
+ "aircraft": [
+  {
+   "name": "c172x",
+   "profile": "phase1_c172x",
+   "seed": 2,
+   "resolved_profile": {
+    "aircraft": "c172x",
+    "h0_ft": 4000.0,
+    "speed_kts": 100.0,
+    "duration_s": 90.0,
+    "steps_rel_ft": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      5.0,
+      200.0
+     ],
+     [
+      50.0,
+      0.0
+     ]
+    ],
+    "min_agl_ft": 500.0,
+    "min_kcas": 55.0,
+    "max_abs_theta_deg": 30.0,
+    "max_abs_phi_deg": 45.0,
+    "nz_limits": [
+     -1.0,
+     3.8
+    ],
+    "max_alt_err_ft": 1000.0,
+    "pitch_cmd_limits_deg": [
+     -8.0,
+     12.0
+    ],
+    "alt_i_limit_deg": 5.0,
+    "pitch_i_limit": 0.4,
+    "thr_kp": 0.05,
+    "thr_ki": 0.01,
+    "throttle_max": 1.0,
+    "throttle_all_engines": true,
+    "gear_up": true,
+    "roll_kp": 0.05,
+    "roll_kd": 0.02,
+    "heading_hold": true,
+    "bank_limit_deg": 16.0,
+    "hdg_i_limit_deg": 10.0,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "disturbance_scenario": {
+     "downdraft_fps": 4.69,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1,
+    "alt_ref_ff": true,
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "fail_base": 1000.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "gain_bounds": {
+     "kp_alt": [
+      0.002,
+      2.0
+     ],
+     "ki_alt": [
+      1e-06,
+      0.05
+     ],
+     "kd_alt": [
+      0.01,
+      3.0
+     ],
+     "kp_pitch": [
+      0.002,
+      0.5
+     ],
+     "ki_pitch": [
+      1e-05,
+      0.2
+     ],
+     "kd_pitch": [
+      0.0001,
+      0.5
+     ],
+     "kp_hdg": [
+      0.05,
+      5.0
+     ],
+     "ki_hdg": [
+      1e-05,
+      0.1
+     ]
+    },
+    "gene_kinds": {
+     "ki_alt": "log0",
+     "ki_pitch": "log0",
+     "ki_hdg": "log0"
+    },
+    "aircraft_root": "flight-dynamics/jsbsim_root",
+    "origin_lat_deg": null,
+    "origin_lon_deg": null,
+    "extra_props": {}
+   },
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "scenario_ids": [
+    "c172x:s0",
+    "c172x:s1",
+    "c172x:s2",
+    "c172x:s3"
+   ],
+   "genes": [
+    {
+     "name": "kp_alt",
+     "min": 0.002,
+     "max": 2.0,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/ft",
+     "group": "gains"
+    },
+    {
+     "name": "ki_alt",
+     "min": 1e-06,
+     "max": 0.05,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg/(ft*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_alt",
+     "min": 0.01,
+     "max": 3.0,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/(ft/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_pitch",
+     "min": 0.002,
+     "max": 0.5,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/deg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_pitch",
+     "min": 1e-05,
+     "max": 0.2,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "elev/(deg*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_pitch",
+     "min": 0.0001,
+     "max": 0.5,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/(deg/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_hdg",
+     "min": 0.05,
+     "max": 5.0,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg bank/deg hdg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_hdg",
+     "min": 1e-05,
+     "max": 0.1,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg bank/(deg*s)",
+     "group": "gains"
+    }
+   ],
+   "model_files_sha": "c950dad02a29724c",
+   "model_version": "rigid:jsbsim1.3.1:e0a73fc9",
+   "fitness_cfg": {
+    "per_scenario": "track + w_effort*effort (+ w_comfort*comfort) (+ w_heading*RMS(e_psi)/hdg_rms_ref_deg); failed flight: fail_base*(2 - t_end/duration); load/trim failure: 2*fail_base (+ w_hold*hold_osc, v5)",
+    "track": "mean over steps of |e_h|/alt_err_scale_ft * min(t - t_cmd, itae_cap_s)/itae_t0_s",
+    "effort": "sum |delta elevator cmd| / duration_s",
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "fail_base": 1000.0,
+    "heading_hold": true,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "hold_osc": "RMS over hold samples of (e - mean of e in its window), e = h_cmd - h, / hold_ref_ft; hold = reference == command (|ref-cmd| < 1e-6 ft) and reference rate 0, minus the first hold_settle_s of each stretch",
+    "disturbance_scenario": {
+     "downdraft_fps": 4.69,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "disturbance_doc": "one extra calm scenario appended last (index = scenarios): holds h0 in a sustained downdraft w = draft_fps*0.5*(1-cos(pi*clip((t-draft_t_s)/draft_ramp_s,0,1))) added to wind-down-fps (+ = down); cost = mean over all scenarios"
+   }
+  },
+  {
+   "name": "T38",
+   "profile": "phase1_T38",
+   "seed": 2,
+   "resolved_profile": {
+    "aircraft": "T38",
+    "h0_ft": 10000.0,
+    "speed_kts": 300.0,
+    "duration_s": 90.0,
+    "steps_rel_ft": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      5.0,
+      200.0
+     ],
+     [
+      50.0,
+      0.0
+     ]
+    ],
+    "min_agl_ft": 500.0,
+    "min_kcas": 180.0,
+    "max_abs_theta_deg": 30.0,
+    "max_abs_phi_deg": 45.0,
+    "nz_limits": [
+     -3.0,
+     7.33
+    ],
+    "max_alt_err_ft": 1000.0,
+    "pitch_cmd_limits_deg": [
+     -10.0,
+     15.0
+    ],
+    "alt_i_limit_deg": 5.0,
+    "pitch_i_limit": 0.4,
+    "thr_kp": 0.036674370574350905,
+    "thr_ki": 0.007334874114870181,
+    "throttle_max": 0.5,
+    "throttle_all_engines": true,
+    "gear_up": true,
+    "roll_kp": 0.11802009775780833,
+    "roll_kd": 0.04720803910312333,
+    "heading_hold": true,
+    "bank_limit_deg": 25.0,
+    "hdg_i_limit_deg": 10.0,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "disturbance_scenario": {
+     "downdraft_fps": 15.43,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1,
+    "alt_ref_ff": true,
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "fail_base": 1000.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "gain_bounds": {
+     "kp_alt": [
+      0.000608,
+      0.608
+     ],
+     "ki_alt": [
+      3.04e-07,
+      0.05
+     ],
+     "kd_alt": [
+      0.00304,
+      3.0
+     ],
+     "kp_pitch": [
+      0.002,
+      2.48
+     ],
+     "ki_pitch": [
+      1e-05,
+      0.992
+     ],
+     "kd_pitch": [
+      0.0001,
+      2.48
+     ],
+     "kp_hdg": [
+      0.164,
+      16.4
+     ],
+     "ki_hdg": [
+      3.29e-05,
+      0.329
+     ]
+    },
+    "gene_kinds": {
+     "ki_alt": "log0",
+     "ki_pitch": "log0",
+     "ki_hdg": "log0"
+    },
+    "aircraft_root": "flight-dynamics/jsbsim_root",
+    "origin_lat_deg": null,
+    "origin_lon_deg": null,
+    "extra_props": {}
+   },
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "scenario_ids": [
+    "T38:s0",
+    "T38:s1",
+    "T38:s2",
+    "T38:s3"
+   ],
+   "genes": [
+    {
+     "name": "kp_alt",
+     "min": 0.000608,
+     "max": 0.608,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/ft",
+     "group": "gains"
+    },
+    {
+     "name": "ki_alt",
+     "min": 3.04e-07,
+     "max": 0.05,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg/(ft*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_alt",
+     "min": 0.00304,
+     "max": 3.0,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/(ft/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_pitch",
+     "min": 0.002,
+     "max": 2.48,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/deg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_pitch",
+     "min": 1e-05,
+     "max": 0.992,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "elev/(deg*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_pitch",
+     "min": 0.0001,
+     "max": 2.48,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/(deg/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_hdg",
+     "min": 0.164,
+     "max": 16.4,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg bank/deg hdg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_hdg",
+     "min": 3.29e-05,
+     "max": 0.329,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg bank/(deg*s)",
+     "group": "gains"
+    }
+   ],
+   "model_files_sha": "cee8b377fcdaa55f",
+   "model_version": "rigid:jsbsim1.3.1:69ac40f7",
+   "fitness_cfg": {
+    "per_scenario": "track + w_effort*effort (+ w_comfort*comfort) (+ w_heading*RMS(e_psi)/hdg_rms_ref_deg); failed flight: fail_base*(2 - t_end/duration); load/trim failure: 2*fail_base (+ w_hold*hold_osc, v5)",
+    "track": "mean over steps of |e_h|/alt_err_scale_ft * min(t - t_cmd, itae_cap_s)/itae_t0_s",
+    "effort": "sum |delta elevator cmd| / duration_s",
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "fail_base": 1000.0,
+    "heading_hold": true,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "hold_osc": "RMS over hold samples of (e - mean of e in its window), e = h_cmd - h, / hold_ref_ft; hold = reference == command (|ref-cmd| < 1e-6 ft) and reference rate 0, minus the first hold_settle_s of each stretch",
+    "disturbance_scenario": {
+     "downdraft_fps": 15.43,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "disturbance_doc": "one extra calm scenario appended last (index = scenarios): holds h0 in a sustained downdraft w = draft_fps*0.5*(1-cos(pi*clip((t-draft_t_s)/draft_ramp_s,0,1))) added to wind-down-fps (+ = down); cost = mean over all scenarios"
+   }
+  },
+  {
+   "name": "737",
+   "profile": "phase1_737",
+   "seed": 2,
+   "resolved_profile": {
+    "aircraft": "737",
+    "h0_ft": 10000.0,
+    "speed_kts": 250.0,
+    "duration_s": 90.0,
+    "steps_rel_ft": [
+     [
+      0.0,
+      0.0
+     ],
+     [
+      5.0,
+      200.0
+     ],
+     [
+      50.0,
+      0.0
+     ]
+    ],
+    "min_agl_ft": 500.0,
+    "min_kcas": 195.0,
+    "max_abs_theta_deg": 30.0,
+    "max_abs_phi_deg": 45.0,
+    "nz_limits": [
+     -1.0,
+     2.5
+    ],
+    "max_alt_err_ft": 1000.0,
+    "pitch_cmd_limits_deg": [
+     -5.0,
+     10.0
+    ],
+    "alt_i_limit_deg": 5.0,
+    "pitch_i_limit": 0.4,
+    "thr_kp": 0.0350554435483871,
+    "thr_ki": 0.007011088709677419,
+    "throttle_max": 1.0,
+    "throttle_all_engines": true,
+    "gear_up": true,
+    "roll_kp": 0.616155991923067,
+    "roll_kd": 0.2464623967692268,
+    "heading_hold": true,
+    "bank_limit_deg": 25.0,
+    "hdg_i_limit_deg": 10.0,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "disturbance_scenario": {
+     "downdraft_fps": 12.86,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1,
+    "alt_ref_ff": true,
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "fail_base": 1000.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "gain_bounds": {
+     "kp_alt": [
+      0.00073,
+      0.73
+     ],
+     "ki_alt": [
+      3.65e-07,
+      0.05
+     ],
+     "kd_alt": [
+      0.00365,
+      3.0
+     ],
+     "kp_pitch": [
+      0.002,
+      7.51
+     ],
+     "ki_pitch": [
+      1e-05,
+      3.01
+     ],
+     "kd_pitch": [
+      0.0001,
+      7.51
+     ],
+     "kp_hdg": [
+      0.137,
+      13.7
+     ],
+     "ki_hdg": [
+      2.74e-05,
+      0.274
+     ]
+    },
+    "gene_kinds": {
+     "ki_alt": "log0",
+     "ki_pitch": "log0",
+     "ki_hdg": "log0"
+    },
+    "aircraft_root": "flight-dynamics/jsbsim_root",
+    "origin_lat_deg": null,
+    "origin_lon_deg": null,
+    "extra_props": {}
+   },
+   "aircraft_root": "flight-dynamics/jsbsim_root",
+   "scenario_ids": [
+    "737:s0",
+    "737:s1",
+    "737:s2",
+    "737:s3"
+   ],
+   "genes": [
+    {
+     "name": "kp_alt",
+     "min": 0.00073,
+     "max": 0.73,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/ft",
+     "group": "gains"
+    },
+    {
+     "name": "ki_alt",
+     "min": 3.65e-07,
+     "max": 0.05,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg/(ft*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_alt",
+     "min": 0.00365,
+     "max": 3.0,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg/(ft/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_pitch",
+     "min": 0.002,
+     "max": 7.51,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/deg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_pitch",
+     "min": 1e-05,
+     "max": 3.01,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "elev/(deg*s)",
+     "group": "gains"
+    },
+    {
+     "name": "kd_pitch",
+     "min": 0.0001,
+     "max": 7.51,
+     "kind": "log",
+     "zero_band": null,
+     "units": "elev/(deg/s)",
+     "group": "gains"
+    },
+    {
+     "name": "kp_hdg",
+     "min": 0.137,
+     "max": 13.7,
+     "kind": "log",
+     "zero_band": null,
+     "units": "deg bank/deg hdg",
+     "group": "gains"
+    },
+    {
+     "name": "ki_hdg",
+     "min": 2.74e-05,
+     "max": 0.274,
+     "kind": "log0",
+     "zero_band": 0.05,
+     "units": "deg bank/(deg*s)",
+     "group": "gains"
+    }
+   ],
+   "model_files_sha": "ec2a8ed8c2e0735b",
+   "model_version": "rigid:jsbsim1.3.1:19463d4b",
+   "fitness_cfg": {
+    "per_scenario": "track + w_effort*effort (+ w_comfort*comfort) (+ w_heading*RMS(e_psi)/hdg_rms_ref_deg); failed flight: fail_base*(2 - t_end/duration); load/trim failure: 2*fail_base (+ w_hold*hold_osc, v5)",
+    "track": "mean over steps of |e_h|/alt_err_scale_ft * min(t - t_cmd, itae_cap_s)/itae_t0_s",
+    "effort": "sum |delta elevator cmd| / duration_s",
+    "alt_err_scale_ft": 100.0,
+    "itae_t0_s": 10.0,
+    "itae_cap_s": 30.0,
+    "w_effort": 2.0,
+    "w_comfort": 0.05,
+    "comfort_params": {
+     "pitch_free_deg": 5.0,
+     "q_free_dps": 3.0
+    },
+    "comfort_weights": {},
+    "fail_base": 1000.0,
+    "heading_hold": true,
+    "w_heading": 0.01,
+    "hdg_rms_ref_deg": 5.0,
+    "w_hold": 0.1,
+    "hold_ref_ft": 5.0,
+    "hold_settle_s": 5.0,
+    "hold_osc": "RMS over hold samples of (e - mean of e in its window), e = h_cmd - h, / hold_ref_ft; hold = reference == command (|ref-cmd| < 1e-6 ft) and reference rate 0, minus the first hold_settle_s of each stretch",
+    "disturbance_scenario": {
+     "downdraft_fps": 12.86,
+     "onset_t_s": 10.0,
+     "onset_ramp_s": 4.0,
+     "steps_rel_ft": [
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    },
+    "disturbance_doc": "one extra calm scenario appended last (index = scenarios): holds h0 in a sustained downdraft w = draft_fps*0.5*(1-cos(pi*clip((t-draft_t_s)/draft_ramp_s,0,1))) added to wind-down-fps (+ = down); cost = mean over all scenarios"
+   }
+  }
+ ],
+ "scenarios": [
+  {
+   "id": "c172x:s0",
+   "aircraft": "c172x",
+   "index": 0,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "steps": [
+    [
+     0.0,
+     4000.0
+    ],
+    [
+     5.0,
+     4200.0
+    ],
+    [
+     50.0,
+     4000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     4000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     4000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     4015.5404985391933,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     4184.459501460807,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     4200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     4200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     4184.459501460807,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     4015.540498539193,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     4000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "c172x:s1",
+   "aircraft": "c172x",
+   "index": 1,
+   "seed": 1099128569,
+   "duration_s": 90.0,
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "steps": [
+    [
+     0.0,
+     4000.0
+    ],
+    [
+     5.0,
+     4200.0
+    ],
+    [
+     50.0,
+     4000.0
+    ]
+   ],
+   "wind_north_fps": 14.815420728420232,
+   "wind_east_fps": 18.893081885137402,
+   "gust_sigma_fps": 3.8459483414117317,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": -10.96328514280803,
+   "discrete_gust_t_s": 41.554051876408835,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     4000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     4000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     4015.5404985391933,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     4184.459501460807,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     4200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     4200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     4184.459501460807,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     4015.540498539193,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     4000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "c172x:s2",
+   "aircraft": "c172x",
+   "index": 2,
+   "seed": 669652944,
+   "duration_s": 90.0,
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "steps": [
+    [
+     0.0,
+     4000.0
+    ],
+    [
+     5.0,
+     4200.0
+    ],
+    [
+     50.0,
+     4000.0
+    ]
+   ],
+   "wind_north_fps": -12.549072662472344,
+   "wind_east_fps": -4.042050948210394,
+   "gust_sigma_fps": 1.082677339729205,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 11.767003192534947,
+   "discrete_gust_t_s": 31.594634329981844,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     4000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     4000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     4015.5404985391933,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     4184.459501460807,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     4200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     4200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     4184.459501460807,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     4015.540498539193,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     4000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "c172x:s3",
+   "aircraft": "c172x",
+   "index": 3,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 4000.0,
+   "speed_kts": 100.0,
+   "steps": [
+    [
+     0.0,
+     4000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "draft_fps": 4.69,
+   "draft_t_s": 10.0,
+   "draft_ramp_s": 4.0,
+   "ramp_plan": [
+    [
+     0.0,
+     4000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "T38:s0",
+   "aircraft": "T38",
+   "index": 0,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "T38:s1",
+   "aircraft": "T38",
+   "index": 1,
+   "seed": 1099128569,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 14.815420728420232,
+   "wind_east_fps": 18.893081885137402,
+   "gust_sigma_fps": 3.8459483414117317,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": -10.96328514280803,
+   "discrete_gust_t_s": 41.554051876408835,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "T38:s2",
+   "aircraft": "T38",
+   "index": 2,
+   "seed": 669652944,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": -12.549072662472344,
+   "wind_east_fps": -4.042050948210394,
+   "gust_sigma_fps": 1.082677339729205,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 11.767003192534947,
+   "discrete_gust_t_s": 31.594634329981844,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "T38:s3",
+   "aircraft": "T38",
+   "index": 3,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 300.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "draft_fps": 15.43,
+   "draft_t_s": 10.0,
+   "draft_ramp_s": 4.0,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "737:s0",
+   "aircraft": "737",
+   "index": 0,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "737:s1",
+   "aircraft": "737",
+   "index": 1,
+   "seed": 1099128569,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 14.815420728420232,
+   "wind_east_fps": 18.893081885137402,
+   "gust_sigma_fps": 3.8459483414117317,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": -10.96328514280803,
+   "discrete_gust_t_s": 41.554051876408835,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "737:s2",
+   "aircraft": "737",
+   "index": 2,
+   "seed": 669652944,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ],
+    [
+     5.0,
+     10200.0
+    ],
+    [
+     50.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": -12.549072662472344,
+   "wind_east_fps": -4.042050948210394,
+   "gust_sigma_fps": 1.082677339729205,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 11.767003192534947,
+   "discrete_gust_t_s": 31.594634329981844,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ],
+    [
+     5.0,
+     10000.0,
+     0.0,
+     3.2174
+    ],
+    [
+     8.108099707838628,
+     10015.540498539192,
+     10.0,
+     0.0
+    ],
+    [
+     25.0,
+     10184.459501460806,
+     10.0,
+     -3.2174
+    ],
+    [
+     28.108099707838626,
+     10200.0,
+     0.0,
+     0.0
+    ],
+    [
+     50.0,
+     10200.0,
+     0.0,
+     -3.2174
+    ],
+    [
+     53.108099707838626,
+     10184.459501460808,
+     -10.0,
+     0.0
+    ],
+    [
+     70.0,
+     10015.540498539194,
+     -10.0,
+     3.2174
+    ],
+    [
+     73.10809970783863,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "id": "737:s3",
+   "aircraft": "737",
+   "index": 3,
+   "seed": 1016164991,
+   "duration_s": 90.0,
+   "h0_ft": 10000.0,
+   "speed_kts": 250.0,
+   "steps": [
+    [
+     0.0,
+     10000.0
+    ]
+   ],
+   "wind_north_fps": 0.0,
+   "wind_east_fps": 0.0,
+   "gust_sigma_fps": 0.0,
+   "gust_tau_s": 2.0,
+   "discrete_gust_fps": 0.0,
+   "discrete_gust_t_s": 30.0,
+   "discrete_gust_len_s": 3.0,
+   "ramp_fpm": 600.0,
+   "ramp_accel_g": 0.1,
+   "draft_fps": 12.86,
+   "draft_t_s": 10.0,
+   "draft_ramp_s": 4.0,
+   "ramp_plan": [
+    [
+     0.0,
+     10000.0,
+     0.0,
+     0.0
+    ]
+   ]
+  }
+ ],
+ "target_semantics": {
+  "steps": "absolute altitude commands [[t_s, alt_ft], ...] (instant steps) = target_cmd (channel target_cmd_alt_m)",
+  "ramp_fpm / ramp_accel_g": "if ramp_fpm is set, the tracked/scored reference (channel target_alt_m) moves toward the command at <= ramp_fpm with <= ramp_accel_g corners; null = the reference is the step",
+  "ramp_plan": "the resolved accel-limited reference as constant-acceleration phases [[t0_s, p0_ft, v0_fps, a_fps2], ...]; reference(t) = p0 + v0*(t-t0) + a*(t-t0)^2/2 in the last phase with t0 <= t (null without ramp corners)",
+  "how to evaluate": "evolution.eval.scenario_object(aircraft, scenario, run_cfg) -> sim.Scenario with target(t), target_cmd(t), target_rate(t); evolution.eval.evaluate accepts these dicts directly"
+ },
+ "fitness_cfg": {
+  "sense": "min",
+  "aggregate": "cost = float(numpy.mean(per_scenario_cost)) over the aircraft's scenario_ids, at every fidelity",
+  "flex": "reduced/full per-scenario cost = rigid cost + J_bm_rms + J_bm_peak + J_tip + J_twist (fail_cost if structural_ultimate) + J_flutter_margin + J_div_margin + J_mass; fail_cost (not flown) if a margin is below the fidelity's gate (full 1.0, reduced 0.9)",
+  "per_aircraft": "aircraft[].fitness_cfg"
+ },
+ "ga": {
+  "pop_size": 32,
+  "generations": 20,
+  "elite": 2,
+  "selection_p": 0.2,
+  "crossover": "uniform",
+  "blx_alpha": 0.3,
+  "mutation_rate": 0.15,
+  "mutation_sigma": 0.08,
+  "mutation_mode": "gauss"
+ },
+ "generations": 20,
+ "pop_size": 32,
+ "trajectories": {
+  "generations": "auto",
+  "scenario": 0,
+  "sample_hz": 30,
+  "generations_resolved": [
+   0,
+   9,
+   19
+  ]
+ },
+ "eval": {
+  "entry": "evolution.eval:evaluate",
+  "signature": "evaluate(genome, aircraft, scenario, run_cfg, recorder=None, *, fidelity=None)",
+  "genome_format": "decoded {gene name: value} (genomes.jsonl 'genome'); a normalized list in aircraft[].genes order also works",
+  "scenario_format": "a run.json scenarios[] entry, its id, a list of either, or None (= all of the aircraft's)",
+  "recorder": "recorder(t, fdm[, flex_state]) at t=0 after IC+trim, then after every step; optional recorder.final(t_end, fdm[, flex_state]); read-only",
+  "controls_timing": "pre_step (see trajectory files' controls_timing_doc)"
+ },
+ "genomes_file": "genomes.jsonl",
+ "genomes_schema": "ga-flightsim-genomes/1"
+}

@@ -21,17 +21,79 @@ DEC = {"t": 4, "x": 3, "y": 3, "z": 3, "qw": 8, "qx": 8, "qy": 8, "qz": 8, "vx":
        "target_cmd_alt_m": 3, "target_rate_mps": 5}
 
 
+def _fidelity_tag(doc):
+    """'' for rigid; '<fidelity>:<model_version>' otherwise, so flex telemetry recorded with one FD model_version is
+    never matched against telemetry of another (rigid trajectories match across model_versions: ER's rigid hash
+    covers files that need not change the physics, and the channel check is what decides)."""
+    rp = doc.get("replay") or {}
+    fid = rp.get("fidelity") or doc.get("fidelity") or "rigid"
+    if fid == "rigid":
+        return ""
+    return f"{fid}:{rp.get('model_version') or doc.get('model_version')}"
+
+
+def doc_key(doc):
+    """(aircraft, generation, scenario_id, 'best' | individual_id, fidelity tag). Ids are opaque (never parsed).
+    scenario_id comes from the header (ER writes '<aircraft>:s<index>' since 2026-10-06); older files without it get
+    the same string from scenario_index (= position in the aircraft's scenario_ids, ER's documented format). ER's
+    own trajectory files carry no individual_id and are the best of their generation; a replay doc says is_best."""
+    sid = doc.get("scenario_id")
+    if sid in (None, ""):
+        si = doc.get("scenario_index", 0)
+        si = 0 if si in (None, "") else si
+        sid = f"{doc['aircraft']}:s{si}"
+    who = "best" if doc.get("is_best", True) else str(doc.get("individual_id"))
+    return (str(doc["aircraft"]), int(doc["generation"]), str(sid), who, _fidelity_tag(doc))
+
+
+def key_label(k):
+    return f"{k[0]} g{k[1]} {k[2]}" + ("" if k[3] == "best" else f" {k[3]}") + (f" [{k[4]}]" if len(k) > 4 and k[4] else "")
+
+
 def load_dir(d):
     out = {}
     for p in sorted(glob.glob(os.path.join(d, "traj_*.json"))):
         doc = json.load(open(p))
-        key = (doc["aircraft"], int(doc["generation"]), int(doc.get("scenario_index", 0) or 0), doc.get("individual_id", "r0").split(":")[-1])
+        key = doc_key(doc)
+        if key in out:
+            print(f"trajdiff: {os.path.basename(p)} duplicates {os.path.basename(out[key][0])} ({key_label(key)}); first kept",
+                  file=sys.stderr)
+            continue
         out[key] = (p, doc)
+    return out
+
+
+def _span_frac(comp):
+    f = comp.get("node_span_frac")
+    n = len(comp.get("axis_nodes_body_m") or [])
+    if f and len(f) == n:
+        return [float(x) for x in f]
+    return [i / (n - 1) for i in range(n)] if n > 1 else [0.0] * n
+
+
+def structure_remap(a, b):
+    """Components present in both docs with a DIFFERENT node discretisation (e.g. the replay's FD nodal wings, 33 nodes,
+    vs ER's modal 9-node wings): those channels share names but not span positions, so they must not be compared by
+    name. Returns {component: {"a_nodes", "b_nodes", "pairs": [(i_a, i_b), ...] at coincident span fractions,
+    "dofs": common dofs, "a_only_dofs", "b_only_dofs"}}."""
+    sa = {c.get("name"): c for c in ((a.get("structure") or {}).get("components") or [])}
+    sb = {c.get("name"): c for c in ((b.get("structure") or {}).get("components") or [])}
+    out = {}
+    for name in sa.keys() & sb.keys():
+        fa, fb = _span_frac(sa[name]), _span_frac(sb[name])
+        if len(fa) == len(fb) and all(abs(x - y) < 1e-9 for x, y in zip(fa, fb)):
+            continue
+        pairs = [(i, j) for j, y in enumerate(fb) for i, x in enumerate(fa) if abs(x - y) < 1e-9]
+        da, db = list(sa[name].get("dof") or []), list(sb[name].get("dof") or [])
+        out[name] = {"a_nodes": len(fa), "b_nodes": len(fb), "pairs": pairs, "dofs": [d for d in da if d in db],
+                     "a_only_dofs": [d for d in da if d not in db], "b_only_dofs": [d for d in db if d not in da]}
     return out
 
 
 def diff(a, b, tol_scale=1.0):
     ca, cb = a["channels"], b["channels"]
+    remap = structure_remap(a, b)
+    rprefix = tuple(f"{n}." for n in remap)
     A, B = np.array(a["data"], dtype=float), np.array(b["data"], dtype=float)
     ta, tb = A[:, ca.index("t")], B[:, cb.index("t")]
     common_t = np.intersect1d(np.round(ta, 6), np.round(tb, 6))
@@ -46,7 +108,7 @@ def diff(a, b, tol_scale=1.0):
         qflip = np.sum(qa * qb, axis=1) < 0
         res["quat_sign_flipped_rows"] = int(qflip.sum())
     for c in ca:
-        if c not in cb:
+        if c not in cb or (rprefix and c.startswith(rprefix)):
             continue
         vb = B[ib, cb.index(c)]
         if qflip is not None and c in qn:
@@ -57,8 +119,22 @@ def diff(a, b, tol_scale=1.0):
         res["channels"][c] = {"max_abs": m, "tol": tol, "n_exact": int(np.sum(d == 0)), "n": int(len(d))}
         if m > tol:
             res["fail"].append(c)
-    res["only_in_a"] = [c for c in ca if c not in cb]
-    res["only_in_b"] = [c for c in cb if c not in ca]
+    # re-discretised components: compared at coincident span fractions, reported separately (not pass/fail: a
+    # different discretisation of the same deflection, e.g. FD's nodal values vs ER's modal interpolation)
+    res["remapped"] = {}
+    for name, r in remap.items():
+        per = {}
+        for d in r["dofs"]:
+            m = 0.0
+            for i, j in r["pairs"]:
+                xa, xb = f"{name}.{d}.{i}", f"{name}.{d}.{j}"
+                if xa in ca and xb in cb:
+                    m = max(m, float(np.nanmax(np.abs(A[ia, ca.index(xa)] - B[ib, cb.index(xb)]))) if len(ia) else 0.0)
+            per[d] = m
+        res["remapped"][name] = {**{k: v for k, v in r.items() if k != "pairs"}, "n_pairs": len(r["pairs"]),
+                                 "max_abs_at_coincident_nodes": per}
+    res["only_in_a"] = [c for c in ca if c not in cb and not (rprefix and c.startswith(rprefix))]
+    res["only_in_b"] = [c for c in cb if c not in ca and not (rprefix and c.startswith(rprefix))]
     meta = {}
     for k in ("fitness", "scenario_cost", "status", "genome", "frame", "target", "events", "sample_hz", "dt_s", "sim_dt_s"):
         if a.get(k) != b.get(k):
@@ -90,7 +166,7 @@ def compare_dirs(a_dir, b_dir, tol_scale=1.0, verbose=False):
         if kb is None:
             continue
         r = diff(da, B[kb][1], tol_scale)
-        report[f"{k[0]} g{k[1]} sc{k[2]}"] = {"a": os.path.basename(pa), "b": os.path.basename(B[kb][0]), **r}
+        report[key_label(k)] = {"a": os.path.basename(pa), "b": os.path.basename(B[kb][0]), **r}
         worst = max(r["channels"].items(), key=lambda kv: kv[1]["max_abs"] / kv[1]["tol"])
         exact = sum(1 for v in r["channels"].values() if v["max_abs"] == 0)
         if verbose:

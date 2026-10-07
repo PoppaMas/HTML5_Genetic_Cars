@@ -1,0 +1,18 @@
+{
+ "c172x/base/margins": "ecee631130b26339",
+ "c172x/s0.8r1.1/margins": "abb2b6f185128079",
+ "c172x/maneuver_twoway": "bd73a7c7ff04503a",
+ "c172x/maneuver_rigid": "2e2e48ca1158ace3",
+ "737/base/margins": "2e92505626269093",
+ "737/s0.8r1.1/margins": "76acfcbd6fb29822",
+ "737/maneuver_twoway": "e2b82d6287c10fe2",
+ "737/maneuver_rigid": "955722d306b2ed3a",
+ "T38/base/margins": "b209518dc0e80baa",
+ "T38/s0.8r1.1/margins": "f9df4372f1152757",
+ "T38/maneuver_twoway": "237de485c9b05d68",
+ "T38/maneuver_rigid": "d4a93bb01f514b92",
+ "f16/base/margins": "7ca47632fdf1f45a",
+ "f16/s0.8r1.1/margins": "b4d00deed4f3b766",
+ "f16/maneuver_twoway": "479698a7bc128706",
+ "f16/maneuver_rigid": "69f9de57607355a1"
+}

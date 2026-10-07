@@ -32,6 +32,7 @@ class Gene:
     units: str = ""
     doc: str = ""
     zero_band: float = 0.05  # log0 only
+    default: Optional[float] = None  # baseline value (FD struct genes); used by seeded generation 0
 
     def decode(self, v: float) -> float:
         v = min(max(float(v), 0.0), 1.0)

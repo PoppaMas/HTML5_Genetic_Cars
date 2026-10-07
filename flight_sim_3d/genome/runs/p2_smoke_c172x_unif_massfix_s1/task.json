@@ -1,0 +1,73 @@
+{
+  "fitness": {
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01,
+      "structural_v2": 1.0
+    },
+    "params": {
+      "pitch_free_deg": 5.0,
+      "q_free_dps": 3.0,
+      "struct_v2_w_peak": 0.1,
+      "struct_v2_w_rms": 0.5
+    },
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "structural_v2"
+    ]
+  },
+  "scenarios": {
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1,
+    "set": "legacy"
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "name": "phase2_flex_uniform_init_massfix",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure_v2": true
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "version": 2,
+    "asymmetric": false,
+    "substeps": 2
+  },
+  "init": {
+    "mode": "uniform"
+  },
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false,
+  "shared_task_resolved": {
+    "steps_rel_ft": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        5.0,
+        200.0
+      ],
+      [
+        50.0,
+        0.0
+      ]
+    ],
+    "duration_s": 90.0,
+    "alt_err_scale_ft": 100.0,
+    "max_alt_err_ft": 1000.0
+  }
+}

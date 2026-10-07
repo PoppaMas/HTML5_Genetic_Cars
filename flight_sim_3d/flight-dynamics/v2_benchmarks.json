@@ -1,0 +1,254 @@
+{
+ "units": "seconds per 90 s Phase-1 scenario (mean of the 3 scenarios; min over repeats); cpu = process CPU time (robust to the shared box's load), wall = elapsed; ratios use cpu",
+ "note": "box shared with other agents (load average recorded per run); BLAS 1 thread",
+ "models": {
+  "c172x": {
+   "rigid": {
+    "wall_per_scen_s": 0.4492738323363786,
+    "cpu_per_scen_s": 0.21860740000000037,
+    "all_reps": [
+     0.6810706076794304,
+     0.4492738323363786
+    ],
+    "status": "ok",
+    "cost": 0.22449138144713754,
+    "loadavg_1min": [
+     25.85009765625,
+     24.46044921875
+    ]
+   },
+   "reduced": {
+    "wall_per_scen_s": 2.8980974156681136,
+    "cpu_per_scen_s": 1.2418559826666666,
+    "all_reps": [
+     4.076560738321859,
+     2.8980974156681136
+    ],
+    "status": "ok",
+    "cost": 0.2686664800783612,
+    "loadavg_1min": [
+     25.47705078125,
+     23.546875
+    ]
+   },
+   "full": {
+    "wall_per_scen_s": 4.604153896332718,
+    "cpu_per_scen_s": 1.7609340890000003,
+    "all_reps": [
+     4.604153896332718,
+     4.766916870663408
+    ],
+    "status": "ok",
+    "cost": 0.26895122134456134,
+    "loadavg_1min": [
+     24.6748046875,
+     23.3271484375
+    ]
+   },
+   "v1_flex_nbend2": {
+    "wall_per_scen_s": 2.6816305796576976,
+    "cpu_per_scen_s": 1.2017185150000003,
+    "all_reps": [
+     2.6816305796576976,
+     3.927204390677313
+    ],
+    "status": "ok",
+    "cost": 0.2374720805335405,
+    "loadavg_1min": [
+     24.46044921875,
+     23.6650390625
+    ]
+   },
+   "ratio_full_over_rigid": 8.05523549980466,
+   "ratio_full_over_v1_flex_nbend2": 1.4653465574673283,
+   "ratio_full_over_reduced": 1.4179857516317673,
+   "ratio_reduced_over_rigid": 5.680759126482747
+  },
+  "T38": {
+   "rigid": {
+    "wall_per_scen_s": 0.48160153365461156,
+    "cpu_per_scen_s": 0.1841931206666665,
+    "all_reps": [
+     0.48160153365461156,
+     0.7125700326675238
+    ],
+    "status": "ok",
+    "cost": 0.0917745811719954,
+    "loadavg_1min": [
+     23.451171875,
+     25.2255859375
+    ]
+   },
+   "reduced": {
+    "wall_per_scen_s": 3.617389158326356,
+    "cpu_per_scen_s": 1.2057410500000014,
+    "all_reps": [
+     3.617389158326356,
+     4.12741877901135
+    ],
+    "status": "ok",
+    "cost": 0.10562973786388437,
+    "loadavg_1min": [
+     23.763671875,
+     25.31298828125
+    ]
+   },
+   "full": {
+    "wall_per_scen_s": 5.463675237338369,
+    "cpu_per_scen_s": 1.6950478256666675,
+    "all_reps": [
+     5.512926670004769,
+     5.463675237338369
+    ],
+    "status": "ok",
+    "cost": 0.14443617974761805,
+    "loadavg_1min": [
+     24.3955078125,
+     25.1904296875
+    ]
+   },
+   "v1_flex_nbend2": {
+    "wall_per_scen_s": 3.7214338296713927,
+    "cpu_per_scen_s": 1.1227742553333329,
+    "all_reps": [
+     4.060722504664834,
+     3.7214338296713927
+    ],
+    "status": "ok",
+    "cost": 0.09151604049872664,
+    "loadavg_1min": [
+     25.2255859375,
+     25.01318359375
+    ]
+   },
+   "ratio_full_over_rigid": 9.20255772599775,
+   "ratio_full_over_v1_flex_nbend2": 1.5096960209186807,
+   "ratio_full_over_reduced": 1.4058141469651924,
+   "ratio_reduced_over_rigid": 6.546069938095169
+  },
+  "737": {
+   "rigid": {
+    "wall_per_scen_s": 0.4433387456617008,
+    "cpu_per_scen_s": 0.1813322013333334,
+    "all_reps": [
+     0.6156416190012047,
+     0.4433387456617008
+    ],
+    "status": "ok",
+    "cost": 0.11024576983937538,
+    "loadavg_1min": [
+     25.01318359375,
+     25.06103515625
+    ]
+   },
+   "reduced": {
+    "wall_per_scen_s": 3.3592516713348837,
+    "cpu_per_scen_s": 1.1960892716666673,
+    "all_reps": [
+     3.3592516713348837,
+     3.414746219331088
+    ],
+    "status": "ok",
+    "cost": 0.12465295991113749,
+    "loadavg_1min": [
+     24.7900390625,
+     24.61572265625
+    ]
+   },
+   "full": {
+    "wall_per_scen_s": 4.526654938003048,
+    "cpu_per_scen_s": 1.664530852333333,
+    "all_reps": [
+     4.526654938003048,
+     5.081898322658769
+    ],
+    "status": "ok",
+    "cost": 0.15327600858459042,
+    "loadavg_1min": [
+     24.98486328125,
+     23.751953125
+    ]
+   },
+   "v1_flex_nbend2": {
+    "wall_per_scen_s": 3.38191108465738,
+    "cpu_per_scen_s": 1.1328845436666672,
+    "all_reps": [
+     3.38191108465738,
+     3.4806790483222962
+    ],
+    "status": "ok",
+    "cost": 0.11069586148292176,
+    "loadavg_1min": [
+     25.06103515625,
+     23.96142578125
+    ]
+   },
+   "ratio_full_over_rigid": 9.179455386820756,
+   "ratio_full_over_v1_flex_nbend2": 1.4692855169035601,
+   "ratio_full_over_reduced": 1.39164432936843,
+   "ratio_reduced_over_rigid": 6.596121719539266
+  },
+  "f16": {
+   "rigid": {
+    "wall_per_scen_s": 0.470577241658854,
+    "cpu_per_scen_s": 0.23541240900000085,
+    "all_reps": [
+     0.733715107004779,
+     0.470577241658854
+    ],
+    "status": "ok",
+    "cost": 0.09009480210402053,
+    "loadavg_1min": [
+     23.96142578125,
+     22.45361328125
+    ]
+   },
+   "reduced": {
+    "wall_per_scen_s": 1.4198024403303862,
+    "cpu_per_scen_s": 1.2508108433333358,
+    "all_reps": [
+     3.740604462005043,
+     1.4198024403303862
+    ],
+    "status": "ok",
+    "cost": 0.10504031863292752,
+    "loadavg_1min": [
+     24.12158203125,
+     21.5361328125
+    ]
+   },
+   "full": {
+    "wall_per_scen_s": 2.1899809903309992,
+    "cpu_per_scen_s": 1.7549453596666638,
+    "all_reps": [
+     4.828639186996345,
+     2.1899809903309992
+    ],
+    "status": "ok",
+    "cost": 0.10671867575736384,
+    "loadavg_1min": [
+     23.87255859375,
+     20.5322265625
+    ]
+   },
+   "v1_flex_nbend2": {
+    "wall_per_scen_s": 1.6345709523496528,
+    "cpu_per_scen_s": 1.4174237833333336,
+    "all_reps": [
+     2.7750581790072224,
+     1.6345709523496528
+    ],
+    "status": "ok",
+    "cost": 0.09058236838284368,
+    "loadavg_1min": [
+     22.45361328125,
+     19.3681640625
+    ]
+   },
+   "ratio_full_over_rigid": 7.45476998056911,
+   "ratio_full_over_v1_flex_nbend2": 1.2381232629944912,
+   "ratio_full_over_reduced": 1.4030461672284833,
+   "ratio_reduced_over_rigid": 5.313274897642848
+  }
+ }
+}

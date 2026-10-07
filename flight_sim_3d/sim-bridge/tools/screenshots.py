@@ -40,7 +40,7 @@ def main():
     ap.add_argument("--bench", metavar="HTML", help="only screenshot a multi-aircraft standalone file "
                     "(e.g. data/bench_jets-j1_standalone.html) and write screenshots/<prefix>*.png")
     ap.add_argument("--prefix", default="bench_jets_")
-    ap.add_argument("--shots", choices=["bench", "phase1", "replay", "softbody"], default="bench",
+    ap.add_argument("--shots", choices=["bench", "phase1", "replay", "softbody", "v2", "v2nodes", "v2nodes_gust", "phase2"], default="bench",
                     help="shot list for --bench: 'bench' (bench_jets-j1) or 'phase1' (3 seeds + bench g19)")
     a = ap.parse_args()
     if a.bench:
@@ -231,6 +231,41 @@ def bench(a):
             ("orbit_defl10_up", "?mode=single&cam=orbit&defl=10", 0.2),
             ("orbit_defl10_down", "?mode=single&cam=orbit&defl=10", 0.62),
         ]
+    elif a.shots == "v2":  # REAL FD v2 (full fidelity) replay through ER's evolution.eval, mapped by sim_bridge.v2_map
+        shots = [
+            ("T38_g19_full_chase_defl1", "?mode=single&gen=T38:19&cam=chase&defl=1", 12),
+            ("T38_g19_full_orbit_defl50", "?mode=single&gen=T38:19&cam=orbit&defl=50", 12),
+            ("737_g19_full_orbit_defl20", "?mode=single&gen=737:19&cam=orbit&defl=20", 12),
+            ("c172x_g19_full_chase_defl50", "?mode=single&gen=c172x:19&cam=chase&defl=50", 12),
+            ("formation_g19_full_defl30", "?cam=chase&defl=30", 12),
+        ]
+    elif a.shots == "phase2":  # phase2-pilot-s1 full soft-body (FD nodal): gen 0 / mid / final
+        shots = [
+            ("g59_formation_chase_defl8", "", 12),                                      # file defaults: last/formation/rerr/defl=8
+            ("g59_formation_orbit_defl8", "?cam=orbit&defl=8", 12),
+            ("g0_vs_g59_c172x_rerr", "?preset=pair:c172x&cy=rerr&cam=chase&spacing=30&defl=8", 15),
+            ("g0_vs_g59_T38_nz", "?preset=pair:T38&cy=nz&cam=chase&spacing=30&defl=8", 12),
+            ("g0_vs_g59_737_rerr", "?preset=pair:737&cy=rerr&cam=chase&spacing=30&defl=8", 12),
+            ("g0_mid_final_c172x", "?gens=c172x:0,c172x:29,c172x:59&cy=rerr&cam=orbit&spacing=25&defl=8", 20),
+            ("T38_g59_single_flex_hud", "?mode=single&gen=T38:59&cam=chase&defl=20", 12),
+            ("737_g59_wing_bend_front_defl10", "?mode=single&gen=737:59&cam=orbit&defl=10", 8.4, "front"),
+        ]
+    elif a.shots == "v2nodes":  # FD NODAL data (fd-flexbody-nodes/1), sc0 (altitude steps): wing in-plane bending
+        shots = [  # (name, query, time, view): view = camera placed in the aircraft's body frame (top / rear / ...)
+            ("737_wing_inplane_top_dx_only_defl200", "?mode=single&gen=737:19&cam=orbit&defl=200&dofs=dx", 8.43, "top"),
+            ("737_wing_inplane_top_defl1", "?mode=single&gen=737:19&cam=orbit&defl=1", 8.43, "top"),
+            ("T38_wing_inplane_top_dx_only_defl500", "?mode=single&gen=T38:19&cam=orbit&defl=500&dofs=dx", 7.03, "top"),
+            ("737_nodal_wing_bending_front_defl10", "?mode=single&gen=737:19&cam=orbit&defl=10", 8.43, "front"),
+        ]
+    elif a.shots == "v2nodes_gust":  # FD NODAL data, sc1 (crosswind + gusts): tail L/R difference, fin bending
+        shots = [  # dofs= isolates components/DOFs so a large exaggeration of a small effect stays readable
+            ("c172x_gust_htail_LR_dz_rear_defl200", "?mode=single&gen=c172x:19&cam=orbit&defl=200&dofs=htail.dz,htail.twist", 0.2, "tail"),
+            ("737_gust_htail_LR_dz_rear_defl100", "?mode=single&gen=737:19&cam=orbit&defl=100&dofs=htail.dz,htail.twist", 0.1, "tail"),
+            ("737_gust_fin_bending_rear_defl20", "?mode=single&gen=737:19&cam=orbit&defl=20&dofs=vtail", 0.1, "tail"),
+            ("737_gust_fin_bending_t2_rear_defl40", "?mode=single&gen=737:19&cam=orbit&defl=40&dofs=vtail", 2.03, "tail"),
+            ("c172x_gust_tail_fin_fuselage_rear_defl50", "?mode=single&gen=c172x:19&cam=orbit&defl=50&dofs=htail,vtail,fuselage", 0.2, "tail"),
+            ("737_gust_rear_true_scale_defl1", "?mode=single&gen=737:19&cam=orbit&defl=1", 0.1, "rear"),
+        ]
     else:
         shots = [  # (name, query, time)
             ("g19_formation_chase", "", 20),                                                   # file defaults
@@ -248,17 +283,38 @@ def bench(a):
         page.set_default_timeout(180000)
         page.on("console", lambda m: logs.append(f"[{m.type}] {m.text}"))
         page.on("pageerror", lambda e: errors.append(str(e)))
-        for name, q, t in shots:
+        for shot in shots:
+            name, q, t = shot[:3]
+            view = shot[3] if len(shot) > 3 else None
             page.goto(url + q)
             page.wait_for_function("window.fv && window.fv.ready === true")
             page.wait_for_timeout(500)
             page.evaluate(f"fv.setTime({t})")
+            if view:  # orbit camera re-placed in the focused aircraft's body frame (FRD), looking at the aircraft
+                page.evaluate("""([view, t]) => {
+                  const T = fv.THREE, d = fv.S.shown[0], s = d.state;
+                  const nose = new T.Vector3(1, 0, 0).applyQuaternion(s.q), right = new T.Vector3(0, 1, 0).applyQuaternion(s.q);
+                  const down = new T.Vector3(0, 0, 1).applyQuaternion(s.q);
+                  const sz = new T.Box3().setFromObject(d.model.model).getSize(new T.Vector3());
+                  const R = Math.max(d.model.span * fv.S.mscale, sz.x, sz.z);   // span / length (scene units)
+                  const L = R * ({top: 1.05, tail: 0.8}[view] || 1.1);
+                  const aim = s.pos.clone();
+                  if (view === 'tail') aim.addScaledVector(nose, -0.4 * Math.max(sz.x, sz.z));   // look at the empennage
+                  const off = { top: down.clone().multiplyScalar(-L).addScaledVector(nose, -0.04 * L),
+                                rear: nose.clone().multiplyScalar(-L).addScaledVector(down, -0.12 * L),
+                                front: nose.clone().multiplyScalar(L).addScaledVector(down, 0.05 * L),
+                                tail: nose.clone().multiplyScalar(-L).addScaledVector(down, 0.02 * L) }[view];
+                  fv.controls.target.copy(aim);
+                  fv.camera.position.copy(aim).add(off);
+                  fv.controls.update();
+                  fv.setTime(t);
+                }""", [view, t])
             page.wait_for_timeout(400)
             path = os.path.join(OUT, f"{a.prefix}{name}.png")
             page.screenshot(path=path)
             info = page.evaluate("""() => ({
               shown: fv.S.shown.map(d => [d.tr.aircraft, d.entry.run, d.tr.generation, d.preset.key, +(+d.tr.fitness).toFixed(4), +d.alongScale.toFixed(3), d.tr.hasRamp]),
-              hud: document.getElementById('hud').innerText.split(String.fromCharCode(10)).filter(l => /^(cost|fitness|replay|CMD|REF|TGT|KCAS|IAS|NZ|TIP|SYNTH|flex)/.test(l)),
+              hud: document.getElementById('hud').innerText.split(String.fromCharCode(10)).filter(l => /^(cost|fitness|replay|CMD|REF|TGT|KCAS|IAS|NZ|TIP|SYNTH|flex|ESTIMATED|FD nodal|m [/] deg)/.test(l)),
               entries: fv.S.shown.map(d => [d.entry.individual, d.entry.scenario, d.entry.verdict]),
               deflRowHidden: document.getElementById('defl-row').hidden, defl: fv.S.defl,
               flex: fv.S.shown.map(d => d.deformer ? d.deformer.comps.map(c => {

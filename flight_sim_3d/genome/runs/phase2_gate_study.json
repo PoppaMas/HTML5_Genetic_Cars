@@ -1,0 +1,118 @@
+{
+ "args": {
+  "n": 64,
+  "seed": 1,
+  "sigma": 0.05,
+  "aircraft": [
+   "c172x",
+   "t38",
+   "b737"
+  ],
+  "asymmetric": false,
+  "out": "/workspace/flight-sim-team/genome-phase2-staging/runs/phase2_gate_study.json"
+ },
+ "results": {
+  "c172x": {
+   "uniform": {
+    "n": 64,
+    "n_fail": 15,
+    "fail_kinds": {
+     "flutter": 15
+    },
+    "n_penalized": 19,
+    "min_margin_quartiles": [
+     0.79,
+     1.01,
+     1.167,
+     1.369,
+     1.564
+    ],
+    "mass_frac_mean": 0.04573455559183791,
+    "wall_s": 62.7
+   },
+   "baseline": {
+    "n": 64,
+    "n_fail": 0,
+    "fail_kinds": {},
+    "n_penalized": 13,
+    "min_margin_quartiles": [
+     1.16,
+     1.208,
+     1.242,
+     1.268,
+     1.333
+    ],
+    "mass_frac_mean": 0.006851541215540614,
+    "wall_s": 64.1
+   }
+  },
+  "t38": {
+   "uniform": {
+    "n": 64,
+    "n_fail": 24,
+    "fail_kinds": {
+     "flutter": 24
+    },
+    "n_penalized": 24,
+    "min_margin_quartiles": [
+     0.791,
+     0.96,
+     1.062,
+     1.205,
+     1.44
+    ],
+    "mass_frac_mean": 0.05983855508703532,
+    "wall_s": 63.3
+   },
+   "baseline": {
+    "n": 64,
+    "n_fail": 0,
+    "fail_kinds": {},
+    "n_penalized": 45,
+    "min_margin_quartiles": [
+     1.106,
+     1.141,
+     1.173,
+     1.208,
+     1.259
+    ],
+    "mass_frac_mean": 0.005301242177154356,
+    "wall_s": 62.4
+   }
+  },
+  "b737": {
+   "uniform": {
+    "n": 64,
+    "n_fail": 20,
+    "fail_kinds": {
+     "flutter": 20
+    },
+    "n_penalized": 29,
+    "min_margin_quartiles": [
+     0.464,
+     0.976,
+     1.055,
+     1.191,
+     1.381
+    ],
+    "mass_frac_mean": 0.050675385112108964,
+    "wall_s": 64.2
+   },
+   "baseline": {
+    "n": 64,
+    "n_fail": 0,
+    "fail_kinds": {},
+    "n_penalized": 41,
+    "min_margin_quartiles": [
+     1.123,
+     1.161,
+     1.188,
+     1.21,
+     1.259
+    ],
+    "mass_frac_mean": 0.0050802164569181945,
+    "wall_s": 61.5
+   }
+  }
+ }
+}

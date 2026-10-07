@@ -56,6 +56,7 @@ class Task:
     sim_fixed: Dict = field(default_factory=dict)    # disabled-block genes the backend should still use
     flex_constants: Dict = field(default_factory=dict)  # fixed flex inputs in use (reporting only; FD applies its own)
     disturbance: Dict = field(default_factory=dict)     # v5: extra sustained-downdraft scenario ({} = none)
+    init: Dict = field(default_factory=dict)            # Phase 2: generation-0 seeding ({} = evolve.py's uniform draw)
 
     def make_scenarios(self, n: int, seed: int):
         scs = SC.apply_conditions(SC.make_scenarios(n, seed, self.scenarios), self.conditions)
@@ -173,9 +174,33 @@ def build_task(raw: Dict) -> Task:
     if hh and not (blk.get("roll_heading") is True):
         sub = list(blk["roll_heading"]) if isinstance(blk.get("roll_heading"), list) else []
         blk["roll_heading"] = sub + [g for g in GS.HEADING_HOLD_GENES if g not in sub]
+    import fd_bridge
+    # Phase 2: FD flex v2. The structure_v2 genes come from FD's flexbody.gene_schema() (the source of truth).
+    flex_raw = dict(raw.get("flex", {}))
+    flex_v2 = bool(flex_raw.get("enabled", False)) and int(flex_raw.get("version", 1)) == 2
+    asym_v2 = bool(flex_raw.get("asymmetric", False))
+    if "version" in flex_raw and int(flex_raw["version"]) not in (1, 2):
+        raise ValueError(f"flex.version must be 1 or 2, got {flex_raw['version']!r}")
+    if "asymmetric" in flex_raw and not flex_v2:
+        raise ValueError("flex.asymmetric needs flex v2 (flex.version = 2)")
+    extra_genes = None
+    if blk.pop(GS.STRUCTURE_V2_BLOCK, False):
+        if not flex_v2:
+            raise ValueError("the structure_v2 block needs flex v2 (flex: {enabled: true, version: 2})")
+        if blk.get("structure"):
+            raise ValueError("structure (flex v1) and structure_v2 (flex v2) cannot be evolved together")
+        extra_genes = GS.genes_from_fd_schema(fd_bridge.gene_schema_v2(asym_v2))
+        clash = sorted(set(raw.get("gene_overrides", {})) & {g.name for g in extra_genes})
+        if clash:
+            raise ValueError(f"gene_overrides {clash}: flex v2 gene ranges come from FD's gene_schema(), not the task")
+    elif flex_v2:
+        warnings.append("flex v2 without the structure_v2 block: every structure gene flies at FD's baseline")
+    if raw.get("fitness", {}).get("params", {}).get("struct_v2_mass_credit_clip") and not flex_v2:
+        raise ValueError("fitness.params.struct_v2_mass_credit_clip needs flex v2 (flex.version = 2)")
+    if "struct_v2_source" in raw.get("fitness", {}).get("params", {}) and not flex_v2:
+        raise ValueError("fitness.params.struct_v2_source needs flex v2 (flex.version = 2)")
     blocks = [b for b, on in blk.items() if on]
     subsets = {b: v for b, v in blk.items() if isinstance(v, list) and v}
-    import fd_bridge
     fixed_chord = sorted(set(raw.get("gene_overrides", {})) & set(fd_bridge.CHORD_CONSTANTS))
     if fixed_chord:
         raise ValueError(f"{fixed_chord} are not genes in Phase 1 (fixed per aircraft, FD decision 2026-10-06); "
@@ -187,7 +212,7 @@ def build_task(raw: Dict) -> Task:
     for k, v in {**prof.gain_overrides, **raw.get("gene_overrides", {})}.items():
         overrides[k] = {**overrides.get(k, {}), **v}
     spec = GS.build_spec(blocks, P.range_factors(prof), overrides, legacy_pitch_ranges=raw.get("legacy_pitch_ranges", False),
-                         gene_subsets=subsets)
+                         gene_subsets=subsets, extra_genes=extra_genes)
     fd = raw.get("fitness", {})
     params = {"n_limits": tuple(prof.n_limits), **fd.get("params", {})}
     weights = dict(fd.get("weights", {"track_alt": 1.0, "effort": 2.0}))
@@ -212,10 +237,14 @@ def build_task(raw: Dict) -> Task:
         import fd_bridge
         if fcfg.backend != "jsbsim_ext":
             raise ValueError("flex mode needs the jsbsim_ext backend")
-        fd_bridge.require_root(prof.jsbsim_model)
-        # with flex on, FD's coupled_sim consumes the structure genes -> the inert-block guard is lifted for them
-        caps["consumes"] = list(caps["consumes"]) + list(fd_bridge.FLEX_GENES)
-        caps["channels"] = list(caps["channels"]) + ["wing_root_bending", "tip_deflection", "tip_twist"]
+        if flex_v2:  # FD flexbody consumes the v2 structure genes (validated by FD's decode_genome_v2)
+            fd_bridge.require_root_v2(prof.jsbsim_model)
+            caps["consumes"] = list(caps["consumes"]) + list(fd_bridge.gene_names_v2(asym_v2))
+        else:
+            fd_bridge.require_root(prof.jsbsim_model)
+            # with flex on, FD's coupled_sim consumes the structure genes -> the inert-block guard is lifted for them
+            caps["consumes"] = list(caps["consumes"]) + list(fd_bridge.FLEX_GENES)
+            caps["channels"] = list(caps["channels"]) + ["wing_root_bending", "tip_deflection", "tip_twist"]
     inert = [g.name for g in spec.genes if g.name not in caps["consumes"]]
     if inert:
         msg = f"genes {inert} are not consumed by backend {caps['name']!r} (no dynamics for them yet)"
@@ -253,7 +282,42 @@ def build_task(raw: Dict) -> Task:
         conditions["bank_cmd_limit_deg"] = float(hh["bank_limit_deg"])
         conditions["hdg_i_limit_deg"] = float(hh["hdg_i_limit_deg"])
     flex_constants_used = {}
-    if flex_on:
+    if flex_on and flex_v2:
+        bad = set(flex) - {"enabled", "version", "asymmetric", "substeps", "mode", "model_version_check"}
+        if bad & set(fd_bridge.CHORD_CONSTANTS) or bad & {"tip_mass_frac", "x_ea", "x_cg"}:
+            raise ValueError(f"flex {sorted(bad)}: elastic axis, section CG and tip mass are fixed per aircraft by FD "
+                             "(INTERFACE_v2.md section 6) and cannot be overridden from a task config")
+        if bad:
+            raise ValueError(f"unknown flex v2 keys {sorted(bad)}")
+        if flex.get("mode", "twoway") != "twoway":
+            raise ValueError("flex v2 is two-way coupled only (FD FlexBodyCoupler, mode 'twoway')")
+        conditions["flex_mode"] = "v2"
+        conditions["flex_substeps"] = int(flex.get("substeps", 2))
+        conditions["flex_asymmetric"] = asym_v2
+        src = F.struct_v2_source(fcfg.params)
+        if src == "fd":
+            if fcfg.params.get("struct_v2_mass_credit_clip"):
+                raise ValueError("struct_v2_mass_credit_clip needs struct_v2_source 'genome' (in 'fd' mode structural_v2 "
+                                 "is FD's flexeval cost, J_mass included, unchanged)")
+            if fcfg.mode == "scalar" and fcfg.weights.get("structural_v2", 0.0) != 1.0:
+                warnings.append("struct_v2_source 'fd' with structural_v2 weight != 1: the cost is no longer flexeval's")
+        clip = fcfg.params.get("struct_v2_mass_credit_clip")
+        if clip:  # off by default since FD's §12 fix; A/B only
+            fd_bridge.mass_term_v2({k: 0.0 for k in ("wingR_lb", "wingL_lb", "ht_lb", "vt_lb", "fus_lb")} |
+                                   {"baseline_flexible_lb": 1.0}, 0.0, tuple(clip))  # validates the body names
+            warnings.append(f"struct_v2_mass_credit_clip on {list(clip)} (A/B only: superseded by FD's §12 sizing terms "
+                            "and minimum-gauge floor)")
+        mv = fd_bridge.check_model_version(prof.jsbsim_model, "full", flex.get("model_version_check", "warn"))
+        if mv["message"]:
+            warnings.append("FD MODEL_VERSION: " + mv["message"])
+        if asym_v2:
+            warnings.append("flex.asymmetric: FD's asymmetry genes only matter once lateral/roll scenarios exist; "
+                            "the current scenario sets have none (keep them off for Phase 2 runs)")
+        fd_vals = fd_bridge.fd_chord_defaults(prof.jsbsim_model)
+        flex_constants_used = {**fd_vals, "tip_mass_frac": 0.0, "source": "FD flexwing.AIRCRAFT_PROFILES (v2 uses v1's wing values)",
+                               "fidelity": "full", "margin_gate": fd_bridge.V2_MARGIN_GATES["full"],
+                               "fd_model_version": mv["current"], "fd_model_version_recorded": mv["recorded"]}
+    elif flex_on:
         conditions["flex_mode"] = flex.get("mode", "twoway")
         conditions["flex_substeps"] = int(flex.get("substeps", 2))
         bad = set(flex) - {"enabled", "mode", "substeps"}
@@ -280,13 +344,47 @@ def build_task(raw: Dict) -> Task:
                 sim_fixed[name] = spec.fixed[name]
     if prof.gain_bounds_provisional:  # e.g. f16 (FBW): derived ranges are placeholders, untuned
         from dataclasses import replace as _replace
-        spec.genes = [_replace(g, provisional=True) if g.block != "structure" else g for g in spec.genes]
+        spec.genes = [_replace(g, provisional=True) if g.block not in ("structure", GS.STRUCTURE_V2_BLOCK) else g
+                      for g in spec.genes]
         warnings.append(f"PROVISIONAL gain bounds for {prof.name}: {prof.gain_bounds_provisional}")
     warnings += prof.warnings + spec.notes
     if dist and not conditions:
         raise ValueError("disturbance_scenario needs the jsbsim_ext task conditions (a shared Phase-1 preset)")
+    init = resolve_init(raw.get("init"), spec, prof)
     return Task(raw.get("name", "task"), spec, fcfg, scfg, prof, raw, warnings, conditions, sim_fixed, flex_constants_used,
-                dist or {})
+                dist or {}, init)
+
+
+INIT_MODES = ("uniform", "baseline")
+
+
+def resolve_init(cfg: Optional[Dict], spec: GS.GenomeSpec, prof) -> Dict:
+    """Generation-0 seeding config ({} = evolve.py's own uniform draw, unchanged). Keys:
+    mode            "uniform" | "baseline" (structure genes at their baseline + N(0, sigma) in normalized units)
+    sigma           normalized-units std for the seeded genes (default 0.05); full ranges kept (clipped to [0, 1])
+    blocks          blocks seeded near their baseline (default ["structure_v2"]); the other genes keep the uniform
+                    draw, i.e. controller genes are initialised exactly as the current presets do
+    seed_runs       {aircraft: [run dir, ...]}: best genomes (e.g. v4) copied into the first individuals for the genes
+                    they have (controller genes); their structure genes sit exactly at the baseline
+    """
+    if not cfg:
+        return {}
+    cfg = dict(cfg)
+    bad = set(cfg) - {"mode", "sigma", "blocks", "seed_runs", "_comment"}
+    if bad:
+        raise ValueError(f"unknown init keys {sorted(bad)}")
+    mode = cfg.get("mode", "uniform")
+    if mode not in INIT_MODES:
+        raise ValueError(f"init.mode must be one of {INIT_MODES}, got {mode!r}")
+    sigma = float(cfg.get("sigma", 0.05))
+    if not (0.0 <= sigma <= 0.5):
+        raise ValueError(f"init.sigma must be in [0, 0.5] (normalized units), got {sigma}")
+    blocks = list(cfg.get("blocks", [GS.STRUCTURE_V2_BLOCK]))
+    unknown = set(blocks) - set(spec.enabled_blocks)
+    if unknown:
+        raise ValueError(f"init.blocks {sorted(unknown)} are not evolved by this task ({list(spec.enabled_blocks)})")
+    runs = dict(cfg.get("seed_runs", {}))
+    return {"mode": mode, "sigma": sigma, "blocks": blocks, "seed_runs": list(runs.get(prof.name, []))}
 
 
 # --------------------------------------------------------------------------- shims

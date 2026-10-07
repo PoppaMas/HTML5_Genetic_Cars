@@ -1,0 +1,1921 @@
+{
+ "aircraft": "737",
+ "er_run": "phase2-smoke-s1",
+ "er_best_id": "737:g4:r0",
+ "er_recorded_cost": 0.27524389750858025,
+ "schema_equal": true,
+ "schema_diff": [],
+ "profile_vs_pilot_diff": {},
+ "init": {
+  "er_pilot": {
+   "mode": "baseline",
+   "sigma": 0.1,
+   "blocks": [
+    "struct"
+   ]
+  },
+  "genome": {
+   "mode": "baseline",
+   "sigma": 0.1,
+   "blocks": [
+    "structure_v2"
+   ],
+   "seed_runs": []
+  }
+ },
+ "scenario_diff": [],
+ "encode_max_abs_diff_vs_er_genome_norm": 3.3306690738754696e-16,
+ "evals": {
+  "er_best": {
+   "er_cost": 0.27524389750858025,
+   "genome_cost": 0.27524389750858025,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "ok",
+    [
+     "ok",
+     "ok",
+     "ok"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 0.2418086117611267,
+     "genome": 0.2418086117611267,
+     "bitwise": true,
+     "sim_cost_er": 0.1460767232117324,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.3243688529305515,
+     "genome": 0.3243688529305515,
+     "bitwise": true,
+     "sim_cost_er": 0.22123936823471121,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.25955422783406257,
+     "genome": 0.25955422783406257,
+     "bitwise": true,
+     "sim_cost_er": 0.16282852984423887,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.026496942237463357,
+     "genome": 0.026496942237463357,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": 0.0008343786196078976,
+     "genome": 0.0008343786196078976,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.01973811441960617,
+     "genome": 0.01973811441960617,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.00020849934809981393,
+     "genome": 0.00020849934809981393,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.051251089120242205,
+     "genome": 0.051251089120242205,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.04152654509991411,
+     "genome": 0.04152654509991411,
+     "bitwise": true
+    },
+    "effort": {
+     "er": 0.032766024717862434,
+     "genome": 0.032766024717862434,
+     "bitwise": true
+    },
+    "comfort": {
+     "er": 1.3725480567102357,
+     "genome": 1.3725480567102357,
+     "bitwise": true
+    },
+    "heading": {
+     "er": 0.1028876392410068,
+     "genome": 0.1028876392410068,
+     "bitwise": true
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.1674442372305833,
+     "div_margin": 3.0,
+     "reversal_margin": 1.31145781625848
+    },
+    "genome": {
+     "flutter_margin": 1.1674442372305833,
+     "div_margin": 3.0,
+     "reversal_margin": 1.31145781625848,
+     "min_margin": 1.1674442372305833,
+     "binding": "empennage_yaw.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": 0.0027812620653596587,
+    "genome": 0.0027812620653596587,
+    "bitwise": true
+   }
+  },
+  "er_best_gains_fd_baseline_struct": {
+   "er_cost": 0.2237963059850432,
+   "genome_cost": 0.2237963059850432,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "ok",
+    [
+     "ok",
+     "ok",
+     "ok"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 0.18790495734432813,
+     "genome": 0.18790495734432813,
+     "bitwise": true,
+     "sim_cost_er": 0.15676256465667662,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.2842010695358348,
+     "genome": 0.2842010695358348,
+     "bitwise": true,
+     "sim_cost_er": 0.24425088624157426,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    },
+    {
+     "er": 0.1992828910749667,
+     "genome": 0.1992828910749667,
+     "bitwise": true,
+     "sim_cost_er": 0.16748772830816241,
+     "status": [
+      "ok",
+      "ok"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.013166162383545557,
+     "genome": 0.013166162383545557,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.021129750532693215,
+     "genome": 0.021129750532693215,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.042204049312487536,
+     "genome": 0.042204049312487536,
+     "bitwise": true
+    },
+    "effort": {
+     "er": 0.03658074681044692,
+     "genome": 0.03658074681044692,
+     "bitwise": true
+    },
+    "comfort": {
+     "er": 1.4621266692595816,
+     "genome": 1.4621266692595816,
+     "bitwise": true
+    },
+    "heading": {
+     "er": 0.1028516672443982,
+     "genome": 0.1028516672443982,
+     "bitwise": true
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.1770512201774948,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2731129363360358
+    },
+    "genome": {
+     "flutter_margin": 1.1770512201774948,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2731129363360358,
+     "min_margin": 1.1770512201774948,
+     "binding": "wingR.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": 0.0,
+    "genome": 0.0,
+    "bitwise": true
+   }
+  },
+  "er_overload:737:g0:r15": {
+   "er_cost": 1887.93356868726,
+   "genome_cost": 1887.93356868726,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "overload",
+    [
+     "overload",
+     "overload",
+     "overload"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 1858.5508526378776,
+     "genome": 1858.5508526378776,
+     "bitwise": true,
+     "sim_cost_er": 1858.2407407407409,
+     "status": [
+      "overload",
+      "overload"
+     ]
+    },
+    {
+     "er": 1897.6249267119515,
+     "genome": 1897.6249267119515,
+     "bitwise": true,
+     "sim_cost_er": 1897.3148148148148,
+     "status": [
+      "overload",
+      "overload"
+     ]
+    },
+    {
+     "er": 1907.6249267119515,
+     "genome": 1907.6249267119515,
+     "bitwise": true,
+     "sim_cost_er": 1907.3148148148148,
+     "status": [
+      "overload",
+      "overload"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 0.2586968806751753,
+     "genome": 0.2586968806751753,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": -0.004150259956355788,
+     "genome": -0.004150259956355788,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.0025803295327380634,
+     "genome": 0.0025803295327380634,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0002730201140008835,
+     "genome": 0.0002730201140008835,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.03357587884610846,
+     "genome": 0.03357587884610846,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.002392237431542339,
+     "genome": 0.002392237431542339,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.0033575878846108377,
+     "genome": 0.0033575878846108377,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.013386222608792455,
+     "genome": 0.013386222608792455,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "effort": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "comfort": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "heading": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 1.0982754934786754,
+     "div_margin": 3.0,
+     "reversal_margin": 1.18984061117441
+    },
+    "genome": {
+     "flutter_margin": 1.0982754934786754,
+     "div_margin": 3.0,
+     "reversal_margin": 1.18984061117441,
+     "min_margin": 1.0982754934786754,
+     "binding": "wingR.coalescence_margin",
+     "fail": null
+    }
+   },
+   "mass_frac": {
+    "er": -0.013834199854519294,
+    "genome": -0.013834199854519294,
+    "bitwise": true
+   }
+  },
+  "er_flutter:737:g1:r15": {
+   "er_cost": 2000.0,
+   "genome_cost": 2000.0,
+   "cost_bitwise": true,
+   "cost_abs_diff": 0.0,
+   "status": [
+    "flutter",
+    [
+     "aeroelastic_flutter",
+     "aeroelastic_flutter",
+     "aeroelastic_flutter"
+    ]
+   ],
+   "per_scenario": [
+    {
+     "er": 2000.0,
+     "genome": 2000.0,
+     "bitwise": true,
+     "sim_cost_er": null,
+     "status": [
+      "flutter",
+      "aeroelastic_flutter"
+     ]
+    },
+    {
+     "er": 2000.0,
+     "genome": 2000.0,
+     "bitwise": true,
+     "sim_cost_er": null,
+     "status": [
+      "flutter",
+      "aeroelastic_flutter"
+     ]
+    },
+    {
+     "er": 2000.0,
+     "genome": 2000.0,
+     "bitwise": true,
+     "sim_cost_er": null,
+     "status": [
+      "flutter",
+      "aeroelastic_flutter"
+     ]
+    }
+   ],
+   "terms": {
+    "J_flutter_margin": {
+     "er": 1.1603009060707519,
+     "genome": 1.1603009060707519,
+     "bitwise": true
+    },
+    "J_div_margin": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_mass": {
+     "er": -0.011401316281785206,
+     "genome": -0.011401316281785206,
+     "bitwise": true
+    },
+    "J_bm_rms": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_tip": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_twist": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_reversal_margin": {
+     "er": 0.4096746215156976,
+     "genome": 0.4096746215156976,
+     "bitwise": true
+    },
+    "J_tail_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_smooth": {
+     "er": 0.0003056051050213073,
+     "genome": 0.0003056051050213073,
+     "bitwise": true
+    },
+    "J_wing_bm_limit": {
+     "er": 0.36012497469072263,
+     "genome": 0.36012497469072263,
+     "bitwise": true
+    },
+    "J_wing_torque_limit": {
+     "er": 0.026852235717783418,
+     "genome": 0.026852235717783418,
+     "bitwise": true
+    },
+    "J_wing_ip_limit": {
+     "er": 0.036012497469072265,
+     "genome": 0.036012497469072265,
+     "bitwise": true
+    },
+    "J_tail_bm_limit": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_fus_bm_limit": {
+     "er": 0.004749226886996827,
+     "genome": 0.004749226886996827,
+     "bitwise": true
+    },
+    "J_wing_torque_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    },
+    "J_wing_ip_peak": {
+     "er": 0.0,
+     "genome": 0.0,
+     "bitwise": true
+    }
+   },
+   "controller_terms": {
+    "track": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "effort": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "comfort": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    },
+    "heading": {
+     "er": 0.0,
+     "genome": NaN,
+     "bitwise": false
+    }
+   },
+   "margins": {
+    "er": {
+     "flutter_margin": 0.9845654710989205,
+     "div_margin": 3.0,
+     "reversal_margin": 1.071988340919165
+    },
+    "genome": {
+     "flutter_margin": 0.9845654710989205,
+     "div_margin": 3.0,
+     "reversal_margin": 1.071988340919165,
+     "min_margin": 0.9845654710989205,
+     "binding": "wingR.coalescence_margin",
+     "fail": "flutter"
+    }
+   },
+   "mass_frac": {
+    "er": -0.038004387605950686,
+    "genome": -0.038004387605950686,
+    "bitwise": true
+   }
+  }
+ },
+ "raw": {
+  "er": {
+   "profile_vs_pilot_diff": {},
+   "scenarios": [
+    {
+     "seed": 1016164991,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ],
+     "wind_north_fps": 0.0,
+     "wind_east_fps": 0.0,
+     "gust_sigma_fps": 0.0,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": 0.0,
+     "discrete_gust_t_s": 30.0,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    },
+    {
+     "seed": 1099128569,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ],
+     "wind_north_fps": 14.815420728420232,
+     "wind_east_fps": 18.893081885137402,
+     "gust_sigma_fps": 3.8459483414117317,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": -10.96328514280803,
+     "discrete_gust_t_s": 41.554051876408835,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    },
+    {
+     "seed": 669652944,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ],
+     "wind_north_fps": -12.549072662472344,
+     "wind_east_fps": -4.042050948210394,
+     "gust_sigma_fps": 1.082677339729205,
+     "gust_tau_s": 2.0,
+     "discrete_gust_fps": 11.767003192534947,
+     "discrete_gust_t_s": 31.594634329981844,
+     "discrete_gust_len_s": 3.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1
+    }
+   ],
+   "pilot_init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+     "struct"
+    ]
+   },
+   "schema": [
+    [
+     "kp_alt",
+     0.00073,
+     0.73,
+     "log"
+    ],
+    [
+     "ki_alt",
+     3.65e-07,
+     0.5,
+     "log0"
+    ],
+    [
+     "kd_alt",
+     0.00365,
+     3.0,
+     "log"
+    ],
+    [
+     "kp_pitch",
+     0.002,
+     7.51,
+     "log"
+    ],
+    [
+     "ki_pitch",
+     1e-05,
+     3.01,
+     "log0"
+    ],
+    [
+     "kd_pitch",
+     0.0001,
+     7.51,
+     "log"
+    ],
+    [
+     "kp_hdg",
+     0.137,
+     13.7,
+     "log"
+    ],
+    [
+     "ki_hdg",
+     2.74e-05,
+     0.274,
+     "log0"
+    ],
+    [
+     "wing_ei_root",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "wing_ei_taper_1",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_2",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_3",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_4",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_root",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_tip",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_nsm_root",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "wing_nsm_tip",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "tail_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "fuselage_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "struct_damping_ratio",
+     0.005,
+     0.05,
+     "log"
+    ]
+   ],
+   "evals": {
+    "er_best": {
+     "cost": 0.27524389750858025,
+     "status": "ok",
+     "terms": {
+      "track": 0.04152654509991411,
+      "effort": 0.032766024717862434,
+      "comfort": 1.3725480567102357,
+      "heading": 0.1028876392410068,
+      "hold": 0.0,
+      "J_flutter_margin": 0.026496942237463357,
+      "J_div_margin": 0.0,
+      "J_mass": 0.0008343786196078976,
+      "J_bm_rms": 0.01973811441960617,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.00020849934809981393,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.051251089120242205,
+      "J_fus_bm_limit": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 0.2418086117611267,
+       "sim_cost": 0.1460767232117324,
+       "status": "ok",
+       "track": 0.036092634030332776,
+       "effort": 0.026775731958959763,
+       "comfort": 1.1285848579388174,
+       "heading_rms": 0.0003382366539223671
+      },
+      {
+       "cost": 0.3243688529305515,
+       "sim_cost": 0.22123936823471121,
+       "status": "ok",
+       "track": 0.046339678606018675,
+       "effort": 0.04218251106730248,
+       "comfort": 1.7593577107825624,
+       "heading_rms": 0.2566781954959473
+      },
+      {
+       "cost": 0.25955422783406257,
+       "sim_cost": 0.16282852984423887,
+       "status": "ok",
+       "track": 0.04214732266339087,
+       "effort": 0.02933983112732506,
+       "comfort": 1.2297016014093274,
+       "heading_rms": 0.05164648557315078
+      }
+     ],
+     "per_scenario_struct": [
+      {
+       "J_bm_rms": 0.016940979223981016,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.024338575370427044,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.017934788664410447,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      }
+     ],
+     "margins": {
+      "flutter_margin": 1.1674442372305833,
+      "div_margin": 3.0,
+      "reversal_margin": 1.31145781625848
+     },
+     "mass_total_frac": 0.0027812620653596587,
+     "model_version": "full:flexv2:2c73464b"
+    },
+    "er_best_gains_fd_baseline_struct": {
+     "cost": 0.2237963059850432,
+     "status": "ok",
+     "terms": {
+      "track": 0.042204049312487536,
+      "effort": 0.03658074681044692,
+      "comfort": 1.4621266692595816,
+      "heading": 0.1028516672443982,
+      "hold": 0.0,
+      "J_flutter_margin": 0.013166162383545557,
+      "J_div_margin": 0.0,
+      "J_mass": 0.0,
+      "J_bm_rms": 0.021129750532693215,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 0.18790495734432813,
+       "sim_cost": 0.15676256465667662,
+       "status": "ok",
+       "track": 0.03689937591003237,
+       "effort": 0.030299184630151504,
+       "comfort": 1.1852287623838222,
+       "heading_rms": 0.00033813671501398726
+      },
+      {
+       "cost": 0.2842010695358348,
+       "sim_cost": 0.24425088624157426,
+       "status": "ok",
+       "track": 0.04845986448251355,
+       "effort": 0.04836412768258688,
+       "comfort": 1.929937336752702,
+       "heading_rms": 0.25658995562518566
+      },
+      {
+       "cost": 0.1992828910749667,
+       "sim_cost": 0.16748772830816241,
+       "status": "ok",
+       "track": 0.04125290754491669,
+       "effort": 0.031078928118602366,
+       "comfort": 1.2712139086422205,
+       "heading_rms": 0.05162690939299497
+      }
+     ],
+     "per_scenario_struct": [
+      {
+       "J_bm_rms": 0.017976230304105948,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.02678402091071499,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      },
+      {
+       "J_bm_rms": 0.018629000383258713,
+       "J_bm_peak": 0.0,
+       "J_tip": 0.0,
+       "J_twist": 0.0,
+       "J_tail_bm_peak": 0.0,
+       "J_fus_bm_peak": 0.0,
+       "J_wing_torque_peak": 0.0,
+       "J_wing_ip_peak": 0.0
+      }
+     ],
+     "margins": {
+      "flutter_margin": 1.1770512201774948,
+      "div_margin": 3.0,
+      "reversal_margin": 1.2731129363360358
+     },
+     "mass_total_frac": 0.0,
+     "model_version": "full:flexv2:2c73464b"
+    },
+    "er_overload:737:g0:r15": {
+     "cost": 1887.93356868726,
+     "status": "overload",
+     "terms": {
+      "track": 0.0,
+      "effort": 0.0,
+      "comfort": 0.0,
+      "heading": 0.0,
+      "hold": 0.0,
+      "J_flutter_margin": 0.2586968806751753,
+      "J_div_margin": 0.0,
+      "J_mass": -0.004150259956355788,
+      "J_bm_rms": 0.0,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.0025803295327380634,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0002730201140008835,
+      "J_wing_bm_limit": 0.03357587884610846,
+      "J_wing_torque_limit": 0.002392237431542339,
+      "J_wing_ip_limit": 0.0033575878846108377,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.013386222608792455,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 1858.5508526378776,
+       "sim_cost": 1858.2407407407409,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN
+      },
+      {
+       "cost": 1897.6249267119515,
+       "sim_cost": 1897.3148148148148,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN
+      },
+      {
+       "cost": 1907.6249267119515,
+       "sim_cost": 1907.3148148148148,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN
+      }
+     ],
+     "per_scenario_struct": [
+      null,
+      null,
+      null
+     ],
+     "margins": {
+      "flutter_margin": 1.0982754934786754,
+      "div_margin": 3.0,
+      "reversal_margin": 1.18984061117441
+     },
+     "mass_total_frac": -0.013834199854519294,
+     "model_version": "full:flexv2:2c73464b"
+    },
+    "er_flutter:737:g1:r15": {
+     "cost": 2000.0,
+     "status": "flutter",
+     "terms": {
+      "track": 0.0,
+      "effort": 0.0,
+      "comfort": 0.0,
+      "heading": 0.0,
+      "hold": 0.0,
+      "J_flutter_margin": 1.1603009060707519,
+      "J_div_margin": 0.0,
+      "J_mass": -0.011401316281785206,
+      "J_bm_rms": 0.0,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_reversal_margin": 0.4096746215156976,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_smooth": 0.0003056051050213073,
+      "J_wing_bm_limit": 0.36012497469072263,
+      "J_wing_torque_limit": 0.026852235717783418,
+      "J_wing_ip_limit": 0.036012497469072265,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.004749226886996827,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "per_scenario": [
+      {
+       "cost": 2000.0,
+       "sim_cost": null,
+       "status": "flutter",
+       "track": null,
+       "effort": null,
+       "comfort": null,
+       "heading_rms": null
+      },
+      {
+       "cost": 2000.0,
+       "sim_cost": null,
+       "status": "flutter",
+       "track": null,
+       "effort": null,
+       "comfort": null,
+       "heading_rms": null
+      },
+      {
+       "cost": 2000.0,
+       "sim_cost": null,
+       "status": "flutter",
+       "track": null,
+       "effort": null,
+       "comfort": null,
+       "heading_rms": null
+      }
+     ],
+     "per_scenario_struct": [
+      null,
+      null,
+      null
+     ],
+     "margins": {
+      "flutter_margin": 0.9845654710989205,
+      "div_margin": 3.0,
+      "reversal_margin": 1.071988340919165
+     },
+     "mass_total_frac": -0.038004387605950686,
+     "model_version": "full:flexv2:2c73464b"
+    }
+   }
+  },
+  "genome": {
+   "schema": [
+    [
+     "kp_alt",
+     0.00073,
+     0.73,
+     "log"
+    ],
+    [
+     "ki_alt",
+     3.65e-07,
+     0.5,
+     "log0"
+    ],
+    [
+     "kd_alt",
+     0.00365,
+     3.0,
+     "log"
+    ],
+    [
+     "kp_pitch",
+     0.002,
+     7.51,
+     "log"
+    ],
+    [
+     "ki_pitch",
+     1e-05,
+     3.01,
+     "log0"
+    ],
+    [
+     "kd_pitch",
+     0.0001,
+     7.51,
+     "log"
+    ],
+    [
+     "kp_hdg",
+     0.137,
+     13.7,
+     "log"
+    ],
+    [
+     "ki_hdg",
+     2.74e-05,
+     0.274,
+     "log0"
+    ],
+    [
+     "wing_ei_root",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "wing_ei_taper_1",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_2",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_3",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_ei_taper_4",
+     0.75,
+     1.05,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_root",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_gj_ratio_tip",
+     0.8,
+     1.15,
+     "linear"
+    ],
+    [
+     "wing_nsm_root",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "wing_nsm_tip",
+     0.8,
+     1.25,
+     "log"
+    ],
+    [
+     "tail_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "fuselage_stiffness_scale",
+     0.6,
+     2.0,
+     "log"
+    ],
+    [
+     "struct_damping_ratio",
+     0.005,
+     0.05,
+     "log"
+    ]
+   ],
+   "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+     "structure_v2"
+    ],
+    "seed_runs": []
+   },
+   "scenarios": [
+    {
+     "seed": 1016164991,
+     "wind_north_fps": 0.0,
+     "wind_east_fps": 0.0,
+     "gust_sigma_fps": 0.0,
+     "discrete_gust_fps": 0.0,
+     "discrete_gust_t_s": 30.0,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ]
+    },
+    {
+     "seed": 1099128569,
+     "wind_north_fps": 14.815420728420232,
+     "wind_east_fps": 18.893081885137402,
+     "gust_sigma_fps": 3.8459483414117317,
+     "discrete_gust_fps": -10.96328514280803,
+     "discrete_gust_t_s": 41.554051876408835,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ]
+    },
+    {
+     "seed": 669652944,
+     "wind_north_fps": -12.549072662472344,
+     "wind_east_fps": -4.042050948210394,
+     "gust_sigma_fps": 1.082677339729205,
+     "discrete_gust_fps": 11.767003192534947,
+     "discrete_gust_t_s": 31.594634329981844,
+     "duration_s": 90.0,
+     "h0_ft": 10000.0,
+     "speed_kts": 250.0,
+     "ramp_fpm": 600.0,
+     "ramp_accel_g": 0.1,
+     "steps": [
+      [
+       0.0,
+       10000.0
+      ],
+      [
+       5.0,
+       10200.0
+      ],
+      [
+       50.0,
+       10000.0
+      ]
+     ]
+    }
+   ],
+   "weights": {
+    "track_alt": 1.0,
+    "effort": 2.0,
+    "comfort": 0.05,
+    "track_heading_rms": 0.01,
+    "structural_v2": 1.0
+   },
+   "params": {
+    "struct_v2_source": "fd",
+    "struct_v2_w_peak": 0.1,
+    "struct_v2_w_rms": 0.5
+   },
+   "warnings": [
+    "override kp_alt: [0.00073, 0.73] log",
+    "override ki_alt: [3.65e-07, 0.5] log0",
+    "override kd_alt: [0.00365, 3] log",
+    "override kp_pitch: [0.002, 7.51] log",
+    "override ki_pitch: [1e-05, 3.01] log0",
+    "override kd_pitch: [0.0001, 7.51] log",
+    "override kp_hdg: [0.137, 13.7] log",
+    "override ki_hdg: [2.74e-05, 0.274] log0",
+    "structure_v2 block: FD flex v2 genes from flexbody.gene_schema() (notional structural data, see FD INTERFACE_v2.md)"
+   ],
+   "evals": {
+    "er_best": {
+     "cost": 0.27524389750858025,
+     "per_scenario": [
+      {
+       "cost": 0.2418086117611267,
+       "status": "ok",
+       "track": 0.036092634030332776,
+       "effort": 0.026775731958959763,
+       "comfort": 1.1285848579388174,
+       "heading_rms": 0.0003382366539223671,
+       "structural_v2": 0.0957318885493943
+      },
+      {
+       "cost": 0.3243688529305515,
+       "status": "ok",
+       "track": 0.046339678606018675,
+       "effort": 0.04218251106730248,
+       "comfort": 1.7593577107825624,
+       "heading_rms": 0.2566781954959473,
+       "structural_v2": 0.10312948469584032
+      },
+      {
+       "cost": 0.25955422783406257,
+       "status": "ok",
+       "track": 0.04214732266339087,
+       "effort": 0.02933983112732506,
+       "comfort": 1.2297016014093274,
+       "heading_rms": 0.05164648557315078,
+       "structural_v2": 0.09672569798982372
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.026496942237463357,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": 0.0008343786196078976,
+      "J_smooth": 0.00020849934809981393,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.051251089120242205,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.01973811441960617,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 0.07879090932541327,
+     "objectives": {
+      "track_alt": 0.04152654509991411,
+      "effort": 0.032766024717862434,
+      "comfort": 1.3725480567102357,
+      "track_heading_rms": 0.1028876392410068,
+      "structural_v2": 0.09852902374501944,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.1674442372305833,
+      "div_margin": 3.0,
+      "reversal_margin": 1.31145781625848,
+      "min_margin": 1.1674442372305833,
+      "binding": "empennage_yaw.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": 0.0027812620653596587,
+     "encode": [
+      0.7005024898337558,
+      0.8296139606078329,
+      0.7264736103123706,
+      0.3363597241425698,
+      0.633770667518696,
+      0.3916971921778757,
+      0.10973466400669675,
+      0.3171021222959454,
+      0.5254212809118338,
+      0.735243460925757,
+      0.8912946372853786,
+      0.7920912952194206,
+      0.9015301097013272,
+      0.4580092418501904,
+      0.5602639991966268,
+      0.40920212106188314,
+      0.4806196754577443,
+      0.25478411690766667,
+      0.47275018910163874,
+      0.7620956044873282
+     ]
+    },
+    "er_best_gains_fd_baseline_struct": {
+     "cost": 0.2237963059850432,
+     "per_scenario": [
+      {
+       "cost": 0.18790495734432813,
+       "status": "ok",
+       "track": 0.03689937591003237,
+       "effort": 0.030299184630151504,
+       "comfort": 1.1852287623838222,
+       "heading_rms": 0.00033813671501398726,
+       "structural_v2": 0.031142392687651503
+      },
+      {
+       "cost": 0.2842010695358348,
+       "status": "ok",
+       "track": 0.04845986448251355,
+       "effort": 0.04836412768258688,
+       "comfort": 1.929937336752702,
+       "heading_rms": 0.25658995562518566,
+       "structural_v2": 0.03995018329426055
+      },
+      {
+       "cost": 0.1992828910749667,
+       "status": "ok",
+       "track": 0.04125290754491669,
+       "effort": 0.031078928118602366,
+       "comfort": 1.2712139086422205,
+       "heading_rms": 0.05162690939299497,
+       "structural_v2": 0.03179516276680427
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.013166162383545557,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": 0.0,
+      "J_smooth": 0.0,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.021129750532693215,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 0.013166162383545557,
+     "objectives": {
+      "track_alt": 0.042204049312487536,
+      "effort": 0.03658074681044692,
+      "comfort": 1.4621266692595816,
+      "track_heading_rms": 0.1028516672443982,
+      "structural_v2": 0.03429591291623877,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.1770512201774948,
+      "div_margin": 3.0,
+      "reversal_margin": 1.2731129363360358,
+      "min_margin": 1.1770512201774948,
+      "binding": "wingR.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": 0.0,
+     "encode": [
+      0.7005024898337558,
+      0.8296139606078329,
+      0.7264736103123706,
+      0.3363597241425698,
+      0.633770667518696,
+      0.3916971921778757,
+      0.10973466400669675,
+      0.3171021222959454,
+      0.424283357506555,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.8333333333333333,
+      0.5714285714285715,
+      0.5714285714285715,
+      0.5,
+      0.5,
+      0.424283357506555,
+      0.424283357506555,
+      0.6020599913279623
+     ]
+    },
+    "er_overload:737:g0:r15": {
+     "cost": 1887.93356868726,
+     "per_scenario": [
+      {
+       "cost": 1858.5508526378776,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN,
+       "structural_v2": NaN
+      },
+      {
+       "cost": 1897.6249267119515,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN,
+       "structural_v2": NaN
+      },
+      {
+       "cost": 1907.6249267119515,
+       "status": "overload",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": NaN,
+       "heading_rms": NaN,
+       "structural_v2": NaN
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 0.2586968806751753,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0025803295327380634,
+      "J_mass": -0.004150259956355788,
+      "J_smooth": 0.0002730201140008835,
+      "J_wing_bm_limit": 0.03357587884610846,
+      "J_wing_torque_limit": 0.002392237431542339,
+      "J_wing_ip_limit": 0.0033575878846108377,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.013386222608792455,
+      "J_bm_rms": 0.0,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 0.3101118971366126,
+     "objectives": {
+      "track_alt": NaN,
+      "effort": NaN,
+      "comfort": NaN,
+      "track_heading_rms": NaN,
+      "structural_v2": NaN,
+      "aeroelastic_margin_penalty": 0.0
+     },
+     "aeroelastic": {
+      "flutter_margin": 1.0982754934786754,
+      "div_margin": 3.0,
+      "reversal_margin": 1.18984061117441,
+      "min_margin": 1.0982754934786754,
+      "binding": "wingR.coalescence_margin",
+      "fail": null
+     },
+     "mass_frac": -0.013834199854519294,
+     "encode": [
+      0.6538660110683944,
+      0.4312267487774062,
+      0.8673205056421992,
+      0.632135117500167,
+      0.8102743521062991,
+      0.34179472394011307,
+      0.5436692896684556,
+      0.1962968851147534,
+      0.2887763276458857,
+      0.7133872749408605,
+      0.8850415528713631,
+      0.9351741994212114,
+      0.7664652845957778,
+      0.6254412886577775,
+      0.583124098371566,
+      0.6518749034018735,
+      0.4998481560291263,
+      0.5233080887033617,
+      0.33397157157512847,
+      0.58357210638176
+     ]
+    },
+    "er_flutter:737:g1:r15": {
+     "cost": 2000.0,
+     "per_scenario": [
+      {
+       "cost": 2000.0,
+       "status": "aeroelastic_flutter",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": null,
+       "heading_rms": null,
+       "structural_v2": null
+      },
+      {
+       "cost": 2000.0,
+       "status": "aeroelastic_flutter",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": null,
+       "heading_rms": null,
+       "structural_v2": null
+      },
+      {
+       "cost": 2000.0,
+       "status": "aeroelastic_flutter",
+       "track": NaN,
+       "effort": NaN,
+       "comfort": null,
+       "heading_rms": null,
+       "structural_v2": null
+      }
+     ],
+     "fd_struct_terms": {
+      "J_flutter_margin": 1.1603009060707519,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.4096746215156976,
+      "J_mass": -0.011401316281785206,
+      "J_smooth": 0.0003056051050213073,
+      "J_wing_bm_limit": 0.36012497469072263,
+      "J_wing_torque_limit": 0.026852235717783418,
+      "J_wing_ip_limit": 0.036012497469072265,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.004749226886996827,
+      "J_bm_rms": 0.0,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+     },
+     "fd_pre_sum": 1.9866187511742608,
+     "objectives": {
+      "track_alt": NaN,
+      "effort": NaN,
+      "comfort": NaN,
+      "track_heading_rms": NaN,
+      "structural_v2": NaN
+     },
+     "aeroelastic": {
+      "flutter_margin": 0.9845654710989205,
+      "div_margin": 3.0,
+      "reversal_margin": 1.071988340919165,
+      "min_margin": 0.9845654710989205,
+      "binding": "wingR.coalescence_margin",
+      "fail": "flutter"
+     },
+     "mass_frac": -0.038004387605950686,
+     "encode": [
+      0.641328169139375,
+      0.9746928128822894,
+      0.6252614844151068,
+      0.6936228347029152,
+      0.8398815210314088,
+      0.2957057335572428,
+      0.5386424040898157,
+      0.9553098838157066,
+      0.04569182576090431,
+      0.9100151222303601,
+      0.7137505168662241,
+      0.8325737977452254,
+      0.7154487335908554,
+      0.6766627571235247,
+      0.5917019470046087,
+      0.5613509386435374,
+      0.5903491844609655,
+      0.43641108343852664,
+      0.3689301357350142,
+      0.6078016575321987
+     ]
+    }
+   }
+  }
+ },
+ "er_recompute_equals_recorded": {
+  "er_best": true,
+  "er_overload:737:g0:r15": true,
+  "er_flutter:737:g1:r15": true
+ }
+}

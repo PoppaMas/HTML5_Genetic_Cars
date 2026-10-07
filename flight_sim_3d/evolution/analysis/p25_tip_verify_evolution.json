@@ -1,0 +1,65 @@
+{
+  "model_version_expected": "full:flexv2:e11b8214",
+  "cases": {
+    "baseline": {
+      "model_version": "full:flexv2:e11b8214",
+      "cost": 0.24220696133846464,
+      "per_scenario_cost": [
+        0.127721836186873,
+        0.3978995504616569,
+        0.20099949736686393
+      ],
+      "J_wing_tip_bm_limit": 0.0,
+      "fd_struct_sum": 0.030819138741545574,
+      "match_total": true,
+      "match_per": true,
+      "match_tip": true,
+      "match_struct": true,
+      "bit_identical": true,
+      "delta_total": 0.0,
+      "delta_per": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_tip": 0.0,
+      "delta_struct": 0.0,
+      "ref_total": 0.24220696133846464,
+      "ref_tip": 0.0,
+      "ref_struct": 0.030819138741545574,
+      "bit_identical_primary": true,
+      "struct_within_ulp": true
+    },
+    "soft_tip_taper4_0.75": {
+      "model_version": "full:flexv2:e11b8214",
+      "cost": 0.2657981420373094,
+      "per_scenario_cost": [
+        0.14835085230565445,
+        0.4276350388755169,
+        0.2214085349307567
+      ],
+      "J_wing_tip_bm_limit": 0.017509318343313852,
+      "fd_struct_sum": 0.05151297028380243,
+      "match_total": true,
+      "match_per": true,
+      "match_tip": true,
+      "match_struct": false,
+      "bit_identical": true,
+      "delta_total": 0.0,
+      "delta_per": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "delta_tip": 0.0,
+      "delta_struct": -6.938893903907228e-18,
+      "ref_total": 0.2657981420373094,
+      "ref_tip": 0.017509318343313852,
+      "ref_struct": 0.05151297028380244,
+      "bit_identical_primary": true,
+      "struct_within_ulp": true
+    }
+  },
+  "all_bit_identical": true,
+  "all_bit_identical_primary": true
+}

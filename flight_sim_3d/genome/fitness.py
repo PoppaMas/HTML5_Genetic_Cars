@@ -22,6 +22,7 @@ reproduce sim.evaluate's cost bit-for-bit.
 """
 from __future__ import annotations
 
+import dataclasses
 import math
 from dataclasses import dataclass, field
 from typing import Callable, Dict, List, Optional, Sequence, Tuple
@@ -156,6 +157,90 @@ def obj_structural(tel, res, p):
     return peak + p.get("fatigue_weight", 1.0) * rms
 
 
+# --- Phase 2 (FD flex v2) structural objective -------------------------------------------------------------------
+# Per-body root loads normalised by their limit loads (FD's allowables: wing n_limit*M_1g*wing_ei_root, tail/fin lift
+# at q_D x 5 deg, fuselage tail load + n_limit inertia; all scale with their stiffness gene, i.e. strength ~ stiffness)
+# + the total structural mass change (FD J_mass = 0.3 * dm/m_flexible) so stiffer is not free + FD's hinge^2 terms that
+# only bite above a limit (wing peak, tip deflection, twist, tail and fuselage peak) + FD's smoothness term.
+V2_LOAD_BODIES = {"wing": ("wingR_bm", "wingL_bm"), "ht": ("htR_bm", "htL_bm"), "vt": ("vt_bm",),
+                  "fusV": ("fusV_bm",), "fusL": ("fusL_bm",)}
+V2_ALLOW_KEY = {"ht": "ht_bm_allow", "vt": "vt_bm_allow", "fusV": "fusV_bm_allow", "fusL": "fusL_bm_allow"}
+V2_HINGE_TERMS = ("J_bm_peak", "J_tip", "J_twist", "J_tail_bm_peak", "J_fus_bm_peak",   # FD response_terms_v2, FD weights
+                  "J_wing_torque_peak", "J_wing_ip_peak")    # FD §12 flown terms (full fidelity only; missing -> 0)
+# FD §12 / P2.5 sizing (pre-flight). Resolved from FD live via fd_bridge so new keys (e.g. J_wing_tip_bm_limit) land;
+# the pin equals flexbody.SIZING_TERMS at P2.5 (tests assert equality).
+V2_SIZING_TERMS = __import__("fd_bridge", fromlist=["SIZING_TERMS_V2"]).SIZING_TERMS_V2
+STRUCT_V2_DEFAULTS = {"struct_v2_w_peak": 0.1, "struct_v2_w_rms": 0.5}
+
+
+def load_ratios_v2(f2: Dict) -> Dict[str, Dict[str, float]]:
+    """{body: {"peak": max |M| / allowable, "rms": RMS(M - M_1g) / allowable}} for wing, ht, vt, fusV, fusL
+    (left/right pairs: the worse side). Wing torque / in-plane moments have no FD allowable and are reported only."""
+    L, al = f2["loads"], f2["allowables"]
+    out = {}
+    for b, keys in V2_LOAD_BODIES.items():
+        lim = abs(float(f2["bm_allow"] if b == "wing" else al[V2_ALLOW_KEY[b]]))
+        out[b] = {"peak": max(L[k]["peak_abs"] for k in keys) / lim, "rms": max(L[k]["rms_dev_1g"] for k in keys) / lim}
+    return out
+
+
+def structural_v2_terms(res: Dict, p: Dict) -> Dict[str, float]:
+    f2, pre = res["flex_v2"], res["flex_v2_pre"]
+    w = {**STRUCT_V2_DEFAULTS, **{k: v for k, v in p.items() if k in STRUCT_V2_DEFAULTS}}
+    r = load_ratios_v2(f2)
+    terms = {"load_peak": w["struct_v2_w_peak"] * float(np.mean([v["peak"] for v in r.values()])),
+             "load_rms": w["struct_v2_w_rms"] * float(np.mean([v["rms"] for v in r.values()])),
+             "mass": float(pre["J_mass"]), "smooth": float(pre["J_smooth"])}
+    for k in V2_SIZING_TERMS:  # pre-flight, once per genome (identical in every scenario); FD weights and values
+        terms[k] = float(pre.get("sizing", {}).get(k, 0.0))
+    for k in V2_HINGE_TERMS:   # flown; a term FD does not compute at this fidelity counts 0, never an error
+        terms[k] = float(f2["terms"].get(k, 0.0))
+    return terms
+
+
+# struct_v2_source "fd" (phase2_flex, 2026-10-06 08:35): structural_v2 = FD's flexeval structural cost, i.e. exactly what
+# flexeval.evaluate(fidelity="full") adds to the Runner's sim cost per scenario: pre-flight sum over PRE_TERMS["full"]
+# (margin hinges, J_mass, J_smooth, 5 sizing terms; once per genome, carried by every scenario) + the sum of FD's flown
+# response terms (response_terms_v2, 8 terms). FD weights; none of our own peak/RMS terms. "genome" = the formula above.
+STRUCT_V2_SOURCES = ("fd", "genome")
+FD_PRE_TERMS_FULL_PIN = (("J_flutter_margin", "J_div_margin", "J_reversal_margin", "J_mass", "J_smooth")
+                         + tuple(V2_SIZING_TERMS))
+FD_RESP_TERMS_FULL = ("J_bm_rms", "J_bm_peak", "J_tip", "J_twist", "J_tail_bm_peak", "J_fus_bm_peak",
+                      "J_wing_torque_peak", "J_wing_ip_peak")
+
+
+def fd_pre_terms_full():
+    """FD flexeval.PRE_TERMS['full'] live (falls back to the P2.5 pin)."""
+    try:
+        return tuple(__import__("fd_bridge", fromlist=["_import"])._import("flexeval").PRE_TERMS["full"])
+    except Exception:
+        return FD_PRE_TERMS_FULL_PIN
+
+
+FD_PRE_TERMS_FULL = fd_pre_terms_full()
+
+
+def struct_v2_source(p: Dict) -> str:
+    src = (p or {}).get("struct_v2_source", "genome")
+    if src not in STRUCT_V2_SOURCES:
+        raise ValueError(f"fitness.params.struct_v2_source must be one of {STRUCT_V2_SOURCES}, got {src!r}")
+    return src
+
+
+def fd_structural_v2(res: Dict) -> float:
+    """FD flexeval's per-scenario structural add-on for a flown, ok scenario: sum(response terms) + pre-flight sum,
+    summed in flexeval's order (cost_s = sim_cost + sum(post terms); + pre_sum)."""
+    return float(sum(res["flex_v2"]["terms"].values())) + res["flex_v2_pre"]["fd_pre_sum"]
+
+
+def obj_structural_v2(tel, res, p):
+    if "flex_v2" not in res:
+        raise ValueError("structural_v2 needs a flex v2 run (task flex.version = 2)")
+    if struct_v2_source(p) == "fd":
+        return fd_structural_v2(res)
+    return float(sum(structural_v2_terms(res, p).values()))
+
+
 @dataclass(frozen=True)
 class Objective:
     name: str
@@ -194,6 +279,8 @@ OBJECTIVES: Dict[str, Objective] = {o.name: o for o in [
               "RMS/peak |n-1|, jerk, pitch-attitude and pitch-rate excess (weighted, normalized)"),
     Objective("structural", ("nz",), obj_structural, "structure",
               "wing-root bending: flex channel if available else rigid load-factor proxy"),
+    Objective("structural_v2", ("nz",), obj_structural_v2, "structure",
+              "flex v2: per-body peak/RMS root loads / limit loads + total structural mass change + FD hinge terms"),
 ]}
 
 # Pseudo-objectives over the scenario set (Pareto mode only).
@@ -293,6 +380,8 @@ def evaluate(gains: Dict[str, float], scenarios: Sequence, cfg: FitnessConfig, r
     # Flex: pre-simulation aeroelastic screening (FD margin_terms, ~6 ms). Margins are constraints:
     # < 1.0 -> fail without flying; 1.0..margin_req (1.2) -> hinge^2 penalty added once per genome.
     flex_sc = [sc for sc in scenarios if getattr(sc, "flex_mode", None)]
+    if flex_sc and flex_sc[0].flex_mode == "v2":
+        return _evaluate_v2(gains, scenarios, cfg, needed, rec, flex_sc[0])
     pre, margin_pen = None, 0.0
     if flex_sc:
         import fd_bridge
@@ -347,6 +436,129 @@ def evaluate(gains: Dict[str, float], scenarios: Sequence, cfg: FitnessConfig, r
                 v = agg_obj.get(n, float("nan"))
                 if n == "structural":
                     v += margin_pen  # margin penalty rides on the structural objective in Pareto mode
+                vec.append(v)
+        out["pareto"] = vec
+    if rec:
+        out["diagnostics"] = [diagnostics(r) for r in sims]
+    return out
+
+
+V2_GATE = 1.0  # full-fidelity hard gate (FD INTERFACE_v2 §5/§7); 1.0..margin_req (1.2) is penalised, as in v1
+
+
+def _v2_summary(pre: Dict, pen: float) -> Dict:
+    m = pre["margins"]
+    return {"flutter_margin": m["flutter_margin"], "div_margin": m["divergence_margin"], "reversal_margin": m["reversal_margin"],
+            "min_margin": m["min_margin"], "binding": m["binding"], "margin_cap": m["margin_cap"],
+            "not_found_below_cap": {k: v for k, v in m["flags"].items() if v}, "margin_error": m["margin_error"],
+            "margin_penalty": pen, "margin_terms": dict(pre["terms"]), "J_mass": pre["J_mass"], "J_mass_fd": pre["J_mass_fd"],
+            "mass_credit_clip": pre["mass_credit_clip"], "J_smooth": pre["J_smooth"],
+            "sizing_terms": dict(pre["sizing_terms"]), "sizing_ratios": dict(pre["sizing_ratios"]),
+            "mass_lb": dict(pre["mass"]), "fail": pre["fail"], "gate": pre["gate"]}
+
+
+def _evaluate_v2(gains, scenarios, cfg: FitnessConfig, needed, rec, sc0) -> Dict:
+    """Flex v2 (FD flexbody): pre-flight gate on the conservative minimum margin (min over bodies and methods of
+    flutter, divergence, reversal; capped, not-found = cap), hinge^2 margin penalties added once per genome, then the
+    coupled flights; FD ultimate-load fails -> FAIL_COST. Structural objective: structural_v2."""
+    import fd_bridge
+    import sim_ext
+    params = {**FLEX_DEFAULTS, **cfg.params}
+    src = struct_v2_source(params)
+    pre = fd_bridge.precheck_v2(sc0.aircraft, gains, sc0.flex_asymmetric, params, gate=V2_GATE)
+    if src == "fd":
+        # FD flexeval semantics: FD's own gate (margin_terms_v2 fail at MARGIN_GATE["full"]) and FD's margin terms,
+        # which are part of the structural cost (so no separate margin penalty: it would count them twice)
+        fd_pre_sum = float(sum(pre["fd_terms"][k] for k in FD_PRE_TERMS_FULL))
+        margin_pen = 0.0
+        pre = {**pre, "fail": pre["fd_fail"], "fd_pre_sum": fd_pre_sum}
+    else:
+        margin_pen = float(sum(pre["terms"].values()))
+    if pre["fail"]:
+        status = f"aeroelastic_{pre['fail']}"
+        per = [{"cost": FAIL_COST, "status": status, "t_end": 0.0, "track": float("nan"), "effort": float("nan")} for _ in scenarios]
+        out = {"cost": FAIL_COST, "per_scenario": per, "objectives_per_scenario": [{} for _ in scenarios], "skipped": {},
+               "violation": FAIL_COST, "objectives": {n: float("nan") for n in needed}, "aeroelastic": _v2_summary(pre, float("nan")),
+               "struct_v2_source": src}
+        if src == "fd":  # as flexeval reports a gate fail: pre-flight terms, flown terms 0, cost = fail_cost
+            out["fd_struct_terms"] = {**{k: float(pre["fd_terms"][k]) for k in FD_PRE_TERMS_FULL}, **{k: 0.0 for k in FD_RESP_TERMS_FULL}}
+            out["fd_pre_sum"] = pre["fd_pre_sum"]
+        if cfg.mode == "pareto":
+            out["pareto"] = [float("nan")] * len(cfg.pareto_objectives)
+        return out
+    rec = True if "structural_v2" in needed else rec
+    sims = [sim_ext.simulate(gains, sc, record=rec) for sc in scenarios]
+    pre_small = {"J_mass": pre["J_mass"], "J_smooth": pre["J_smooth"], "sizing": dict(pre["sizing_terms"])}
+    if src == "fd":
+        pre_small["fd_pre_sum"] = pre["fd_pre_sum"]
+    for r in sims:
+        r["flex_v2_pre"] = pre_small
+        f2 = r.get("flex_v2")
+        if r["status"] == "ok" and f2 and f2["fail"]:  # FD: wing peak > 1.5 x allowable, or tail/fuselage ratio > 1.5
+            r.update(status=f2["fail"], cost=FAIL_COST, track=float("nan"), effort=float("nan"))
+    costs, objs, skipped = [], [], {}
+    w_s2 = float(cfg.weights.get("structural_v2", 0.0))
+    cfg_ctrl = dataclasses.replace(cfg, weights={k: v for k, v in cfg.weights.items() if k != "structural_v2"}) if src == "fd" else cfg
+    for r in sims:
+        c, v, sk = score_scenario(r, cfg_ctrl, needed)
+        if src == "fd" and w_s2:
+            # flexeval: cost_s = sim_cost (+ sum(response terms) if flown ok, or fail_cost) + pre_sum, same order
+            if r["status"] != "ok":
+                c = c + w_s2 * pre["fd_pre_sum"]
+            elif w_s2 == 1.0:  # bit-identical to flexeval
+                c = c + float(sum(r["flex_v2"]["terms"].values()))
+                c = c + pre["fd_pre_sum"]
+            else:
+                c = c + w_s2 * v["structural_v2"]
+        costs.append(c)
+        objs.append(v)
+        skipped.update(sk)
+    out = {"cost": aggregate(costs, cfg.aggregate) + margin_pen,
+           "per_scenario": [{**{k: r[k] for k in LEGACY_KEYS}, "cost": float(c)} for r, c in zip(sims, costs)],
+           "objectives_per_scenario": objs, "skipped": skipped}
+    feasible = all(r["status"] == "ok" for r in sims)
+    out["violation"] = 0.0 if feasible else float(np.mean([r["cost"] for r in sims if r["status"] != "ok"]))
+    agg_obj = {}
+    for n in needed:
+        col = [v[n] for v in objs if n in v]
+        agg_obj[n] = aggregate(col, {"mode": "mean"}) if feasible and col else float("nan")
+    agg_obj["aeroelastic_margin_penalty"] = margin_pen
+    out["objectives"] = agg_obj
+    for v in objs:
+        v.setdefault("aeroelastic_margin_penalty", margin_pen)
+    out["aeroelastic"] = _v2_summary(pre, margin_pen)
+    ok = [r for r in sims if r["status"] == "ok" and r.get("flex_v2")]
+    out["struct_v2_source"] = src
+    if src == "fd":  # FD's 18 structural TERM_KEYS as flexeval reports them (pre-flight once; flown = mean over ok flights)
+        t = {k: float(pre["fd_terms"][k]) for k in FD_PRE_TERMS_FULL}
+        for k in FD_RESP_TERMS_FULL:
+            vals = [r["flex_v2"]["terms"][k] for r in ok if math.isfinite(r["flex_v2"]["terms"].get(k, math.nan))]
+            t[k] = float(np.mean(vals)) if vals else 0.0
+        out["fd_struct_terms"] = t
+        out["fd_pre_sum"] = pre["fd_pre_sum"]
+    if ok:
+        st = [structural_v2_terms(r, cfg.params) for r in ok]
+        out["structural_v2_terms" if src == "genome" else "genome_structural_v2_terms"] = {k: float(np.mean([t[k] for t in st])) for k in st[0]}
+        ratios = [load_ratios_v2(r["flex_v2"]) for r in ok]
+        out["load_ratios_v2"] = {b: {"peak_max": float(max(x[b]["peak"] for x in ratios)),
+                                     "rms_mean": float(np.mean([x[b]["rms"] for x in ratios]))} for b in V2_LOAD_BODIES}
+        out["loads_v2"] = {nm: {"peak_abs_lbft": float(max(r["flex_v2"]["loads"][nm]["peak_abs"] for r in ok)),
+                                "rms_dev_1g_lbft": float(np.mean([r["flex_v2"]["loads"][nm]["rms_dev_1g"] for r in ok])),
+                                "trim_1g_lbft": float(ok[0]["flex_v2"]["loads"][nm]["trim_1g"])} for nm in ok[0]["flex_v2"]["loads"]}
+        out["allowables_v2"] = {**ok[0]["flex_v2"]["allowables"], "wing_bm_allow": ok[0]["flex_v2"]["bm_allow"]}
+        out["tip_max_ft"] = float(max(r["flex_v2"]["tip_max_ft"] for r in ok))
+        out["twist_max_deg"] = float(max(r["flex_v2"]["twist_max_deg"] for r in ok))
+    if cfg.mode == "pareto":
+        vec = []
+        for n in cfg.pareto_objectives:
+            if n == "robust_cvar":
+                vec.append(aggregate(costs, {"mode": "cvar", "alpha": cfg.aggregate.get("alpha", 0.25)}))
+            elif n == "robust_worst":
+                vec.append(float(np.max(costs)))
+            else:
+                v = agg_obj.get(n, float("nan"))
+                if n in ("structural", "structural_v2"):
+                    v += margin_pen
                 vec.append(v)
         out["pareto"] = vec
     if rec:

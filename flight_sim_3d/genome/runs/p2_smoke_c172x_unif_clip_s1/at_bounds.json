@@ -1,0 +1,159 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.04527483572006417,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 1.0415069926859264,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "struct_damping_ratio",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 0.006068768876952281,
+      "range": [
+        0.005,
+        0.05
+      ],
+      "scale": "log"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 0.625,
+      "value": 0.05,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_1",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.25,
+      "value": 0.764848,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_3",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.125,
+      "value": 1.03886,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "upper",
+      "fraction": 0.125,
+      "value": 1.05,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.625,
+      "value": 1.04151,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_gj_ratio_root",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.375,
+      "value": 1.13912,
+      "range": [
+        0.8,
+        1.15
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_nsm_tip",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.125,
+      "value": 0.8121930000000002,
+      "range": [
+        0.8,
+        1.25
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "fuselage_stiffness_scale",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.125,
+      "value": 0.649153,
+      "range": [
+        0.6,
+        2.0
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "struct_damping_ratio",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.125,
+      "value": 0.00606877,
+      "range": [
+        0.005,
+        0.05
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {
+    "ki_alt": {
+      "bound": "upper",
+      "suggested_range": [
+        1e-06,
+        0.2
+      ]
+    }
+  }
+}

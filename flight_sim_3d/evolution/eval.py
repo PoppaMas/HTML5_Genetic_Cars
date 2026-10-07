@@ -1,7 +1,9 @@
 """evolution.eval: the single source of truth for evaluating one genome.
 
-The GA hot path (batch workers, via task()) and every re-flight (trajectory export, Sim Bridge replay, via
-evaluate()) go through evaluate_one() -> evolution.fidelity.evaluate_scenario() -> evolution.sim.simulate().
+The GA hot path (batch workers, via task() / task_genome()) and every re-flight (trajectory export, Sim Bridge replay,
+via evaluate()) go through evolution.fidelity: rigid -> sim.simulate() (unchanged Phase-1 path); reduced / full ->
+Flight Dynamics' flexeval.evaluate() (flight-dynamics/flexeval.py, imported read-only), which flies sim.simulate()
+with FD's FlexHookV2; full_a1 (P3-A1, opt-in) -> FD's flexeval_a1.evaluate() with FlexHookA1 / FlexBodyModelA1.
 
     evaluate(genome, aircraft, scenario, run_cfg, recorder=None, *, fidelity=None)
         -> {cost, per_scenario_cost, terms, terms_available, status, feasible, feasibility_fidelity,
@@ -17,16 +19,22 @@ evaluate()) go through evaluate_one() -> evolution.fidelity.evaluate_scenario() 
 * recorder: optional recorder(t, fdm[, flex_state]); called once at t=0 after IC + trim (before the first step),
             then after every 1/120 s step with t = (k+1)*DT; recorder.final(t_end, fdm[, flex_state]) at the end if
             defined. Read-only (writes raise). flex_state (reduced/full only) is evolution.fidelity.FlexState.
-            recorder=None is the fast path; a recorder never changes the result (tested bit for bit).
+            recorder=None is the fast path; a recorder never changes the result (tested bit for bit). At reduced/full
+            the cost comes from FD's flexeval.evaluate and the recorder rides a second, identical flight with FD's
+            FlexHookV2 (result["telemetry_check"]["sim_cost_bit_identical"] confirms it matched FD's flight).
+* reduced margin gate: run.json aircraft[].reduced_gate (c172x 0.9; 737 / T38 / f16 1.0), else
+            evolution.fidelity.DEFAULT_PER_AIRCRAFT.
 * cost = float(numpy.mean(per_scenario_cost)) at every fidelity; for one scenario it is that scenario's cost.
 
 model_version is returned with every result; if it differs from the one recorded in run.json for the aircraft (e.g.
 FD changed jsbsim_root or full moved to v2) the result says so ("model_version_logged", "model_version_match").
+Optional pin=<model_version string>: raise RuntimeError on mismatch (batch/cache already enforce pin_model_version).
 """
 from __future__ import annotations
 
 import json
 import os
+import time
 from typing import Dict, List, Optional, Sequence
 
 from . import fidelity as fid_mod
@@ -109,36 +117,55 @@ def split_values(values: Dict[str, float], groups: Dict[str, str]):
 
 
 def evaluate_one(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict,
-                 fidelity: str = "rigid", recorder=None, record: bool = False, sample_hz: float = 30.0) -> Dict:
-    """One genome x one scenario at one fidelity (JSON-able; what the batch caches)."""
+                 fidelity: str = "rigid", recorder=None, record: bool = False, sample_hz: float = 30.0,
+                 reduced_gate: Optional[float] = None, telemetry: str = "sb") -> Dict:
+    """One genome x one scenario at one fidelity (JSON-able; what the batch caches for rigid)."""
     return fid_mod.evaluate_scenario(profile_d, gains, struct, runinfo.scenario_fields(sc_d), fidelity,
-                                     recorder=recorder, record=record, sample_hz=sample_hz)
+                                     recorder=recorder, record=record, sample_hz=sample_hz, reduced_gate=reduced_gate,
+                                     telemetry=telemetry)
 
 
 def task(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict, fidelity: str,
-         viz: bool = False, sample_hz: float = 30.0) -> Dict:
-    """Batch worker entry (picklable). viz=True records the ga-flightsim-traj/1 trajectory on every evaluation."""
-    return evaluate_one(profile_d, gains, struct, sc_d, fidelity, record=viz, sample_hz=sample_hz)
+         viz: bool = False, sample_hz: float = 30.0, reduced_gate: Optional[float] = None,
+         telemetry: str = "fd") -> Dict:
+    """Batch worker entry (picklable), one scenario. viz=True records the ga-flightsim-traj/1 trajectory."""
+    c0 = time.process_time()
+    r = evaluate_one(profile_d, gains, struct, sc_d, fidelity, record=viz, sample_hz=sample_hz,
+                     reduced_gate=reduced_gate, telemetry=telemetry)
+    r["task_cpu_s"] = time.process_time() - c0
+    return r
+
+
+def task_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], scs_d: Sequence[Dict],
+                fidelity: str, reduced_gate: Optional[float], viz: bool = False, sample_hz: float = 30.0) -> Dict:
+    """Batch worker entry for reduced/full/full_a1: one genome over all scenarios (one FD flexeval.evaluate call;
+    flexeval_a1.evaluate for full_a1)."""
+    c0, w0 = time.process_time(), time.perf_counter()
+    r = fid_mod.evaluate_genome(profile_d, gains, struct, [runinfo.scenario_fields(s) for s in scs_d], fidelity,
+                                reduced_gate, record=viz, sample_hz=sample_hz, telemetry="fd")
+    r["task_cpu_s"], r["task_wall_s"] = time.process_time() - c0, time.perf_counter() - w0
+    return r
 
 
 def aggregate(per: Sequence[Dict]) -> Dict:
     return fid_mod.aggregate(per)
 
 
-def describe(profile_d: Dict, fidelities: Sequence[str]) -> Dict:
+def describe(profile_d: Dict, fidelities: Sequence[str], reduced_gate: Optional[float] = None) -> Dict:
     """Worker task run once per aircraft at batch start: model_files_sha + model_version per fidelity (for run.json,
     the cache key and the per-result check). A flex fidelity that cannot be built is reported, not raised."""
     P = sim.Profile.from_dict(profile_d)
     out = {"model_files_sha": sim.model_files_sha(P.aircraft, P.aircraft_root), "model_version": {}}
     for f in fidelities:
         try:
-            out["model_version"][f] = fid_mod.model_version(profile_d, f)
+            out["model_version"][f] = fid_mod.model_version(profile_d, f, reduced_gate)
         except Exception as e:  # noqa: BLE001  (FidelityUnavailable, FD import errors)
             out["error"] = f"{f}: {type(e).__name__}: {e}"
     return out
 
 
-def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelity: Optional[str] = None) -> Dict:
+def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelity: Optional[str] = None,
+             pin: Optional[str] = None) -> Dict:
     run_cfg = load_run_cfg(run_cfg)
     entry = _aircraft_entry(run_cfg, aircraft)
     fid = fidelity or run_cfg.get("fidelity") or "rigid"
@@ -147,8 +174,16 @@ def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelit
     gains, struct = split_values(genome, gene_groups(entry))
     prof_d = _profile_d(entry)
     scs = scenario_dicts(aircraft, scenario, run_cfg)
-    per = [evaluate_one(prof_d, gains, struct, s, fid, recorder=recorder) for s in scs]
-    out = aggregate(per)
+    if fid == "rigid":
+        per = [evaluate_one(prof_d, gains, struct, s, fid, recorder=recorder) for s in scs]
+        out = aggregate(per)
+    else:
+        gate = entry.get("reduced_gate")
+        if gate is None:
+            gate = fid_mod.per_aircraft(aircraft)["reduced_gate"]
+        out = fid_mod.evaluate_genome(prof_d, gains, struct, [runinfo.scenario_fields(s) for s in scs], fid, gate,
+                                      recorder=recorder)
+        per = out.pop("per_scenario")
     out["per_scenario_cost"] = [p["cost"] for p in per]
     out["scenario_ids"] = [s.get("id") for s in scs]
     out["scenarios"] = scs
@@ -156,12 +191,18 @@ def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelit
     out["genome"] = dict(genome)
     out["aircraft"] = aircraft
     if len(per) == 1:
-        for k in ("t_end", "track", "effort", "comfort", "heading_rms", "hdg_drift_deg"):
+        for k in ("t_end", "track", "effort", "comfort", "heading_rms", "hdg_drift_deg", "hold_osc", "hold_pp_ft",
+                  "draft_residual_ft", "draft_max_err_ft"):
             if k in per[0]:
                 out[k] = per[0][k]
     logged = (run_cfg.get("model_version") or {}).get(aircraft) if fid == run_cfg.get("fidelity", "rigid") else \
-        entry.get("screen_model_version") if (run_cfg.get("multi_fidelity") or {}).get("screen") == fid else None
+        (entry.get("ladder_model_version") or {}).get(fid) or (
+            entry.get("screen_model_version") if (run_cfg.get("multi_fidelity") or {}).get("screen") == fid else None)
     if logged:
         out["model_version_logged"] = logged
         out["model_version_match"] = logged == out["model_version"]
+    if pin is not None:
+        got = out.get("model_version")
+        if got != pin:
+            raise RuntimeError(f"model_version pin mismatch: pinned {pin!r}, got {got!r}")
     return out

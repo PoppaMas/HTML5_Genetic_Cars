@@ -1,10 +1,10 @@
-"""TEST FIXTURE standing in for ER's future ``evolution.eval`` (not ER code, not shipped by ER).
-
-Implements the contract ER agreed to, so sim_bridge.replay's real-interface path (--interface er) can be exercised
-before ER ships it:
+"""TEST FIXTURE: a minimal stand-in for ER's ``evolution.eval`` (not ER code). ER ships the real one now; the real
+module is what the real-interface tests use. This fixture stays for protocol edge cases the real module does not
+exercise: a post-step recorder WITHOUT the t=0 call, and a synthetic flex_state.
 
     evaluate(genome, aircraft, scenario, run_cfg, recorder=None) -> {"cost", "status", "model_version", "fidelity", ...}
-      * genome: physical gains dict, aircraft: name, scenario: one entry of run_cfg["scenarios"], run_cfg: run.json
+      * genome: physical gains dict, aircraft: name, scenario: one entry of run_cfg["scenarios"] (ER's real format:
+        id "c172x:s0", steps / ramp fields; used as given, like ER), run_cfg: run.json
       * calls recorder(t, fdm) AFTER each fdm step (t = time after the step), read-only;
         with flex active recorder(t, fdm, flex_state)
       * never sets properties on behalf of the recorder
@@ -74,7 +74,7 @@ def evaluate(genome, aircraft, scenario, run_cfg, recorder=None):
     if fid != "rigid":
         raise NotImplementedError(f"fixture supports rigid only (got {fid})")
     sim, _, _ = er_adapter._er()
-    sc, prof = er_adapter.scenario_object(aircraft, scenario, run_cfg)
+    sc, prof = scenario_object(aircraft, scenario, run_cfg), _profile(aircraft, run_cfg)
     orig = sim._new_fdm
     flex = os.environ.get("FAKE_EVAL_SYNTH_FLEX") == "1"
     first = {}
@@ -96,6 +96,16 @@ def evaluate(genome, aircraft, scenario, run_cfg, recorder=None):
     return r
 
 
+def _profile(aircraft, run_cfg):
+    sim, _, _ = er_adapter._er()
+    a = next(x for x in run_cfg["aircraft"] if x["name"] == aircraft)
+    return sim.Profile.from_dict(a.get("resolved_profile") or a["profile"])
+
+
 def scenario_object(aircraft, scenario, run_cfg):
-    """Optional helper the replay tool uses for target/ramp channels (we ask ER to provide this)."""
-    return er_adapter.scenario_object(aircraft, scenario, run_cfg)[0]
+    """sim.Scenario from the run.json entry, used as given (ER's real evolution.eval.scenario_object does the same)."""
+    sim, _, _ = er_adapter._er()
+    if not isinstance(scenario, dict):
+        scenario = next(s for s in run_cfg["scenarios"] if str(s["id"]) == str(scenario))
+    names = set(sim.Scenario.__dataclass_fields__)
+    return sim.Scenario.from_dict({k: v for k, v in scenario.items() if k in names})

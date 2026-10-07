@@ -6,14 +6,19 @@ the original `evolve.py` and `ga.py` run unchanged through an adapter. See `DESI
 
 ## Requirements
 The flight_sim venv (jsbsim, numpy, matplotlib, pytest). The clone location comes from `$FLIGHT_SIM_DIR`; the default is
-`../../flight_sim` (the repo's own `flight_sim/`). Flight Dynamics' flex-wing model and patched
+`../../flight_sim` (the repo's own `flight_sim/`); if neither exists, importing `flightsim_path` raises an error telling
+you to set FLIGHT_SIM_DIR (no absolute paths in library code). Flight Dynamics' flex-wing model and patched
 aircraft come from `$FLIGHT_DYNAMICS_DIR` (default `flight_sim_3d/flight-dynamics`, used read-only). The
 legacy preset doesn't need it.
 
 ```bash
 PY=python   # any Python with flight_sim_3d/requirements.txt installed
 cd flight_sim_3d/genome
-$PY -m pytest -q                      # 102 tests, ~25 s on an idle box (incl. the slow legacy-evolve check); -m "not sim and not slow" for the fast subset
+# Outside the repo layout (e.g. the team working copy /workspace/flight-sim-team/genome) there is no ../../flight_sim:
+# export FLIGHT_SIM_DIR=<path to flight_sim> for run_evolve.py & co (importing flightsim_path raises a clear error
+# otherwise). The test suite sets it itself (conftest.py, test-only: the local sandbox clone, only if the variable is
+# unset, the repo default is absent and the clone exists). flight-dynamics/ and evolution/ resolve as siblings.
+$PY -m pytest -q                      # 152 tests, ~30-60 s (incl. the slow legacy-evolve check); -m "not sim and not slow" for the fast subset
 ```
 
 ## Run
@@ -37,6 +42,13 @@ $PY v5_sweep_report.py                # hold-weight sweep table -> runs/v5_sweep
 $PY v5_report.py                      # v4 vs v5: metrics, gene spread, I-gains, plateau -> runs/v5_report.json
 $PY flex12_report.py                  # phase1_flex (12 genes) small reruns + margin-constraint probe -> runs/flex12_report.json
 $PY crosscheck_evolution.py           # -> runs/crosscheck_evolution.json
+$PY crosscheck_phase2.py --aircraft c172x   # Phase 2 vs ER's evaluator (tmp copy), bit for bit -> runs/crosscheck_phase2_<ac>.json
+# Phase 2: phase1_v4 controller + FD flex v2 structure (12 genes from flexbody.gene_schema(); 20 total), seeded gen 0
+$PY run_evolve.py --task phase2_flex [--aircraft t38|b737] -- --pop-size 64 --generations 60 --seed 1 --out runs/p2_c172x_s1
+$PY run_evolve.py --task experiments/phase2_flex_asym.json -- ...      # + FD's 2 asymmetric genes (22)
+$PY evolve_pareto.py --task phase2_flex --pop-size 64 --generations 60 --out runs/p2_pareto_c172x   # track/effort/structural_v2
+$PY phase2_gate_study.py              # gen-0 flutter-gate failures, uniform vs seeded -> runs/phase2_gate_study.json
+$PY ki_alt_scan.py                    # v5 ki_alt bound study -> runs/ki_alt_scan.json
 # NSGA-II (Pareto) mode
 $PY evolve_pareto.py --task altitude_hold_pareto --pop-size 24 --generations 8 --out runs/pareto
 # check a run against the original code (same seed): prints IDENTICAL / DIFFERENT
@@ -55,9 +67,10 @@ Evolution Runner (ALIGNMENT.md); keys in the preset override it.
 |---|---|---|
 | **`phase1_default`** | 8 | team default (signed off): 200 ft step, reference ramped at 600 fpm with **0.1 g corners** (scored against that reference), climb-rate feed-forward, **heading hold** (genes kp_hdg/ki_hdg, bank clamp 16° c172x / 25° jets), `track + 2*effort + 0.05*comfort + 0.01*heading_rms`, same disturbance draws as legacy. Use with `--aircraft c172x/t38/b737`; `"heading_hold": false` gives the 6-gene pre-heading task bit-for-bit. Identical to `phase1_v4` |
 | `phase1_v4` | 8 | **frozen copy of today's `phase1_default`** (ramp with 0.1 g corners, feed-forward, heading hold; v5 flags explicitly off). Reproduces the `hdg_after_*` runs bit for bit (tested); use it when you need v4 even if the default moves |
-| `phase1_v5` | 8 | **candidate, not the default**: v4 + hold-quality term (`hold_osc`, weight 0.1) + one extra calm scenario with a sustained downdraft (V_TAS·tan 1.5°: c172x 4.69, T38 15.43, 737 12.86 ft/s), mean of 4 scenarios. Costs are not comparable with v4. See "Phase-1 v5" below and HANDOFF_phase1_v5.md |
+| `phase1_v5` | 8 | **candidate, not the default**: v4 + hold-quality term (`hold_osc`, weight 0.1) + one extra calm scenario with a sustained downdraft (V_TAS·tan 1.5°: c172x 4.69, T38 15.43, 737 12.86 ft/s), mean of 4 scenarios; ki_alt upper bound 0.5 (v5 only, v4 keeps 0.05). Costs are not comparable with v4. See "Phase-1 v5" below and HANDOFF_phase1_v5.md |
 | `phase1_no_comfort` | 8 | the same without the comfort term |
 | `phase1_flex` | 12 | opt-in: `phase1_default` + FD's 4 structure genes (stiffness_scale, torsion_bend_ratio, damping, non-structural mass) on FD's two-way flex wing. Chord axes and tip mass are fixed by FD. Margins < 1.0 fail, < 1.2 penalised; structural objective (weight 1) includes a wing-mass term |
+| `phase2_flex` | 20 | **Phase 2** (aligned with ER's `phase2_pilot`, cross-checked bit for bit: CROSSCHECK_phase2.md): the phase1_v4 task and controller genes (same scenarios and weights; ki_alt ≤ 0.5 phase2-only, v4 keeps 0.05) + FD flex v2 block `structure_v2` (12 genes built from FD's `flexbody.gene_schema()`; `flex.asymmetric: true` → 14, see `experiments/phase2_flex_asym.json`). Objective adds `structural_v2` = FD flexeval's structural cost (`struct_v2_source: "fd"`: FD's J_* terms at FD's weights incl. P2.5 `J_wing_tip_bm_limit`, 24 TERM_KEYS; our peak/RMS formula is the `"genome"` A/B option). NSM floors 1.0–1.25 from FD `gene_schema()`. Full fidelity; model_version = post_p25 (warns on previous post-mass pins, raises only on unknown). Gen 0 seeded at the structural baseline (σ 0.10). The interim mass-credit clip is off (superseded by FD §12; flag kept for A/B). Asymmetric genes off until lateral/roll scenarios exist. DESIGN.md §3c |
 | `altitude_hold_legacy` | 6 | original task: instant step, original ranges, `track + 2*effort`, mean over `sim.make_scenarios`, clamp 12°. Bit-identical to the original code; ignores the shared set |
 | `altitude_hold_v2` | 6 | widened/log0 ranges + comfort + structural proxy, robust scenarios, mean/CVaR |
 | `altitude_hold_pareto` | 6 | Pareto objectives track_alt, effort, comfort (use `evolve_pareto.py`) |
@@ -66,7 +79,8 @@ Evolution Runner (ALIGNMENT.md); keys in the preset override it.
 
 `experiments/` keeps the A/B tasks exactly as they were run: `phase1_default_ki_wide`, `phase1_default_ki_wide2`,
 `phase1_ff_off`, `phase1_smooth_ramp`, `phase1_smooth_ff_off`, the heading-weight sweep `phase1_hdg_w0|w003|w03|w1`,
-the v5 hold-weight sweep `phase1_v5_hold_w0|w003|w01|w03`, plus the two historical step-comfort tasks. Heading hold is a shared-set flag (`phase1_shared.json` → `heading_hold`),
+the v5 hold-weight sweep `phase1_v5_hold_w0|w003|w01|w03`, the v5 ki_alt reruns `phase1_v5_kialt02|05`, Phase 2
+`phase2_flex_uniform_init` (init comparison, pre-fix), `phase2_flex_uniform_init_clip` (interim clip), `phase2_flex_uniform_init_massfix` (after FD §12) and `phase2_flex_asym`, plus the two historical step-comfort tasks. Heading hold is a shared-set flag (`phase1_shared.json` → `heading_hold`),
 on for c172x/T38/737 and never read by the legacy preset.
 
 ## Results so far (2026-10-06, c172x, pop 48 × 40 gen, seed 1, 3 scenarios, `config.example.json`)
@@ -170,6 +184,49 @@ wing mass −8.6 / −21.4 / −16.3 lb, final heading drift ≤ 0.5° on s1/s2 
 - **737:** 0.1102 (`runs/phase1_b737_v4`).
 - Evolution Runner's best genomes score 0.12–0.16 under the same fitness (ALIGNMENT.md).
 
+## Phase 2 smoke test (2026-10-06, `phase2_flex`, seed 1, 3 scenarios; box shared with another 8-worker job)
+
+Gen-0 flutter-gate failures (`phase2_gate_study.py`, no flight, 64 genomes; FD measured 20/24/26 of 64 uniform):
+
+| aircraft | uniform init | seeded σ 0.05 | σ 0.10 | σ 0.15 | σ 0.25 |
+|---|---|---|---|---|---|
+| c172x | 15/64 (min margin median 1.17) | 0/64 (1.24) | 0/64 | 0/64 | 5/64 |
+| T38 | 24/64 (1.06) | 0/64 (1.17) | 0/64 | 2/64 | 11/64 |
+| 737 | 20/64 (1.06) | 0/64 (1.19) | – | – | – |
+
+GA smoke runs (evolve.py, pop 24 × 8 gen c172x, 16 × 6 T38). "failed" = any scenario not ok (aeroelastic gate or envelope):
+
+| run | failed per gen | best cost | track / effort / comfort | structural_v2 | min margin (binding) | Δ struct. mass |
+|---|---|---|---|---|---|---|
+| c172x seeded σ 0.05 | 8 (0 aero), 3, 0, 0, 0, 0, 0, 0 | 0.2477 | 0.069 / 0.031 / 1.81 | +0.0096 | 1.226 (wingR coalescence) | −6.3 % (fuselage 0.72) |
+| c172x uniform | 14 (5 aero), 4, 0, 0, 0, 0, 0, 0 | 0.2219 | 0.082 / 0.026 / 1.71 | −0.0094 | 1.225 (wingR coalescence) | −13.3 % (fuselage 0.60, tapered wing) |
+| c172x uniform, **clip on** (08:05 MST, FD min-gauge floor in) | 13, 2, 0, 0, 0, 0, 1, 0 | 0.2646 | 0.069 / 0.027 / 1.78 | +0.0369 (mass +0.0107) | 1.227 (wingR coalescence) | +2.8 % (fuselage 1.11, tail 0.76) |
+| c172x uniform, **after FD §12** (08:16 MST, no clip, sizing terms in) | 13, 3, 2, 0, 0, 0, 0, 0 | 0.2923 | 0.105 / 0.028 / 1.79 | +0.0411 (mass +0.0165, sizing 0) | 1.203 (wingR coalescence) | +5.5 % (fuselage 1.19, tail 1.92, wing root 1.14 / tip taper 0.75) |
+| T38 seeded σ 0.05, **after FD §12** (08:16 MST) | 0, 1, 0, 2, 1, 1 | 0.1431 | 0.029 / 0.026 / 0.95 | +0.0142 (mass +0.0045, sizing 3·10⁻⁶) | 1.200 (wingR flutter) | +1.5 % (fuselage 1.03) |
+| T38 seeded σ 0.05 | 0, 1, 0, 2, 1, 0 | 0.1260 | 0.028 / 0.024 / 0.96 | −0.0005 (+0.0021 margin penalty) | 1.191 (wingR flutter) | −3.7 % |
+
+After FD §12 (min-gauge floor + sizing terms, no clip) neither run softens the fuselage any more (c172x 1.19, T38
+1.03 vs 0.60 / 0.79 before); at both bests every sizing ratio is < 1 (c172x max 0.88, T38 max 1.002 → 3·10⁻⁶), so
+the terms act as a barrier and cost nothing at the optimum. The c172x tail went to 1.92 (uniform init, mass +0.009,
+unpenalised drift in 8 gens); the wing tip taper sits at its 0.75 bound (root-only sizing does not see outboard
+EI; not checked further). Controller-only cost: c172x 0.251 vs 0.228 (clip run), T38 0.129 vs 0.124; one seed
+each, so these differences are GA noise as far as we can tell.
+All rows above used `struct_v2_source "genome"` (our peak/RMS formula) and σ 0.05 / ki_alt ≤ 0.05; since 08:35
+phase2_flex uses FD's flexeval structural cost, σ 0.10 and ki_alt ≤ 0.5 (ER's pilot), so costs are not comparable.
+The first three rows ran before FD's minimum-gauge floor (07:53 MST) and before the interim tail/fuselage mass-credit
+clip, so the clip rerun changes both. With the clip the fuselage no longer runs to the 0.6 floor (1.11; its peak
+fusL/limit drops from 0.65 to 0.37); the mass term goes from −0.040 (credit) to +0.011, and the structure total from
+−0.009 to +0.037. The pre-clip uniform best re-scored under today's FD: J_mass −0.021 unclipped, −0.006 clipped (wing
+only). Controller-only cost is about the same (0.228 vs 0.231).
+Best-design peak root load / limit: c172x seeded wing 0.44, HT 0.06, VT 0.44, fuselage V 0.13 / L 0.53 (RMS 0.01–0.03);
+c172x uniform 0.34 / 0.08 / 0.54 / 0.14 / 0.65; T38 0.15 / 0.06 / 0.12 / 0.08 / 0.13. No FD hinge or ultimate term
+active. Cost per genome: precheck 0.2 s + ~1.9 s CPU per 90 s scenario (v4 rigid 0.4 s), i.e. ~6 s CPU per 3-scenario
+genome; wall ~4.8 s per scenario on today's loaded box. One seed each: the uniform run ending lower is not significant
+and is mostly the mass credit; seeding removes the early gate failures but σ 0.05 explores the structure slowly.
+Recommendation for the real runs: σ 0.10–0.15 (still ≤ 3 % gate failures), pop 64 × 60 gen (~3 800 genomes,
+~6 CPU-h, ~50 min per aircraft and seed on 8 free cores), 2 seeds × 3 aircraft first; NSGA-II
+(`evolve_pareto.py`, same budget) if the controller–structure trade-off front is wanted.
+
 ## Enabling blocks
 In a task JSON:
 ```json
@@ -215,11 +272,13 @@ Python: `profiles.range_factors(load_profile("a320"))` → factors per scaling t
 | `fitness.py` | objectives, telemetry-gated skipping, scalar & Pareto evaluation, scenario aggregation |
 | `scenarios.py` | legacy and robust scenario sets |
 | `sim_ext.py` | telemetry-recording, bit-identical extension of `sim.simulate` (+ roll/heading/speed genes, mass/CG, sensor noise; non-legacy: FD aircraft copies, gear up, throttle clamp, flex coupling) |
-| `fd_bridge.py` | read-only access to FD's flexwing/coupled_sim and jsbsim_root (loaded directly; any aircraft file with JSBSim network I/O is refused); margin pre-check; flutter summary (capped + not-found flag) |
+| `fd_bridge.py` | read-only access to FD's flexwing/coupled_sim/flexbody (v1 and v2) and jsbsim_root(_v2) (loaded directly; any aircraft file with JSBSim network I/O is refused); margin pre-check; flutter summary (capped + not-found flag) |
+| `init_pop.py` | Phase 2 generation-0 seeding (`init` task key): baseline ± σ for structure genes, optional best-genome seeds; patched into evolve.py only for tasks with `init` |
+| `phase2_gate_study.py`, `ki_alt_scan.py` | gen-0 flutter-gate failure study (uniform vs seeded); v5 ki_alt bound study |
 | `heading_report.py`, `HANDOFF_heading_hold.md` | heading-hold before/after table; self-contained change list for Evolution Runner |
 | `v5_sweep_report.py`, `v5_report.py`, `v5_cross_eval.py`, `flex12_report.py`, `HANDOFF_phase1_v5.md` | Phase-1 v5 candidate: hold-weight sweep, v4 vs v5 comparison (spread, I-gains, hold, downdraft, plateau), cross-evaluation, 12-gene flex rerun; self-contained change list for Evolution Runner |
 | `aircraft_profiles/phase1_shared.json`, `ALIGNMENT.md` | shared Phase-1 set with Evolution Runner, and the per-difference decisions |
-| `export_shared_profiles.py`, `crosscheck_evolution.py` | export the shared set as evolution/ profile blocks (v4 and v5); re-fly their genomes in our sim (read-only) |
+| `export_shared_profiles.py`, `crosscheck_evolution.py`, `crosscheck_phase2.py` | export the shared set as evolution/ profile blocks (v4 and v5); re-fly their genomes in our sim (read-only) |
 | `adapter.py` | task loading; `genome`/`sim` shim modules for the unmodified evolve.py |
 | `run_evolve.py` | entry point that runs the original evolve.py with a task |
 | `nsga2.py`, `evolve_pareto.py` | NSGA-II sort/crowding, and a Pareto driver that reuses ga.py operators |

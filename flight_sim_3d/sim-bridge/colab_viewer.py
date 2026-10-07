@@ -134,7 +134,8 @@ def _pick(entries, gens, sense: str = "min") -> list:
         sgn = -1.0 if sense == "max" else 1.0
         for ac in dict.fromkeys(e.get("aircraft") for e in entries):
             out, best = [], float("inf")
-            for e in sorted((e for e in entries if e.get("aircraft") == ac), key=lambda e: e.get("generation") or 0):
+            for e in sorted((e for e in entries if e.get("aircraft") == ac and e.get("is_best") is not False),
+                            key=lambda e: e.get("generation") or 0):
                 f = e.get("cost", e.get("fitness"))
                 f = None if f is None else sgn * f
                 if f is not None and f < best - 1e-12:
@@ -182,7 +183,8 @@ def build_standalone_html(index_path, gens: Union[str, Iterable[int], None] = "i
         run_id = index.get("run_id") if isinstance(index, dict) else None
         if first_index is None:
             first_index, list_key = index, lk
-        sense = (index.get("fitness_sense") if isinstance(index, dict) else None) or "min"
+        raw_sense = (index.get("fitness_sense") if isinstance(index, dict) else None) or "min"
+        sense = "max" if str(raw_sense).strip().lower().startswith("max") else "min"  # ER also writes free text
         senses.add(sense)
         chosen = _pick(entries, g, sense)
         for e in chosen:

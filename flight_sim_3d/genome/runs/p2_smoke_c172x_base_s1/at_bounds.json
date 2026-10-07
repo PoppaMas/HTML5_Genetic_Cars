@@ -1,0 +1,51 @@
+{
+  "best": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.05,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "ki_alt",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 0.75,
+      "value": 0.05,
+      "range": [
+        1e-06,
+        0.05
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_3",
+      "block": "structure_v2",
+      "bound": "upper",
+      "fraction": 0.25,
+      "value": 1.05,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    }
+  ],
+  "suggestions": {
+    "ki_alt": {
+      "bound": "upper",
+      "suggested_range": [
+        1e-06,
+        0.2
+      ]
+    }
+  }
+}

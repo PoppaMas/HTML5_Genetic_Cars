@@ -1,0 +1,99 @@
+{
+  "best": [
+    {
+      "gene": "kp_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 1.547218714971258,
+      "range": [
+        0.002,
+        2.48
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 1.0,
+      "value": 0.9919999999999999,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 1.0241169833142436,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "kp_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 2.1620399999999993,
+      "range": [
+        0.002,
+        2.48
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "upper",
+      "fraction": 0.3333333333333333,
+      "value": 0.9919999999999999,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "ki_pitch",
+      "block": "pitch_altitude",
+      "bound": "near_upper",
+      "fraction": 0.6666666666666666,
+      "value": 0.6235170000000005,
+      "range": [
+        1e-05,
+        0.992
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.6666666666666666,
+      "value": 1.02412,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    }
+  ],
+  "suggestions": {
+    "ki_pitch": {
+      "bound": "upper",
+      "suggested_range": [
+        1e-05,
+        3.968
+      ]
+    }
+  }
+}

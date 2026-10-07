@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Benchmark driver: fresh run + cache rerun (+ optional sequential-schedule run) per config.
 
-    cd flight_sim_3d
+    cd flight_sim_3d              # (team layout: cd <team folder>)
     python -m evolution.bench --tag T evolution/configs/bench_baseline.json evolution/configs/bench_ic.json ...
 
 For each config:

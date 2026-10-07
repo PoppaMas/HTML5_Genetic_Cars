@@ -1,0 +1,541 @@
+{
+ "A": {
+  "run_dir": "evolution/runs/phase2-pilot-s3",
+  "run_id": "phase2-pilot-s3",
+  "aircraft": {
+   "c172x": {
+    "aircraft": "c172x",
+    "generation": 59,
+    "pop": 64,
+    "best_id": "c172x:g59:r0",
+    "best_cost": 0.20196082719498798,
+    "best_status": "ok",
+    "best_feasible": true,
+    "best_fidelity": "full",
+    "best_model_version": "full:flexv2:11df8fe4",
+    "structural_terms": {
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": -0.02052936690935619,
+     "J_bm_rms": 0.02856447871167465,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.0004149288869192562,
+     "J_wing_bm_limit": 5.109199235018598e-08,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 5.109199235018599e-09,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 0.0005122531297875213,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "structural_sum": 0.008962350020216822,
+    "negative_terms": {
+     "J_mass": -0.02052936690935619
+    },
+    "sim_cost_mean": 0.19299847717477114,
+    "margins": {
+     "flutter_margin": 1.2026430543476345,
+     "div_margin": 1.6358295647630112,
+     "reversal_margin": 1.4403354582785972
+    },
+    "mass_total_frac": -0.0684312230311873,
+    "mass_lb": {
+     "wingR_lb": -11.357468964880129,
+     "wingL_lb": -11.357468964880129,
+     "ht_lb": 0.06699025754313004,
+     "vt_lb": 0.04122477387269541,
+     "fus_lb": -0.7967553783216239,
+     "total_lb": -23.403478276666057,
+     "baseline_flexible_lb": 342.0,
+     "total_frac": -0.0684312230311873
+    },
+    "J_mass_fd": null,
+    "mass_credit_delta": null,
+    "best_struct": {
+     "wing_ei_root": 1.025246725128236,
+     "wing_ei_taper_1": 0.892560295090768,
+     "wing_ei_taper_2": 0.8601731010548495,
+     "wing_ei_taper_3": 0.93093880443384,
+     "wing_ei_taper_4": 0.9555713217426189,
+     "wing_gj_ratio_root": 1.1241639487610606,
+     "wing_gj_ratio_tip": 1.0512886196466336,
+     "wing_nsm_root": 0.8,
+     "wing_nsm_tip": 0.8,
+     "tail_stiffness_scale": 1.009369266789249,
+     "fuselage_stiffness_scale": 0.9778679061577326,
+     "struct_damping_ratio": 0.007852473344993118
+    },
+    "best_gains": {
+     "kp_alt": 0.3268354919398892,
+     "ki_alt": 0.07302100112052586,
+     "kd_alt": 0.28381867588503334,
+     "kp_pitch": 0.10259669062126638,
+     "ki_pitch": 0.0001555255137873116,
+     "kd_pitch": 0.014896633310362305,
+     "kp_hdg": 2.377493202349322,
+     "ki_hdg": 0.007224086596916835
+    },
+    "floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "wing_nsm_root": 0.859375,
+     "wing_nsm_tip": 0.9375,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.0
+    },
+    "floor_fraction_gains": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.0,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.0,
+     "ki_hdg": 0.0
+    },
+    "ceiling_fraction": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.03125,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.015625,
+     "ki_hdg": 0.0,
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.015625,
+     "wing_gj_ratio_tip": 0.0,
+     "wing_nsm_root": 0.0,
+     "wing_nsm_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.0
+    },
+    "best_genes_within_tol_of_bounds": {
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     },
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     }
+    },
+    "invalid_rate_all": 0.010416666666666666,
+    "invalid_rate_last": 0.0,
+    "n_rows": 3840,
+    "flags": [
+     "negative structural term at the optimum: J_mass = -0.0205294"
+    ],
+    "ladder": {
+     "spearman_screen_vs_full_mean": -0.04413879277976907,
+     "spearman_screen_vs_full_last": -0.26371093867095213,
+     "n_gens": 60,
+     "spearman_both_ok_mean": {
+      "rigid_vs_full": -0.04413879277976907
+     },
+     "n_rescored_mean": 16.583333333333332,
+     "eval_cpu_s": 7581.450900007997,
+     "eval_wall_s": 2800.813163901854,
+     "sims_computed": 13551
+    }
+   },
+   "737": {
+    "aircraft": "737",
+    "generation": 59,
+    "pop": 64,
+    "best_id": "737:g59:r0",
+    "best_cost": 0.1203781055341893,
+    "best_status": "ok",
+    "best_feasible": true,
+    "best_fidelity": "full",
+    "best_model_version": "full:flexv2:2c73464b",
+    "structural_terms": {
+     "J_flutter_margin": 4.3205865434289144e-05,
+     "J_div_margin": 0.0,
+     "J_mass": -0.01069380477547933,
+     "J_bm_rms": 0.013142052499385761,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.00011054968832029956,
+     "J_wing_bm_limit": 2.084037173724026e-05,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 2.0840371737240263e-06,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 1.2102031040841942e-05,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "structural_sum": 0.0026370297176128267,
+    "negative_terms": {
+     "J_mass": -0.01069380477547933
+    },
+    "sim_cost_mean": 0.11774107581657647,
+    "margins": {
+     "flutter_margin": 1.1986853766252756,
+     "div_margin": 3.0,
+     "reversal_margin": 1.289219402522351
+    },
+    "mass_total_frac": -0.03564601591826443,
+    "mass_lb": {
+     "wingR_lb": -471.85588714777487,
+     "wingL_lb": -471.85588714777487,
+     "ht_lb": 0.1618964272072531,
+     "vt_lb": 0.12142232040543992,
+     "fus_lb": -8.320169469723204,
+     "total_lb": -951.7486250176603,
+     "baseline_flexible_lb": 26700.0,
+     "total_frac": -0.03564601591826443
+    },
+    "J_mass_fd": null,
+    "mass_credit_delta": null,
+    "best_struct": {
+     "wing_ei_root": 1.011986143195135,
+     "wing_ei_taper_1": 0.9859469574924,
+     "wing_ei_taper_2": 0.967046047460949,
+     "wing_ei_taper_3": 0.9353088794954532,
+     "wing_ei_taper_4": 0.9104979550482932,
+     "wing_gj_ratio_root": 1.0578924715777938,
+     "wing_gj_ratio_tip": 1.101869840156123,
+     "wing_nsm_root": 0.8,
+     "wing_nsm_tip": 0.8,
+     "tail_stiffness_scale": 1.0002452976169802,
+     "fuselage_stiffness_scale": 0.9965332627209487,
+     "struct_damping_ratio": 0.05
+    },
+    "best_gains": {
+     "kp_alt": 0.23421697270382402,
+     "ki_alt": 8.978876147785119e-07,
+     "kd_alt": 0.1580686367118725,
+     "kp_pitch": 0.3909678060422902,
+     "ki_pitch": 0.01759270766591774,
+     "kd_pitch": 0.12377837336854022,
+     "kp_hdg": 3.890584525522668,
+     "ki_hdg": 0.002801870281138359
+    },
+    "floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "wing_nsm_root": 0.875,
+     "wing_nsm_tip": 0.890625,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.0
+    },
+    "floor_fraction_gains": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.03125,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.0,
+     "ki_hdg": 0.0
+    },
+    "ceiling_fraction": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.0,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.0,
+     "ki_hdg": 0.0,
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.296875,
+     "wing_nsm_root": 0.0,
+     "wing_nsm_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.859375
+    },
+    "best_genes_within_tol_of_bounds": {
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     },
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     },
+     "struct_damping_ratio": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 0.05,
+      "bounds": [
+       0.005,
+       0.05
+      ]
+     }
+    },
+    "invalid_rate_all": 0.005989583333333334,
+    "invalid_rate_last": 0.0,
+    "n_rows": 3840,
+    "flags": [
+     "negative structural term at the optimum: J_mass = -0.0106938"
+    ],
+    "ladder": {
+     "spearman_screen_vs_full_mean": -0.1453406136558805,
+     "spearman_screen_vs_full_last": 0.07361968731959428,
+     "n_gens": 60,
+     "spearman_both_ok_mean": {
+      "rigid_vs_full": -0.1453406136558805
+     },
+     "n_rescored_mean": 17.2,
+     "eval_cpu_s": 7127.299645531999,
+     "eval_wall_s": 2804.338055696804,
+     "sims_computed": 13722
+    }
+   },
+   "T38": {
+    "aircraft": "T38",
+    "generation": 59,
+    "pop": 64,
+    "best_id": "T38:g59:r0",
+    "best_cost": 0.09209547827265495,
+    "best_status": "ok",
+    "best_feasible": true,
+    "best_fidelity": "full",
+    "best_model_version": "full:flexv2:e9535bc7",
+    "structural_terms": {
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": -0.011066473066207292,
+     "J_bm_rms": 0.013386140607516686,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 2.4643450543469585e-05,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_tail_bm_limit": 1.610775832314234e-05,
+     "J_fus_bm_limit": 0.0002147002043189834,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "structural_sum": 0.0025751189544949895,
+    "negative_terms": {
+     "J_mass": -0.011066473066207292
+    },
+    "sim_cost_mean": 0.08952035931815996,
+    "margins": {
+     "flutter_margin": 1.204379268368402,
+     "div_margin": 3.0,
+     "reversal_margin": 2.11608781965927
+    },
+    "mass_total_frac": -0.03688824355402431,
+    "mass_lb": {
+     "wingR_lb": -36.225796952042955,
+     "wingL_lb": -36.225796952042955,
+     "ht_lb": -0.16489290748958885,
+     "vt_lb": -0.13191432599167108,
+     "fus_lb": -3.610263019263149,
+     "total_lb": -76.35866415683032,
+     "baseline_flexible_lb": 2070.0,
+     "total_frac": -0.03688824355402431
+    },
+    "J_mass_fd": null,
+    "mass_credit_delta": null,
+    "best_struct": {
+     "wing_ei_root": 1.054896863293184,
+     "wing_ei_taper_1": 0.9184413786083894,
+     "wing_ei_taper_2": 0.9347816146105707,
+     "wing_ei_taper_3": 0.9242558169974835,
+     "wing_ei_taper_4": 0.9310502954451283,
+     "wing_gj_ratio_root": 1.15,
+     "wing_gj_ratio_tip": 1.1084196235789316,
+     "wing_nsm_root": 0.8,
+     "wing_nsm_tip": 0.8,
+     "tail_stiffness_scale": 0.9960025961820705,
+     "fuselage_stiffness_scale": 0.9855589479229473,
+     "struct_damping_ratio": 0.0367053855634924
+    },
+    "best_gains": {
+     "kp_alt": 0.2691039588941823,
+     "ki_alt": 0.0,
+     "kd_alt": 0.15672820188384334,
+     "kp_pitch": 0.16349818343098263,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.04146877027955488,
+     "kp_hdg": 2.66943149728998,
+     "ki_hdg": 0.013480825278795185
+    },
+    "floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "wing_nsm_root": 0.875,
+     "wing_nsm_tip": 0.9375,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.0
+    },
+    "floor_fraction_gains": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.953125,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.96875,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.0,
+     "ki_hdg": 0.0
+    },
+    "ceiling_fraction": {
+     "kp_alt": 0.0,
+     "ki_alt": 0.0,
+     "kd_alt": 0.0,
+     "kp_pitch": 0.0,
+     "ki_pitch": 0.0,
+     "kd_pitch": 0.0,
+     "kp_hdg": 0.0,
+     "ki_hdg": 0.0,
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.859375,
+     "wing_gj_ratio_tip": 0.0,
+     "wing_nsm_root": 0.0,
+     "wing_nsm_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0,
+     "struct_damping_ratio": 0.046875
+    },
+    "best_genes_within_tol_of_bounds": {
+     "ki_alt": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.0,
+      "bounds": [
+       3.04e-07,
+       0.5
+      ]
+     },
+     "ki_pitch": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.0,
+      "bounds": [
+       1e-05,
+       0.992
+      ]
+     },
+     "wing_gj_ratio_root": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 1.15,
+      "bounds": [
+       0.8,
+       1.15
+      ]
+     },
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     },
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.8,
+      "bounds": [
+       0.8,
+       1.25
+      ]
+     }
+    },
+    "invalid_rate_all": 0.0010416666666666667,
+    "invalid_rate_last": 0.0,
+    "n_rows": 3840,
+    "flags": [
+     "negative structural term at the optimum: J_mass = -0.0110665"
+    ],
+    "ladder": {
+     "spearman_screen_vs_full_mean": 0.04061498578722577,
+     "spearman_screen_vs_full_last": -0.2613022656802268,
+     "n_gens": 60,
+     "spearman_both_ok_mean": {
+      "rigid_vs_full": 0.04061498578722577
+     },
+     "n_rescored_mean": 16.733333333333334,
+     "eval_cpu_s": 7117.550847222001,
+     "eval_wall_s": 2802.323887406965,
+     "sims_computed": 13626
+    }
+   }
+  },
+  "wall_s": null,
+  "summary_aircraft": {
+   "c172x": {},
+   "T38": {},
+   "737": {}
+  }
+ },
+ "flags": [
+  "[A:c172x] negative structural term at the optimum: J_mass = -0.0205294",
+  "[A:737] negative structural term at the optimum: J_mass = -0.0106938",
+  "[A:T38] negative structural term at the optimum: J_mass = -0.0110665"
+ ]
+}

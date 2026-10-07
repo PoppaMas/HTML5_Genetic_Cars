@@ -80,8 +80,9 @@ class ExtScenario(S.Scenario):
     nz_limits: Optional[Tuple[float, float]] = None        # envelope; None = sim.NZ_LIMITS
     throttle_max: Optional[float] = None                   # throttle-cmd clamp; None = 1.0 (sim.py)
     use_fd_root: bool = True                               # FD patched aircraft copies + gear up
-    flex_mode: Optional[str] = None                        # None (rigid) | "twoway" | "oneway" (FD coupled_sim)
+    flex_mode: Optional[str] = None                        # None (rigid) | "twoway" | "oneway" (FD coupled_sim, v1) | "v2" (FD flexbody)
     flex_substeps: int = 2
+    flex_asymmetric: bool = False                          # v2 only: FD's optional left/right asymmetry genes
     bank_cmd_limit_deg: Optional[float] = None             # heading loop bank clamp (deg); None = BANK_CMD_LIMIT_DEG
     hdg_i_limit_deg: Optional[float] = None                # heading integrator authority (deg bank); None = HDG_I_LIMIT_DEG
     # sustained vertical wind (v5 disturbance scenario): + = downdraft (JSBSim wind-down), 1-cos onset
@@ -242,12 +243,20 @@ def simulate(gains: Dict[str, float], sc, record: bool = True) -> Dict:
     ext = isinstance(sc, ExtScenario)
     model = sc.aircraft if ext else S.AIRCRAFT
     coupler = None
+    v2 = ext and sc.flex_mode == "v2"
+    mdl_v2 = None
     try:
-        root = fd_bridge.require_root(model) if ext and (sc.use_fd_root or sc.flex_mode) else None
+        if v2:  # FD flex v2: own prepared root (jsbsim_root_v2), structural mass of all bodies applied before IC/trim
+            root = fd_bridge.require_root_v2(model)
+        else:
+            root = fd_bridge.require_root(model) if ext and (sc.use_fd_root or sc.flex_mode) else None
         fdm = _new_fdm(model, root)
         if ext and root:
             fdm["gear/gear-cmd-norm"] = 0.0  # before run_ic (FD INTERFACE.md 4a); no effect on the fixed-gear c172x
-        if ext and sc.flex_mode:
+        if v2:
+            mdl_v2 = fd_bridge.model_v2(model, fd_bridge.struct_genes_v2(gains, sc.flex_asymmetric), sc.flex_asymmetric)
+            v2_mass = fd_bridge.flexbody().apply_mass_v2(fdm, mdl_v2, root)
+        elif ext and sc.flex_mode:
             # builds the wing from the structure genes and pushes its mass change into JSBSim (before trim)
             coupler = fd_bridge.coupled_sim().make_coupler(fdm, model, sc.flex_mode, fd_bridge.flex_overrides(gains, model),
                                                            sc.flex_substeps, root)
@@ -279,6 +288,9 @@ def simulate(gains: Dict[str, float], sc, record: bool = True) -> Dict:
             return _fail("trim_failed", f"trim throttle {fdm['fcs/throttle-cmd-norm']:.3f} > throttle_max {sc.throttle_max}", record)
     if coupler is not None:
         fdm = fd_bridge.coupled_sim().FlexFDM(fdm, coupler, S.DT, record=True)  # structure step before each run()
+    if mdl_v2 is not None:  # v2 coupler + proxy after trim (FD's FlexHookV2.wrap): run() = structure step, then JSBSim
+        fb = fd_bridge.flexbody()
+        fdm = fb.FlexBodyFDM(fdm, fb.FlexBodyCoupler(mdl_v2, mode="twoway", substeps=sc.flex_substeps), S.DT, record=True)
 
     theta_trim = fdm["attitude/theta-deg"]
     elev_trim = fdm["fcs/elevator-cmd-norm"]
@@ -468,6 +480,14 @@ def simulate(gains: Dict[str, float], sc, record: bool = True) -> Dict:
         tel = {c: v[:k_end] for c, v in rec.items()}
         out["telemetry"] = tel
         out["trace"] = tel  # plot_results.py reads r["trace"]
+    if mdl_v2 is not None:
+        out["flex_mode"] = "v2"
+        out["struct_mass_delta_lb"] = float(v2_mass["total_lb"])
+        if status == "ok" and fdm.started:  # FD's post-flight v2 terms (FlexHookV2.finish): loads, hinge terms, ultimate
+            r2 = fd_bridge.flexbody().response_terms_v2(fdm.history(), mdl_v2, fdm.out_1g, fd_bridge.struct_weights_v2())
+            out["flex_v2"] = {"terms": r2["terms"], "fail": r2["fail"], "loads": r2["loads"], "allowables": r2["allowables"],
+                              "bm_allow": r2["bm_allow"], "tip_max_ft": r2["tip_max_ft"], "twist_max_deg": r2["twist_max_deg"],
+                              "tail_ratio": r2["tail_ratio"], "fus_ratio": r2["fus_ratio"], "m_root_1g": r2["m_root_1g"]}
     if coupler is not None:
         out["flex_mode"] = sc.flex_mode
         out["wing_mass_delta_lb"] = coupler.delta_mass_lb

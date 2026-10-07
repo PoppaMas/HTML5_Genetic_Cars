@@ -179,3 +179,25 @@ def test_flex_sim_c172x_short():
 def test_legacy_scenario_has_no_fd_path():
     sc = S.make_scenarios(1, 1)[0]
     assert not isinstance(sc, sim_ext.ExtScenario)
+
+
+def test_v1_margins_penalised_only_below_1p2_never_rewarded_above():
+    # phase1_flex uses FD's flexwing.margin_terms directly: < 1.0 fail, 1.0..1.2 hinge^2, >= 1.2 (incl. not-found
+    # = inf / capped) exactly 0 -> more margin never lowers the cost. Stub wing: margin_terms only reads these.
+    import types
+    fw = fd_bridge.flexwing()
+    wts = fd_bridge.struct_weights({**F.FLEX_DEFAULTS})
+    assert wts.margin_req == 1.2
+
+    def terms(m):
+        w = types.SimpleNamespace(margins=lambda rho: {"flutter_margin": m, "div_margin": m},
+                                  p=types.SimpleNamespace(wing_mass_lb=100.0), m_semi_total_lb=50.0)
+        return fw.margin_terms(w, wts)
+
+    for m in (0.5, 0.99):
+        assert terms(m)["fail"] == "flutter"
+    pen = [terms(m)["terms"]["J_flutter_margin"] for m in (1.0, 1.05, 1.1, 1.15, 1.199)]
+    assert terms(1.0)["fail"] is None and pen[0] == pytest.approx(1.0) and all(a > b > 0 for a, b in zip(pen, pen[1:]))
+    for m in (1.2, 1.25, 1.5, 2.9, 3.0, float("inf")):
+        t = terms(m)
+        assert t["fail"] is None and t["terms"]["J_flutter_margin"] == 0.0 and t["terms"]["J_div_margin"] == 0.0

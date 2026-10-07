@@ -1,0 +1,147 @@
+{
+  "best": [
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 4.240541741549571,
+      "range": [
+        0.05,
+        5.0
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 0.04399499131219484,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_2",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 1.0,
+      "value": 0.7725633335443214,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "lower",
+      "fraction": 1.0,
+      "value": 0.75,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "tail_stiffness_scale",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 1.0,
+      "value": 1.9193856622965888,
+      "range": [
+        0.6,
+        2.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "last10_generation_bests": [
+    {
+      "gene": "kp_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 0.625,
+      "value": 4.240539999999998,
+      "range": [
+        0.05,
+        5.0
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "ki_hdg",
+      "block": "roll_heading",
+      "bound": "near_upper",
+      "fraction": 0.625,
+      "value": 0.043995000000000006,
+      "range": [
+        1e-05,
+        0.1
+      ],
+      "scale": "log0"
+    },
+    {
+      "gene": "wing_ei_taper_2",
+      "block": "structure_v2",
+      "bound": "near_lower",
+      "fraction": 0.5,
+      "value": 0.772563,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_ei_taper_4",
+      "block": "structure_v2",
+      "bound": "lower",
+      "fraction": 0.625,
+      "value": 0.75,
+      "range": [
+        0.75,
+        1.05
+      ],
+      "scale": "linear"
+    },
+    {
+      "gene": "wing_nsm_root",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.125,
+      "value": 1.19856,
+      "range": [
+        0.8,
+        1.25
+      ],
+      "scale": "log"
+    },
+    {
+      "gene": "tail_stiffness_scale",
+      "block": "structure_v2",
+      "bound": "near_upper",
+      "fraction": 0.625,
+      "value": 1.9193899999999997,
+      "range": [
+        0.6,
+        2.0
+      ],
+      "scale": "log"
+    }
+  ],
+  "suggestions": {
+    "wing_ei_taper_4": {
+      "bound": "lower",
+      "suggested_range": [
+        0.29999999999999993,
+        1.05
+      ]
+    }
+  }
+}

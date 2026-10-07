@@ -1,8 +1,8 @@
-// Loading + parsing of ga-flightsim-traj/1 trajectories and their index.json.
+// Loading + parsing of ga-flightsim-traj/1|/2 trajectories and their index.json.
 // Channels are always looked up by NAME from `channels`; unknown channels/fields are ignored.
 import * as THREE from 'three';
 
-export const SUPPORTED_SCHEMA = /^ga-flightsim-traj\/1(\.|$)/;
+export const SUPPORTED_SCHEMA = /^ga-flightsim-traj\/[12](\.|$)/;
 
 // ---------- fetching (plain JSON or gzip, detected by magic bytes) ----------
 export async function decodeBuffer(buf) {
@@ -52,16 +52,22 @@ export function parseIndex(obj, baseUrl) {
     const m = /^traj_(.+?)_(.+)_g(\d+)\.json(\.gz)?$/.exec(String(file).split('/').pop());
     const run = e.run ?? e.run_id ?? meta.run_id ?? (m ? m[2] : null);
     // cost (lower=better) is the agreed metric; older files carry "fitness" (ER's was always a cost / min)
-    const sense = e.fitness_sense ?? meta.fitness_sense ?? (e.cost != null ? 'min' : null);
+    const sense = normSense(e.fitness_sense ?? meta.fitness_sense ?? (e.cost != null ? 'min' : null));
+    // ids are opaque strings (ER: individual_id "T38:g19:r0", scenario id "T38:s1"); scenario_index = position
+    const scenarioIndex = Number.isInteger(e.scenario_index) ? e.scenario_index : (Number.isInteger(e.scenario) ? e.scenario : null);
     return { generation: gen, fitness: e.cost ?? e.fitness ?? null, sense, aircraft: e.aircraft || meta.aircraft || null,
       run, file, url, status: e.status, key: `${url}`, order: i,
-      scenario: e.scenario ?? null, individual: e.individual_id ?? null, verdict: e.verdict ?? null };
+      scenario: e.scenario_id ?? e.scenario ?? null, scenarioIndex, individual: e.individual_id ?? null,
+      rank: Number.isInteger(e.rank) ? e.rank : null, isBest: typeof e.is_best === 'boolean' ? e.is_best : null,
+      verdict: e.verdict ?? null };
   }).filter((e) => e.file);
   const runOrder = new Map();
   entries.forEach((e) => { if (!runOrder.has(e.run)) runOrder.set(e.run, runOrder.size); });
   entries.sort((a, b) => String(a.aircraft ?? '').localeCompare(String(b.aircraft ?? '')) ||
     (runOrder.get(a.run) - runOrder.get(b.run)) || ((a.generation ?? a.order) - (b.generation ?? b.order)) ||
+    ((a.isBest === false) - (b.isBest === false)) || ((a.rank ?? 0) - (b.rank ?? 0)) ||
     String(a.individual ?? '').localeCompare(String(b.individual ?? ''), undefined, { numeric: true }) ||
+    ((a.scenarioIndex ?? 0) - (b.scenarioIndex ?? 0)) ||
     String(a.scenario ?? '').localeCompare(String(b.scenario ?? ''), undefined, { numeric: true }));
   return { meta, entries };
 }
@@ -88,7 +94,7 @@ function angleScale(units, name) {
 
 export function parseTrajectory(obj, source = '') {
   if (!obj || !Array.isArray(obj.channels) || !Array.isArray(obj.data)) throw new Error(`${source}: not a trajectory (no channels/data)`);
-  if (obj.schema && !SUPPORTED_SCHEMA.test(obj.schema)) console.warn(`${source}: schema ${obj.schema} not ga-flightsim-traj/1; trying anyway`);
+  if (obj.schema && !SUPPORTED_SCHEMA.test(obj.schema)) console.warn(`${source}: schema ${obj.schema} not ga-flightsim-traj/1|/2; trying anyway`);
   const idx = {};
   obj.channels.forEach((c, i) => { idx[c] = i; });
   const n = obj.data.length;
@@ -183,14 +189,21 @@ export function parseTrajectory(obj, source = '') {
     hasTarget: !!(rampCh || stepCh || schedule || (tgt && Number.isFinite(tgt.alt_m))),
     hasRamp: !!rampCh, rampChannel: rampCh, stepChannel: stepCh,
     aircraft: obj.aircraft || 'unknown', generation: obj.generation, fitness: obj.cost ?? obj.fitness,
-    sense: obj.fitness_sense ?? (obj.cost != null ? 'min' : null),
+    sense: normSense(obj.fitness_sense ?? (obj.cost != null ? 'min' : null)),
     scenarioIndex: obj.scenario_index ?? null, individualId: obj.individual_id ?? null, replay: obj.replay || null,
     runId: obj.run_id, events: Array.isArray(obj.events) ? obj.events : [],
     t0: t[0], t1: t[n - 1],
   };
 }
 
-// soft-body v2: optional `structure` block + channels '<component>.<dof>.<node_idx>' (metres / rad, body FRD).
+// fitness_sense as ER writes it: "min" in run.json, free text in trajectory files ("minimize (GA cost, ...)")
+export function normSense(v) {
+  if (v == null) return null;
+  return String(v).trim().toLowerCase().startsWith('max') ? 'max' : 'min';
+}
+
+// soft-body v2: optional `structure` block + channels '<component>.<dof>.<node_idx>' (metres / rad, body FRD),
+// dof dz / dy / dx / twist; a component flagged `estimated: true` (tip-only estimate, no FD nodal data) is labelled.
 // Unknown component names are kept (the viewer only deforms the ones its procedural model has).
 export const STRUCT_COMPONENTS = ['wingL', 'wingR', 'htail', 'vtail', 'fuselage'];
 export function parseStructure(obj, ch) {
@@ -208,10 +221,11 @@ export function parseStructure(obj, ch) {
       for (let i = 0; i < n; i++) { const a = ch[`${c.name}.${d}.${i}`] || null; arrs.push(a); if (a) found++; }
       if (arrs.some(Boolean)) chm[d] = arrs;
     }
-    comps.push({ name: c.name, axis_nodes: c.axis_nodes_body_m, dof, ch: chm, nChannels: found });
+    comps.push({ name: c.name, axis_nodes: c.axis_nodes_body_m, dof, ch: chm, nChannels: found, estimated: c.estimated === true });
   }
   if (!comps.length) return null;
-  return { synthetic: !!(st.synthetic || obj.synthetic), source: st.source || null, components: comps };
+  return { synthetic: !!(st.synthetic || obj.synthetic), source: st.source || null, components: comps,
+    estimated: comps.filter((c) => c.estimated).map((c) => c.name) };
 }
 
 // index i and fraction f such that time = t[i] + f*(t[i+1]-t[i]) (clamped)

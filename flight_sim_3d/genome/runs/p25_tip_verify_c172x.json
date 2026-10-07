@@ -1,0 +1,158 @@
+{
+  "baseline": {
+    "gains": {
+      "kp_alt": 0.2397326688652956,
+      "ki_alt": 0.05,
+      "kd_alt": 0.38523085001510937,
+      "kp_pitch": 0.07049452717617341,
+      "ki_pitch": 1.9653025820764143e-05,
+      "kd_pitch": 0.014608444547277827,
+      "kp_hdg": 2.242870209249964,
+      "ki_hdg": 0.0003706638173012445
+    },
+    "struct": {
+      "wing_ei_root": 1.0,
+      "wing_ei_taper_1": 1.0,
+      "wing_ei_taper_2": 1.0,
+      "wing_ei_taper_3": 1.0,
+      "wing_ei_taper_4": 1.0,
+      "wing_gj_ratio_root": 1.0,
+      "wing_gj_ratio_tip": 1.0,
+      "wing_nsm_root": 1.0,
+      "wing_nsm_tip": 1.0,
+      "tail_stiffness_scale": 1.0,
+      "fuselage_stiffness_scale": 1.0,
+      "struct_damping_ratio": 0.02
+    },
+    "cost": 0.24220696133846464,
+    "per_scenario_cost": [
+      0.127721836186873,
+      0.3978995504616569,
+      0.20099949736686393
+    ],
+    "status": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "objectives": {
+      "track_alt": 0.059189059564721404,
+      "effort": 0.030981148258085293,
+      "comfort": 1.765959894028243,
+      "track_heading_rms": 0.1938471814614878,
+      "structural_v2": 0.030819138741545574,
+      "aeroelastic_margin_penalty": 0.0
+    },
+    "fd_struct_terms": {
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": 0.0,
+      "J_smooth": 0.0,
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.030819138741545574,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+    },
+    "fd_pre_sum": 0.0,
+    "J_wing_tip_bm_limit": 0.0,
+    "sizing_terms": {
+      "J_wing_bm_limit": 0.0,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0
+    },
+    "model_version": "full:flexv2:e11b8214",
+    "struct_v2_source": "fd"
+  },
+  "soft_tip_taper4_0.75": {
+    "gains": {
+      "kp_alt": 0.2397326688652956,
+      "ki_alt": 0.05,
+      "kd_alt": 0.38523085001510937,
+      "kp_pitch": 0.07049452717617341,
+      "ki_pitch": 1.9653025820764143e-05,
+      "kd_pitch": 0.014608444547277827,
+      "kp_hdg": 2.242870209249964,
+      "ki_hdg": 0.0003706638173012445
+    },
+    "struct": {
+      "wing_ei_root": 1.0,
+      "wing_ei_taper_1": 1.0,
+      "wing_ei_taper_2": 1.0,
+      "wing_ei_taper_3": 1.0,
+      "wing_ei_taper_4": 0.75,
+      "wing_gj_ratio_root": 1.0,
+      "wing_gj_ratio_tip": 1.0,
+      "wing_nsm_root": 1.0,
+      "wing_nsm_tip": 1.0,
+      "tail_stiffness_scale": 1.0,
+      "fuselage_stiffness_scale": 1.0,
+      "struct_damping_ratio": 0.02
+    },
+    "cost": 0.2657981420373094,
+    "per_scenario_cost": [
+      0.14835085230565445,
+      0.4276350388755169,
+      0.2214085349307567
+    ],
+    "status": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "objectives": {
+      "track_alt": 0.0615073613944051,
+      "effort": 0.03114024488249093,
+      "comfort": 1.771177686343995,
+      "track_heading_rms": 0.1938436276920212,
+      "structural_v2": 0.05151297028380244,
+      "aeroelastic_margin_penalty": 0.0
+    },
+    "fd_struct_terms": {
+      "J_flutter_margin": 0.0,
+      "J_div_margin": 0.0,
+      "J_reversal_margin": 0.0,
+      "J_mass": -0.0009496534483707982,
+      "J_smooth": 0.004138048740507586,
+      "J_wing_bm_limit": 4.224513086771585e-06,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 4.2245130867715854e-07,
+      "J_wing_tip_bm_limit": 0.017509318343313852,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0,
+      "J_bm_rms": 0.030810609683956342,
+      "J_bm_peak": 0.0,
+      "J_tip": 0.0,
+      "J_twist": 0.0,
+      "J_tail_bm_peak": 0.0,
+      "J_fus_bm_peak": 0.0,
+      "J_wing_torque_peak": 0.0,
+      "J_wing_ip_peak": 0.0
+    },
+    "fd_pre_sum": 0.02070236059984609,
+    "J_wing_tip_bm_limit": 0.017509318343313852,
+    "sizing_terms": {
+      "J_wing_bm_limit": 4.224513086771585e-06,
+      "J_wing_torque_limit": 0.0,
+      "J_wing_ip_limit": 4.2245130867715854e-07,
+      "J_wing_tip_bm_limit": 0.017509318343313852,
+      "J_tail_bm_limit": 0.0,
+      "J_fus_bm_limit": 0.0
+    },
+    "model_version": "full:flexv2:e11b8214",
+    "struct_v2_source": "fd"
+  }
+}

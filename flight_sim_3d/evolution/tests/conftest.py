@@ -5,7 +5,7 @@ import sys
 
 import pytest
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # flight_sim_3d/
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))  # flight_sim_3d/ (repo) or /workspace/flight-sim-team (team)
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
