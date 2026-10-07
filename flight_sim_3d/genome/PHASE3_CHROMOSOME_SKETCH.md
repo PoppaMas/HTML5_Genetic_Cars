@@ -4,6 +4,8 @@
 
 **Update 2026-10-06 ~17:50 PT:** Corleone held the A1 64×60 pilot and chose **B1 next** (P3-B planform). Implementation-ready genome-side spec (decode order, FD alignment, geometry-gate reject, per-block ops, OPEN on FD): **`PHASE3_B1_SPEC.md`**. Do not treat the B1 ballpark counts below as a locked gene list — wait for FD.
 **Update ~18:40 PT:** FD LOCKED B1 at 6 genes (`planform_b1.py`, INTERFACE_v2 §14); implemented as opt-in preset `phase3_b1` (26 genes, `full_a1_b1`). See `PHASE3_B1_SPEC.md` / `CROSSCHECK_p3b1.md`.
+**Update ~19:00 / ~20:15 PT:** FD B1 r1. All 6 shape genes, including the chord tapers, are **linear in value** (lo + u·(hi − lo)). FD's "log" is only the spanwise chord interpolation; genome's shape init/mutation work in ln x internally. Opt-in tweaked GA `phase3_b1_x` (per-gene shape crossover + elite 4): `PHASE3_B1_SPEC.md` §9.
+**Update ~20:20 PT:** B2 genome spec **ALIGNED to FD §15 / `p3b2_gene_spec.json`** (B2a = dihedral, t/c ×2 [locked pending energy cost], camber ×2; B2b = area, aspect): **`PHASE3_B2_SKETCH.md`**.
 
 **Hard rule:** FD's flexeval structural cost (18 `J_*` terms, FD weights) stays the structural part of the scalar. Controller terms ride on top exactly as Phase 2 (`track_alt`, `effort`, `comfort`, `heading`). Do not invent a parallel structural formula.
 

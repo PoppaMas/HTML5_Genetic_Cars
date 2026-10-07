@@ -15,7 +15,11 @@ phase3_b1: 16 x 5, c172x/T38/737, same seeds / scenarios / sigma 0.10) and phase
 seeds as phase3a1_pilot). Pins: full_a1_b1 from model_versions_post_p3b1r1.json (FD B1 r1, frozen 18:47 PT; = the
 default since r1), rigid from model_versions_post_p25.json.
 --p3b1 --r0: the superseded r0 pins (model_versions_post_p3b1.json) -> phase3b1_smoke_r0.json / phase3b1_pilot_r0.json
-(kept for the record / replay of phase3b1-smoke-s1; do not pilot on them)."""
+(kept for the record / replay of phase3b1-smoke-s1; do not pilot on them).
+--p3b1 --tweaked: the opt-in TWEAKED GA preset (Corleone 2026-10-06; = Genome's phase3_b1_x): writes ONLY
+phase3b1_pilot_tweaked.json (= the --p3b1 pilot + ga.elite 4 + ga.shape_crossover "uniform"; refuses unless the regenerated
+base pilot equals configs/phase3b1_pilot.json) and phase3b1_pilot_tweaked_T38.json (T38 only, seed 2, = what
+`--aircraft T38` makes of the 3-aircraft file). phase3b1_smoke.json / phase3b1_pilot.json are NOT rewritten."""
 import copy
 import json
 import os
@@ -53,6 +57,10 @@ B1_R0 = P3B1 and "--r0" in sys.argv[1:]
 B1_PIN_NAME = "model_versions_post_p3b1.json" if B1_R0 else "model_versions_post_p3b1r1.json"
 B1_REV = "r0 (SUPERSEDED by r1)" if B1_R0 else "r1"
 B1_SUFFIX = "_r0" if B1_R0 else ""
+TWEAKED = "--tweaked" in sys.argv[1:]
+if TWEAKED and (not P3B1 or B1_R0):
+    sys.exit("--tweaked needs --p3b1 (r1 pins, not --r0)")
+TWEAK_GA = {"elite": 4, "shape_crossover": "uniform"}     # evolution/analysis/TWEAKED_PRESET_SPEC.md
 PIN_FILE = os.path.join(_FD_ROOT, "v2_results", PIN_NAME)
 PIN_SOURCE = f"flight-dynamics/v2_results/{PIN_NAME}"
 FD_PINS = {}
@@ -190,7 +198,39 @@ def write_p3b1(smoke, pilot):
     pilot["genome_kind"] = "phase3_b1"
     pilot["pin_model_version"] = {n: {"rigid": FD_PINS.get(n, {}).get("rigid", PH),
                                       "full_a1_b1": b1.get(n, {}).get("full_a1_b1", PH)} for n in names}
+    if TWEAKED:
+        write_p3b1_tweaked(pilot)
+        return
     for fn, d in (("phase3b1_smoke" + B1_SUFFIX, smoke), ("phase3b1_pilot" + B1_SUFFIX, pilot)):
+        with open(os.path.join(CFG, fn + ".json"), "w") as f:
+            json.dump(d, f, indent=1)
+            f.write("\n")
+        print("wrote", fn)
+
+
+def write_p3b1_tweaked(pilot):
+    """phase3b1_pilot_tweaked.json (+ _T38): the B1 r1 pilot with ONLY ga.elite 4 + ga.shape_crossover 'uniform' added
+    (and comments); same pins, seeds, scenarios, ladder, pop / gens, genome kind. Checked in tests/test_tweaked_preset.py."""
+    with open(os.path.join(CFG, "phase3b1_pilot.json")) as f:
+        on_disk = json.load(f)
+    if on_disk != pilot:
+        sys.exit("--tweaked: regenerated phase3b1_pilot differs from configs/phase3b1_pilot.json; not writing a tweaked "
+                 "copy of a different baseline (regenerate the baseline first)")
+    tw = copy.deepcopy(pilot)
+    tw["_comment"] = ("Phase 3 B1 r1 PILOT, TWEAKED GA preset (A/B arm vs phase3b1_pilot.json, run phase3b1r1-pilot-s1): identical "
+                      "to phase3b1_pilot.json (pins, seeds c172x 1 / T38 2 / 737 3, scenario_seed 1, 3 scenarios, rigid->full_a1_b1 "
+                      "ladder, 64 x 60, genome_kind phase3_b1) EXCEPT ga.elite 4 (default 2) and ga.shape_crossover 'uniform' "
+                      "(per-gene uniform crossover inside the shape block; controller / structure stay whole blocks). Genome's "
+                      "name: phase3_b1_x. Spec: evolution/analysis/TWEAKED_PRESET_SPEC.md. DO NOT LAUNCH without Corleone's "
+                      "approval.")
+    tw["ga"] = {**pilot["ga"], **TWEAK_GA}
+    t38 = copy.deepcopy(tw)
+    t38["_comment"] = ("T38-ONLY variant of phase3b1_pilot_tweaked.json (= what `--aircraft T38` makes of it: T38 entry with seed 2, "
+                       "T38 pins only; everything else identical). Compare with the T38 series of phase3b1r1-pilot-s1 (per-aircraft "
+                       "GA streams are independent: own seed, own scenarios). DO NOT LAUNCH without Corleone's approval.")
+    t38["aircraft"] = [a for a in tw["aircraft"] if a["name"] == "T38"]
+    t38["pin_model_version"] = {"T38": tw["pin_model_version"]["T38"]}
+    for fn, d in (("phase3b1_pilot_tweaked", tw), ("phase3b1_pilot_tweaked_T38", t38)):
         with open(os.path.join(CFG, fn + ".json"), "w") as f:
             json.dump(d, f, indent=1)
             f.write("\n")

@@ -62,13 +62,18 @@ def jsbsim_version() -> str:
 
 def eval_key(aircraft: str, genome: np.ndarray, profile_d: Dict, scenario_d: Dict, scenario_seed: int,
              jsbsim_ver: str, code: str, model_sha: str = "", fidelity: Optional[str] = None,
-             model_version: Optional[str] = None, shape_key: Optional[str] = None) -> str:
+             model_version: Optional[str] = None, shape_key: Optional[str] = None,
+             energy_cost: Optional[bool] = None) -> str:
     if fidelity is not None and model_version is not None and not str(model_version).startswith(f"{fidelity}:"):
         raise ValueError(f"cache key: model_version {model_version!r} does not belong to fidelity {fidelity!r}")
-    if shape_key is not None and fidelity != "full_a1_b1":
-        raise ValueError(f"cache key: shape_key is only part of full_a1_b1 keys (fidelity {fidelity!r})")
+    if shape_key is not None and fidelity not in ("full_a1_b1", "full_a1_b2a"):
+        raise ValueError(f"cache key: shape_key is only part of full_a1_b1 / full_a1_b2a keys (fidelity {fidelity!r})")
     if fidelity == "full_a1_b1" and not shape_key:
         raise ValueError("cache key: a full_a1_b1 key needs FD's shape_cache_key (planform_b1.shape_cache_key)")
+    if fidelity == "full_a1_b2a" and not str(shape_key or "").startswith("b2a|"):
+        raise ValueError("cache key: a full_a1_b2a key needs FD's shape_cache_key_b2 ('b2a|...', incl. the envelope)")
+    if (energy_cost is not None) != (fidelity == "full_a1_b2a"):
+        raise ValueError("cache key: energy_cost (bool) is part of full_a1_b2a keys only")
     payload = {
         "fidelity": fidelity,            # the fidelity + model_version the worker returned (checked by the batch)
         "model_version": model_version,
@@ -83,6 +88,8 @@ def eval_key(aircraft: str, genome: np.ndarray, profile_d: Dict, scenario_d: Dic
     }
     if shape_key is not None:        # full_a1_b1 only (keeps every other payload byte-identical)
         payload["shape_key"] = str(shape_key)
+    if energy_cost is not None:      # full_a1_b2a only: the Evolution-side energy term changes the cached cost
+        payload["energy_cost"] = bool(energy_cost)
     s = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(s.encode()).hexdigest()
 

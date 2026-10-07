@@ -1,0 +1,66 @@
+{
+ "doc": "P3-B2a CPU: process CPU s, min over repeats, BLAS 1 thread, Phase-1 best gains, ONE 90 s scenario per evaluate(). MIXED = {\"wing_dihedral_delta_deg\": 1.0, \"wing_camber_root_delta_pct\": 0.5, \"wing_camber_tip_delta_pct\": 0.5, \"wing_tc_root_scale\": 1.1} (thickness -> modal rebuild); cam_dih = {\"wing_dihedral_delta_deg\": 1.0, \"wing_camber_root_delta_pct\": 0.5, \"wing_camber_tip_delta_pct\": 0.5}. Box shared with ER's 8-worker pilot (load ~10 on 8 cores): process CPU, not wall.",
+ "reps": 6,
+ "aircraft": {
+  "c172x": {
+   "build_b1_shaped_s": 0.1754729380000022,
+   "build_b2_mixed_s": 0.17744697499999873,
+   "preflight_b2_mixed_s": 0.06469576099999941,
+   "eval90_b1_baseline_s": 1.9189412789999998,
+   "eval90_b1_shaped_s": 2.0542482779999998,
+   "eval90_b2_default_s": 1.9236334329999991,
+   "eval90_b2_cam_dih_s": 2.2030995719999993,
+   "eval90_b2_mixed_s": 2.1867204619999967,
+   "eval90_b1_shaped_ratio_vs_b1_baseline": 1.0705112764422429,
+   "eval90_b2_default_ratio_vs_b1_baseline": 1.0024451785217965,
+   "eval90_b2_cam_dih_ratio_vs_b1_baseline": 1.1480807652165783,
+   "eval90_b2_mixed_ratio_vs_b1_baseline": 1.1395452721406578,
+   "load1_max": 18.03466796875
+  },
+  "T38": {
+   "build_b1_shaped_s": 0.18538001299999962,
+   "build_b2_mixed_s": 0.18280196699999607,
+   "preflight_b2_mixed_s": 0.05545663699999892,
+   "eval90_b1_baseline_s": 1.7799312130000047,
+   "eval90_b1_shaped_s": 2.0100358589999985,
+   "eval90_b2_default_s": 1.923506868000004,
+   "eval90_b2_cam_dih_s": 2.019824775999993,
+   "eval90_b2_mixed_s": 2.100860104000006,
+   "eval90_b1_shaped_ratio_vs_b1_baseline": 1.1292772688738693,
+   "eval90_b2_default_ratio_vs_b1_baseline": 1.0806635975319565,
+   "eval90_b2_cam_dih_ratio_vs_b1_baseline": 1.1347768729757017,
+   "eval90_b2_mixed_ratio_vs_b1_baseline": 1.1803040975157058,
+   "load1_max": 17.23291015625
+  },
+  "737": {
+   "build_b1_shaped_s": 0.10397313599999336,
+   "build_b2_mixed_s": 0.10485580499999969,
+   "preflight_b2_mixed_s": 0.05407798000000241,
+   "eval90_b1_baseline_s": 1.8050717659999975,
+   "eval90_b1_shaped_s": 1.8270331620000064,
+   "eval90_b2_default_s": 1.789941517999992,
+   "eval90_b2_cam_dih_s": 2.009523066,
+   "eval90_b2_mixed_s": 1.988753060999997,
+   "eval90_b1_shaped_ratio_vs_b1_baseline": 1.0121664946589215,
+   "eval90_b2_default_ratio_vs_b1_baseline": 0.9916179244033417,
+   "eval90_b2_cam_dih_ratio_vs_b1_baseline": 1.1132649149197333,
+   "eval90_b2_mixed_ratio_vs_b1_baseline": 1.101758444434059,
+   "load1_max": 24.10693359375
+  },
+  "f16": {
+   "build_b1_shaped_s": 0.17761978200000783,
+   "build_b2_mixed_s": 0.187996763000001,
+   "preflight_b2_mixed_s": 0.06711889000000326,
+   "eval90_b1_baseline_s": 1.8774850709999953,
+   "eval90_b1_shaped_s": 2.0830559660000034,
+   "eval90_b2_default_s": 2.0014468239999985,
+   "eval90_b2_cam_dih_s": 2.2238162329999938,
+   "eval90_b2_mixed_s": 2.2471539080000014,
+   "eval90_b1_shaped_ratio_vs_b1_baseline": 1.1094926922058113,
+   "eval90_b2_default_ratio_vs_b1_baseline": 1.066025426734274,
+   "eval90_b2_cam_dih_ratio_vs_b1_baseline": 1.1844654678481858,
+   "eval90_b2_mixed_ratio_vs_b1_baseline": 1.1968957531061013,
+   "load1_max": 19.4013671875
+  }
+ }
+}

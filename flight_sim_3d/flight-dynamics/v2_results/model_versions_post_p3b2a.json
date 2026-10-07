@@ -1,0 +1,477 @@
+{
+ "doc": "P3-B2a model_version strings (flexeval_b2.model_version). 'full_a1_b2a' is new (B1 r1 + section genes: dihedral / camber / thickness, native JSBSim increments on <root>_v2b2, energy export). rigid / reduced / full / full_a1 / full_a1_b1 are byte-identical to model_versions_post_p3b1r1.json (no hashed source edited; that file is frozen).",
+ "b2_schema": {
+  "b2_fmt": 1,
+  "b2_rev": 0,
+  "tag": "flexv2b2a",
+  "stage": "B2a",
+  "features": {
+   "dihedral": true,
+   "camber": true,
+   "thickness": true
+  },
+  "genes": [
+   {
+    "name": "wing_dihedral_delta_deg",
+    "feature": "dihedral",
+    "ranges": [
+     [
+      "c172x",
+      0.0,
+      3.0
+     ],
+     [
+      "T38",
+      0.0,
+      3.0
+     ],
+     [
+      "737",
+      0.0,
+      2.0
+     ],
+     [
+      "f16",
+      0.0,
+      3.0
+     ]
+    ],
+    "default": 0.0,
+    "unit": "deg",
+    "meaning": "uniform geometric dihedral delta (deg, tip up +) on top of the JSBSim baseline",
+    "requires": null
+   },
+   {
+    "name": "wing_tc_root_scale",
+    "feature": "thickness",
+    "ranges": [
+     [
+      "c172x",
+      0.875,
+      1.25
+     ],
+     [
+      "T38",
+      0.925,
+      1.25
+     ],
+     [
+      "737",
+      0.9,
+      1.15
+     ],
+     [
+      "f16",
+      0.85,
+      1.25
+     ]
+    ],
+    "default": 1.0,
+    "unit": "-",
+    "meaning": "multiplier on the baseline t/c at the beam root",
+    "requires": "energy_cost"
+   },
+   {
+    "name": "wing_tc_tip_ratio",
+    "feature": "thickness",
+    "ranges": [
+     [
+      "c172x",
+      0.85,
+      1.15
+     ],
+     [
+      "T38",
+      0.85,
+      1.15
+     ],
+     [
+      "737",
+      0.85,
+      1.15
+     ],
+     [
+      "f16",
+      0.85,
+      1.15
+     ]
+    ],
+    "default": 1.0,
+    "unit": "-",
+    "meaning": "tip t/c multiplier / root multiplier (linear in eta between)",
+    "requires": "energy_cost"
+   },
+   {
+    "name": "wing_camber_root_delta_pct",
+    "feature": "camber",
+    "ranges": [
+     [
+      "c172x",
+      -1.0,
+      2.0
+     ],
+     [
+      "T38",
+      -0.5,
+      1.5
+     ],
+     [
+      "737",
+      -1.0,
+      1.0
+     ],
+     [
+      "f16",
+      -0.5,
+      1.0
+     ]
+    ],
+    "default": 0.0,
+    "unit": "%c",
+    "meaning": "additive delta on the thin-airfoil-equivalent max camber m_eq at the root (% chord)",
+    "requires": null
+   },
+   {
+    "name": "wing_camber_tip_delta_pct",
+    "feature": "camber",
+    "ranges": [
+     [
+      "c172x",
+      -1.0,
+      2.0
+     ],
+     [
+      "T38",
+      -0.5,
+      1.5
+     ],
+     [
+      "737",
+      -1.0,
+      1.0
+     ],
+     [
+      "f16",
+      -0.5,
+      1.0
+     ]
+    ],
+    "default": 0.0,
+    "unit": "%c",
+    "meaning": "additive delta on m_eq at the tip (% chord); linear in eta",
+    "requires": null
+   }
+  ],
+  "encoding": "linear_in_value: value = lo + u*(hi-lo), u in [0,1]; encode = (value-lo)/(hi-lo); no log scale; B2 ranges per aircraft (decode needs the model)",
+  "deferred": {
+   "wing_area_scale": 1.0,
+   "wing_aspect_scale": 1.0
+  },
+  "sections": {
+   "c172x": {
+    "section": "NACA 2412",
+    "tc_root": 0.12,
+    "tc_tip": 0.12,
+    "m_root": 0.018,
+    "m_tip": 0.018,
+    "x_t": 0.3,
+    "korn": null,
+    "cf": 0.004,
+    "kp": 0.01,
+    "m_ref": 0.15,
+    "dihedral0_deg": 1.73,
+    "alpha_stall_deg": 15.0,
+    "clmax0": 1.5,
+    "w_gate_lb": 2400.0,
+    "cm_de_full": 0.56,
+    "high_wing": true,
+    "tip_bank_deg": null,
+    "tip_clear_ft": null
+   },
+   "T38": {
+    "section": "NACA 65A004.8",
+    "tc_root": 0.048,
+    "tc_tip": 0.048,
+    "m_root": 0.0,
+    "m_tip": 0.0,
+    "x_t": 0.4,
+    "korn": 0.87,
+    "cf": 0.003,
+    "kp": 0.008,
+    "m_ref": 0.6,
+    "dihedral0_deg": 0.0,
+    "alpha_stall_deg": 18.0,
+    "clmax0": 0.95,
+    "w_gate_lb": 12000.0,
+    "cm_de_full": 0.195,
+    "high_wing": false,
+    "tip_bank_deg": 8.0,
+    "tip_clear_ft": 1.0
+   },
+   "737": {
+    "section": "BAC 449/450/451 (supercritical-ish, notional equivalents)",
+    "tc_root": 0.15,
+    "tc_tip": 0.105,
+    "m_root": 0.025,
+    "m_tip": 0.02,
+    "x_t": 0.37,
+    "korn": 0.95,
+    "cf": 0.0024,
+    "kp": 0.01,
+    "m_ref": 0.6,
+    "dihedral0_deg": 6.0,
+    "alpha_stall_deg": 13.0,
+    "clmax0": 1.2,
+    "w_gate_lb": 115000.0,
+    "cm_de_full": 0.42,
+    "high_wing": false,
+    "tip_bank_deg": 6.0,
+    "tip_clear_ft": 1.5
+   },
+   "f16": {
+    "section": "NACA 64A204",
+    "tc_root": 0.04,
+    "tc_tip": 0.04,
+    "m_root": 0.016,
+    "m_tip": 0.016,
+    "x_t": 0.4,
+    "korn": 0.87,
+    "cf": 0.0028,
+    "kp": 0.008,
+    "m_ref": 0.6,
+    "dihedral0_deg": 0.0,
+    "alpha_stall_deg": 30.0,
+    "clmax0": 1.5,
+    "w_gate_lb": 26000.0,
+    "cm_de_full": 0.26,
+    "high_wing": false,
+    "tip_bank_deg": 8.0,
+    "tip_clear_ft": 1.0
+   }
+  },
+  "gate": {
+   "tc": {
+    "c172x": [
+     0.08,
+     0.18
+    ],
+    "T38": [
+     0.033,
+     0.07
+    ],
+    "737": [
+     0.07,
+     0.18
+    ],
+    "f16": [
+     0.028,
+     0.06
+    ]
+   },
+   "m_eq_pct": {
+    "c172x": [
+     -0.5,
+     4.5
+    ],
+    "T38": [
+     -0.5,
+     2.0
+    ],
+    "737": [
+     0.5,
+     4.0
+    ],
+    "f16": [
+     0.0,
+     3.0
+    ]
+   },
+   "max_camber_gradient_pct": 3.0,
+   "max_abs_effective_twist_deg": 8.0,
+   "stall_factor": 1.2
+  },
+  "gate_tol": 1e-09,
+  "b2b_published": {
+   "wing_area_scale": {
+    "lo": 0.9,
+    "hi": 1.15,
+    "default": 1.0,
+    "locked_until": "energy_cost"
+   },
+   "wing_aspect_scale": {
+    "lo": 0.9,
+    "hi": 1.15,
+    "default": 1.0,
+    "locked_until": "energy_cost"
+   }
+  },
+  "k_trim_auth": 0.3,
+  "swet_exp_factor": 2.0,
+  "native_props": [
+   "dCL0",
+   "dCm0",
+   "dCD0",
+   "cam_A",
+   "cam_B",
+   "korn_c_new",
+   "korn_c_base",
+   "korn_kcl",
+   "dClb"
+  ],
+  "b1": {
+   "b1_fmt": 1,
+   "b1_rev": 1,
+   "tag": "flexv2b1",
+   "genes": [
+    {
+     "name": "wing_chord_taper_1",
+     "lo": 0.85,
+     "hi": 1.05,
+     "scale": "linear",
+     "default": 1.0,
+     "meaning": "chord-multiplier ratio CP1/CP0 (eta 1/3 vs root); area-renormalised"
+    },
+    {
+     "name": "wing_chord_taper_2",
+     "lo": 0.85,
+     "hi": 1.05,
+     "scale": "linear",
+     "default": 1.0,
+     "meaning": "chord-multiplier ratio CP2/CP1 (eta 2/3 vs 1/3); area-renormalised"
+    },
+    {
+     "name": "wing_chord_taper_3",
+     "lo": 0.85,
+     "hi": 1.05,
+     "scale": "linear",
+     "default": 1.0,
+     "meaning": "chord-multiplier ratio CP3/CP2 (tip vs eta 2/3); area-renormalised"
+    },
+    {
+     "name": "wing_twist_mid_deg",
+     "lo": -2.0,
+     "hi": 1.0,
+     "scale": "linear",
+     "default": 0.0,
+     "meaning": "geometric twist at beam eta 0.5 relative to root (deg, nose-up +)"
+    },
+    {
+     "name": "wing_twist_tip_deg",
+     "lo": -4.0,
+     "hi": 1.0,
+     "scale": "linear",
+     "default": 0.0,
+     "meaning": "geometric twist at tip relative to root (deg, nose-up +; negative = washout)"
+    },
+    {
+     "name": "wing_sweep_qc_delta_deg",
+     "lo": -5.0,
+     "hi": 5.0,
+     "scale": "linear",
+     "default": 0.0,
+     "meaning": "additive delta on baseline quarter-chord sweep (deg)"
+    }
+   ],
+   "encoding": "linear_in_value: value = lo + u*(hi-lo), u in [0,1]; encode = (value-lo)/(hi-lo); no log scale",
+   "chord_cp_eta": [
+    0.0,
+    0.3333333333333333,
+    0.6666666666666666,
+    1.0
+   ],
+   "twist_cp_eta": [
+    0.0,
+    0.5,
+    1.0
+   ],
+   "chord_interp": "log-pchip, area-renormalised (S fixed)",
+   "twist_interp": "pchip, root = 0",
+   "sweep_convention": "quarter_chord",
+   "symmetry": "L_equals_R",
+   "deferred": {
+    "wing_dihedral_delta_deg": 0.0,
+    "wing_thickness_scale": 1.0,
+    "wing_camber_scale": 1.0,
+    "wing_chord_root": 1.0,
+    "wing_span_scale": 1.0,
+    "wing_area_scale": 1.0,
+    "wing_twist_root_deg": 0.0
+   },
+   "gate": {
+    "min_chord_ft": 0.05,
+    "min_taper": 0.12,
+    "max_taper": 1.25,
+    "max_abs_sweep_deg": 45.0,
+    "max_le_kink_deg": 25.0
+   },
+   "rules": {
+    "ac_hold": "wing re-positioned so the Schrenk-weighted quarter-chord x equals baseline",
+    "stiffness": "EI, GJ, EIv = baseline root constants x (c / c_root_baseline)^ei_taper_exp x structure multipliers",
+    "mass": "wing mass total fixed (area fixed), distribution ~ c^mass_taper_exp",
+    "twist": "basic (zero-net) strip load q kappa lw (twist - mean): loads the structure; its rigid pitch moment is a Cm0 shift absorbed by the trim elevator -> no pitch feedback (r1)",
+    "flown_wing_bm_reference": "J_bm_rms denominator and J_bm_peak allowable use the 1-g root BM without the twist basic load, scaled to the baseline planform (r1)",
+    "sizing": "wing allowables = baseline-planform design loads x structure gene x (c/c0)^3 at the station"
+   }
+  },
+  "rules": {
+   "rigid_aero": "native JSBSim increments, properties set before IC/trim (no coupler rigid feedback)",
+   "camber": "thin airfoil (a_L0 = -2 m, cm = -pi m); dCL0 Schrenk mean x stall fade (1 -> 0 over a_s-4..a_s: CLmax change gate-only); DATCOM Cm0 factor; downwash at tail; profile polar Kp[(CL-cli')^2-(CL-cli0)^2] with |CL| = sqrt(aero/cl-squared); structure: aero twist 2 dm in the B1 basic-load builder + strip cm couple (torsion), torque sizing one-sided",
+   "thickness": "EI,GJ x tau^2; EIv x 1; strength x tau (bend, tip, torque); mass unchanged at fixed gauge; dCD0 Raymer form factor; Korn/Lock wave-drag difference; no CLa change; CLmax gate only",
+   "dihedral": "lifting-line dClb x cos(sweep) x Mach table; structure: antisymmetric strip load lw sign dGamma per q kappa beta; delta only (no Gamma0 beta loads); node z = -(y-y0) tan dGamma"
+  }
+ },
+ "energy_ref_file": "v2_results/p3b2a_energy_ref.json",
+ "hash_covers": [
+  "flexbody.py",
+  "flexwing.py",
+  "flexeval.py",
+  "flexbody_a1.py",
+  "flexeval_a1.py",
+  "planform_b1.py",
+  "flexbody_b1.py",
+  "flexeval_b1.py",
+  "planform_b2.py",
+  "flexbody_b2.py",
+  "flexeval_b2.py",
+  "b2_params",
+  "terms",
+  "weights",
+  "struct gene schema",
+  "B1+B2 shape schema / sections / gate",
+  "native XML",
+  "energy schema + frozen reference (p3b2a_energy_ref.json, this aircraft)",
+  "<root>_v2 and <root>_v2b2 files"
+ ],
+ "c172x": {
+  "rigid": "rigid:jsbsim1.3.1:e0a73fc9",
+  "reduced": "reduced:flexv1:68dc59aa",
+  "full": "full:flexv2:e11b8214",
+  "full_a1": "full_a1:flexv2a1:36fb4f5a",
+  "full_a1_b1": "full_a1_b1:flexv2b1:56ee798e",
+  "full_a1_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+ },
+ "T38": {
+  "rigid": "rigid:jsbsim1.3.1:69ac40f7",
+  "reduced": "reduced:flexv1:ce107fcf",
+  "full": "full:flexv2:8bf7a250",
+  "full_a1": "full_a1:flexv2a1:f248873e",
+  "full_a1_b1": "full_a1_b1:flexv2b1:7e871977",
+  "full_a1_b2a": "full_a1_b2a:flexv2b2a:b635a51d"
+ },
+ "737": {
+  "rigid": "rigid:jsbsim1.3.1:19463d4b",
+  "reduced": "reduced:flexv1:d3198780",
+  "full": "full:flexv2:eeb82fb9",
+  "full_a1": "full_a1:flexv2a1:522189cb",
+  "full_a1_b1": "full_a1_b1:flexv2b1:6523753c",
+  "full_a1_b2a": "full_a1_b2a:flexv2b2a:5d5a8f17"
+ },
+ "f16": {
+  "rigid": "rigid:jsbsim1.3.1:3a8ef093",
+  "reduced": "reduced:flexv1:66a7d816",
+  "full": "full:flexv2:8baca00c",
+  "full_a1": "full_a1:flexv2a1:4a9e12bc",
+  "full_a1_b1": "full_a1_b1:flexv2b1:617078a9",
+  "full_a1_b2a": "full_a1_b2a:flexv2b2a:07b08913"
+ }
+}

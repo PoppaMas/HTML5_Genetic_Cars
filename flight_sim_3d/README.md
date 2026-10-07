@@ -495,3 +495,100 @@ The same export also passed these checks:
   path and rescaled JSBSim tables, and FD's decode rejects them for now.
 * **Uniform crossover inside the shape block.** Crossover currently swaps whole blocks.
 * **Raising the elites from 2 to 3–4.**
+
+# Phase 3b: overnight 2026-10-06/07 (B1 pilot, breeding A/B, P3-B2a section genes + energy cost)
+
+Built on `flight-sim-3d-phase3`. Everything here is opt-in: v4 / v5 / phase2_flex / phase3_b1 runs, the A1 and B1 r1 pins
+and every earlier run record reproduce unchanged (see Tests below).
+
+## What's new
+
+* **flight-dynamics:** P3-B2a. `planform_b2.py`, `flexbody_b2.py`, `flexeval_b2.py` (fidelity `full_a1_b2a`: dihedral,
+  thickness and camber as native JSBSim increments on `jsbsim_root_v2b2/`, thickness→EI and mass coupling), the
+  per-scenario drag-energy export (`v2_results/p3b2a_energy_ref.json`, `p3b2a_energy_calibration.json`),
+  `test_flexbody_b2.py`, INTERFACE_v2 §15, `v2_results/p3b2_gene_spec.json`, `model_versions_post_p3b2a.json`,
+  `FROZEN_B2a.md5`. B2a with every B2 gene at its default is bit-identical to B1 r1.
+* **genome:** presets `phase3_b1_x` (elite 4 + uniform shape crossover) and `phase3_b2a` / `phase3_b2a_x`,
+  `PHASE3_B2_SKETCH.md`, `tests/test_phase3_b1_x.py`, `tests/test_phase3_b2a.py`.
+* **evolution:** `ga.elite` and `ga.shape_crossover` options (defaults 2 / `blocks` = old behaviour), fidelity
+  `full_a1_b2a`, genome kind `phase3_b2a`, the opt-in `energy_cost` term (J_energy + J_speed_guard, outside TERM_KEYS,
+  which stays 24; B2a configs only), the per-scenario determinism fix in `fidelity.py`, `tests/test_p3b2a.py`,
+  `tests/test_tweaked_preset.py`, `tests/test_elitism.py`, frozen FD copy `_fd_pin_p3b2a/` (minimal, byte-identical),
+  pilot / A/B configs and run records, `analysis/STATUS_P3B1_pilot.md`, `STATUS_P3B1_ab.md`, `STATUS_P3B2a.md`,
+  `P3B2A_DETERMINISM.md`.
+* **sim-bridge:** B2a viewer support (dihedral, t/c, camber from the per-node layout), c172x CG centring
+  (display only; `?cgcentre=0` turns it off), A/B and multi-run page building in `tools/build_b1_page.{sh,py}`.
+
+Run records shipped (config / summary / run / sessions / checkpoints): `phase3b1r1-pilot-s1`, `-s2`,
+`phase3b1r1-pilot-tweaked-s1`, `-s2`, plus `phase3b2a-smoke-s1` and `phase3b2a-smoke-detfix-s1` with `genomes.jsonl`.
+The four 64 × 60 pilots' `genomes.jsonl` (about 50 MB each) and all trajectories are **not** in the repo.
+
+## Results: 64 × 60 B1 r1 pilot (`phase3b1r1-pilot-s1`, rigid → full_a1_b1, r1 pins)
+
+| aircraft | gen-0 best | g59 best | change |
+|---|---|---|---|
+| c172x | 0.37991 | 0.24806 | −35 % |
+| T38 | 0.15360 | 0.10928 | −29 % |
+| 737 | 0.30962 | 0.13517 | −56 % |
+
+All bests stay clear of flutter. The 737 and T38 cut sweep (737 to 20°, at the −5° bound) and twist the tips down
+3–3.5°; the c172x uses mid-span twist (−2°, at the bound). Seed 2 (`-s2`): c172x 0.23654, T38 0.10599, 737 0.13079.
+The Sim Bridge replay of gens 0 / 29 / 59 re-flies every cost and channel bit for bit.
+
+## Breeding A/B: elite 4 + uniform shape crossover (`phase3_b1_x`) vs baseline, 2 seeds
+
+The tweaked preset won 1 of 6 seed × aircraft pairs. Mean paired Δ (tweaked − baseline): c172x −0.85 %, T38 +0.22 %,
+737 +2.46 %. Every Δ is within about one Phase 2 seed sd, so there is no evidence the tweak helps. **Recommendation:
+keep the baseline operators (elite 2, whole-block crossover)**, which is what B2a uses. The two arms evolve different
+wings: baseline lowers sweep, tweaked raises it (737 ≈ 27°). Write-up: `evolution/analysis/STATUS_P3B1_ab.md`.
+
+## P3-B2a section genes with the energy cost
+
+* Genes: `wing_dihedral_delta_deg`, two camber genes and the two thickness genes `wing_tc_root_scale` /
+  `wing_tc_tip_ratio`. Fidelity `full_a1_b2a`, genome kind / preset `phase3_b2a` (29 encoded genes by default).
+* Drag never reached the score before (sim.py holds speed with throttle). The approved `energy_cost: true` adds
+  J_energy (FD's drag-energy signal against a frozen per-aircraft baseline-shape reference) plus J_speed_guard (so
+  slowing down cannot game it). Weights w_E: c172x 2.175, T38 1.663, 737 1.202, f16 1.303. It applies to B2a configs
+  only; at baseline shape it adds 0.
+* **Thickness is unlocked by the energy cost:** thickness genes are accepted only with `energy_cost: true` and are
+  freed with `"shape_locked": []`. The shipped default (`shape_locked: null`) and the shipped smoke still hold them at
+  1.0, as in Genome's `phase3_b2a` preset.
+* Smoke `phase3b2a-smoke-detfix-s1` (16 × 5): c172x 0.38783, T38 0.15516, 737 0.22352.
+
+```bash
+cd flight_sim_3d
+EVOLUTION_FD_DIR=evolution/_fd_pin_p3b2a python -m evolution.batch --config evolution/configs/phase3b2a_smoke.json --run-id p3b2a-smoke-repro-s1
+```
+
+## Determinism fix (`evolution/analysis/P3B2A_DETERMINISM.md`)
+
+Sim Bridge's full replay of the first B2a smoke found 3 weak c172x genomes that did not replay exactly. Cause
+(fidelity.py): energy terms were added only when the whole genome's status was ok, so a genome that overloaded in one
+scenario lost energy from its good scenarios in batch mode but kept it when flown one scenario at a time. The check is
+now per scenario, with a regression test. `phase3b2a-smoke-detfix-s1` has the same genomes, ranks and bests as
+`phase3b2a-smoke-s1` (only those 3 rows' energy terms changed), and all 720 scenario replays in fresh processes match.
+B1, A1 and Phase 2 have no energy term and cannot hit this.
+
+## Genes piling at their bounds
+
+* dihedral delta at 0 (the lower bound) for every aircraft by gen 4 of the B2a smoke
+* sweep at ±5° (737 −5° in the baseline pilot; T38 / c172x +5° in seed 2)
+* `chord_taper_3` at 1.05
+* c172x `twist_mid` at −2°
+
+FD may widen some ranges; not done here.
+
+## Phase 3b tests
+
+On a clean export of this branch: FD 219 passed; genome 207 passed; sim-bridge 59 passed / 24 skipped (unshipped data);
+evolution 178 passed / 1 skipped (unshipped sqlite cache). B1 r1 smoke (`phase3b1r1-smoke-s1`,
+`_fd_pin_p3b1r1`) and `phase2_smoke_p25` re-run bit for bit; the B2a detfix smoke re-runs bit for bit through
+`_fd_pin_p3b2a`; `--model-versions` matches for the pilot and smoke configs.
+
+## Deferred (Phase 3b)
+
+* **B2b wing size** (area and aspect ratio): needs JSBSim reference / coefficient rescaling, AR effects and wing-mass
+  scaling; FD expects it on 2026-10-07. AR / area ≠ 1.0 is rejected for now.
+* **The 64 × 60 B2a pilot** (baseline operators): waiting for approval.
+* **A/B seed 3** (`phase3b1_pilot_tweaked_s3.json` / `phase3b1_pilot_s3.json` configured, not run).
+* **Range widening** for the genes at their bounds.

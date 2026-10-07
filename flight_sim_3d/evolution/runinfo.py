@@ -134,11 +134,13 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
         acs.append(e)
     labels = {"rigid": "rigid", "reduced": "reduced(flexv1 on projected v2 genome)", "full": "full(flexv2)",
               "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)",
-              "full_a1_b1": "full_a1_b1(flexv2b1: P3-B1, A1 host + 6 planform shape genes)"}
+              "full_a1_b1": "full_a1_b1(flexv2b1: P3-B1, A1 host + 6 planform shape genes)",
+              "full_a1_b2a": "full_a1_b2a(flexv2b2a: P3-B2a, B1 r1 + dihedral / thickness / camber)"}
     ladders = [list(m.get("ladder") or []) for m in [mf] + [a.get("multi_fidelity") or {} for a in cfg["aircraft"]]
                if m.get("enabled")]
     uses_a1 = fid == "full_a1" or any("full_a1" in ld for ld in ladders)
     uses_b1 = fid == "full_a1_b1" or any("full_a1_b1" in ld for ld in ladders)
+    uses_b2 = fid == "full_a1_b2a" or any("full_a1_b2a" in ld for ld in ladders)
     return {
         "schema": RUN_SCHEMA, "run_id": cfg["run_id"], "created": created,
         "git_sha": prov.get("git_sha"),
@@ -156,6 +158,9 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
         **({"init": cfg["init"]} if (cfg.get("init") or {}).get("mode", "uniform") != "uniform" else {}),
         **({"pin_model_version": cfg["pin_model_version"]} if cfg.get("pin_model_version") else {}),
         **({"genome_kind": cfg["genome_kind"], "shape_ops": cfg.get("shape_ops")} if cfg.get("genome_kind") else {}),
+        **({"shape_locked": (cfg.get("shape_locked") if cfg.get("shape_locked") is not None
+                             else ["wing_tc_root_scale", "wing_tc_tip_ratio"])} if cfg.get("genome_kind") == "phase3_b2a" else {}),
+        **({"energy_cost": bool(cfg.get("energy_cost"))} if uses_b2 else {}),
         "model_version": {a["name"]: a["model_version"] for a in acs},
         "aircraft": acs, "scenarios": scen, "target_semantics": TARGET_SEMANTICS,
         "fitness_cfg": {"sense": "min", "aggregate": "cost = float(numpy.mean(per_scenario_cost)) over the aircraft's "
@@ -181,6 +186,15 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
                                        "full_a1 (key carries fidelity, model_version and FD's shape_cache_key). Rigid "
                                        "screens ignore the shape genes"}
                            if uses_b1 else {}),
+                        **({"flex_b2a": "full_a1_b2a = Flight Dynamics flexeval_b2.evaluate (INTERFACE_v2.md section 15): "
+                                        "the full_a1_b1 contract plus FD's 5 B2a section genes (dihedral, t/c root / tip "
+                                        "ratio, camber root / tip; per-aircraft ranges; locked genes = FD default). "
+                                        "Geometry gates B1 + B2 (reject = fail_cost, not flown). energy_cost true: per "
+                                        "scenario cost += J_energy_s + J_speed_guard_s (w_E max(0, energy_drag_increment); "
+                                        "w_E 3 max(0, speed_deficit_kts_mean - 2) / v_target_kcas; Evolution-side, outside "
+                                        "TERM_KEYS, INTERFACE_v2 15.10.3) for status-ok genomes; row energy_terms. Baseline "
+                                        "B2 with energy off = full_a1_b1 cost bit for bit"}
+                           if uses_b2 else {}),
                         "per_aircraft": "aircraft[].fitness_cfg"},
         "ga": cfg.get("ga"), "generations": cfg["ga"]["generations"], "pop_size": cfg["ga"]["pop_size"],
         "trajectories": cfg.get("trajectories"),

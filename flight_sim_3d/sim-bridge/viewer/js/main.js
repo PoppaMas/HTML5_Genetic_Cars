@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { fetchJSON, decodeBuffer, isIndex, parseIndex, parseTrajectory, locate, normSense, lerpCh, lerpAngleDeg, quatAt } from 'fv/traj.js';
+import { fetchJSON, decodeBuffer, isIndex, parseIndex, parseTrajectory, locate, normSense, lerpCh, lerpAngleDeg, quatAt, B2A_NOTE, b2HudText, sectionSvg, setCgCentre } from 'fv/traj.js';
 import { resolvePreset, buildProcedural, buildGltf, applyControls, attachStructure, applyStructure } from 'fv/aircraft.js';
 
 const $ = (id) => document.getElementById(id);
@@ -14,6 +14,8 @@ const SINGLE_COLOR = '#ff6b35';
 const params = new URLSearchParams(location.search);
 // embedders (standalone/Colab inline build) can preset URL params via window.FV_PARAMS
 if (window.FV_PARAMS) for (const [k, v] of Object.entries(window.FV_PARAMS)) if (!params.has(k)) params.set(k, String(v));
+// display-only CG centring of the structure nodes (c172x: asymmetric pointmasses); set before any trajectory is parsed
+setCgCentre(params.get('cgcentre') !== '0');
 const DEFAULT_RUNS_URL = params.get('runs') || '../data/runs/runs.json';
 
 // ---------------------------------------------------------------- state
@@ -187,11 +189,33 @@ const multiAircraft = () => new Set(S.entries.map((e) => e.aircraft)).size > 1;
 // multi-run (combined) indexes: runs in index order, short labels ("phase1-s2" -> "s2" when unique), families
 const runList = () => [...new Set(S.entries.map((e) => e.run))];
 const multiRun = () => runList().length > 1;
+// labels=<run>=<label>,... (page param) overrides the derived short names (e.g. 2-seed A/B: base-s1, tweaked-s2)
+function runLabels() {
+  const m = {};
+  for (const kv of String(params.get('labels') || '').split(',')) { const i = kv.indexOf('='); if (i > 0) m[kv.slice(0, i)] = kv.slice(i + 1); }
+  return m;
+}
 function runShort(run) {
+  const lab = runLabels()[run];
+  if (lab) return lab;
   const runs = runList();
   const tail = (r) => String(r ?? '').split('-').pop();
   const tails = runs.map(tail);
-  return new Set(tails).size === runs.length ? tail(run) : String(run ?? '');
+  if (new Set(tails).size === runs.length) return tail(run);
+  return abShort(runs, run) ?? String(run ?? '');
+}
+// A/B names: drop the '-' tokens every run shares at the start and end ("phase3b1r1-pilot-s1" vs
+// "phase3b1r1-pilot-tweaked-s1" -> "base" / "tweaked"); null when that does not give distinct names
+function abShort(runs, run) {
+  const tok = runs.map((r) => String(r ?? '').split('-'));
+  let a = 0, b = 0;
+  const minLen = Math.min(...tok.map((t) => t.length));
+  while (a < minLen && tok.every((t) => t[a] === tok[0][a])) a++;
+  while (b < minLen - a && tok.every((t) => t[t.length - 1 - b] === tok[0][tok[0].length - 1 - b])) b++;
+  const names = tok.map((t) => t.slice(a, t.length - b).join('-') || 'base');
+  if (new Set(names).size !== runs.length) return null;
+  const i = runs.indexOf(run);
+  return i >= 0 ? names[i] : null;
 }
 const runFamily = (run) => { const r = String(run ?? ''); const k = r.lastIndexOf('-'); return k > 0 ? r.slice(0, k) : r; };
 const runTag = (run) => (multiRun() ? runShort(run) + ' ' : '');
@@ -298,11 +322,16 @@ function renderPresets() {
   if (S.entries.some((e) => S.entries.filter((x) => x.aircraft === e.aircraft && x.run === e.run).length > 2))
     h += row('gen 0/mid/last', acs.map((a) => btn(`evo:${a}`, a, `every logged generation of ${a} (selected run)`)).join(''));
   if (sameFam.length > 1) h += row(`seeds ${sameFam.map(runShort).join('/')}`, acs.map((a) => btn(`seeds:${a}`, a, `latest gen of ${a} from ${sameFam.join(', ')}`)).join(''));
+  if (fams.length === 2) {  // A/B (e.g. baseline vs tweaked): same aircraft, same generation, one run per family
+    for (const g of abGens()) h += row(`A/B ${fams.map((f) => runShort(runs.find((r) => runFamily(r) === f))).join(' vs ')} g${g}`, acs.map((a) => btn(`ab:${a}:${g}`, a, `${a} gen ${g}: ${fams.join(' vs ')} side by side`)).join('') + btn(`ab:*:${g}`, 'all', `every aircraft at gen ${g} from both runs`));
+    const gl = abGens();
+    if (gl.length) h += row(`A/B planform top g${gl[gl.length - 1]}`, acs.map((a) => btn(`abplan:${a}:${gl[gl.length - 1]}`, a, `top view of ${a} gen ${gl[gl.length - 1]}: ${fams.join(' vs ')}`)).join(''));
+  }
   if (fams.length > 1) h += row(fams.join(' vs '), acs.map((a) => btn(`cmp:${a}`, a, `latest gen of ${a}: one run per family (${fams.join(' / ')})`)).join('') + btn('cmp:*', 'all', 'latest gen of every aircraft from each family'));
   el.innerHTML = h;
   el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
     applyPreset(b.dataset.p); presetCam(b.dataset.p); renderGenList(); rebuild(true);
-    if (b.dataset.p.startsWith('plan:') && S.shown.length) {  // side by side with ~30 % span gap (step 5 m, the slider's)
+    if ((b.dataset.p.startsWith('plan:') || b.dataset.p.startsWith('abplan:')) && S.shown.length) {  // side by side with ~30 % span gap (step 5 m, the slider's)
       const sp = Math.max(5, Math.ceil(Math.max(...S.shown.map((d) => d.model.span)) * 1.3 / 5) * 5);
       if (sp !== S.spacing) { S.spacing = sp; $('spacing').value = sp; $('spacing-val').textContent = `${sp} m`; rebuild(); }
     }
@@ -310,6 +339,26 @@ function renderPresets() {
   }));
   const rs = $('preset-run');
   if (rs) rs.addEventListener('change', () => { S.presetRun = rs.value; renderPresets(); applyPreset(S.lastPreset || 'last'); renderGenList(); rebuild(true); });
+}
+// generations logged by both A/B families for at least one common aircraft
+function abGens() {
+  const runs = runList(), fams = [...new Set(runs.map(runFamily))];
+  if (fams.length !== 2) return [];
+  const key = (f) => new Set(S.entries.filter((e) => runFamily(e.run) === f && e.generation != null).map((e) => `${e.aircraft}|${e.generation}`));
+  const [ka, kb] = fams.map(key);
+  return [...new Set([...ka].filter((k) => kb.has(k)).map((k) => +k.split('|')[1]))].sort((x, y) => x - y);
+}
+// free horizontal band for the plan view: right edge of #panel .. left edge of the leftmost visible right-side
+// overlay (#hud, #legend, #chart); {frac: band width / view width, centre: band centre / view width}
+function freeBand() {
+  const W = canvas.clientWidth || window.innerWidth || 1;
+  const vis = (el) => el && !el.hidden && el.style.display !== 'none' && el.offsetParent !== null;
+  const r = (id) => { const el = $(id); return vis(el) ? el.getBoundingClientRect() : null; };
+  const pr = r('panel');
+  let lo = pr && pr.right < W * 0.5 ? pr.right + 8 : 0, hi = W;
+  for (const id of ['hud', 'legend', 'chart']) { const q = r(id); if (q && q.left > W * 0.4 && q.width > 0) hi = Math.min(hi, q.left - 8); }
+  if (!(hi - lo > W * 0.2)) return { frac: 0.40, centre: 0.44 };
+  return { frac: (hi - lo) / W, centre: (lo + hi) / 2 / W };
 }
 function presetSet(p) {
   const gen = (i) => S.entries[i].generation ?? i;
@@ -336,6 +385,19 @@ function presetSet(p) {
     const ac = p.slice(6), fam = runFamily(run);
     return [...groupBy(idxs((e) => e.aircraft === ac && runFamily(e.run) === fam), (e) => e.run).values()].map(last);
   }
+  if (p.startsWith('ab:') || p.startsWith('abplan:')) {   // ab:<ac|*>:<gen> -> that gen from one run per family
+    const [, ac, gs] = p.split(':'), g = +gs;
+    const pickRun = new Map();
+    for (const r of runs) { const f = runFamily(r); if (!pickRun.has(f) || r === run) pickRun.set(f, r); }
+    let order = [...pickRun.values()];
+    if (params.get('abseeds') === '1') {   // multi-seed A/B: every run, grouped by seed (last '-' token), base before tweaked
+      const fams = [...new Set(runs.map(runFamily))];
+      const tail = (r) => String(r).split('-').pop();
+      order = [...runs].sort((x, y) => tail(x).localeCompare(tail(y)) || fams.indexOf(runFamily(x)) - fams.indexOf(runFamily(y)));
+    }
+    const sel = idxs((e) => order.includes(e.run) && (ac === '*' || e.aircraft === ac) && e.generation === g);
+    return sel.sort((x, y) => (S.entries[x].aircraft === S.entries[y].aircraft ? order.indexOf(S.entries[x].run) - order.indexOf(S.entries[y].run) : x - y));
+  }
   if (p.startsWith('cmp:')) {
     const ac = p.slice(4);
     // one run per family: the selected run for its own family, else that family's first run
@@ -351,7 +413,7 @@ function presetSet(p) {
 // plan:<ac> = pair:<ac> seen from above (camera 'top'); leaving it restores the chase camera
 function presetCam(p) {
   const q = p.split('@')[0];
-  if (q.startsWith('plan:')) S.cam = 'top';
+  if (q.startsWith('plan:') || q.startsWith('abplan:')) S.cam = 'top';
   else if (S.cam === 'top') S.cam = 'chase';
   $('cam-mode').value = S.cam;
 }
@@ -537,11 +599,30 @@ async function rebuild(snapCamera = false) {
   populateLabels();
   updateLegend();
   $('defl-row').hidden = !S.shown.some((d) => d.deformer);
+  updatePageNote();
   drawChartStatic();
   msg('');
   update(0);
   if (snapCamera || S.cam === 'free') snapCam();
   S.ready = true;
+}
+
+// caveat banner: the embedder's `note` param (e.g. build_b1_page's r1 note) + the B2a note whenever a loaded
+// trajectory carries non-default B2 fields
+function updatePageNote() {
+  const parts = [];
+  if (params.get('note')) parts.push(params.get('note'));
+  if ((S.shownTrs || []).some((tr) => tr && tr.planform && tr.planform.b2) && !parts.some((t) => t.includes('B2a'))) parts.push(B2A_NOTE);
+  let nb = $('page-note');
+  if (!parts.length) { if (nb) nb.remove(); return; }
+  if (!nb) {
+    nb = document.createElement('div');
+    nb.id = 'page-note';
+    nb.style.cssText = 'position:fixed;bottom:44px;left:45%;transform:translateX(-50%);max-width:40%;z-index:20;white-space:pre-line;' +
+      'background:rgba(60,40,0,.82);color:#ffd27a;border:1px solid #c90;border-radius:4px;padding:3px 8px;font:12px/1.35 sans-serif;text-align:center;pointer-events:none';
+    document.body.appendChild(nb);
+  }
+  nb.textContent = parts.join('\n');
 }
 
 function populateLabels() {
@@ -661,14 +742,15 @@ function updateCamera(dtSec) {
     const hf = new THREE.Vector3(fwd.x, 0, fwd.z);
     if (hf.lengthSq() < 1e-6) hf.set(0, 0, -1);
     hf.normalize();
-    // fit the formation's width into the free middle of the screen (side panel left, HUD / legend right):
-    // ~40 % of the view width, centred at ~44 % from the left
+    // fit the formation's width into the free band of the screen between the side panel (left) and the HUD /
+    // legend / chart (right), measured from the DOM; fallback ~40 % of the width centred at ~44 %
     const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2), asp = camera.aspect || 1.6;
     const halfW = d.halfWidth ?? d.model.span * S.mscale / 2;
     const halfL = Math.max(d.halfLen ?? 0, d.model.span * S.mscale / 2);
-    const H = Math.max(halfW * 1.15 / (0.40 * tanV * asp), halfL * 1.3 / tanV, 8 * S.mscale);
+    const band = freeBand();
+    const H = Math.max(halfW * 1.12 / (band.frac * tanV * asp), halfL * 1.3 / tanV, 8 * S.mscale);
     const right = new THREE.Vector3().crossVectors(hf, new THREE.Vector3(0, 1, 0)).normalize();
-    const c = p.clone().addScaledVector(right, (0.5 - 0.44) * 2 * H * tanV * asp);
+    const c = p.clone().addScaledVector(right, (0.5 - band.centre) * 2 * H * tanV * asp);
     camera.position.copy(c).add(new THREE.Vector3(0, H, 0)).addScaledVector(hf, -0.01 * H);
     camera.up.copy(hf);
     camera.lookAt(c);
@@ -724,7 +806,7 @@ function updateHUD() {
   const status = d.state.ended ? `<span class="warn">ENDED at ${tr.t1.toFixed(2)} s</span>` : 'flying';
   const endEv = tr.events.find((e) => e.type === 'envelope_violation' || e.type === 'terminated');
   el.innerHTML =
-    `<span class="big">${tr.aircraft} · ${tr.generation != null ? 'gen ' + tr.generation : tr.source}</span>${S.mode === 'compare' ? `  <span style="color:${d.color}">■</span>` : ''}\n` +
+    `<span class="big">${tr.aircraft} · ${multiRun() && d.entry && d.entry.run ? runShort(d.entry.run) + ' · ' : ''}${tr.generation != null ? 'gen ' + tr.generation : tr.source}</span>${S.mode === 'compare' ? `  <span style="color:${d.color}">■</span>` : ''}\n` +
     `${metricName(tr).padEnd(5)} ${tr.fitness != null ? Number(tr.fitness).toFixed(6) : '—'} <span class="small">(${senseOf(tr) === 'max' ? 'higher' : 'lower'}=better${tr.scenarioIndex != null && tr.replay ? `; scenario ${tr.scenarioIndex}: ${Number(tr.meta.scenario_cost).toFixed(6)}` : ''})</span>\n` +
     (tr.replay ? `<span class="small">replay ${tr.replay.replay_id} · ${tr.replay.fidelity} · ${tr.replay.model_version ?? ''}</span>\n` : '') +
     (trimLabel(tr) ? `trim  ${trimLabel(tr).trim()}\n` : '') +
@@ -748,7 +830,24 @@ function updateHUD() {
     (ev && ev.type !== 'start' ? `\n<span class="warn">» ${ev.type}: ${ev.detail}</span>` : '');
   if (S.mode === 'compare') updateLegendValues();
   const lg = $('legend');
-  if (!lg.hidden) lg.style.top = (el.style.display === 'none' ? 8 : el.offsetTop + el.offsetHeight + 8) + 'px';
+  if (!lg.hidden) placeLegend(lg, el);
+}
+// legend below the HUD; when that would run into the chart (many compare rows, e.g. A/B with 6 aircraft), put it
+// at the top, left of the HUD instead
+function placeLegend(lg, hud) {
+  const hudShown = hud.style.display !== 'none';
+  lg.style.right = '8px'; lg.style.maxWidth = ''; lg.style.overflowX = '';
+  lg.style.top = (hudShown ? hud.offsetTop + hud.offsetHeight + 8 : 8) + 'px';
+  const ch = $('chart');
+  if (!hudShown || !ch || ch.hidden || ch.style.display === 'none' || ch.offsetParent === null) return;
+  if (lg.offsetTop + lg.offsetHeight + 8 > ch.offsetTop) {
+    lg.style.top = '8px';
+    lg.style.right = (hud.offsetWidth + 16) + 'px';
+    // keep clear of the side panel: clip the trailing live values (aircraft, run, gen, planform, cost stay visible)
+    const pn = $('panel'), W = canvas.clientWidth || window.innerWidth;
+    const room = W - hud.offsetWidth - 24 - (pn && pn.offsetParent !== null ? pn.offsetLeft + pn.offsetWidth + 8 : 8);
+    if (room > 200 && lg.offsetWidth > room) { lg.style.maxWidth = room + 'px'; lg.style.overflowX = 'hidden'; }
+  }
 }
 
 // P3-B1 planform line (only when the trajectory carries a planform block): quarter-chord sweep, tip/root taper,
@@ -758,7 +857,7 @@ export function planformText(pf) {
   const deg = (r) => (Number.isFinite(r) ? (r / D2R).toFixed(1) + '°' : '—');
   return `PLANFORM ${pf.source || 'B1'} Λqc ${deg(pf.sweep_qc_rad)} taper ${Number.isFinite(pf.taper) ? pf.taper.toFixed(2) : '—'}` +
     (pf.twist_tip_rad != null ? ` twist tip ${deg(pf.twist_tip_rad)}` : '') + (pf.symmetric ? '' : ' (L≠R)') +
-    (pf.geom === 'nodes' ? ' · FD r1 node geometry' : '');
+    (pf.geom === 'nodes' ? (pf.b2 ? ` · FD ${pf.b2.stage} node geometry` : ' · FD r1 node geometry') : '');
 }
 function pfTag(tr) {
   const pf = tr.planform;
@@ -769,7 +868,14 @@ function pfTag(tr) {
 function planformHud(tr) {
   const pf = tr.planform;
   if (!pf) return '';
-  return `\n${planformText(pf)}` + (pf.synthetic ? ' <span class="warn">SYNTHETIC planform (test fixture)</span>' : '');
+  let h = `\n${planformText(pf)}` + (pf.synthetic ? ' <span class="warn">SYNTHETIC planform (test fixture)</span>' : '');
+  if (tr.cgDisplayOffsetY) h += `\n<span class="small">display: nodes centred on the fuselage axis (CG y ${(-tr.cgDisplayOffsetY).toFixed(3)} m; cgcentre=0 = as logged)</span>`;
+  const b2 = b2HudText(pf.b2);
+  if (b2) {   // P3-B2: dihedral / section metadata + a small root (solid) / tip (dashed) section sketch
+    const w = pf.wingR, n = w.n;
+    h += `\n${b2}\n` + sectionSvg(pf.b2, w.chord_m[0], w.chord_m[n - 1]);
+  }
+  return h;
 }
 
 // soft-body readout: tip (last node) values of each component, true scale (not exaggerated)
@@ -1027,7 +1133,7 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') { S.playing = !S.playing; e.preventDefault(); }
   else if (e.code === 'ArrowRight') S.t = Math.min(S.tEnd, S.t + 1);
   else if (e.code === 'ArrowLeft') S.t = Math.max(0, S.t - 1);
-  else if (e.key === 'c') { const m = ['chase', 'orbit', 'free', 'top']; S.cam = m[(m.indexOf(S.cam) + 1) % 3]; $('cam-mode').value = S.cam; snapCam(); }
+  else if (e.key === 'c') { const m = ['chase', 'orbit', 'free', 'top']; S.cam = m[(m.indexOf(S.cam) + 1) % m.length]; $('cam-mode').value = S.cam; snapCam(); }
 });
 
 // ---------------------------------------------------------------- main loop
@@ -1061,24 +1167,19 @@ window.fv = {
 (async function boot() {
   resize();
   animate();
-  S.cam = params.get('cam') || ((params.get('preset') || '').startsWith('plan:') ? 'top' : 'chase'); $('cam-mode').value = S.cam;
+  S.cam = params.get('cam') || ((params.get('preset') || '').match(/^(ab)?plan:/) ? 'top' : 'chase'); $('cam-mode').value = S.cam;
   if (params.get('speed')) { S.speed = +params.get('speed'); $('speed').value = params.get('speed'); }
   if (params.get('exag')) { S.exag = +params.get('exag'); $('exag').value = params.get('exag'); }
   if (params.get('scale')) { S.mscale = +params.get('scale'); $('mscale').value = S.mscale; $('mscale-val').textContent = `${S.mscale}x`; }
   if (params.get('notes') === '1') S.notesOpen = true;
-  if (params.get('note')) {  // embedder caveat banner (e.g. build_b1_page: FD structure nodes vs planform strips)
-    const nb = document.createElement('div');
-    nb.id = 'page-note'; nb.textContent = params.get('note');
-    nb.style.cssText = 'position:fixed;bottom:44px;left:45%;transform:translateX(-50%);max-width:40%;z-index:20;' +
-      'background:rgba(60,40,0,.82);color:#ffd27a;border:1px solid #c90;border-radius:4px;padding:3px 8px;font:12px/1.35 sans-serif;text-align:center;pointer-events:none';
-    document.body.appendChild(nb);
-  }
+  updatePageNote();
   if (params.get('dofs')) S.dofs = params.get('dofs').split(',').filter(Boolean);
   if (params.get('defl')) { S.defl = +params.get('defl'); $('defl').value = S.defl; $('defl-val').textContent = `${S.defl}x`; }
   for (const [k, id] of [['layout', 'layout'], ['vref', 'vref'], ['cy', 'cy']]) if (params.get(k)) { S[k] = params.get(k); $(id).value = S[k]; }
   if (params.get('spacing')) { S.spacing = +params.get('spacing'); $('spacing').value = S.spacing; $('spacing-val').textContent = `${S.spacing} m`; }
   if (params.get('panel') === '0') $('panel').classList.add('collapsed');
   if (params.get('chart') === '0') $('show-chart').checked = false;
+  if (params.get('hud') === '0') $('show-hud').checked = false;
   if (params.get('refgrid') === '1') $('show-refgrid').checked = true;
   S.mode = params.get('mode') === 'compare' ? 'compare' : 'single';
   S.focus = S.mode === 'compare' ? (params.get('focus') != null ? +params.get('focus') : -1) : 0;

@@ -1,0 +1,182 @@
+{
+ "fixture": "evolution/analysis/tweaked_preset_crosscheck.json",
+ "fixture_created": "2026-10-06T20:14:13-07:00",
+ "fixture_schema": "tweaked-preset-crosscheck/1",
+ "fixture_generator": "evolution/analysis/tweaked_preset_crosscheck.py",
+ "block_ops_sha256": "c1dc377ddb0f3ea562d11517f92dd3ffe6bdd600041966d35d0c031248aa66ae",
+ "inputs": {
+  "source": "evolution/runs/phase3b1r1-smoke-s1/genomes.jsonl",
+  "aircraft": "T38",
+  "generation": 4,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "ranked_population_sha256_matches": true
+ },
+ "variants": {
+  "default": {
+   "preset": "phase3_b1",
+   "entry": "block_ops.next_generation",
+   "ga": {
+    "pop_size": 16,
+    "elite": 2,
+    "selection_p": 0.2,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "shape_crossover": "block"
+   },
+   "inputs_match": {
+    "blocks": true,
+    "shape_spec": true,
+    "shape_mutation_rate": true,
+    "gene_names": true,
+    "elite": true,
+    "shape_crossover": true
+   },
+   "status": "BIT-IDENTICAL",
+   "per_seed": {
+    "seed0": {
+     "genome_sha256": "3598a6456facd7783c7150c2a8b4720b2bb5481e6006a64e9abb52fe58167f25",
+     "er_sha256": "3598a6456facd7783c7150c2a8b4720b2bb5481e6006a64e9abb52fe58167f25",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed1": {
+     "genome_sha256": "8f18a1eafb001130d8d41279c8194b3cd4e6857a84494f2dd7d8e0bab9506bff",
+     "er_sha256": "8f18a1eafb001130d8d41279c8194b3cd4e6857a84494f2dd7d8e0bab9506bff",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed2": {
+     "genome_sha256": "bdea92f69592d2f8aaa9fab1851ca096277494653af8d4aa1a11cc02116f91b4",
+     "er_sha256": "bdea92f69592d2f8aaa9fab1851ca096277494653af8d4aa1a11cc02116f91b4",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed3": {
+     "genome_sha256": "e7e5a847813484c53bf26c00936d80cd4e2bd55b644b0a48530929f7a6b7ef39",
+     "er_sha256": "e7e5a847813484c53bf26c00936d80cd4e2bd55b644b0a48530929f7a6b7ef39",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed4": {
+     "genome_sha256": "c9beae8fbba839a55d691bacf5d1be1342ebcee7dd8706e59d76298f6ab5d775",
+     "er_sha256": "c9beae8fbba839a55d691bacf5d1be1342ebcee7dd8706e59d76298f6ab5d775",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    }
+   }
+  },
+  "tweaked": {
+   "preset": "phase3_b1_x",
+   "entry": "block_ops.next_generation_tweaked",
+   "ga": {
+    "pop_size": 16,
+    "elite": 4,
+    "selection_p": 0.2,
+    "mutation_rate": 0.15,
+    "mutation_sigma": 0.08,
+    "mutation_mode": "gauss",
+    "shape_crossover": "uniform"
+   },
+   "inputs_match": {
+    "blocks": true,
+    "shape_spec": true,
+    "shape_mutation_rate": true,
+    "gene_names": true,
+    "elite": true,
+    "shape_crossover": true
+   },
+   "status": "BIT-IDENTICAL",
+   "per_seed": {
+    "seed0": {
+     "genome_sha256": "7157c82b68f96d57e8dadeed69fe737d5a79dc01b915c0b3efbf04fa6cfb95f8",
+     "er_sha256": "7157c82b68f96d57e8dadeed69fe737d5a79dc01b915c0b3efbf04fa6cfb95f8",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed1": {
+     "genome_sha256": "1d635e5470697a77d2923f4e309882f910442711f3e065e3c71defebdc377430",
+     "er_sha256": "1d635e5470697a77d2923f4e309882f910442711f3e065e3c71defebdc377430",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed2": {
+     "genome_sha256": "57cf2e5b301fdcaf5e78de2981497b6620df4ecfd016cfb38ed5fa77811e27e8",
+     "er_sha256": "57cf2e5b301fdcaf5e78de2981497b6620df4ecfd016cfb38ed5fa77811e27e8",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed3": {
+     "genome_sha256": "925c215d4bd16f6edf8d38b9c165417ec593fe3f4bda5e966497587868d5ec89",
+     "er_sha256": "925c215d4bd16f6edf8d38b9c165417ec593fe3f4bda5e966497587868d5ec89",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    },
+    "seed4": {
+     "genome_sha256": "0ec9110ebe452d9f73e2b26e98a46f4dd5d6120fc6528f4f1b2c63a7717e75ff",
+     "er_sha256": "0ec9110ebe452d9f73e2b26e98a46f4dd5d6120fc6528f4f1b2c63a7717e75ff",
+     "bit_identical_rows": true,
+     "sha256_identical": true,
+     "rng_end_identical": true,
+     "trace_identical": true,
+     "elites_unchanged": true,
+     "n_diff_cells": 0
+    }
+   }
+  }
+ },
+ "summary": {
+  "default": "BIT-IDENTICAL",
+  "tweaked": "BIT-IDENTICAL",
+  "ranked_population_sha256_matches": true
+ },
+ "er_recorded_genome_crosscheck": {
+  "note": "ER ran genome block_ops read-only from their side too (fixture's genome_crosscheck)",
+  "default": "BIT-IDENTICAL",
+  "tweaked": "BIT-IDENTICAL",
+  "block_ops_sha256_then": "c1dc377ddb0f3ea562d11517f92dd3ffe6bdd600041966d35d0c031248aa66ae",
+  "same_block_ops_as_now": true
+ }
+}

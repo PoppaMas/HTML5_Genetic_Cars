@@ -36,6 +36,12 @@ evolution/runs/*
 !evolution/runs/phase3a1-smoke-s1/
 !evolution/runs/phase3b1-smoke-s1/
 !evolution/runs/phase3b1r1-smoke-s1/
+!evolution/runs/phase3b1r1-pilot-s1/
+!evolution/runs/phase3b1r1-pilot-s2/
+!evolution/runs/phase3b1r1-pilot-tweaked-s1/
+!evolution/runs/phase3b1r1-pilot-tweaked-s2/
+!evolution/runs/phase3b2a-smoke-s1/
+!evolution/runs/phase3b2a-smoke-detfix-s1/
 evolution/runs/*/trajectories/
 evolution/runs/*/trajectories_traj1/
 evolution/runs/*/live/
@@ -50,7 +56,10 @@ sim-bridge/data/
 sim-bridge/screenshots/
 sim-bridge/tools/build/node_modules/
 *_standalone.html
-flight-dynamics/_scratch/
+flight-dynamics/_scratch/*
+!flight-dynamics/_scratch/p3b2/
+flight-dynamics/_scratch/p3b2/*
+!flight-dynamics/_scratch/p3b2/handcalc_b2.json
 flight-dynamics/v2_results/bench_parallel_pre_taper/
 flight-dynamics/v2_results/bench_seq_wall_only/
 sim-bridge/patches/
@@ -67,6 +76,14 @@ evolution/_fd_pin_p3b1r1/jsbsim_root/engine
 evolution/_fd_pin_p3b1r1/jsbsim_root/systems
 evolution/_fd_pin_p3b1r1/jsbsim_root_v2/engine
 evolution/_fd_pin_p3b1r1/jsbsim_root_v2/systems
+flight-dynamics/jsbsim_root_v2b2/engine
+flight-dynamics/jsbsim_root_v2b2/systems
+evolution/_fd_pin_p3b2a/jsbsim_root/engine
+evolution/_fd_pin_p3b2a/jsbsim_root/systems
+evolution/_fd_pin_p3b2a/jsbsim_root_v2/engine
+evolution/_fd_pin_p3b2a/jsbsim_root_v2/systems
+evolution/_fd_pin_p3b2a/jsbsim_root_v2b2/engine
+evolution/_fd_pin_p3b2a/jsbsim_root_v2b2/systems
 
 # the repo-root .gitignore ignores every "main.js"; the viewer's entry point must stay tracked
 !sim-bridge/viewer/js/main.js

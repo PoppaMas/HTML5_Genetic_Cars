@@ -1,0 +1,90 @@
+{
+  "_comment": "P3-B2a tweaked (opt-in): identical to phase3_b2a (29 genes = controller 8 + structure_v2 12 + shape_b2 9 active with tc locked, fidelity full_a1_b2a) plus ga.elite 4 and ga.shape_crossover uniform (rng.random(2+n_s)=rng.random(11): controller, structure, then each active shape gene; draw < 0.5 -> parent A). Mutation unchanged. See PHASE3_B2_SKETCH.md.",
+  "name": "phase3_b2a_x",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure_v2": true,
+    "shape_b2": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01,
+      "structural_v2": 1.0
+    },
+    "params": {
+      "struct_v2_source": "fd"
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "structural_v2"
+    ]
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "version": 2,
+    "asymmetric": false,
+    "substeps": 2,
+    "fidelity": "full_a1_b2a",
+    "model_version_check": "warn"
+  },
+  "shape_b2": {
+    "er_profile_config": "evolution/configs/phase2_smoke_p25.json"
+  },
+  "locked_genes": [
+    "wing_tc_root_scale",
+    "wing_tc_tip_ratio"
+  ],
+  "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+      "structure_v2"
+    ],
+    "seed_runs": {}
+  },
+  "operators": {
+    "crossover": "blocks",
+    "shape": {
+      "init": "identity",
+      "log_genes": [
+        "wing_chord_taper_1",
+        "wing_chord_taper_2",
+        "wing_chord_taper_3"
+      ],
+      "init_sigma_half_range": 0.25,
+      "mutation_sigma_half_range": 0.25,
+      "mutation_rate": null
+    }
+  },
+  "ga": {
+    "elite": 4,
+    "shape_crossover": "uniform"
+  },
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
+}

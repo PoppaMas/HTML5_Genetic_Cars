@@ -39,8 +39,8 @@ Uses the existing venv (`jsbsim 1.3.1`, numpy, pytest). Run from the parent
 directory so that `evolution` is importable:
 
 ```bash
-cd flight_sim_3d          # (team layout: the team folder holding evolution/ and flight-dynamics/)
-PY=python                 # a venv with ../requirements.txt installed
+cd /workspace/flight-sim-team
+PY=/workspace/sandbox-run-20261006-023947/venv/bin/python
 
 $PY -m evolution.batch --config evolution/configs/bench_adjusted.json          # a batch of 4 aircraft
 $PY -m evolution.batch --config evolution/configs/bench_adjusted.json          # same command again: resumes, or no-op if finished
@@ -101,6 +101,7 @@ Keys starting with `_` are comments and are ignored. Unknown keys are errors.
 | `scenario_seed` | `null` (= seed) | seed for the disturbance scenarios (wind, turbulence, gust) |
 | `scenarios` | `3` | scenarios averaged per fitness. Scenario 0 is calm air |
 | `ga` | `pop_size 24, generations 15, elite 2, selection_p 0.2, crossover uniform, blx_alpha 0.3, mutation_rate 0.15, mutation_sigma 0.08, mutation_mode gauss` | same meaning as in `flight_sim/evolve.py` |
+| `ga.shape_crossover` | `"block"` | genome_kind `phase3_b1` only. `"block"` = whole-block crossover (Genome's B1 spec; dropped from the resolved config, so old run ids / resume are unchanged); `"uniform"` = opt-in **tweaked preset** (with `ga.elite: 4`; Genome's `phase3_b1_x`): per-gene uniform crossover inside the shape block, controller / structure whole, one `rng.random(8)` per child. Spec: `analysis/TWEAKED_PRESET_SPEC.md`; configs `configs/phase3b1_pilot_tweaked*.json` |
 | `trajectories` | `{"generations": "auto", "scenario": 0, "sample_hz": 30}` | `auto` = `[0, (G-1)//2, G-1]`. A list adds generations; the final one is always saved |
 | `metrics` | `{"band_ft": 20, "hold_after_s": 20}` | settling band, and the start of the "hold" window after each target step |
 | `source_repo` | `$EVOLUTION_SOURCE_REPO`, else the repo root (push layout `<repo>/flight_sim_3d/evolution`), else the sandbox clone | its git sha / branch / dirty flag are recorded |
@@ -814,7 +815,7 @@ The single adapter is `evolution/fidelity.py`. Since 06:41 PT it wires `reduced`
 `flexeval.evaluate`** (`flight-dynamics/flexeval.py`, spec `flight-dynamics/INTERFACE_v2.md`). FD's code is
 **imported, never copied**: `flexeval`, `flexbody`, `flexwing` and `coupled_sim` are loaded from FD's folder with
 bytecode writing off. The earlier `full(v1)` stand-in (our own n_bend = 2 coupler) is gone. Its numbers stay below only
-as a labelled historical benchmark; the code is in a local team backup (`evolution-pre-fdv2-0648.tgz`, not in the repo).
+as a labelled historical benchmark; the code is in `/workspace/backups/evolution-pre-fdv2-0648.tgz`.
 
 | fidelity | what (FD flexeval) | model_version (from FD's result) | margin gate |
 |---|---|---|---|
@@ -924,7 +925,7 @@ Full write-up: `analysis/STATUS_C.md`. The seed-3 counterfactual was not run: Fl
 
 ### HISTORICAL benchmark against the full(v1) stand-in (c172x + T38, pop 32 × 3 gens, seed 1, cache off, 8 workers)
 
-Kept for the record. It measured our own v1 n_bend = 2 stand-in, which FD's v2 has replaced. Code: a local team backup (`evolution-pre-fdv2-0648.tgz`, not in the repo); scripts `analysis/bench_fastmode*.py` / `microbench_fidelity.py` (marked historical).
+Kept for the record. It measured our own v1 n_bend = 2 stand-in, which FD's v2 has replaced. Code: `/workspace/backups/evolution-pre-fdv2-0648.tgz`; scripts `analysis/bench_fastmode*.py` / `microbench_fidelity.py` (marked historical).
 
 Measured 2026-10-06 06:24–06:36 PT. Box load (1-min) stayed at 7.6–9.2 throughout. Other teams' jobs were
 still on the box, so absolute times are about 2× an idle box, but every case saw the same load.

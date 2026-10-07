@@ -1,0 +1,34 @@
+{
+ "doc": "P3-A1 model_version strings (flexeval_a1.model_version). 'full_a1' is new; rigid / reduced / full are listed for reference and are byte-identical to model_versions_post_p25.json (unchanged by P3-A1).",
+ "a1_wing": {
+  "n_el": 64,
+  "n_b": 4,
+  "n_t": 3,
+  "n_ip": 2,
+  "f_ip_ratio": 2.5
+ },
+ "c172x": {
+  "rigid": "rigid:jsbsim1.3.1:e0a73fc9",
+  "reduced": "reduced:flexv1:68dc59aa",
+  "full": "full:flexv2:e11b8214",
+  "full_a1": "full_a1:flexv2a1:36fb4f5a"
+ },
+ "T38": {
+  "rigid": "rigid:jsbsim1.3.1:69ac40f7",
+  "reduced": "reduced:flexv1:ce107fcf",
+  "full": "full:flexv2:8bf7a250",
+  "full_a1": "full_a1:flexv2a1:f248873e"
+ },
+ "737": {
+  "rigid": "rigid:jsbsim1.3.1:19463d4b",
+  "reduced": "reduced:flexv1:d3198780",
+  "full": "full:flexv2:eeb82fb9",
+  "full_a1": "full_a1:flexv2a1:522189cb"
+ },
+ "f16": {
+  "rigid": "rigid:jsbsim1.3.1:3a8ef093",
+  "reduced": "reduced:flexv1:66a7d816",
+  "full": "full:flexv2:8baca00c",
+  "full_a1": "full_a1:flexv2a1:4a9e12bc"
+ }
+}

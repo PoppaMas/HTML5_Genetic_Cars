@@ -1,0 +1,22 @@
+{
+ "c172x": {
+  "rigid": "rigid:jsbsim1.3.1:e0a73fc9",
+  "reduced": "reduced:flexv1:983378a2",
+  "full": "full:flexv2:11df8fe4"
+ },
+ "T38": {
+  "rigid": "rigid:jsbsim1.3.1:69ac40f7",
+  "reduced": "reduced:flexv1:52be19ae",
+  "full": "full:flexv2:e9535bc7"
+ },
+ "737": {
+  "rigid": "rigid:jsbsim1.3.1:19463d4b",
+  "reduced": "reduced:flexv1:870ff0b7",
+  "full": "full:flexv2:2c73464b"
+ },
+ "f16": {
+  "rigid": "rigid:jsbsim1.3.1:3a8ef093",
+  "reduced": "reduced:flexv1:7ac4c5d4",
+  "full": "full:flexv2:adfcae2f"
+ }
+}

@@ -7,6 +7,12 @@
 Reads ER's run read-only (evolution/runs/<run_id>/: run.json, trajectories/). Several comma-separated run ids (seeds)
 make one page with seed-overlay presets; the replay proof then covers every run.
 
+A/B (baseline vs tweaked):  tools/build_b1_page.sh <baseline>,<tweaked> --ab [--replay-proof]
+   (automatic for exactly two runs of different families, e.g. phase3b1r1-pilot-s1 vs phase3b1r1-pilot-tweaked-s1).
+   Page data/<baseline>_vs_<tag>_ab_standalone.html with only the gens both runs logged (matching gens), default view
+   = every aircraft from both runs at the final common gen; presets "A/B <a> vs <b> g<N>" per common gen and
+   "A/B planform top"; screenshots ab_*; summary adds an A/B cost table per aircraft and gen.
+
 1. Validation: ER's `evolution.validate_traj` (when importable), our tools/check_traj.py (hard checks: status ok, no
    NaN, quaternion norm / quat-vs-Euler, position vs velocity, index fitness), and per file: `planform` header
    fd-planform/1 valid (sim_bridge.planform), not synthetic, `fidelity` == full_a1_b1 (--fidelity), model_version ==
@@ -47,6 +53,9 @@ from sim_bridge import paths, planform as P  # noqa: E402
 NOTE = "FD structure nodes follow evolved sweep only; chord/twist from planform strips"     # B1 r0 node_layout
 NOTE_R1 = ("r1: FE nodes follow FD's shaped layout (chord, sweep, AC shift; twist about the elastic axis). "
            "The 9-node wing modal display axes still use approximate geometry.")
+NOTE_B2A = "B2a: dihedral baked into FD node layout; t/c and camber shown as section metadata."   # == traj.js B2A_NOTE
+B2_DEFAULTS = {"wing_dihedral_delta_deg": 0.0, "wing_tc_root_scale": 1.0, "wing_tc_tip_ratio": 1.0,
+               "wing_camber_root_delta_pct": 0.0, "wing_camber_tip_delta_pct": 0.0}
 
 
 def pick_note(runs, override):
@@ -59,6 +68,8 @@ def pick_note(runs, override):
     with open(os.path.join(R["dir"], "trajectories", e["file"])) as f:
         doc = json.load(f)
     nl = str((doc.get("structure") or {}).get("node_layout") or "")
+    if "node_layout_b2" in nl:
+        return NOTE_B2A, f"B2a data (structure.node_layout = {nl!r})"
     return (NOTE_R1, f"r1 data (structure.node_layout = {nl!r})") if "node_layout_b1" in nl else (NOTE, "r0 data")
 WING_PREFIXES = ("wingR.", "wingL.", "wingR_modal.", "wingL_modal.")
 LADDER = [(10.0, 2), (10.0, 4), (5.0, 4)]
@@ -168,8 +179,34 @@ def gens_of(R, ac):
     return sorted({e["generation"] for e in R["entries"] if e["aircraft"] == ac})
 
 
-def build(runs, out_html, max_mb, params, title):
-    all_gens = sorted({e["generation"] for R in runs for e in R["entries"]})
+def run_family(rid):
+    """'phase3b1r1-pilot-s1' -> 'phase3b1r1-pilot' (same rule as the viewer's runFamily: drop the last '-' token)."""
+    k = rid.rfind("-")
+    return rid[:k] if k > 0 else rid
+
+
+def ab_tags(ids):
+    """Short A/B names: drop the '-' tokens all runs share at both ends (empty -> 'base'), like the viewer's abShort."""
+    tok = [i.split("-") for i in ids]
+    a = b = 0
+    n = min(len(t) for t in tok)
+    while a < n and all(t[a] == tok[0][a] for t in tok):
+        a += 1
+    while b < n - a and all(t[len(t) - 1 - b] == tok[0][len(tok[0]) - 1 - b] for t in tok):
+        b += 1
+    names = ["-".join(t[a:len(t) - b]) or "base" for t in tok]
+    return names if len(set(names)) == len(names) else list(ids)
+
+
+def common_gens(runs, ac=None):
+    """Generations every run logged (for aircraft `ac`, or for every aircraft)."""
+    acs = [ac] if ac else sorted({e["aircraft"] for R in runs for e in R["entries"]})
+    sets = [set(g for a in acs for g in gens_of(R, a)) if not ac else set(gens_of(R, ac)) for R in runs]
+    return sorted(set.intersection(*sets)) if sets else []
+
+
+def build(runs, out_html, max_mb, params, title, only_gens=None):
+    all_gens = list(only_gens) if only_gens else sorted({e["generation"] for R in runs for e in R["entries"]})
     first, final = all_gens[0], all_gens[-1]
     middles = [g for g in all_gens if g not in (first, final)]
     plans = [(hz, st, all_gens) for hz, st in LADDER]
@@ -200,7 +237,7 @@ def build(runs, out_html, max_mb, params, title):
 
 
 # ------------------------------------------------------------------ 4. screenshots
-def shots(runs, page, prefix, final_by_ac):
+def shots(runs, page, prefix, final_by_ac, b2=False):
     R = runs[0]
     spec = [["default_formation_final_defl8", "", 12]]
     for ac in sorted(final_by_ac):
@@ -213,10 +250,45 @@ def shots(runs, page, prefix, final_by_ac):
     if "T38" in final_by_ac:   # T38 wing at mid-flight (B1 r0 had a T38 mid-twist artifact): rear + top close-ups
         for view in ("rear", "top"):
             spec.append([f"T38_wing_closeup_g{final_by_ac['T38']}_t45_{view}_defl8",
-                         f"?mode=single&gen=T38:{final_by_ac['T38']}&cam=orbit&defl=8", 45, view])
+                         f"?mode=single&gen=T38:{final_by_ac['T38']}&cam=orbit&defl=8", 45, view + "+fit"])
+    if b2:   # B2a: dihedral from front/rear at defl 1 (geometry, not flex), plus HUD + section sketch
+        for ac in ("c172x", "737"):
+            if ac in final_by_ac:
+                for view in ("front", "rear"):
+                    spec.append([f"b2_dihedral_{ac}_g{final_by_ac[ac]}_{view}", f"?mode=single&gen={ac}:{final_by_ac[ac]}"
+                                 "&cam=orbit&defl=1", 8, view + "+fit"])
+        for ac in ("c172x", "737"):
+            if ac in final_by_ac:
+                spec.append([f"b2_hud_section_{ac}_g{final_by_ac[ac]}", f"?mode=single&gen={ac}:{final_by_ac[ac]}"
+                             "&cam=chase&defl=1", 8])
     big = "737" if "737" in final_by_ac else sorted(final_by_ac)[0]
     spec.append([f"flex_closeup_{big}_g{final_by_ac[big]}_rear_defl8",
-                 f"?mode=single&gen={big}:{final_by_ac[big]}&cam=orbit&defl=8", 12, "rear"])
+                 f"?mode=single&gen={big}:{final_by_ac[big]}&cam=orbit&defl=8", 12, "rear+fit"])
+    return run_shots(spec, page, prefix)
+
+
+def ab_shots(runs, page, prefix, fin):
+    """A/B screenshots at the final common gen: all aircraft from both runs, planform top per aircraft, T38 pair."""
+    spec = [[f"ab_formation_g{fin}_defl8", "", 12]]
+    acs = sorted({e["aircraft"] for e in runs[0]["entries"]})
+    for ac in acs:
+        pf = planform_of(runs[0], ac, fin)
+        sp = int(math.ceil((2 * abs(pf["wing"]["y_m"][-1]) if pf else 20) * 1.3))
+        spec.append([f"ab_planform_top_{ac}_g{fin}", f"?preset=abplan:{ac}:{fin}&cam=top&defl=1&spacing={sp}", 8])
+    if "T38" in acs:
+        spec.append([f"ab_T38_g{fin}_t45_chase_defl8", f"?preset=ab:T38:{fin}&cam=chase&defl=8&spacing=12&hud=0", 45])
+    return run_shots(spec, page, prefix)
+
+
+def parse_shot_report(out):
+    """screenshots.py prints its JSON report first; warning lines after it may contain braces too."""
+    try:
+        return json.JSONDecoder().raw_decode(out[out.index("{"):])[0] if "{" in out else {}
+    except ValueError:
+        return {}
+
+
+def run_shots(spec, page, prefix):
     sp_path = f"/tmp/b1_shots_{prefix}.json"
     json.dump(spec, open(sp_path, "w"))
     py = os.path.join(HERE, ".venv-shots", "bin", "python")
@@ -224,19 +296,22 @@ def shots(runs, page, prefix, final_by_ac):
            "--shot-spec", sp_path, "--prefix", prefix, "--strict"]
     p = subprocess.run(cmd, capture_output=True, text=True)
     out = p.stdout
-    js = out[out.index("{"):out.rindex("}") + 1] if "{" in out else "{}"
-    try:
-        rep = json.loads(js)
-    except ValueError:
-        rep = {}
+    rep = parse_shot_report(out)
     res = {"ok": p.returncode == 0, "pngs": [v["png"] for v in rep.values() if isinstance(v, dict) and "png" in v],
            "console_errors": [l for l in rep.get("console", []) if l.startswith("[error]")] + rep.get("page_errors", []),
            "blank": [k for k, v in rep.items() if isinstance(v, dict) and v.get("render", {}).get("blank")],
            "out_of_view": [k for k, v in rep.items() if isinstance(v, dict) and "render" in v
                            and not all(v["render"].get("inView", [True]))],
+           "covered": {k: v["render"]["covered"] for k, v in rep.items() if isinstance(v, dict) and "render" in v
+                       and any(v["render"].get("covered") or [])},
            "hud_planform": sorted({l for v in rep.values() if isinstance(v, dict) for l in v.get("hud", []) if l.startswith("PLANFORM")}),
            "log": f"/tmp/b1_shots_{prefix}.log"}
     open(res["log"], "w").write(out + p.stderr)
+    missing = [sp[0] for sp in spec if not any(os.path.basename(x) == f"{prefix}{sp[0]}.png" for x in res["pngs"])]
+    if missing:
+        res["ok"] = False
+        res["missing"] = missing
+        log(f"screenshots: missing / unreported {missing}")
     return res
 
 
@@ -356,6 +431,11 @@ def proof_verdict(out_dir, rc):
 
 
 # ------------------------------------------------------------------ 6. summary helpers
+def genes_of(R, ac, gen):
+    pf = planform_of(R, ac, gen)
+    return (pf or {}).get("_genome") or {}
+
+
 def planform_of(R, ac, gen):
     e = next((e for e in R["entries"] if e["aircraft"] == ac and e["generation"] == gen), None)
     if not e:
@@ -383,7 +463,25 @@ def pf_stats(blk):
 
 
 def gene_bounds(fd_dirs):
-    """{gene: (lo, hi)} from FD's newest model_versions_post_p3b1*.json b1_schema (frozen copy first, then live FD)."""
+    """{gene: (lo, hi)} from FD's newest model_versions_post_p3b1*.json b1_schema (frozen copy first, then live FD),
+    plus per-aircraft B2 ranges {(gene, ac): (lo, hi)} from model_versions_post_p3b2*.json b2_schema when present."""
+    out = {}
+    for d in fd_dirs:
+        fs = sorted(glob.glob(os.path.join(d, "v2_results", "model_versions_post_p3b2*.json")), key=os.path.getmtime)
+        for f in reversed(fs):
+            try:
+                for g in json.load(open(f))["b2_schema"]["genes"]:
+                    for ac, lo, hi in g.get("ranges", []):
+                        out[(g["name"], ac)] = (lo, hi)
+                break
+            except Exception:  # noqa: BLE001
+                continue
+        if out:
+            break
+    return {**_b1_bounds(fd_dirs), **out}
+
+
+def _b1_bounds(fd_dirs):
     for d in fd_dirs:
         fs = sorted(glob.glob(os.path.join(d, "v2_results", "model_versions_post_p3b1*.json")), key=os.path.getmtime)
         for f in reversed(fs):
@@ -399,7 +497,7 @@ def main():
     ap.add_argument("run_id", help="ER run id (or comma list of seeds / run dirs)")
     ap.add_argument("--out", default=os.path.join(HERE, "data"))
     ap.add_argument("--max-mb", type=float, default=24.0)
-    ap.add_argument("--fidelity", default="full_a1_b1")
+    ap.add_argument("--fidelity", help="expected fidelity (default: run.json fidelity, else full_a1_b1)")
     ap.add_argument("--aircraft", default="c172x,T38,737", help="required aircraft")
     ap.add_argument("--no-shots", action="store_true")
     ap.add_argument("--replay-proof", action="store_true")
@@ -409,13 +507,47 @@ def main():
     ap.add_argument("--allow-live-fd", action="store_true", help="accept the live flight-dynamics/ if it matches the pins")
     ap.add_argument("--shot-prefix", help="screenshot file prefix (default '<run_id>_')")
     ap.add_argument("--note", help="on-page caveat banner text (default: chosen from the data's node layout, r0 / r1)")
+    ap.add_argument("--ab", action="store_true", help="A/B page for two runs <baseline>,<tweaked> at matching gens "
+                    "(automatic for two runs of different families)")
+    ap.add_argument("--reuse-proof", action="store_true", help="reuse an existing EXACT proof (same run, gens, frozen "
+                    "FD) under <out>/replays/<run>/ instead of replaying again (e.g. the baseline in an A/B build)")
+    ap.add_argument("--name", help="page/summary base name (default from the run ids)")
+    ap.add_argument("--gens", help="comma list: only these generations on the page (e.g. 0,59)")
+    ap.add_argument("--no-ab", action="store_true", help="two runs of different families -> plain multi-run page")
     a = ap.parse_args()
     os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
     runs = [load_run(r) for r in a.run_id.split(",") if r]
-    name = runs[0]["id"] + (f"+{len(runs) - 1}" if len(runs) > 1 else "")
+    ab = len(runs) == 2 and not a.no_ab and (a.ab or run_family(runs[0]["id"]) != run_family(runs[1]["id"]))
+    if a.ab and len(runs) != 2:
+        die(2, f"--ab needs exactly two runs <baseline>,<tweaked> (got {len(runs)})")
+    fams = list(dict.fromkeys(run_family(R["id"]) for R in runs))
+    # multi-seed A/B: >2 runs from exactly two families (<base-s1>,<tweaked-s1>,<base-s2>,<tweaked-s2>); fams[0] = base
+    seeds_ab = len(runs) > 2 and len(fams) == 2 and not a.no_ab
+    labels = ({R["id"]: ("base" if run_family(R["id"]) == fams[0] else "tweaked") + "-" + R["id"].rsplit("-", 1)[-1]
+               for R in runs} if seeds_ab else None)
+    tags = ab_tags([R["id"] for R in runs]) if ab else None
+    name = (f"{runs[0]['id']}_vs_{tags[1]}_ab" if ab else
+            f"{fams[0]}_ab_{len(runs) // 2}seed" if seeds_ab else
+            runs[0]["id"] + (f"+{len(runs) - 1}" if len(runs) > 1 else ""))
+    name = a.name or name
+    ab_gens = common_gens(runs) if (ab or seeds_ab) else None
+    if a.gens:
+        want = [int(x) for x in a.gens.split(",") if x]
+        ab_gens = [g for g in (ab_gens or want) if g in want]
+    if ab and not ab_gens:
+        die(2, f"A/B: no generation logged by both runs ({[sorted({e['generation'] for e in R['entries']}) for R in runs]})")
     page = os.path.join(a.out, f"{name}_standalone.html")
     timings, summary = {}, {"runs": [R["id"] for R in runs], "page": page}
+    if ab:
+        summary["ab"] = {"baseline": runs[0]["id"], "tweaked": runs[1]["id"], "tags": tags, "matching_gens": ab_gens}
+        log(f"A/B: {runs[0]['id']} ({tags[0]}) vs {runs[1]['id']} ({tags[1]}), matching gens {ab_gens}")
     need = [x for x in a.aircraft.split(",") if x]
+    if not a.fidelity:
+        fids = {R["run"].get("fidelity") or "full_a1_b1" for R in runs}
+        if len(fids) != 1:
+            die(2, f"runs have different fidelities {sorted(fids)}; pass --fidelity")
+        a.fidelity = fids.pop()
+        log(f"fidelity {a.fidelity} (run.json)")
 
     # 1. validation
     t = time.perf_counter()
@@ -445,6 +577,17 @@ def main():
                 [int(x) for x in a.proof_gens.split(",")]
             od = os.path.join(a.out, "replays", R["id"], f"b1proof-full-g{'.'.join(map(str, gens))}")
             os.makedirs(os.path.dirname(od), exist_ok=True)
+            if a.reuse_proof and os.path.exists(os.path.join(od, "replay_manifest.json")):
+                old = proof_verdict(od, 0)
+                mpath = os.path.join(od, "replay_manifest.json")
+                rmv = set((json.load(open(mpath)).get("provenance") or {}).get("replay_model_versions") or [])
+                pins = {v.get(a.fidelity) for v in (R["run"].get("pin_model_version") or {}).values()} - {None}
+                newer = os.path.getmtime(mpath) > max(os.path.getmtime(os.path.join(R["dir"], "trajectories", e["file"]))
+                                                      for e in R["entries"])
+                if old["ok"] and pins and pins <= rmv and newer and sorted({r["gen"] for r in old["rows"]}) == sorted(gens):
+                    log(f"proof {R['id']}: reusing EXACT proof {od} (--reuse-proof)")
+                    procs.append((R, gens, d, src + " (reused)", od, None))
+                    continue
             log(f"proof {R['id']}: replay gens {gens} with FD {d} ({src}) -> {od}")
             procs.append((R, gens, d, src, od, replay_proof(R, gens, d, od)))
         timings["proof_setup_s"] = round(time.perf_counter() - t, 1)
@@ -457,8 +600,18 @@ def main():
     summary["note"] = note
     params = {"mode": "compare", "preset": "last", "cam": "chase", "layout": "formation", "vref": "norm", "cy": "rerr",
               "defl": "8", "spacing": "40", "note": note, "planpresets": "1"}
-    title = f"{name}: Phase 3-B1 (full_a1_b1) shape genes + FD nodal flex"
-    pg = build(runs, page, a.max_mb, params, title)
+    fid = a.fidelity
+    title = f"{name}: Phase 3-{'B2a' if 'b2a' in fid else 'B1'} ({fid}) shape genes + FD nodal flex"
+    if ab:
+        params.update({"preset": f"ab:*:{ab_gens[-1]}", "spacing": "30"})
+        title = f"A/B {runs[0]['id']} vs {runs[1]['id']}: Phase 3-B1 ({fid}), matching gens {ab_gens}"
+    if seeds_ab:
+        params.update({"preset": f"ab:*:{ab_gens[-1]}", "spacing": "30", "abseeds": "1",
+                       "labels": ",".join(f"{k}={v}" for k, v in labels.items())})
+        title = f"{len(runs) // 2}-seed A/B {' / '.join(labels.values())}: Phase 3-B1 ({fid}), gens {ab_gens}"
+        summary["seeds_ab"] = {"labels": labels, "gens": ab_gens}
+        log(f"multi-seed A/B: {labels}, gens {ab_gens}")
+    pg = build(runs, page, a.max_mb, params, title, only_gens=ab_gens)
     timings["page_s"] = round(time.perf_counter() - t, 1)
     log(f"page {page}: {pg['raw_bytes'] / 1e6:.2f} MB raw, {pg['gzip_bytes'] / 1e6:.2f} MB gzip; hz {pg['hz']:g}, "
         f"wing node stride {pg['node_stride']}, gens {pg['gens']}" + (f", dropped {pg['dropped_gens']}" if pg['dropped_gens'] else ""))
@@ -469,10 +622,11 @@ def main():
     shot_res = None
     if not a.no_shots:
         t = time.perf_counter()
-        shot_res = shots(runs, page, a.shot_prefix or f"{name}_", final_by_ac)
+        shot_res = (ab_shots(runs, page, a.shot_prefix or f"{name}_", max(pg["gens"])) if (ab or seeds_ab) else
+                    shots(runs, page, a.shot_prefix or f"{name}_", final_by_ac, b2="b2" in a.fidelity))
         timings["shots_s"] = round(time.perf_counter() - t, 1)
         log(f"screenshots: ok={shot_res['ok']} {len(shot_res['pngs'])} png, console errors {len(shot_res['console_errors'])}, "
-            f"blank {shot_res['blank']}, out of view {shot_res['out_of_view']}")
+            f"blank {shot_res['blank']}, out of view {shot_res['out_of_view']}, under an overlay (warning) {shot_res['covered']}")
         summary["screenshots"] = shot_res
 
     # proof results
@@ -481,7 +635,7 @@ def main():
         t = time.perf_counter()
         summary["replay_proof"] = []
         for R, gens, d, src, od, pr in procs:
-            rc = pr.wait()
+            rc = pr.wait() if pr is not None else 0
             v = proof_verdict(od, rc)
             v.update({"run": R["id"], "gens": gens, "fd_dir": d, "fd_source": src, "out": od})
             summary["replay_proof"].append(v)
@@ -493,7 +647,7 @@ def main():
     # 6. summary
     timings["total_s"] = round(time.perf_counter() - T0, 1)
     summary["timings"] = timings
-    print("\n================ Phase 3-B1 page summary ================")
+    print("\n================ Phase 3-" + ("B2a" if "b2a" in a.fidelity else "B1") + " page summary ================")
     print(f"page   {page}")
     print(f"size   {pg['raw_bytes'] / 1e6:.2f} MB raw / {pg['gzip_bytes'] / 1e6:.2f} MB gzip (limit {a.max_mb} MB raw); "
           f"settings: {pg['hz']:g} Hz, wing node stride {pg['node_stride']}, modal + all-zero structure channels dropped, "
@@ -525,8 +679,47 @@ def main():
             s1["genes_at_bounds"] = at
             if at:
                 print("         AT BOUND: " + ", ".join(f"{k}={s1['genes'][k]} [{bounds[k][0]}, {bounds[k][1]}]" for k in at))
+            b2g = {k: genes_of(R, ac, gl[-1]).get(k) for k in B2_DEFAULTS}
+            b2g0 = {k: genes_of(R, ac, gl[0]).get(k) for k in B2_DEFAULTS}
+            if any(v is not None for v in b2g.values()):
+                print("         B2 genes final " + " ".join(f"{k.replace('wing_', '')}={v if v is None else round(v, 4)}"
+                      f" (g{gl[0]} {b2g0[k] if b2g0[k] is None else round(b2g0[k], 4)})" for k, v in b2g.items())
+                      + "  (defaults: dihedral 0, tc 1, camber 0)")
+                at2 = [k for k, v in b2g.items() if v is not None and (k, ac) in bounds
+                       and min(abs(v - bounds[(k, ac)][0]), abs(v - bounds[(k, ac)][1])) <= 1e-6]
+                if at2:
+                    print("         B2 AT BOUND: " + ", ".join(f"{k}={b2g[k]} {list(bounds[(k, ac)])}" for k in at2))
+                s1["b2_genes"], s1["b2_genes_gen0"], s1["b2_genes_at_bounds"] = b2g, b2g0, at2
             summary.setdefault("planform", {})[f"{R['id']}:{ac}"] = {"final": s1, "gen0": s0}
     summary["cost_table"] = tab
+    if ab:
+        print(f"\nA/B cost ({tags[0]} vs {tags[1]}; lower = better)")
+        abt = []
+        for ac in sorted({e["aircraft"] for e in runs[0]["entries"]}):
+            for g in common_gens(runs, ac):
+                c = [next(e["fitness"] for e in R["entries"] if e["aircraft"] == ac and e["generation"] == g) for R in runs]
+                abt.append({"aircraft": ac, "gen": g, tags[0]: c[0], tags[1]: c[1], "delta_pct": 100 * (c[1] - c[0]) / c[0]})
+                print(f"  {ac:6s} g{g:<3d} {c[0]:.6f}  {c[1]:.6f}  {100 * (c[1] - c[0]) / c[0]:+.1f}%")
+        summary["ab"]["cost_table"] = abt
+    if seeds_ab:
+        g = max(pg["gens"])
+        print(f"\nmulti-seed A/B cost at g{g} (base vs tweaked per seed; lower = better)")
+        st = []
+        for ac in sorted({e["aircraft"] for e in runs[0]["entries"]}):
+            ds = []
+            for sd in sorted({v.rsplit("-", 1)[-1] for v in labels.values()}):
+                pair = [R for R in runs if labels[R["id"]].endswith("-" + sd)]
+                c = [next(e["fitness"] for e in R["entries"] if e["aircraft"] == ac and e["generation"] == g) for R in
+                     sorted(pair, key=lambda R: labels[R["id"]] != "base-" + sd)]
+                d = 100 * (c[1] - c[0]) / c[0]
+                ds.append((c[0], c[1], d))
+                st.append({"aircraft": ac, "seed": sd, "gen": g, "base": c[0], "tweaked": c[1], "delta_pct": d})
+                print(f"  {ac:6s} {sd:3s} {c[0]:.6f}  {c[1]:.6f}  {d:+.1f}%")
+            mb, mt = sum(x[0] for x in ds) / len(ds), sum(x[1] for x in ds) / len(ds)
+            print(f"  {ac:6s} mean {mb:.6f}  {mt:.6f}  {100 * (mt - mb) / mb:+.1f}% (mean of per-seed deltas "
+                  f"{sum(x[2] for x in ds) / len(ds):+.1f}%)")
+            st.append({"aircraft": ac, "seed": "mean", "gen": g, "base": mb, "tweaked": mt, "delta_pct": 100 * (mt - mb) / mb})
+        summary["seeds_ab"]["cost_table"] = st
     if shot_res:
         print("\nscreenshots" + ("" if shot_res["ok"] else "  ** FAILED **"))
         for p_ in shot_res["pngs"]:

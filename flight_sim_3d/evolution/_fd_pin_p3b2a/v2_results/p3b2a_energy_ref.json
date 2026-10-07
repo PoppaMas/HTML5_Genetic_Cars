@@ -1,0 +1,71 @@
+{
+ "aircraft": {
+  "737": {
+   "_aircraft_files_sha": "5b76a6ca549a3f6c6fd6bcf606003dae2e59a11e584663968a360a715e2c244b",
+   "h0=10000.0|kcas=250.0": {
+    "alpha_deg": 3.2775913327204056,
+    "cd_ref": 0.037876868015234454,
+    "drag_lbf": 9242.801968368549,
+    "drag_power_ref_ftlbf_s": 4503465.943890795,
+    "h0_ft": 10000.0,
+    "qbar_area_lbf": 244022.34009028945,
+    "speed_kcas": 250.0,
+    "vt_fps": 487.2403367834683,
+    "weight_lbs": 107000.0
+   }
+  },
+  "T38": {
+   "_aircraft_files_sha": "e81c040748e9aa801bf334383b82f2dbbe52fe9ea37893bae19e85cb29539b4c",
+   "h0=10000.0|kcas=300.0": {
+    "alpha_deg": 4.607743156117832,
+    "cd_ref": 0.02593954994311946,
+    "drag_lbf": 1315.0996064532792,
+    "drag_power_ref_ftlbf_s": 766547.6933642192,
+    "h0_ft": 10000.0,
+    "qbar_area_lbf": 50698.628516571975,
+    "speed_kcas": 300.0,
+    "vt_fps": 582.8818513842753,
+    "weight_lbs": 11474.0
+   }
+  },
+  "c172x": {
+   "_aircraft_files_sha": "a32ed12b492af1b3b471cb59f2a149ee16766df05020e65cdcc1eca59c9ee69b",
+   "h0=4000.0|kcas=100.0": {
+    "alpha_deg": 0.7946307376032841,
+    "cd_ref": 0.04634881364266833,
+    "drag_lbf": 272.79059245881274,
+    "drag_power_ref_ftlbf_s": 48834.42754573579,
+    "h0_ft": 4000.0,
+    "qbar_area_lbf": 5885.600321119849,
+    "speed_kcas": 100.0,
+    "vt_fps": 179.01800463705158,
+    "weight_lbs": 2480.0
+   }
+  },
+  "f16": {
+   "_aircraft_files_sha": "e39e14937d6c30c451459ee3a7e43ec705fb5aa5237703b57a23be2ced569428",
+   "h0=10000.0|kcas=350.0": {
+    "alpha_deg": 1.045460476224733,
+    "cd_ref": 0.026712220996519574,
+    "drag_lbf": 3230.415649835199,
+    "drag_power_ref_ftlbf_s": 2189166.884270244,
+    "h0_ft": 10000.0,
+    "qbar_area_lbf": 120933.99684946082,
+    "speed_kcas": 350.0,
+    "vt_fps": 677.6734394479314,
+    "weight_lbs": 20630.0
+   }
+  }
+ },
+ "key": "h0=<h0_ft>|kcas=<speed_kts>",
+ "rule": "baseline aircraft (<root>_v2, A1 masses, no B2 increments) trimmed D x V_true at the scenario IC",
+ "schema": "fd-p3b2a-energy-ref/1",
+ "units": {
+  "cd_ref": "-",
+  "drag_lbf": "lbf",
+  "drag_power_ref_ftlbf_s": "ft lbf / s",
+  "qbar_area_lbf": "lbf",
+  "vt_fps": "ft/s",
+  "weight_lbs": "lbf"
+ }
+}

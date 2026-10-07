@@ -76,7 +76,8 @@ FD_A1_MODEL_VERSIONS = {
     "f16": "full_a1:flexv2a1:4a9e12bc",
 }
 
-# Operators: block_ops.py (= ER evolution/ga.py P3-B1; sigma 0.25 x half-range in encoded space, ln x for chord tapers).
+# Operators: block_ops.py (= ER evolution/ga.py P3-B1; sigma 0.25 x half-range in the operator space: ln x for the chord
+# tapers internally only -- all 6 genes are LINEAR in value per FD r1 GENE_ENCODING).
 
 
 # ----------------------------------------------------------------------------------------------------- FD imports
@@ -357,13 +358,14 @@ def build_task_b1(raw: Dict, build_task):
         raise ValueError(f"unknown shape_b1 keys {sorted(bad)}")
     init_cfg = raw.pop("init", None)
     ops_cfg = raw.pop("operators", None)
+    ga_cfg = block_ops.resolve_ga(raw.pop("ga", None))   # phase3_b1_x: ga.elite / ga.shape_crossover (ER option names)
     base = build_task(dict(raw, blocks=blocks, flex=flex))
     genes = shape_genes()
     spec = base.spec
     spec.genes = list(spec.genes) + list(genes)
     spec.enabled_blocks = tuple(spec.enabled_blocks) + (SHAPE_B1_BLOCK,)
     init = adapter.resolve_init(init_cfg, spec, base.profile)
-    ops = block_ops.resolve_operators(ops_cfg, spec)
+    ops = block_ops.resolve_operators(ops_cfg, spec, shape_crossover=ga_cfg["shape_crossover"])
     model = base.profile.jsbsim_model
     prof_d = er_profile(b1cfg.get("er_profile_config", "evolution/configs/phase2_smoke_p25.json"), model)
     _check_weights(base.fitness.weights, prof_d)
@@ -379,7 +381,7 @@ def build_task_b1(raw: Dict, build_task):
                        fd_model_version_recorded=mv["recorded"])
     return B1Task(base.name, spec, base.fitness, base.scenarios, base.profile, orig, warnings, base.conditions, {},
                   flex_consts, {}, init, er_profile_d=prof_d, operators=ops, shape_gene_specs=tuple(genes),
-                  b1_model_version=mv)
+                  b1_model_version=mv, ga_overrides={k: v for k, v in ga_cfg.items() if k == "elite" and v is not None})
 
 
 import adapter as _adapter  # noqa: E402  (adapter imports this module lazily, so no cycle at import time)
@@ -393,6 +395,7 @@ class B1Task(_adapter.Task):
     operators: Dict = dataclasses.field(default_factory=dict)
     shape_gene_specs: tuple = ()
     b1_model_version: Dict = dataclasses.field(default_factory=dict)
+    ga_overrides: Dict = dataclasses.field(default_factory=dict)   # {'elite': 4} for phase3_b1_x; {} = evolve.py CLI/default
 
     def make_scenarios(self, n: int, seed: int):
         """ER sim.Scenario objects (dataclasses: evolve.py asdict()s them) for ER's resolved profile."""

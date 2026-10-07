@@ -110,3 +110,54 @@ gen 0 (`test_operators_bitwise_equal_to_er_ga`, `test_generation_zero_bitwise_eq
 - Shaped/A1 is about 0.99–1.08×. The r1 run-1 outlier of 2.79 s for twist_mid −2 was load: it measured 2.04 s on the
   re-run.
 - Treat these numbers as indicative. r1 has no measurable cost over r0.
+
+## Tweaked GA `phase3_b1_x` (ga.elite 4 + ga.shape_crossover 'uniform'), 2026-10-06 ~20:20 PT
+
+Spec: PHASE3_B1_SPEC.md §9. The RNG order was locked with ER. ER's `crossover_blocks_uniform_shape` (ga.py, 20:11 PT)
+uses the **same order** as genome's `crossover_shape_uniform`: one `rng.random(8)` call (controller, structure, 6 shape
+genes), draw < 0.5 means parent A, and it replaces the shape block draw. **No RNG-order difference.**
+
+### Synthetic operator trace (`p3b1x_operator_trace.py` → `runs/p3b1x_operator_trace.json`)
+- **Setup:** seed 1, pop 64, gen 0 + 4 bred generations, run through the same `ga` stand-ins `run_evolve.py` installs.
+  Cost is deterministic and synthetic: Σ(1 + k/n)(g_k − c_k)², c_k = (k·φ⁻¹) mod 1. Nothing flies.
+- **Recorded:** per-generation SHA-256 of the ranked population and the costs, the full ranked gen 0 and gen 1, and
+  parent picks and crossover draws per child.
+- **Golden:** captured from the **unmodified** code before the change (`runs/p3b1x_golden_pre_change.json`; block_ops
+  md5 e73d629c…).
+
+| preset | elite | shape crossover | gen 0 (ranked) | gen 4 | best synthetic cost g4 | unchanged vs pre-change golden | vs ER's own functions |
+|---|---|---|---|---|---|---|---|
+| phase3_b1_x | 4 | uniform | `7423a37e7f6f2234…` | `f5d1210525a38564…` | 2.600298 | n/a (new) | **bit-identical** |
+| phase3_b1 | 2 | block | `7423a37e7f6f2234…` | `0b1194cdf07eab25…` | 3.155162 | **yes** | **bit-identical** |
+| phase2_flex | 2 | — (ga.py uniform) | `ffbc2d2624f67346…` | `a2ab24e7d6779b3e…` | 2.121756 | **yes** | **bit-identical** |
+
+- **ER functions used:**
+  - phase3_b1_x: `ga.next_generation_blocks(GAConfig(shape_crossover="uniform", elite=4))`.
+  - phase3_b1: the same function at its default.
+  - phase2_flex: `ga.next_generation` + `batch.seed_generation_zero`.
+- **ER's default path is unchanged by ER's edit**, because ER's code reproduces the pre-change phase3_b1 golden.
+- **Shape uniform mixes genes:** 232 / 240 children have a shape block mixed from both parents (expected 1 − 2/64 ≈ 0.97).
+- **Elites:** the top `elite` rows are copied unchanged in every generation for all three presets.
+- **Independent reference:** ER's `flat_rank_select` and `mutate_blocks` plus the crossover written inline from the
+  spec text, with 8 scalar `rng.random()` calls. It is bit-identical to block_ops' single `rng.random(8)` call.
+
+### ER fixture (`evolution/analysis/tweaked_preset_crosscheck.json`, created 20:14 PT) → `runs/p3b1x_er_fixture_check.json`
+- **Inputs:** T38 gen-4 population of `phase3b1r1-smoke-s1` (16 rows, rank order; input SHA-256 matches) with the
+  phase3b1_pilot GA settings (selection_p 0.2, mutation 0.15 / 0.08 gauss), seeds 0–4.
+- **Variants:** default = phase3_b1 (elite 2, `block`); tweaked = phase3_b1_x (elite 4, `uniform`).
+- **Regenerated with genome's own presets:** `block_ops.next_generation` / `next_generation_tweaked`, trace hook on.
+- **Inputs match:** the fixture's blocks, shape spec, shape mutation rate, gene names, elite and shape_crossover all
+  equal genome's preset operators.
+
+| seed | default (genome SHA-256) | rows + SHA + RNG end + trace identical | tweaked (genome SHA-256) | rows + SHA + RNG end + trace identical |
+|---|---|---|---|---|
+| seed0 | `3598a6456facd778…` | True | `7157c82b68f96d57…` | True |
+| seed1 | `8f18a1eafb001130…` | True | `1d635e5470697a77…` | True |
+| seed2 | `bdea92f69592d2f8…` | True | `57cf2e5b301fdcaf…` | True |
+| seed3 | `e7e5a847813484c5…` | True | `925c215d4bd16f6e…` | True |
+| seed4 | `c9beae8fbba839a5…` | True | `0ec9110ebe452d9f…` | True |
+
+**Result: default BIT-IDENTICAL, tweaked BIT-IDENTICAL**, with 0 differing cells. ER also ran genome's block_ops
+read-only from its side (the fixture's `genome_crosscheck`: both BIT-IDENTICAL), on the same block_ops file as now
+(SHA-256 `c1dc377ddb0f3ea5…`).
+

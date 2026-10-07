@@ -1,0 +1,1187 @@
+{
+ "doc": "J_energy = w_E * max(0, energy_drag_increment); J_speed = w_E * 3 * max(0, deficit - 2 kt) / V_target. dcost_off = B2a cost - baseline cost (no energy term); dcost_on adds J_energy + J_speed (baseline: both 0).",
+ "weights": {
+  "c172x": {
+   "w_E": 2.175,
+   "W_trim_lb": 2480.0,
+   "m_flex0_lb": 342.0,
+   "w_mass": 0.3
+  },
+  "T38": {
+   "w_E": 1.663,
+   "W_trim_lb": 11474.0,
+   "m_flex0_lb": 2070.0,
+   "w_mass": 0.3
+  },
+  "737": {
+   "w_E": 1.202,
+   "W_trim_lb": 107000.0,
+   "m_flex0_lb": 26700.0,
+   "w_mass": 0.3
+  },
+  "f16": {
+   "w_E": 1.303,
+   "W_trim_lb": 20630.0,
+   "m_flex0_lb": 4750.0,
+   "w_mass": 0.3
+  }
+ },
+ "aircraft": {
+  "c172x": {
+   "baseline_cost": 0.27173128965524934,
+   "w_E": 2.175,
+   "probes": {
+    "baseline": {
+     "genes": {},
+     "status": "ok",
+     "dcost_off": 0.0,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0,
+     "struct_delta": {},
+     "throttle_mean": 0.7916328125005498,
+     "throttle_sat_frac": 0.23006172839506175,
+     "energy_drag_ratio": 1.0146517593298612,
+     "speed_deficit_kts_mean": 0.9022106643023471,
+     "speed_hold_ok": true
+    },
+    "dih+0.5": {
+     "genes": {
+      "wing_dihedral_delta_deg": 0.5
+     },
+     "status": "ok",
+     "dcost_off": -0.0008404018976117533,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": -0.0008404018976117533,
+     "struct_delta": {
+      "J_bm_rms": -0.0005039681561568934
+     },
+     "throttle_mean": 0.7916613961765977,
+     "throttle_sat_frac": 0.2209259259259259,
+     "energy_drag_ratio": 1.014406368911419,
+     "speed_deficit_kts_mean": 0.8964199801386942,
+     "speed_hold_ok": true
+    },
+    "dih+1": {
+     "genes": {
+      "wing_dihedral_delta_deg": 1.0
+     },
+     "status": "ok",
+     "dcost_off": -0.0006846534264272064,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": -0.0006846534264272064,
+     "struct_delta": {
+      "J_bm_rms": 0.0003076850765449113
+     },
+     "throttle_mean": 0.7922037404061332,
+     "throttle_sat_frac": 0.2424074074074074,
+     "energy_drag_ratio": 1.014571522221958,
+     "speed_deficit_kts_mean": 0.898294306821169,
+     "speed_hold_ok": true
+    },
+    "dih+2": {
+     "genes": {
+      "wing_dihedral_delta_deg": 2.0
+     },
+     "status": "ok",
+     "dcost_off": 0.0025896983466103807,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0025896983466103807,
+     "struct_delta": {},
+     "throttle_mean": 0.7919519133950566,
+     "throttle_sat_frac": 0.23401234567901233,
+     "energy_drag_ratio": 1.0144092873998487,
+     "speed_deficit_kts_mean": 0.8948840775363113,
+     "speed_hold_ok": true
+    },
+    "dih+3": {
+     "genes": {
+      "wing_dihedral_delta_deg": 3.0
+     },
+     "status": "ok",
+     "dcost_off": 0.004366897090801958,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.004366897090801958,
+     "struct_delta": {
+      "J_bm_rms": 0.00017334085770576851
+     },
+     "throttle_mean": 0.7918893599473389,
+     "throttle_sat_frac": 0.23175925925925925,
+     "energy_drag_ratio": 1.0142565945684467,
+     "speed_deficit_kts_mean": 0.8955898629057254,
+     "speed_hold_ok": true
+    },
+    "cam_lo": {
+     "genes": {
+      "wing_camber_root_delta_pct": -1.0,
+      "wing_camber_tip_delta_pct": -1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.07243503266941864,
+     "x": 0.013887241063631072,
+     "J_energy": 0.03020474931339758,
+     "J_speed": 0.0,
+     "dcost_on": 0.10263978198281623,
+     "struct_delta": {
+      "J_bm_rms": -0.0001092395415031519,
+      "J_wing_torque_limit": 0.06136487809174317
+     },
+     "throttle_mean": 0.815283811661511,
+     "throttle_sat_frac": 0.30358024691358027,
+     "energy_drag_ratio": 1.0824289233651414,
+     "speed_deficit_kts_mean": 1.1311516970931155,
+     "speed_hold_ok": true
+    },
+    "cam_-0.25": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.25,
+      "wing_camber_tip_delta_pct": -0.25
+     },
+     "status": "ok",
+     "dcost_off": 0.0024597682795523546,
+     "x": 0.0028305256476198674,
+     "J_energy": 0.006156393283573211,
+     "J_speed": 0.0,
+     "dcost_on": 0.008616161563125566,
+     "struct_delta": {
+      "J_bm_rms": -0.0001605152443956981,
+      "J_wing_torque_limit": 0.003835304880733946
+     },
+     "throttle_mean": 0.7970698450860549,
+     "throttle_sat_frac": 0.26287037037037037,
+     "energy_drag_ratio": 1.0295939557375395,
+     "speed_deficit_kts_mean": 0.9328588336935407,
+     "speed_hold_ok": true
+    },
+    "cam_+0.5": {
+     "genes": {
+      "wing_camber_root_delta_pct": 0.5,
+      "wing_camber_tip_delta_pct": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.003167819531544269,
+     "x": -0.004381030256561107,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.003167819531544269,
+     "struct_delta": {
+      "J_bm_rms": -0.0005939325188875702,
+      "J_wing_bm_limit": 0.0001512141424528051,
+      "J_wing_tip_bm_limit": 0.00870471715425571
+     },
+     "throttle_mean": 0.7801881780581423,
+     "throttle_sat_frac": 0.1679320987654321,
+     "energy_drag_ratio": 0.9871080987156731,
+     "speed_deficit_kts_mean": 0.8559809777617974,
+     "speed_hold_ok": true
+    },
+    "cam_hi": {
+     "genes": {
+      "wing_camber_root_delta_pct": 2.0,
+      "wing_camber_tip_delta_pct": 2.0
+     },
+     "status": "ok",
+     "dcost_off": 0.1410133728019336,
+     "x": -0.007324097331005255,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.1410133728019336,
+     "struct_delta": {
+      "J_bm_rms": -0.0008282434146077988,
+      "J_wing_bm_limit": 0.0024194262792449255,
+      "J_wing_ip_limit": 0.00024194262792449472,
+      "J_wing_tip_bm_limit": 0.13927547446809185
+     },
+     "throttle_mean": 0.7595324240096177,
+     "throttle_sat_frac": 0.1254320987654321,
+     "energy_drag_ratio": 0.9274782228721726,
+     "speed_deficit_kts_mean": 0.7733647280210212,
+     "speed_hold_ok": true
+    },
+    "cam_tip_lo": {
+     "genes": {
+      "wing_camber_tip_delta_pct": -1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.006073355106964495,
+     "x": 0.0046756221354010705,
+     "J_energy": 0.010169478144497328,
+     "J_speed": 0.0,
+     "dcost_on": 0.016242833251461822,
+     "struct_delta": {
+      "J_bm_rms": -0.00039306188556607197,
+      "J_wing_torque_limit": 0.013272165225172794
+     },
+     "throttle_mean": 0.8008216086719914,
+     "throttle_sat_frac": 0.2696604938271605,
+     "energy_drag_ratio": 1.0388596379850155,
+     "speed_deficit_kts_mean": 0.9449721279337849,
+     "speed_hold_ok": true
+    },
+    "tc_lo": {
+     "genes": {
+      "wing_tc_root_scale": 0.875
+     },
+     "status": "ok",
+     "dcost_off": 0.4062851720324468,
+     "x": -0.006295958404694403,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.4062851720324468,
+     "struct_delta": {
+      "J_flutter_margin": 0.36054261556964007,
+      "J_bm_rms": 0.0002515566451413917,
+      "J_wing_bm_limit": 0.020408163265306103,
+      "J_wing_torque_limit": 0.0020408163265306103,
+      "J_wing_tip_bm_limit": 0.020408163265306103
+     },
+     "throttle_mean": 0.7895473130814982,
+     "throttle_sat_frac": 0.2188888888888889,
+     "energy_drag_ratio": 1.0080015047958109,
+     "speed_deficit_kts_mean": 0.8962317174264086,
+     "speed_hold_ok": true
+    },
+    "tc_hi": {
+     "genes": {
+      "wing_tc_root_scale": 1.25
+     },
+     "status": "ok",
+     "dcost_off": -0.0008951330035989469,
+     "x": 0.014604862628646449,
+     "J_energy": 0.031765576217306024,
+     "J_speed": 0.0,
+     "dcost_on": 0.030870443213707077,
+     "struct_delta": {
+      "J_bm_rms": -0.0007252546550440206
+     },
+     "throttle_mean": 0.7970075985534528,
+     "throttle_sat_frac": 0.2632098765432099,
+     "energy_drag_ratio": 1.0296794998766312,
+     "speed_deficit_kts_mean": 0.9284008564238219,
+     "speed_hold_ok": true
+    },
+    "thick_both": {
+     "genes": {
+      "wing_tc_root_scale": 1.25,
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.009969491831123944,
+     "x": 0.02070153933018154,
+     "J_energy": 0.04502584804314484,
+     "J_speed": 0.0,
+     "dcost_on": 0.0350563562120209,
+     "struct_delta": {
+      "J_bm_rms": -0.0008238862186112708
+     },
+     "throttle_mean": 0.7991651070732623,
+     "throttle_sat_frac": 0.2674691358024691,
+     "energy_drag_ratio": 1.0357464853935199,
+     "speed_deficit_kts_mean": 0.9386990366713103,
+     "speed_hold_ok": true
+    },
+    "tip_lo": {
+     "genes": {
+      "wing_tc_tip_ratio": 0.85
+     },
+     "status": "ok",
+     "dcost_off": 0.06151525387064288,
+     "x": -0.0036793852377104697,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.06151525387064288,
+     "struct_delta": {
+      "J_flutter_margin": 0.037133172681510986,
+      "J_wing_tip_bm_limit": 0.022824905543191398
+     },
+     "throttle_mean": 0.7908358897850668,
+     "throttle_sat_frac": 0.22608024691358022,
+     "energy_drag_ratio": 1.010846543717239,
+     "speed_deficit_kts_mean": 0.8890884745286597,
+     "speed_hold_ok": true
+    },
+    "tip_hi": {
+     "genes": {
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": 0.003005911305874742,
+     "x": 0.003882432347410972,
+     "J_energy": 0.008444290355618863,
+     "J_speed": 0.0,
+     "dcost_on": 0.011450201661493605,
+     "struct_delta": {
+      "J_bm_rms": -0.00028066321733190985
+     },
+     "throttle_mean": 0.7941991032263166,
+     "throttle_sat_frac": 0.2441358024691358,
+     "energy_drag_ratio": 1.0186427911633122,
+     "speed_deficit_kts_mean": 0.8899579828556382,
+     "speed_hold_ok": true
+    }
+   }
+  },
+  "T38": {
+   "baseline_cost": 0.1461588283202511,
+   "w_E": 1.663,
+   "probes": {
+    "baseline": {
+     "genes": {},
+     "status": "ok",
+     "dcost_off": 0.0,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0,
+     "struct_delta": {},
+     "throttle_mean": 0.35354917562222354,
+     "throttle_sat_frac": 0.013796296296296298,
+     "energy_drag_ratio": 1.0039566345662054,
+     "speed_deficit_kts_mean": 0.18963021669530875,
+     "speed_hold_ok": true
+    },
+    "dih+0.5": {
+     "genes": {
+      "wing_dihedral_delta_deg": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 1.3394494180474226e-08,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 1.3394494180474226e-08,
+     "struct_delta": {},
+     "throttle_mean": 0.3535459310547005,
+     "throttle_sat_frac": 0.013796296296296298,
+     "energy_drag_ratio": 1.0039359044567624,
+     "speed_deficit_kts_mean": 0.1896221984067734,
+     "speed_hold_ok": true
+    },
+    "dih+1": {
+     "genes": {
+      "wing_dihedral_delta_deg": 1.0
+     },
+     "status": "ok",
+     "dcost_off": 5.8004173741910137e-08,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 5.8004173741910137e-08,
+     "struct_delta": {},
+     "throttle_mean": 0.35354273221619437,
+     "throttle_sat_frac": 0.013796296296296298,
+     "energy_drag_ratio": 1.0039154674550574,
+     "speed_deficit_kts_mean": 0.1896141934134875,
+     "speed_hold_ok": true
+    },
+    "dih+2": {
+     "genes": {
+      "wing_dihedral_delta_deg": 2.0
+     },
+     "status": "ok",
+     "dcost_off": 2.610501121380615e-07,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 2.610501121380615e-07,
+     "struct_delta": {},
+     "throttle_mean": 0.35353646762180874,
+     "throttle_sat_frac": 0.013765432098765433,
+     "energy_drag_ratio": 1.0038754417418199,
+     "speed_deficit_kts_mean": 0.18959820500792154,
+     "speed_hold_ok": true
+    },
+    "dih+3": {
+     "genes": {
+      "wing_dihedral_delta_deg": 3.0
+     },
+     "status": "ok",
+     "dcost_off": 6.272947429275533e-07,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 6.272947429275533e-07,
+     "struct_delta": {},
+     "throttle_mean": 0.3535303700869985,
+     "throttle_sat_frac": 0.013765432098765433,
+     "energy_drag_ratio": 1.0038364862344038,
+     "speed_deficit_kts_mean": 0.18958220410668714,
+     "speed_hold_ok": true
+    },
+    "cam_lo": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.5,
+      "wing_camber_tip_delta_pct": -0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.023311053411864985,
+     "x": 0.009843897842548558,
+     "J_energy": 0.01637040211215825,
+     "J_speed": 0.0,
+     "dcost_on": 0.03968145552402323,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.023372647007202416
+     },
+     "throttle_mean": 0.3596441158699113,
+     "throttle_sat_frac": 0.014722222222222222,
+     "energy_drag_ratio": 1.0413462502030992,
+     "speed_deficit_kts_mean": 0.188795345572541,
+     "speed_hold_ok": true
+    },
+    "cam_-0.25": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.25,
+      "wing_camber_tip_delta_pct": -0.25
+     },
+     "status": "ok",
+     "dcost_off": 0.005798821695189416,
+     "x": 0.004621623053042639,
+     "J_energy": 0.007685759137209909,
+     "J_speed": 0.0,
+     "dcost_on": 0.013484580832399324,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.005843161751800609
+     },
+     "throttle_mean": 0.3565594487027748,
+     "throttle_sat_frac": 0.014228395061728396,
+     "energy_drag_ratio": 1.0223600023301702,
+     "speed_deficit_kts_mean": 0.18917816866155232,
+     "speed_hold_ok": true
+    },
+    "cam_+0.5": {
+     "genes": {
+      "wing_camber_root_delta_pct": 0.5,
+      "wing_camber_tip_delta_pct": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.0005565675145358107,
+     "x": -0.007439615687508373,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0005565675145358107,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.0004264384478573206
+     },
+     "throttle_mean": 0.34775839430376293,
+     "throttle_sat_frac": 0.013024691358024691,
+     "energy_drag_ratio": 0.9689024303452894,
+     "speed_deficit_kts_mean": 0.19071073583286954,
+     "speed_hold_ok": true
+    },
+    "cam_hi": {
+     "genes": {
+      "wing_camber_root_delta_pct": 1.5,
+      "wing_camber_tip_delta_pct": 1.5
+     },
+     "status": "ok",
+     "dcost_off": 0.004274322708770206,
+     "x": -0.015093736508030968,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.004274322708770206,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.003837946030715885
+     },
+     "throttle_mean": 0.33714378522470995,
+     "throttle_sat_frac": 0.011790123456790124,
+     "energy_drag_ratio": 0.9058339009173167,
+     "speed_deficit_kts_mean": 0.1934043681258432,
+     "speed_hold_ok": true
+    },
+    "cam_tip_lo": {
+     "genes": {
+      "wing_camber_tip_delta_pct": -0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.0026359996047869427,
+     "x": 0.003160270063877653,
+     "J_energy": 0.005255529116228537,
+     "J_speed": 0.0,
+     "dcost_on": 0.00789152872101548,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.002676842758430256
+     },
+     "throttle_mean": 0.35568798186330347,
+     "throttle_sat_frac": 0.014104938271604937,
+     "energy_drag_ratio": 1.0170177742285242,
+     "speed_deficit_kts_mean": 0.18931468846540056,
+     "speed_hold_ok": true
+    },
+    "tc_lo": {
+     "genes": {
+      "wing_tc_root_scale": 0.925
+     },
+     "status": "ok",
+     "dcost_off": 0.37257978364485056,
+     "x": -0.0014735030372750393,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.37257978364485056,
+     "struct_delta": {
+      "J_flutter_margin": 0.3589017085941651,
+      "J_wing_bm_limit": 0.006574141709276854,
+      "J_wing_torque_limit": 0.0006574141709276855,
+      "J_wing_tip_bm_limit": 0.006574141709276854
+     },
+     "throttle_mean": 0.3533132761205027,
+     "throttle_sat_frac": 0.013765432098765433,
+     "energy_drag_ratio": 1.0024822500381134,
+     "speed_deficit_kts_mean": 0.1896757729150441,
+     "speed_hold_ok": true
+    },
+    "tc_hi": {
+     "genes": {
+      "wing_tc_root_scale": 1.25
+     },
+     "status": "ok",
+     "dcost_off": -0.03759275243646572,
+     "x": 0.004993237645059698,
+     "J_energy": 0.008303754203734278,
+     "J_speed": 0.0,
+     "dcost_on": -0.029288998232731442,
+     "struct_delta": {
+      "J_flutter_margin": -0.03780129195944739,
+      "J_bm_rms": 0.00011307573270233351
+     },
+     "throttle_mean": 0.3543456479726821,
+     "throttle_sat_frac": 0.013919753086419753,
+     "energy_drag_ratio": 1.0089426289105294,
+     "speed_deficit_kts_mean": 0.18948118210574702,
+     "speed_hold_ok": true
+    },
+    "thick_both": {
+     "genes": {
+      "wing_tc_root_scale": 1.25,
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.03759599448172116,
+     "x": 0.006493789948522516,
+     "J_energy": 0.010799172684392944,
+     "J_speed": 0.0,
+     "dcost_on": -0.026796821797328212,
+     "struct_delta": {
+      "J_flutter_margin": -0.03780129195944739,
+      "J_bm_rms": 0.00013344832332882854
+     },
+     "throttle_mean": 0.35458414257700216,
+     "throttle_sat_frac": 0.013950617283950617,
+     "energy_drag_ratio": 1.0104380251401652,
+     "speed_deficit_kts_mean": 0.1894380508971011,
+     "speed_hold_ok": true
+    },
+    "tip_lo": {
+     "genes": {
+      "wing_tc_tip_ratio": 0.85
+     },
+     "status": "ok",
+     "dcost_off": 0.3337314355963725,
+     "x": -0.0011585514823999408,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.3337314355963725,
+     "struct_delta": {
+      "J_flutter_margin": 0.31096062679490616,
+      "J_wing_tip_bm_limit": 0.02282490554319133
+     },
+     "throttle_mean": 0.3533641186107115,
+     "throttle_sat_frac": 0.013765432098765433,
+     "energy_drag_ratio": 1.002799819890933,
+     "speed_deficit_kts_mean": 0.18966556918727195,
+     "speed_hold_ok": true
+    },
+    "tip_hi": {
+     "genes": {
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.037754935346831844,
+     "x": 0.0011648701311962452,
+     "J_energy": 0.0019371790281793558,
+     "J_speed": 0.0,
+     "dcost_on": -0.035817756318652486,
+     "struct_delta": {
+      "J_flutter_margin": -0.03780129195944739
+     },
+     "throttle_mean": 0.3537350388400271,
+     "throttle_sat_frac": 0.01382716049382716,
+     "energy_drag_ratio": 1.0051191428668935,
+     "speed_deficit_kts_mean": 0.1895951506386714,
+     "speed_hold_ok": true
+    }
+   }
+  },
+  "737": {
+   "baseline_cost": 0.15375270741215152,
+   "w_E": 1.202,
+   "probes": {
+    "baseline": {
+     "genes": {},
+     "status": "ok",
+     "dcost_off": 0.0,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0,
+     "struct_delta": {},
+     "throttle_mean": 0.5826204570477781,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0014430126489515,
+     "speed_deficit_kts_mean": 0.46644209154693556,
+     "speed_hold_ok": true
+    },
+    "dih+0.5": {
+     "genes": {
+      "wing_dihedral_delta_deg": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 4.6061244987627425e-07,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 4.6061244987627425e-07,
+     "struct_delta": {},
+     "throttle_mean": 0.5826201417899125,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.001441937177229,
+     "speed_deficit_kts_mean": 0.46644083247408635,
+     "speed_hold_ok": true
+    },
+    "dih+1": {
+     "genes": {
+      "wing_dihedral_delta_deg": 1.0
+     },
+     "status": "ok",
+     "dcost_off": 9.360204385466808e-07,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 9.360204385466808e-07,
+     "struct_delta": {},
+     "throttle_mean": 0.5826198272604226,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0014408642184778,
+     "speed_deficit_kts_mean": 0.4664395751483869,
+     "speed_hold_ok": true
+    },
+    "dih+2": {
+     "genes": {
+      "wing_dihedral_delta_deg": 2.0
+     },
+     "status": "ok",
+     "dcost_off": 1.930635998403929e-06,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 1.930635998403929e-06,
+     "struct_delta": {},
+     "throttle_mean": 0.5826192003289711,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0014387258996822,
+     "speed_deficit_kts_mean": 0.4664370662168415,
+     "speed_hold_ok": true
+    },
+    "cam_lo": {
+     "genes": {
+      "wing_camber_root_delta_pct": -1.0,
+      "wing_camber_tip_delta_pct": -1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.08828620207127394,
+     "x": 0.013559298740202912,
+     "J_energy": 0.0162982770857239,
+     "J_speed": 0.0,
+     "dcost_on": 0.10458447915699784,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.0888838357474831
+     },
+     "throttle_mean": 0.6122321215654518,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.1002630712170849,
+     "speed_deficit_kts_mean": 0.4437879759669186,
+     "speed_hold_ok": true
+    },
+    "cam_-0.25": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.25,
+      "wing_camber_tip_delta_pct": -0.25
+     },
+     "status": "ok",
+     "dcost_off": 0.005375059326882398,
+     "x": 0.002622002556873703,
+     "J_energy": 0.003151647073362191,
+     "J_speed": 0.0,
+     "dcost_on": 0.00852670640024459,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.005555239734217683
+     },
+     "throttle_mean": 0.5899419294859486,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0254330309093034,
+     "speed_deficit_kts_mean": 0.46068192427437554,
+     "speed_hold_ok": true
+    },
+    "cam_+0.5": {
+     "genes": {
+      "wing_camber_root_delta_pct": 0.5,
+      "wing_camber_tip_delta_pct": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.001926071474045138,
+     "x": -0.003705217100648443,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.001926071474045138,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.001509765485191148
+     },
+     "throttle_mean": 0.5681500236527963,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9548993385971799,
+     "speed_deficit_kts_mean": 0.4781244163199206,
+     "speed_hold_ok": true
+    },
+    "cam_hi": {
+     "genes": {
+      "wing_camber_root_delta_pct": 1.0,
+      "wing_camber_tip_delta_pct": 1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.006930979772367701,
+     "x": -0.005355462703302724,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.006930979772367701,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.006039061940764592
+     },
+     "throttle_mean": 0.5539216161540989,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9102776304376451,
+     "speed_deficit_kts_mean": 0.4899914922398192,
+     "speed_hold_ok": true
+    },
+    "cam_tip_lo": {
+     "genes": {
+      "wing_camber_tip_delta_pct": -1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.011191206471834275,
+     "x": 0.003914553028303865,
+     "J_energy": 0.0047052927400212455,
+     "J_speed": 0.0,
+     "dcost_on": 0.01589649921185552,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.011464877224751011
+     },
+     "throttle_mean": 0.5941796958783382,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.03949679277678,
+     "speed_deficit_kts_mean": 0.4574178221589387,
+     "speed_hold_ok": true
+    },
+    "tc_lo": {
+     "genes": {
+      "wing_tc_root_scale": 0.9
+     },
+     "status": "ok",
+     "dcost_off": 0.4024338129103383,
+     "x": -0.004561235208598693,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.4024338129103383,
+     "struct_delta": {
+      "J_flutter_margin": 0.3485740226076513,
+      "J_reversal_margin": 0.027858643956016893,
+      "J_wing_bm_limit": 0.01234567901234564,
+      "J_wing_torque_limit": 0.0012345679012345642,
+      "J_wing_tip_bm_limit": 0.01234567901234564
+     },
+     "throttle_mean": 0.5812832764676658,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9970344097854902,
+     "speed_deficit_kts_mean": 0.46755745657745634,
+     "speed_hold_ok": true
+    },
+    "tc_hi": {
+     "genes": {
+      "wing_tc_root_scale": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.013707696866378488,
+     "x": 0.007801744708172197,
+     "J_energy": 0.009377697139222981,
+     "J_speed": 0.0,
+     "dcost_on": -0.004329999727155507,
+     "struct_delta": {
+      "J_flutter_margin": -0.013645143549087217
+     },
+     "throttle_mean": 0.5849030578150373,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0089906207680166,
+     "speed_deficit_kts_mean": 0.4645621517997183,
+     "speed_hold_ok": true
+    },
+    "thick_both": {
+     "genes": {
+      "wing_tc_root_scale": 1.15,
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.013710115828988456,
+     "x": 0.011701485721426071,
+     "J_energy": 0.014065185837154137,
+     "J_speed": 0.0,
+     "dcost_on": 0.00035507000816568067,
+     "struct_delta": {
+      "J_flutter_margin": -0.013645143549087217
+     },
+     "throttle_mean": 0.5860419954692428,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.012766794125769,
+     "speed_deficit_kts_mean": 0.46363685902422924,
+     "speed_hold_ok": true
+    },
+    "tip_lo": {
+     "genes": {
+      "wing_tc_tip_ratio": 0.85
+     },
+     "status": "ok",
+     "dcost_off": 0.1789374411919093,
+     "x": -0.0026870791091673993,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.1789374411919093,
+     "struct_delta": {
+      "J_flutter_margin": 0.15606634200682656,
+      "J_wing_tip_bm_limit": 0.022824905543191398
+     },
+     "throttle_mean": 0.5818316173127861,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9988428690469789,
+     "speed_deficit_kts_mean": 0.4670899590802926,
+     "speed_hold_ok": true
+    },
+    "tip_hi": {
+     "genes": {
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -0.013700140653895326,
+     "x": 0.0028518041166179877,
+     "J_energy": 0.0034278685481748212,
+     "J_speed": 0.0,
+     "dcost_on": -0.010272272105720504,
+     "struct_delta": {
+      "J_flutter_margin": -0.013645143549087217
+     },
+     "throttle_mean": 0.5834566146215119,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0042031143648311,
+     "speed_deficit_kts_mean": 0.46575723725570856,
+     "speed_hold_ok": true
+    }
+   }
+  },
+  "f16": {
+   "baseline_cost": 0.10671519332379482,
+   "w_E": 1.303,
+   "probes": {
+    "baseline": {
+     "genes": {},
+     "status": "ok",
+     "dcost_off": 0.0,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0,
+     "struct_delta": {},
+     "throttle_mean": 0.28385406482264236,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0008013840393826,
+     "speed_deficit_kts_mean": 0.14182513460918356,
+     "speed_hold_ok": true
+    },
+    "dih+0.5": {
+     "genes": {
+      "wing_dihedral_delta_deg": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 9.100306118858814e-05,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 9.100306118858814e-05,
+     "struct_delta": {},
+     "throttle_mean": 0.2838570125443794,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.000838242803156,
+     "speed_deficit_kts_mean": 0.14201329790298386,
+     "speed_hold_ok": true
+    },
+    "dih+1": {
+     "genes": {
+      "wing_dihedral_delta_deg": 1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.00018508989085663785,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.00018508989085663785,
+     "struct_delta": {},
+     "throttle_mean": 0.28385993441664914,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0008748015758302,
+     "speed_deficit_kts_mean": 0.14220036380212028,
+     "speed_hold_ok": true
+    },
+    "dih+2": {
+     "genes": {
+      "wing_dihedral_delta_deg": 2.0
+     },
+     "status": "ok",
+     "dcost_off": 0.0003821899102707249,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0003821899102707249,
+     "struct_delta": {},
+     "throttle_mean": 0.28386570229146213,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0009470315471594,
+     "speed_deficit_kts_mean": 0.14257141353114275,
+     "speed_hold_ok": true
+    },
+    "dih+3": {
+     "genes": {
+      "wing_dihedral_delta_deg": 3.0
+     },
+     "status": "ok",
+     "dcost_off": 0.0010787678020285074,
+     "x": 0.0,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0010787678020285074,
+     "struct_delta": {
+      "J_bm_rms": 0.00012133125667271316
+     },
+     "throttle_mean": 0.2838714090964462,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0010180999240663,
+     "speed_deficit_kts_mean": 0.1429394473115858,
+     "speed_hold_ok": true
+    },
+    "cam_lo": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.5,
+      "wing_camber_tip_delta_pct": -0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.008357067844533717,
+     "x": -3.070328857059476e-05,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.008357067844533717,
+     "struct_delta": {
+      "J_bm_rms": 0.00010980946448497023,
+      "J_wing_torque_limit": 0.007612115722104483
+     },
+     "throttle_mean": 0.28729799500506276,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.034313210392072,
+     "speed_deficit_kts_mean": 0.14057942529563014,
+     "speed_hold_ok": true
+    },
+    "cam_-0.25": {
+     "genes": {
+      "wing_camber_root_delta_pct": -0.25,
+      "wing_camber_tip_delta_pct": -0.25
+     },
+     "status": "ok",
+     "dcost_off": 0.002256559796351365,
+     "x": -0.0003082772717855564,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.002256559796351365,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.001903028930526124
+     },
+     "throttle_mean": 0.2855634912977736,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0173957837119851,
+     "speed_deficit_kts_mean": 0.14120196666857138,
+     "speed_hold_ok": true
+    },
+    "cam_+0.5": {
+     "genes": {
+      "wing_camber_root_delta_pct": 0.5,
+      "wing_camber_tip_delta_pct": 0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.0007565253079995643,
+     "x": 0.0023750743773794554,
+     "J_energy": 0.0030947219137254303,
+     "J_speed": 0.0,
+     "dcost_on": 0.0038512472217249946,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.0003023256156347073
+     },
+     "throttle_mean": 0.28055222670873897,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9689751840837048,
+     "speed_deficit_kts_mean": 0.1430070521916122,
+     "speed_hold_ok": true
+    },
+    "cam_hi": {
+     "genes": {
+      "wing_camber_root_delta_pct": 1.0,
+      "wing_camber_tip_delta_pct": 1.0
+     },
+     "status": "ok",
+     "dcost_off": 0.009518662066246547,
+     "x": 0.00709668625680861,
+     "J_energy": 0.009246982192621617,
+     "J_speed": 0.0,
+     "dcost_on": 0.018765644258868164,
+     "struct_delta": {
+      "J_bm_rms": 0.001007771258947585,
+      "J_wing_tip_bm_limit": 0.001209302462538891
+     },
+     "throttle_mean": 0.27946967541570567,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9587312123470312,
+     "speed_deficit_kts_mean": 0.14909622438833767,
+     "speed_hold_ok": true
+    },
+    "cam_tip_lo": {
+     "genes": {
+      "wing_camber_tip_delta_pct": -0.5
+     },
+     "status": "ok",
+     "dcost_off": 0.0010274240173556715,
+     "x": -0.000261970375708872,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.0010274240173556715,
+     "struct_delta": {
+      "J_wing_torque_limit": 0.0009220950873022771
+     },
+     "throttle_mean": 0.2854568013754833,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0163888035326654,
+     "speed_deficit_kts_mean": 0.14119312623715233,
+     "speed_hold_ok": true
+    },
+    "tc_lo": {
+     "genes": {
+      "wing_tc_root_scale": 0.85
+     },
+     "status": "ok",
+     "dcost_off": 0.26354523518519885,
+     "x": -0.0018976357796893354,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.26354523518519885,
+     "struct_delta": {
+      "J_flutter_margin": 0.19807210135080508,
+      "J_bm_rms": -0.00021660324355734367,
+      "J_wing_bm_limit": 0.03114186851211074,
+      "J_wing_torque_limit": 0.003114186851211074,
+      "J_wing_tip_bm_limit": 0.03114186851211027
+     },
+     "throttle_mean": 0.28365964524752046,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 0.9989136965351951,
+     "speed_deficit_kts_mean": 0.1419932017139058,
+     "speed_hold_ok": true
+    },
+    "tc_hi": {
+     "genes": {
+      "wing_tc_root_scale": 1.25
+     },
+     "status": "ok",
+     "dcost_off": 6.768025631469221e-05,
+     "x": 0.0032018087121488356,
+     "J_energy": 0.0041719567519299325,
+     "J_speed": 0.0,
+     "dcost_on": 0.004239637008244625,
+     "struct_delta": {
+      "J_bm_rms": 0.00021013273759548298
+     },
+     "throttle_mean": 0.28418169548430633,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0039878221940688,
+     "speed_deficit_kts_mean": 0.1415995623885524,
+     "speed_hold_ok": true
+    },
+    "thick_both": {
+     "genes": {
+      "wing_tc_root_scale": 1.25,
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": 7.730076116405082e-05,
+     "x": 0.0041818418867996,
+     "J_energy": 0.005448939978499879,
+     "J_speed": 0.0,
+     "dcost_on": 0.00552624073966393,
+     "struct_delta": {
+      "J_bm_rms": 0.00024386963653412821
+     },
+     "throttle_mean": 0.28428184998092626,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.004963243471413,
+     "speed_deficit_kts_mean": 0.1415464472950145,
+     "speed_hold_ok": true
+    },
+    "tip_lo": {
+     "genes": {
+      "wing_tc_tip_ratio": 0.85
+     },
+     "status": "ok",
+     "dcost_off": 0.022845772440988357,
+     "x": -0.0007667070668951765,
+     "J_energy": 0.0,
+     "J_speed": 0.0,
+     "dcost_on": 0.022845772440988357,
+     "struct_delta": {
+      "J_wing_tip_bm_limit": 0.022824905543190995
+     },
+     "throttle_mean": 0.2837755817259549,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0000384781121732,
+     "speed_deficit_kts_mean": 0.14187397399380497,
+     "speed_hold_ok": true
+    },
+    "tip_hi": {
+     "genes": {
+      "wing_tc_tip_ratio": 1.15
+     },
+     "status": "ok",
+     "dcost_off": -6.010104355927415e-06,
+     "x": 0.0007694105061942539,
+     "J_energy": 0.0010025418895711128,
+     "J_speed": 0.0,
+     "dcost_on": 0.0009965317852151853,
+     "struct_delta": {},
+     "throttle_mean": 0.2839327988745068,
+     "throttle_sat_frac": 0.0,
+     "energy_drag_ratio": 1.0015670276747408,
+     "speed_deficit_kts_mean": 0.14177782147250192,
+     "speed_hold_ok": true
+    }
+   }
+  }
+ },
+ "markdown": "| aircraft | probe | \u0394cost (off) | energy_drag_increment | J_energy | J_speed | \u0394cost (on) | main structural \u0394 |\n|---|---|---|---|---|---|---|---|\n| c172x | dih+1 | -0.0007 | +0.0000 | 0.0000 | 0.0000 | -0.0007 | J_bm_rms +0.0003 |\n| c172x | dih+3 | +0.0044 | +0.0000 | 0.0000 | 0.0000 | +0.0044 | J_bm_rms +0.0002 |\n| c172x | cam_lo | +0.0724 | +0.0139 | 0.0302 | 0.0000 | +0.1026 | J_wing_torque_limit +0.0614, J_bm_rms -0.0001 |\n| c172x | cam_-0.25 | +0.0025 | +0.0028 | 0.0062 | 0.0000 | +0.0086 | J_wing_torque_limit +0.0038, J_bm_rms -0.0002 |\n| c172x | cam_+0.5 | +0.0032 | -0.0044 | 0.0000 | 0.0000 | +0.0032 | J_wing_tip_bm_limit +0.0087, J_bm_rms -0.0006 |\n| c172x | cam_hi | +0.1410 | -0.0073 | 0.0000 | 0.0000 | +0.1410 | J_wing_tip_bm_limit +0.1393, J_wing_bm_limit +0.0024 |\n| c172x | tc_lo | +0.4063 | -0.0063 | 0.0000 | 0.0000 | +0.4063 | J_flutter_margin +0.3605, J_wing_bm_limit +0.0204 |\n| c172x | tc_hi | -0.0009 | +0.0146 | 0.0318 | 0.0000 | +0.0309 | J_bm_rms -0.0007 |\n| c172x | thick_both | -0.0100 | +0.0207 | 0.0450 | 0.0000 | +0.0351 | J_bm_rms -0.0008 |\n| T38 | dih+1 | +0.0000 | +0.0000 | 0.0000 | 0.0000 | +0.0000 | \u2013 |\n| T38 | dih+3 | +0.0000 | +0.0000 | 0.0000 | 0.0000 | +0.0000 | \u2013 |\n| T38 | cam_lo | +0.0233 | +0.0098 | 0.0164 | 0.0000 | +0.0397 | J_wing_torque_limit +0.0234 |\n| T38 | cam_-0.25 | +0.0058 | +0.0046 | 0.0077 | 0.0000 | +0.0135 | J_wing_torque_limit +0.0058 |\n| T38 | cam_+0.5 | +0.0006 | -0.0074 | 0.0000 | 0.0000 | +0.0006 | J_wing_tip_bm_limit +0.0004 |\n| T38 | cam_hi | +0.0043 | -0.0151 | 0.0000 | 0.0000 | +0.0043 | J_wing_tip_bm_limit +0.0038 |\n| T38 | tc_lo | +0.3726 | -0.0015 | 0.0000 | 0.0000 | +0.3726 | J_flutter_margin +0.3589, J_wing_bm_limit +0.0066 |\n| T38 | tc_hi | -0.0376 | +0.0050 | 0.0083 | 0.0000 | -0.0293 | J_flutter_margin -0.0378, J_bm_rms +0.0001 |\n| T38 | thick_both | -0.0376 | +0.0065 | 0.0108 | 0.0000 | -0.0268 | J_flutter_margin -0.0378, J_bm_rms +0.0001 |\n| 737 | dih+1 | +0.0000 | +0.0000 | 0.0000 | 0.0000 | +0.0000 | \u2013 |\n| 737 | cam_lo | +0.0883 | +0.0136 | 0.0163 | 0.0000 | +0.1046 | J_wing_torque_limit +0.0889 |\n| 737 | cam_-0.25 | +0.0054 | +0.0026 | 0.0032 | 0.0000 | +0.0085 | J_wing_torque_limit +0.0056 |\n| 737 | cam_+0.5 | +0.0019 | -0.0037 | 0.0000 | 0.0000 | +0.0019 | J_wing_tip_bm_limit +0.0015 |\n| 737 | cam_hi | +0.0069 | -0.0054 | 0.0000 | 0.0000 | +0.0069 | J_wing_tip_bm_limit +0.0060 |\n| 737 | tc_lo | +0.4024 | -0.0046 | 0.0000 | 0.0000 | +0.4024 | J_flutter_margin +0.3486, J_reversal_margin +0.0279 |\n| 737 | tc_hi | -0.0137 | +0.0078 | 0.0094 | 0.0000 | -0.0043 | J_flutter_margin -0.0136 |\n| 737 | thick_both | -0.0137 | +0.0117 | 0.0141 | 0.0000 | +0.0004 | J_flutter_margin -0.0136 |\n| f16 | dih+1 | +0.0002 | +0.0000 | 0.0000 | 0.0000 | +0.0002 | \u2013 |\n| f16 | dih+3 | +0.0011 | +0.0000 | 0.0000 | 0.0000 | +0.0011 | J_bm_rms +0.0001 |\n| f16 | cam_lo | +0.0084 | -0.0000 | 0.0000 | 0.0000 | +0.0084 | J_wing_torque_limit +0.0076, J_bm_rms +0.0001 |\n| f16 | cam_-0.25 | +0.0023 | -0.0003 | 0.0000 | 0.0000 | +0.0023 | J_wing_torque_limit +0.0019 |\n| f16 | cam_+0.5 | +0.0008 | +0.0024 | 0.0031 | 0.0000 | +0.0039 | J_wing_tip_bm_limit +0.0003 |\n| f16 | cam_hi | +0.0095 | +0.0071 | 0.0092 | 0.0000 | +0.0188 | J_wing_tip_bm_limit +0.0012, J_bm_rms +0.0010 |\n| f16 | tc_lo | +0.2635 | -0.0019 | 0.0000 | 0.0000 | +0.2635 | J_flutter_margin +0.1981, J_wing_bm_limit +0.0311 |\n| f16 | tc_hi | +0.0001 | +0.0032 | 0.0042 | 0.0000 | +0.0042 | J_bm_rms +0.0002 |\n| f16 | thick_both | +0.0001 | +0.0042 | 0.0054 | 0.0000 | +0.0055 | J_bm_rms +0.0002 |"
+}

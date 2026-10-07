@@ -7,7 +7,10 @@
    header and with genomes.jsonl.
 3. Shape vs controller split (as FD did on r0): the T38 best of the last generation re-flown on all its scenarios with
    the shape genes reset to the baseline (FD defaults), vs the logged cost and a re-fly with its own shape.
--> analysis/phase3b1r1_replay_check.json"""
+Options: --out NAME (file name under analysis/, or a path; default phase3b1r1_replay_check.json), so a second run
+(e.g. the tweaked A/B arm) does not overwrite the baseline's record:
+  ... p3b1r1_replay_check.py runs/phase3b1r1-pilot-tweaked-s1 --out phase3b1r1_replay_check_tweaked.json
+-> analysis/<out>"""
 import glob
 import json
 import os
@@ -20,7 +23,13 @@ from evolution import eval as ev, fidelity as F  # noqa: E402
 
 
 def main(argv=None):
-    argv = argv if argv is not None else sys.argv[1:]
+    argv = list(argv if argv is not None else sys.argv[1:])
+    out_name = "phase3b1r1_replay_check.json"
+    if "--out" in argv:
+        k = argv.index("--out")
+        out_name = argv[k + 1]
+        del argv[k:k + 2]
+    out_path = out_name if os.path.dirname(out_name) else os.path.join(HERE, out_name)
     run_dir = argv[0] if argv else os.path.join(TEAM, "evolution", "runs", "phase3b1r1-smoke-s1")
     traj_ac = argv[1] if len(argv) > 1 else "T38"
     rj = json.load(open(os.path.join(run_dir, "run.json")))
@@ -63,8 +72,10 @@ def main(argv=None):
                               "terms_own": own["terms"], "terms_baseline_shape": bas["terms"],
                               "r0_reference": {"best": 0.1562, "baseline_shape": 0.1571, "source": "FD on phase3b1-smoke-s1"}}
     print("T38 split", {k: v for k, v in out["t38_shape_split"].items() if not k.startswith("terms")})
-    with open(os.path.join(HERE, "phase3b1r1_replay_check.json"), "w") as f:
+    out["out_file"] = os.path.relpath(out_path, TEAM)
+    with open(out_path, "w") as f:
         json.dump(out, f, indent=1)
+    print("wrote", out_path)
     print("fd_dir_ok", out["fd_dir_ok"])
 
 

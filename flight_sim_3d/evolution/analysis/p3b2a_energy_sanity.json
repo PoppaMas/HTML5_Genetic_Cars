@@ -1,0 +1,881 @@
+{
+ "fd_dir": "/workspace/flight-sim-team/evolution/_fd_pin_p3b2a",
+ "w_E": {
+  "c172x": 2.175,
+  "T38": 1.663,
+  "737": 1.202,
+  "f16": 1.303
+ },
+ "aircraft": {
+  "c172x": {
+   "baseline": {
+    "genes": {},
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.27173128965524934,
+    "cost_energy_on": 0.27173128965524934,
+    "cost_energy_off": 0.27173128965524934,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.9022106643023471,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 7.266962896797207,
+     "track": 0.26160765361477334,
+     "effort": 0.12654755792632472,
+     "J_bm_rms": 0.12194908569271677
+    },
+    "cpu_s": 11.918286874,
+    "fd_sweep_cost": 0.27173128965524934,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "thick_both": {
+    "genes": {
+     "wing_tc_root_scale": 1.25,
+     "wing_tc_tip_ratio": 1.15
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.2617617978241254,
+    "cost_energy_on": 0.30678764586727025,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.04502584804314485,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.02070153933018154,
+    "speed_deficit_kts_mean": 0.9386990366713103,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0450258480431448,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.045025848043145,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.04502584804314473,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 6.346665151993125,
+     "track": 0.22096727588605314,
+     "J_energy": 0.14676551891735887,
+     "J_bm_rms": 0.10532854417133017,
+     "effort": 0.10480270171280075
+    },
+    "cpu_s": 6.598468466,
+    "fd_sweep_cost": 0.2617617978241254,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.02070153933018154,
+    "fd_cal_J_energy": 0.04502584804314484,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 6.938893903907228e-18
+   },
+   "tc_hi": {
+    "genes": {
+     "wing_tc_root_scale": 1.25
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.2708361566516504,
+    "cost_energy_on": 0.30260173286895636,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.031765576217306024,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.014604862628646449,
+    "speed_deficit_kts_mean": 0.9284008564238219,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.03176557621730613,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.03176557621730585,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.03176557621730609,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 6.471681598603675,
+     "track": 0.2475966443102812,
+     "effort": 0.10836645154148077,
+     "J_bm_rms": 0.10711150714577271,
+     "J_energy": 0.10497486553080089
+    },
+    "cpu_s": 6.173521224999998,
+    "fd_sweep_cost": 0.2708361566516504,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.014604862628646449,
+    "fd_cal_J_energy": 0.031765576217306024,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "tc_lo": {
+    "genes": {
+     "wing_tc_root_scale": 0.875
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.6780164616876961,
+    "cost_energy_on": 0.6780164616876961,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": -0.006295958404694403,
+    "speed_deficit_kts_mean": 0.8962317174264086,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 2.9516422805626172,
+     "J_flutter_margin": 0.5317608582425702,
+     "track": 0.10680994171896839,
+     "effort": 0.05069623427577582,
+     "J_bm_rms": 0.049245027015407845,
+     "J_wing_bm_limit": 0.03009980497303381,
+     "J_wing_tip_bm_limit": 0.03009980497303381,
+     "J_wing_torque_limit": 0.003009980497303381
+    },
+    "cpu_s": 5.974300401999997,
+    "fd_sweep_cost": 0.6780164616876961,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": -0.006295958404694403,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "cam_lo": {
+    "genes": {
+     "wing_camber_root_delta_pct": -1.0,
+     "wing_camber_tip_delta_pct": -1.0
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.344166322324668,
+    "cost_energy_on": 0.37437107163806554,
+    "cost_energy_off": 0.344166322324668,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.030204749313397578,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.013887241063631072,
+    "speed_deficit_kts_mean": 1.1311516970931155,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.029966945901917192,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.03013159385932381,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.03051570817895173,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 5.28079849579019,
+     "track": 0.22882140007564786,
+     "J_wing_torque_limit": 0.16391458299179032,
+     "J_bm_rms": 0.0882230099712091,
+     "effort": 0.08715988498068855,
+     "J_energy": 0.0806813122104662
+    },
+    "cpu_s": 12.544023914,
+    "fd_sweep_cost": 0.344166322324668,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.013887241063631072,
+    "fd_cal_J_energy": 0.03020474931339758,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": -3.469446951953614e-18
+   },
+   "dih+3": {
+    "genes": {
+     "wing_dihedral_delta_deg": 3.0
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd_raw": 0.2760981867460513,
+    "cost_energy_on": 0.2760981867460513,
+    "cost_energy_off": 0.2760981867460513,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.8955898629057254,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 7.291956841670196,
+     "track": 0.2648566023327643,
+     "effort": 0.12494872500135211,
+     "J_bm_rms": 0.12064810558102158
+    },
+    "cpu_s": 12.568723207999994,
+    "fd_sweep_cost": 0.2760981867460513,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   }
+  },
+  "T38": {
+   "baseline": {
+    "genes": {},
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.1461588283202511,
+    "cost_energy_on": 0.1461588283202511,
+    "cost_energy_off": 0.1461588283202511,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.18963021669530875,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 7.291890577659822,
+     "J_flutter_margin": 0.2586316023047225,
+     "track": 0.1938217351757718,
+     "J_bm_rms": 0.09857806270734668,
+     "effort": 0.04218703546458399
+    },
+    "cpu_s": 11.950418657,
+    "fd_sweep_cost": 0.1461588283202511,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "thick_both": {
+    "genes": {
+     "wing_tc_root_scale": 1.25,
+     "wing_tc_tip_ratio": 1.15
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.10856283383852994,
+    "cost_energy_on": 0.11936200652292289,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.010799172684392946,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.006493789948522516,
+    "speed_deficit_kts_mean": 0.1894380508971011,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.010799172684392967,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.010799172684392918,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.010799172684392951,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 8.961022063273422,
+     "track": 0.23687286612729505,
+     "J_bm_rms": 0.1218268935846201,
+     "J_energy": 0.09047412153145246,
+     "effort": 0.05138750779648057
+    },
+    "cpu_s": 6.616407854000002,
+    "fd_sweep_cost": 0.10856283383852994,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.006493789948522516,
+    "fd_cal_J_energy": 0.010799172684392944,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 1.734723475976807e-18
+   },
+   "tc_hi": {
+    "genes": {
+     "wing_tc_root_scale": 1.25
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.10856607588378538,
+    "cost_energy_on": 0.11686983008751965,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.008303754203734278,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.004993237645059698,
+    "speed_deficit_kts_mean": 0.18948118210574702,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.008303754203734281,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.008303754203734286,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.008303754203734267,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 9.152457567020512,
+     "track": 0.24196849929278305,
+     "J_bm_rms": 0.12425045766913502,
+     "J_energy": 0.07105130723229333,
+     "effort": 0.05255342872738147
+    },
+    "cpu_s": 5.748280504999997,
+    "fd_sweep_cost": 0.10856607588378538,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.004993237645059698,
+    "fd_cal_J_energy": 0.008303754203734278,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "tc_lo": {
+    "genes": {
+     "wing_tc_root_scale": 0.925
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.5187386119651016,
+    "cost_energy_on": 0.5187386119651016,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": -0.0014735030372750393,
+    "speed_deficit_kts_mean": 0.1896757729150441,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 2.049959676765476,
+     "J_flutter_margin": 0.7647454640995586,
+     "track": 0.05465535065232909,
+     "J_bm_rms": 0.02766878708643387,
+     "J_wing_bm_limit": 0.012673322474246686,
+     "J_wing_tip_bm_limit": 0.012673322474246686,
+     "effort": 0.011909218563743237,
+     "J_wing_torque_limit": 0.0012673322474246688
+    },
+    "cpu_s": 5.960165383999993,
+    "fd_sweep_cost": 0.5187386119651016,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": -0.0014735030372750393,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "cam_lo": {
+    "genes": {
+     "wing_camber_root_delta_pct": -0.5,
+     "wing_camber_tip_delta_pct": -0.5
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.16946988173211608,
+    "cost_energy_on": 0.1858402838442743,
+    "cost_energy_off": 0.16946988173211608,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.016370402112158258,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.009843897842548558,
+    "speed_deficit_kts_mean": 0.188795345572541,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.016370937315325726,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.016364039470746577,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.016376229550402462,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 5.736634346910259,
+     "J_flutter_margin": 0.20340741618282906,
+     "track": 0.15227238195278242,
+     "J_wing_torque_limit": 0.12576738758528602,
+     "J_energy": 0.08808855525573728,
+     "J_bm_rms": 0.07763428575465897,
+     "effort": 0.03287060942434439,
+     "J_wing_bm_limit": 0.0002336700677314551,
+     "J_wing_ip_limit": 2.3367006773145513e-05
+    },
+    "cpu_s": 12.504660145999992,
+    "fd_sweep_cost": 0.16946988173211608,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.009843897842548558,
+    "fd_cal_J_energy": 0.01637040211215825,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 6.938893903907228e-18
+   },
+   "dih+3": {
+    "genes": {
+     "wing_dihedral_delta_deg": 3.0
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd_raw": 0.14615945561499402,
+    "cost_energy_on": 0.14615945561499402,
+    "cost_energy_off": 0.14615945561499402,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.18958220410668714,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 7.292143586467267,
+     "J_flutter_margin": 0.25863049229617874,
+     "track": 0.19382315227962493,
+     "J_bm_rms": 0.09856009379038717,
+     "effort": 0.04218954115522289
+    },
+    "cpu_s": 12.370812763999993,
+    "fd_sweep_cost": 0.14615945561499402,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   }
+  },
+  "737": {
+   "baseline": {
+    "genes": {},
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.15375270741215152,
+    "cost_energy_on": 0.15375270741215152,
+    "cost_energy_off": 0.15375270741215152,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.46644209154693556,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 6.873628837032315,
+     "track": 0.264884669232393,
+     "effort": 0.10352293987172148,
+     "J_bm_rms": 0.09564067080854885,
+     "J_flutter_margin": 0.08874733836399945
+    },
+    "cpu_s": 10.993509297000003,
+    "fd_sweep_cost": 0.15375270741215152,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "thick_both": {
+    "genes": {
+     "wing_tc_root_scale": 1.15,
+     "wing_tc_tip_ratio": 1.15
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.14004259158316307,
+    "cost_energy_on": 0.15410777742031723,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.014065185837154139,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.011701485721426071,
+    "speed_deficit_kts_mean": 0.46363685902422924,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.014065185837154106,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.014065185837154175,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.014065185837154137,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 6.866653055803496,
+     "track": 0.2637404905635559,
+     "effort": 0.10281949221462057,
+     "J_bm_rms": 0.09601937121988224,
+     "J_energy": 0.09126850099714576
+    },
+    "cpu_s": 5.609685758000012,
+    "fd_sweep_cost": 0.14004259158316307,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.011701485721426071,
+    "fd_cal_J_energy": 0.014065185837154137,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 1.734723475976807e-18
+   },
+   "tc_hi": {
+    "genes": {
+     "wing_tc_root_scale": 1.15
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.14004501054577304,
+    "cost_energy_on": 0.14942270768499602,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.009377697139222983,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.007801744708172197,
+    "speed_deficit_kts_mean": 0.4645621517997183,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.00937769713922297,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.00937769713922298,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.009377697139222995,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 7.079101147314849,
+     "track": 0.27209553734613073,
+     "effort": 0.10614384922049659,
+     "J_bm_rms": 0.09890218866872891,
+     "J_energy": 0.06275951817840486
+    },
+    "cpu_s": 5.698923185000012,
+    "fd_sweep_cost": 0.14004501054577304,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.007801744708172197,
+    "fd_cal_J_energy": 0.009377697139222981,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 1.734723475976807e-18
+   },
+   "tc_lo": {
+    "genes": {
+     "wing_tc_root_scale": 0.9
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.5561865203224898,
+    "cost_energy_on": 0.5561865203224898,
+    "cost_energy_off": null,
+    "off_equals_fd_raw": null,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": -0.004561235208598693,
+    "speed_deficit_kts_mean": 0.46755745657745634,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 1.899247856636876,
+     "J_flutter_margin": 0.6512548451312977,
+     "track": 0.07333698369035856,
+     "J_reversal_margin": 0.050088671584244446,
+     "effort": 0.02871570950734599,
+     "J_bm_rms": 0.02631196199438733,
+     "J_wing_bm_limit": 0.02219701226341719,
+     "J_wing_tip_bm_limit": 0.02219701226341719,
+     "J_wing_torque_limit": 0.0022197012263417194
+    },
+    "cpu_s": 5.719857251999997,
+    "fd_sweep_cost": 0.5561865203224898,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": -0.004561235208598693,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "cam_lo": {
+    "genes": {
+     "wing_camber_root_delta_pct": -1.0,
+     "wing_camber_tip_delta_pct": -1.0
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.24203890948342546,
+    "cost_energy_on": 0.2583371865691494,
+    "cost_energy_off": 0.24203890948342546,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0162982770857239,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.013559298740202912,
+    "speed_deficit_kts_mean": 0.4437879759669186,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.01630068736205176,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.01628212217707722,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.01631202171804272,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 4.081104993427516,
+     "J_wing_torque_limit": 0.34406132902469877,
+     "track": 0.15695707274675713,
+     "J_energy": 0.06308916382567062,
+     "effort": 0.06108128773917602,
+     "J_bm_rms": 0.056769222464235644,
+     "J_flutter_margin": 0.05281912267568497,
+     "J_wing_bm_limit": 7.842192111365344e-05,
+     "J_wing_ip_limit": 7.842192111365343e-06
+    },
+    "cpu_s": 12.039859755000009,
+    "fd_sweep_cost": 0.24203890948342546,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.013559298740202912,
+    "fd_cal_J_energy": 0.0162982770857239,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   },
+   "dih+2": {
+    "genes": {
+     "wing_dihedral_delta_deg": 2.0
+    },
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd_raw": 0.15375463804814993,
+    "cost_energy_on": 0.15375463804814993,
+    "cost_energy_off": 0.15375463804814993,
+    "off_equals_fd_raw": true,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_drag_increment": 0.0,
+    "speed_deficit_kts_mean": 0.4664370662168415,
+    "per_scenario_J": [
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     },
+     {
+      "J_energy": 0.0,
+      "J_speed_guard": 0.0
+     }
+    ],
+    "term_share_of_total": {
+     "comfort": 6.873572751611524,
+     "track": 0.26488186116775264,
+     "effort": 0.10352053184784277,
+     "J_bm_rms": 0.0956522135571094,
+     "J_flutter_margin": 0.08874622399887601
+    },
+    "cpu_s": 13.265833296000011,
+    "fd_sweep_cost": 0.15375463804814993,
+    "fd_raw_cost_bit_identical_vs_fd_sweep": true,
+    "fd_sweep_energy_drag_increment": 0.0,
+    "fd_cal_J_energy": 0.0,
+    "fd_cal_J_speed": 0.0,
+    "J_energy_minus_fd_cal": 0.0
+   }
+  }
+ },
+ "speed_guard_probe_c172x_throttle_max": {
+  "0.85": {
+   "status": "ok",
+   "cost_fd": 0.28695951442789086,
+   "cost_on": 0.34637522864427955,
+   "speed_deficit_kts_mean": 2.910585658488713,
+   "J_speed_guard": 0.05941571421638869,
+   "J_energy": 0.0,
+   "per_scenario_J": [
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0015513310607180083
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.06140544272661996
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.11529036886182811
+    }
+   ]
+  },
+  "0.75": {
+   "status": "trim_failed",
+   "cost_fd": 2000.0,
+   "cost_on": 2000.0,
+   "speed_deficit_kts_mean": NaN,
+   "J_speed_guard": 0.0,
+   "J_energy": 0.0,
+   "per_scenario_J": [
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    }
+   ]
+  },
+  "0.65": {
+   "status": "trim_failed",
+   "cost_fd": 2000.0,
+   "cost_on": 2000.0,
+   "speed_deficit_kts_mean": NaN,
+   "J_speed_guard": 0.0,
+   "J_energy": 0.0,
+   "per_scenario_J": [
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    },
+    {
+     "J_energy": 0.0,
+     "J_speed_guard": 0.0
+    }
+   ]
+  }
+ },
+ "locks": {
+  "wing_aspect_scale": "rejected: shape gene 'wing_aspect_scale' is deferred to B2b (INTERFACE_v2 \u00a715); only 1.0 allowed",
+  "wing_area_scale": "rejected: shape gene 'wing_area_scale' is deferred to B2b (INTERFACE_v2 \u00a715); only 1.0 allowed",
+  "tc_without_energy": "rejected: genes ['wing_tc_root_scale'] require the Evolution energy cost term (requires='energy_cost')"
+ }
+}

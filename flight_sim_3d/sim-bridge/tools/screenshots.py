@@ -321,7 +321,10 @@ def bench(a):
             page.wait_for_timeout(500)
             page.evaluate(f"fv.setTime({t})")
             if view:  # orbit camera re-placed in the focused aircraft's body frame (FRD), looking at the aircraft
-                page.evaluate("""([view, t]) => {
+                page.evaluate("""([view0, t]) => {
+                  // 'rear+fit' etc.: also fit the aircraft into the free screen band between the side panel and the
+                  // HUD / legend / chart, slightly below the middle (HUD top right), instead of the screen centre
+                  const fit = view0.endsWith('+fit'), view = view0.replace('+fit', '');
                   const T = fv.THREE, d = fv.S.shown[0], s = d.state;
                   const nose = new T.Vector3(1, 0, 0).applyQuaternion(s.q), right = new T.Vector3(0, 1, 0).applyQuaternion(s.q);
                   const down = new T.Vector3(0, 0, 1).applyQuaternion(s.q);
@@ -334,6 +337,23 @@ def bench(a):
                                 rear: nose.clone().multiplyScalar(-L).addScaledVector(down, -0.12 * L),
                                 front: nose.clone().multiplyScalar(L).addScaledVector(down, 0.05 * L),
                                 tail: nose.clone().multiplyScalar(-L).addScaledVector(down, 0.02 * L) }[view];
+                  if (fit) {
+                    const W = window.innerWidth, Hh = window.innerHeight;
+                    const vis = (el) => el && !el.hidden && el.style.display !== 'none' && el.offsetParent !== null;
+                    const pn = document.getElementById('panel');
+                    let lo = vis(pn) ? pn.getBoundingClientRect().right + 8 : 0, hi = W;
+                    for (const id of ['hud', 'legend', 'chart']) { const el = document.getElementById(id); if (vis(el)) { const q = el.getBoundingClientRect(); if (q.left > 0.4 * W) hi = Math.min(hi, q.left - 8); } }
+                    const frac = Math.max(0.25, (hi - lo) / W), cx = (lo + hi) / 2 / W;
+                    const tanV = Math.tan(fv.camera.fov * Math.PI / 360), asp = fv.camera.aspect || W / Hh;
+                    const need = d.model.span * fv.S.mscale * 1.15 / (2 * tanV * asp * frac);
+                    if (off.length() < need) off.setLength(need);
+                    const dist = off.length();
+                    const fwd = off.clone().negate().normalize();
+                    const up0 = Math.abs(fwd.y) > 0.95 ? nose.clone() : new T.Vector3(0, 1, 0);
+                    const camR = new T.Vector3().crossVectors(fwd, up0).normalize(), camU = new T.Vector3().crossVectors(camR, fwd).normalize();
+                    // move the look-at point so the aircraft lands at (cx, 0.6) of the screen
+                    aim.addScaledVector(camR, (0.5 - cx) * 2 * dist * tanV * asp).addScaledVector(camU, 0.1 * 2 * dist * tanV);
+                  }
                   fv.controls.target.copy(aim);
                   fv.camera.position.copy(aim).add(off);
                   fv.controls.update();
@@ -363,7 +383,18 @@ def bench(a):
                 for (let k = 0; k < px.length; k += 4) { const v = (px[k] + px[k + 1] + px[k + 2]) / 3; n++; m += v; m2 += v * v; cols.add((px[k] >> 4) * 256 + (px[k + 1] >> 4) * 16 + (px[k + 2] >> 4)); }
                 const sd = Math.sqrt(Math.max(0, m2 / n - (m / n) ** 2));
                 const inView = fv.S.shown.map(d => { const v = d.state.pos.clone().project(fv.camera); return Math.abs(v.x) <= 1 && Math.abs(v.y) <= 1 && v.z < 1; });
-                return {sd: +sd.toFixed(2), colors: cols.size, inView, blank: sd < 2 || cols.size < 6};
+                // overlay check: centre + both wing tips of each shown aircraft vs the visible DOM overlays
+                const cr = c.getBoundingClientRect();
+                const boxes = ['panel', 'hud', 'legend', 'chart', 'controls', 'page-note'].map(id => document.getElementById(id))
+                  .filter(el => el && !el.hidden && el.style.display !== 'none' && el.offsetParent !== null).map(el => [el.id, el.getBoundingClientRect()]);
+                const covered = fv.S.shown.map((d, k) => {
+                  let r = null; try { r = fv.vectors(k).right; } catch (e) { r = null; }
+                  const hs = (d.model.span || 0) * (fv.S.mscale || 1) / 2;
+                  const pts = [[0, 'centre'], [1, 'tipR'], [-1, 'tipL']].map(([s, nm]) => { const q = d.state.pos.clone(); if (r && s) { q.x += s * hs * r[0]; q.y += s * hs * r[1]; q.z += s * hs * r[2]; } return [nm, q]; });
+                  return pts.filter(([nm, q]) => { const v = q.project(fv.camera); const x = cr.left + (v.x + 1) / 2 * cr.width, y = cr.top + (1 - v.y) / 2 * cr.height;
+                    return boxes.some(([id, b]) => x >= b.left && x <= b.right && y >= b.top && y <= b.bottom); }).map(([nm]) => nm);
+                });
+                return {sd: +sd.toFixed(2), colors: cols.size, inView, covered, blank: sd < 2 || cols.size < 6};
               })(),
               noseVelMaxDeg: fv.S.layout === 'formation' ? null : Math.max(...fv.S.shown.map((d, k) => { const v = fv.vectors(k); return Math.acos(Math.min(1, v.nose[0]*v.vel[0]+v.nose[1]*v.vel[1]+v.nose[2]*v.vel[2])) * 180 / Math.PI; })),
             })""")
@@ -380,6 +411,10 @@ def bench(a):
         print("BLANK RENDER:", blank)
     if offview:
         print("AIRCRAFT OUT OF VIEW:", offview)
+    covered = {k: r["render"]["covered"] for k, r in report.items() if isinstance(r, dict) and "png" in r
+               and any(r.get("render", {}).get("covered") or [])}
+    if covered:
+        print("AIRCRAFT UNDER AN OVERLAY (warning):", json.dumps(covered))
     if getattr(a, "strict", False) and (blank or offview):
         ok = False
     print("RESULT:", "PASS" if ok else "FAIL")

@@ -37,6 +37,9 @@ class GAConfig:
     mutation_rate: float = 0.15   # per-gene probability
     mutation_sigma: float = 0.08  # Gaussian step in normalized gene units
     mutation_mode: str = "gauss"  # "gauss" or "reset" (original behaviour)
+    # phase3_b1 only (next_generation_blocks): "block" = whole-block shape crossover (default, bit-identical to before);
+    # "uniform" = per-gene uniform crossover inside the shape block (opt-in tweaked preset, see crossover_blocks_uniform_shape)
+    shape_crossover: str = "block"
 
 
 def generation_zero(rng: np.random.Generator, pop_size: int, n_genes: int) -> np.ndarray:
@@ -178,9 +181,46 @@ def mutate_blocks(rng: np.random.Generator, g: np.ndarray, cfg: GAConfig, spec: 
     return g
 
 
+# Opt-in tweaked preset (Corleone 2026-10-06; Genome Architect's LOCKED operator spec, Genome preset name phase3_b1_x;
+# evolution/analysis/TWEAKED_PRESET_SPEC.md): GAConfig.shape_crossover "uniform" (+ elite 4 in the config).
+#   * per child, after parents i (a) and j (b) are picked exactly as today: ONE rng.random(k) call with k = 1 per
+#     non-shape block (controller, structure, genome order) + 1 per shape gene (FD order: chord_taper_1..3, twist_mid,
+#     twist_tip, sweep_qc) = 8 doubles for phase3_b1 (= 8 scalar rng.random() calls: same PCG64 stream / end state);
+#   * draw < 0.5 -> that block / shape gene comes from parent a (ranked[i]); swap probability 0.5 per shape gene;
+#   * the per-gene draws REPLACE the shape block's whole-block draw (they are not added to it);
+#   * mutation unchanged (mutate_blocks, drawn after crossover); elites = ranked[:elite] copied first, no re-rank.
+# shape_crossover "block" (default) never reaches this function: crossover_blocks' rng.random(3) is unchanged bit for bit.
+def crossover_blocks_uniform_shape(rng: np.random.Generator, a: np.ndarray, b: np.ndarray,
+                                   blocks: Sequence[Sequence[int]], shape_idx: Sequence[int]) -> np.ndarray:
+    """Controller / structure: whole block from a or b (p = 0.5). Shape block: each gene from a or b (p = 0.5)."""
+    shape_idx = [int(j) for j in shape_idx]
+    units: List[List[int]] = []
+    for blk in blocks:
+        blk = [int(j) for j in blk]
+        if blk == shape_idx:
+            units.extend([j] for j in blk)          # shape block -> one unit per gene, gene order
+        else:
+            units.append(blk)
+    if sum(1 for blk in blocks if [int(j) for j in blk] == shape_idx) != 1:
+        raise ValueError("uniform shape crossover: the shape block must be exactly one of the blocks")
+    pick_a = rng.random(len(units)) < 0.5
+    child = a.copy()
+    for u, pa in zip(units, pick_a):
+        if not pa:
+            child[u] = b[u]
+    return child
+
+
+SHAPE_CROSSOVERS = ("block", "uniform")
+
+
 def next_generation_blocks(rng: np.random.Generator, ranked: np.ndarray, cfg: GAConfig,
                            blocks: Sequence[Sequence[int]], spec: ShapeSpec) -> np.ndarray:
-    """next_generation with per-block crossover and block mutation (elites copied unchanged, parent 2 != parent 1)."""
+    """next_generation with per-block crossover and block mutation (elites copied unchanged, parent 2 != parent 1).
+    cfg.shape_crossover "block" (default): whole-block crossover; "uniform": per-gene inside the shape block."""
+    if cfg.shape_crossover not in SHAPE_CROSSOVERS:
+        raise ValueError(f"unknown shape_crossover {cfg.shape_crossover!r} (one of {SHAPE_CROSSOVERS})")
+    uniform = cfg.shape_crossover == "uniform"
     n = ranked.shape[0]
     new: List[np.ndarray] = [ranked[i].copy() for i in range(min(cfg.elite, n))]
     while len(new) < cfg.pop_size:
@@ -188,6 +228,9 @@ def next_generation_blocks(rng: np.random.Generator, ranked: np.ndarray, cfg: GA
         j = i
         while j == i:
             j = flat_rank_select(rng, n, cfg.selection_p)
-        child = crossover_blocks(rng, ranked[i], ranked[j], blocks)
+        if uniform:
+            child = crossover_blocks_uniform_shape(rng, ranked[i], ranked[j], blocks, spec.idx)
+        else:
+            child = crossover_blocks(rng, ranked[i], ranked[j], blocks)
         new.append(mutate_blocks(rng, child, cfg, spec))
     return np.array(new)

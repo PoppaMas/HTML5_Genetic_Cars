@@ -1,0 +1,870 @@
+{
+ "schema": "fd-p3b2-gene-spec/2",
+ "status": "B2a SIGNED OFF (fidelity full_a1_b2a, pins v2_results/model_versions_post_p3b2a.json, frozen list v2_results/FROZEN_B2a.md5); thickness genes requires=energy_cost (ER J_energy, approved 20:19 PT); B2b (size) locked_until=energy_cost, NOT implemented",
+ "spec": "INTERFACE_v2.md section 15",
+ "written": "2026-10-06 PT, Flight Dynamics (stage 1 spec 20:xx; B2a as-delivered update incl. Genome Architect review + energy cost approval 20:19 PT)",
+ "extends": "B1 r1 shape block (planform_b1.SHAPE_GENES_B1, 6 genes, aircraft-independent ranges) -- unchanged, first in the vector",
+ "vector_order": {
+  "full_a1_b2a": [
+   "<6 B1 r1 genes, planform_b1 order>",
+   "wing_dihedral_delta_deg",
+   "wing_tc_root_scale",
+   "wing_tc_tip_ratio",
+   "wing_camber_root_delta_pct",
+   "wing_camber_tip_delta_pct"
+  ],
+  "full_a1_b2": [
+   "<6 B1 r1 genes>",
+   "wing_dihedral_delta_deg",
+   "wing_tc_root_scale",
+   "wing_tc_tip_ratio",
+   "wing_camber_root_delta_pct",
+   "wing_camber_tip_delta_pct",
+   "wing_area_scale",
+   "wing_aspect_scale"
+  ]
+ },
+ "vector_length": {
+  "full_a1_b2a": 11,
+  "full_a1_b2": 13
+ },
+ "ranges_are_per_aircraft": true,
+ "decode_needs_model": true,
+ "symmetry": "L_equals_R",
+ "baseline_rule": "all B2 genes at default -> flexeval_b2.evaluate runs the B1 r1 object / coupler / terms on <root>_v2 -> every pre-existing output key == full_a1_b1 (acceptance A, == compare); adds keys shape_genes_b2, b2, geometry_gate_b2, native_increments, energy; by-design differences: fidelity, margins_fidelity, model_version, shape_cache_key",
+ "deferred_in_b2a": {
+  "wing_area_scale": 1.0,
+  "wing_aspect_scale": 1.0
+ },
+ "fidelity": {
+  "B2a": "full_a1_b2a",
+  "B2b": "full_a1_b2"
+ },
+ "pin_file": {
+  "B2a": "v2_results/model_versions_post_p3b2a.json",
+  "B2b": "v2_results/model_versions_post_p3b2.json"
+ },
+ "baseline_sections_notional": {
+  "c172x": {
+   "section": "NACA 2412",
+   "tc_root": 0.12,
+   "tc_tip": 0.12,
+   "m_eq_root_pct": 1.8,
+   "m_eq_tip_pct": 1.8,
+   "dihedral0_deg": 1.73
+  },
+  "T38": {
+   "section": "NACA 65A004.8",
+   "tc_root": 0.048,
+   "tc_tip": 0.048,
+   "m_eq_root_pct": 0.0,
+   "m_eq_tip_pct": 0.0,
+   "dihedral0_deg": 0.0
+  },
+  "737": {
+   "section": "BAC 449/450/451 (supercritical-ish, notional equivalents)",
+   "tc_root": 0.15,
+   "tc_tip": 0.105,
+   "m_eq_root_pct": 2.5,
+   "m_eq_tip_pct": 2.0,
+   "dihedral0_deg": 6.0
+  },
+  "f16": {
+   "section": "NACA 64A204",
+   "tc_root": 0.04,
+   "tc_tip": 0.04,
+   "m_eq_root_pct": 1.6,
+   "m_eq_tip_pct": 1.6,
+   "dihedral0_deg": 0.0
+  }
+ },
+ "gate_absolute": {
+  "tc": {
+   "c172x": [
+    0.08,
+    0.18
+   ],
+   "T38": [
+    0.033,
+    0.07
+   ],
+   "737": [
+    0.07,
+    0.18
+   ],
+   "f16": [
+    0.028,
+    0.06
+   ]
+  },
+  "m_eq_pct": {
+   "c172x": [
+    -0.5,
+    4.5
+   ],
+   "T38": [
+    -0.5,
+    2.0
+   ],
+   "737": [
+    0.5,
+    4.0
+   ],
+   "f16": [
+    0.0,
+    3.0
+   ]
+  },
+  "max_camber_gradient_pct": 3.0,
+  "max_abs_effective_twist_deg": 8.0,
+  "note": "all comparisons inclusive with gate_tol=1e-9 (c172x camber gradient corner = 3.0 %c and T38 m_eq = -0.5 %c sit ON the limits); scan: 32 corners + 2000 random per aircraft, 0 rejects (v2_results/p3b2a_gatescan.json)",
+  "gate_tol": 1e-09
+ },
+ "genes": [
+  {
+   "name": "wing_dihedral_delta_deg",
+   "aircraft": "c172x",
+   "lo": 0.0,
+   "hi": 3.0,
+   "default": 0.0,
+   "unit": "deg",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 0,
+   "vector_index": 6,
+   "identity_u": 0.0,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "uniform geometric dihedral delta (deg, tip up +) on top of the JSBSim baseline"
+  },
+  {
+   "name": "wing_dihedral_delta_deg",
+   "aircraft": "T38",
+   "lo": 0.0,
+   "hi": 3.0,
+   "default": 0.0,
+   "unit": "deg",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 0,
+   "vector_index": 6,
+   "identity_u": 0.0,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "uniform geometric dihedral delta (deg, tip up +) on top of the JSBSim baseline"
+  },
+  {
+   "name": "wing_dihedral_delta_deg",
+   "aircraft": "737",
+   "lo": 0.0,
+   "hi": 2.0,
+   "default": 0.0,
+   "unit": "deg",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 0,
+   "vector_index": 6,
+   "identity_u": 0.0,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "uniform geometric dihedral delta (deg, tip up +) on top of the JSBSim baseline"
+  },
+  {
+   "name": "wing_dihedral_delta_deg",
+   "aircraft": "f16",
+   "lo": 0.0,
+   "hi": 3.0,
+   "default": 0.0,
+   "unit": "deg",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 0,
+   "vector_index": 6,
+   "identity_u": 0.0,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "uniform geometric dihedral delta (deg, tip up +) on top of the JSBSim baseline"
+  },
+  {
+   "name": "wing_tc_root_scale",
+   "aircraft": "c172x",
+   "lo": 0.875,
+   "hi": 1.25,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 1,
+   "vector_index": 7,
+   "identity_u": 0.3333333333333333,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "multiplier on the baseline t/c at the beam root"
+  },
+  {
+   "name": "wing_tc_root_scale",
+   "aircraft": "T38",
+   "lo": 0.925,
+   "hi": 1.25,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 1,
+   "vector_index": 7,
+   "identity_u": 0.23076923076923067,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "multiplier on the baseline t/c at the beam root"
+  },
+  {
+   "name": "wing_tc_root_scale",
+   "aircraft": "737",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 1,
+   "vector_index": 7,
+   "identity_u": 0.4000000000000001,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "multiplier on the baseline t/c at the beam root"
+  },
+  {
+   "name": "wing_tc_root_scale",
+   "aircraft": "f16",
+   "lo": 0.85,
+   "hi": 1.25,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 1,
+   "vector_index": 7,
+   "identity_u": 0.37500000000000006,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "multiplier on the baseline t/c at the beam root"
+  },
+  {
+   "name": "wing_tc_tip_ratio",
+   "aircraft": "c172x",
+   "lo": 0.85,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 2,
+   "vector_index": 8,
+   "identity_u": 0.5000000000000002,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "tip t/c multiplier / root multiplier (linear in eta between)"
+  },
+  {
+   "name": "wing_tc_tip_ratio",
+   "aircraft": "T38",
+   "lo": 0.85,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 2,
+   "vector_index": 8,
+   "identity_u": 0.5000000000000002,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "tip t/c multiplier / root multiplier (linear in eta between)"
+  },
+  {
+   "name": "wing_tc_tip_ratio",
+   "aircraft": "737",
+   "lo": 0.85,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 2,
+   "vector_index": 8,
+   "identity_u": 0.5000000000000002,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "tip t/c multiplier / root multiplier (linear in eta between)"
+  },
+  {
+   "name": "wing_tc_tip_ratio",
+   "aircraft": "f16",
+   "lo": 0.85,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 2,
+   "vector_index": 8,
+   "identity_u": 0.5000000000000002,
+   "requires": "energy_cost",
+   "locked_until": null,
+   "meaning": "tip t/c multiplier / root multiplier (linear in eta between)"
+  },
+  {
+   "name": "wing_camber_root_delta_pct",
+   "aircraft": "c172x",
+   "lo": -1.0,
+   "hi": 2.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 3,
+   "vector_index": 9,
+   "identity_u": 0.3333333333333333,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on the thin-airfoil-equivalent max camber m_eq at the root (% chord)"
+  },
+  {
+   "name": "wing_camber_root_delta_pct",
+   "aircraft": "T38",
+   "lo": -0.5,
+   "hi": 1.5,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 3,
+   "vector_index": 9,
+   "identity_u": 0.25,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on the thin-airfoil-equivalent max camber m_eq at the root (% chord)"
+  },
+  {
+   "name": "wing_camber_root_delta_pct",
+   "aircraft": "737",
+   "lo": -1.0,
+   "hi": 1.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 3,
+   "vector_index": 9,
+   "identity_u": 0.5,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on the thin-airfoil-equivalent max camber m_eq at the root (% chord)"
+  },
+  {
+   "name": "wing_camber_root_delta_pct",
+   "aircraft": "f16",
+   "lo": -0.5,
+   "hi": 1.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 3,
+   "vector_index": 9,
+   "identity_u": 0.3333333333333333,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on the thin-airfoil-equivalent max camber m_eq at the root (% chord)"
+  },
+  {
+   "name": "wing_camber_tip_delta_pct",
+   "aircraft": "c172x",
+   "lo": -1.0,
+   "hi": 2.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 4,
+   "vector_index": 10,
+   "identity_u": 0.3333333333333333,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on m_eq at the tip (% chord); linear in eta"
+  },
+  {
+   "name": "wing_camber_tip_delta_pct",
+   "aircraft": "T38",
+   "lo": -0.5,
+   "hi": 1.5,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 4,
+   "vector_index": 10,
+   "identity_u": 0.25,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on m_eq at the tip (% chord); linear in eta"
+  },
+  {
+   "name": "wing_camber_tip_delta_pct",
+   "aircraft": "737",
+   "lo": -1.0,
+   "hi": 1.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 4,
+   "vector_index": 10,
+   "identity_u": 0.5,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on m_eq at the tip (% chord); linear in eta"
+  },
+  {
+   "name": "wing_camber_tip_delta_pct",
+   "aircraft": "f16",
+   "lo": -0.5,
+   "hi": 1.0,
+   "default": 0.0,
+   "unit": "%c",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2a",
+   "vector_index_after_b1": 4,
+   "vector_index": 10,
+   "identity_u": 0.3333333333333333,
+   "requires": null,
+   "locked_until": null,
+   "meaning": "additive delta on m_eq at the tip (% chord); linear in eta"
+  },
+  {
+   "name": "wing_area_scale",
+   "aircraft": "c172x",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 5,
+   "meaning": "wing reference area multiplier S'/S0 (span and chord both follow, with wing_aspect_scale)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 11
+  },
+  {
+   "name": "wing_area_scale",
+   "aircraft": "T38",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 5,
+   "meaning": "wing reference area multiplier S'/S0 (span and chord both follow, with wing_aspect_scale)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 11
+  },
+  {
+   "name": "wing_area_scale",
+   "aircraft": "737",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 5,
+   "meaning": "wing reference area multiplier S'/S0 (span and chord both follow, with wing_aspect_scale)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 11
+  },
+  {
+   "name": "wing_area_scale",
+   "aircraft": "f16",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 5,
+   "meaning": "wing reference area multiplier S'/S0 (span and chord both follow, with wing_aspect_scale)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 11
+  },
+  {
+   "name": "wing_aspect_scale",
+   "aircraft": "c172x",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 6,
+   "meaning": "aspect-ratio multiplier AR'/AR0; b' = b0 sqrt(kS kA), c' = c0 sqrt(kS / kA)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 12
+  },
+  {
+   "name": "wing_aspect_scale",
+   "aircraft": "T38",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 6,
+   "meaning": "aspect-ratio multiplier AR'/AR0; b' = b0 sqrt(kS kA), c' = c0 sqrt(kS / kA)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 12
+  },
+  {
+   "name": "wing_aspect_scale",
+   "aircraft": "737",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 6,
+   "meaning": "aspect-ratio multiplier AR'/AR0; b' = b0 sqrt(kS kA), c' = c0 sqrt(kS / kA)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 12
+  },
+  {
+   "name": "wing_aspect_scale",
+   "aircraft": "f16",
+   "lo": 0.9,
+   "hi": 1.15,
+   "default": 1.0,
+   "unit": "-",
+   "decode": "linear: value = lo + u*(hi - lo), u in [0,1]; encode = (value - lo)/(hi - lo)",
+   "stage": "B2b",
+   "vector_index_after_b1": 6,
+   "meaning": "aspect-ratio multiplier AR'/AR0; b' = b0 sqrt(kS kA), c' = c0 sqrt(kS / kA)",
+   "identity_u": 0.4,
+   "requires": "energy_cost",
+   "locked_until": "energy_cost",
+   "implemented": false,
+   "vector_index": 12
+  }
+ ],
+ "structure_genes": "12 + 2 asym unchanged (P2.5 ranges); TERM_KEYS unchanged (24)",
+ "range_changes_vs_stage1_spec": {
+  "wing_dihedral_delta_deg.lo": {
+   "from": {
+    "c172x": -3,
+    "T38": -3,
+    "737": -3,
+    "f16": -3
+   },
+   "to": 0.0,
+   "why": "anhedral earned a one-sided comfort credit (f16 monotone -0.00048 at -3 deg; c172x noisy -0.0054 at -3 deg) with no lateral-stability cost in the scenarios; disabled until a spiral/Dutch-roll gate exists"
+  },
+  "wing_tc_root_scale.lo": {
+   "from": {
+    "c172x": 0.8,
+    "T38": 0.85,
+    "737": 0.85,
+    "f16": 0.85
+   },
+   "to": {
+    "c172x": 0.875,
+    "T38": 0.925,
+    "737": 0.9,
+    "f16": 0.85
+   },
+   "why": "at baseline structure the thin corner (with tip ratio 0.85) hit the EXISTING flutter hard fail inside the box (c172x <=0.85, T38 <=0.90, 737 <=0.875); thin wings earn no credit under the hinge energy term"
+  }
+ },
+ "identity_u": {
+  "c172x": {
+   "B2a_11": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.3333333333333333,
+    0.5000000000000002,
+    0.3333333333333333,
+    0.3333333333333333
+   ],
+   "B2b_13": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.3333333333333333,
+    0.5000000000000002,
+    0.3333333333333333,
+    0.3333333333333333,
+    0.4000000000000001,
+    0.4000000000000001
+   ]
+  },
+  "T38": {
+   "B2a_11": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.23076923076923067,
+    0.5000000000000002,
+    0.25,
+    0.25
+   ],
+   "B2b_13": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.23076923076923067,
+    0.5000000000000002,
+    0.25,
+    0.25,
+    0.4000000000000001,
+    0.4000000000000001
+   ]
+  },
+  "737": {
+   "B2a_11": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.4000000000000001,
+    0.5000000000000002,
+    0.5,
+    0.5
+   ],
+   "B2b_13": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.4000000000000001,
+    0.5000000000000002,
+    0.5,
+    0.5,
+    0.4000000000000001,
+    0.4000000000000001
+   ]
+  },
+  "f16": {
+   "B2a_11": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.37500000000000006,
+    0.5000000000000002,
+    0.3333333333333333,
+    0.3333333333333333
+   ],
+   "B2b_13": [
+    0.7499999999999999,
+    0.7499999999999999,
+    0.7499999999999999,
+    0.6666666666666666,
+    0.8,
+    0.5,
+    0.0,
+    0.37500000000000006,
+    0.5000000000000002,
+    0.3333333333333333,
+    0.3333333333333333,
+    0.4000000000000001,
+    0.4000000000000001
+   ]
+  }
+ },
+ "identity_u_note": "encoded all-defaults vector (NOT the zero vector: u=0 decodes to the lower bounds). decode(identity_u) == defaults exactly (tested).",
+ "helpers": {
+  "decode": "planform_b2.decode_shape_b2(genes, model, require_energy_cost=False) -> dict (raises ValueError, never clips)",
+  "encode": "planform_b2.encode_shape_b2(model, genes_dict_or_None) -> np.ndarray[11] (legacy order (genes, model) accepted)",
+  "identity": "planform_b2.identity_u(model, stage='B2a'|'B2b') -> 11- / 13-vector",
+  "pad": "planform_b2.pad_b2a_to_b2b(u11, model) -> u13 (appends area/aspect identity 0.4, 0.4)",
+  "schema": "planform_b2.shape_schema_b2(model) -> rows incl. identity_u, requires, locked_until",
+  "cache_key": "planform_b2.shape_cache_key_b2(genes, model, envelope) -> 'b2a|<model>|<B1 key>|<B2 values>|env=<sha8 of sorted (kcas, h_ft)>'"
+ },
+ "energy_export": {
+  "schema": "fd-energy/2",
+  "out_key": "evaluate(...)['energy'] (top level; NOT in terms / TERM_KEYS; in_cost=false)",
+  "primary": "energy_drag_increment",
+  "fields": {
+   "energy_drag_increment": {
+    "unit": "- (fraction of baseline drag)",
+    "def": "drag_increment_cd / cd_ref; exactly 0.0 at B2 default (B2 drag functions absent)"
+   },
+   "drag_increment_cd": {
+    "unit": "- (drag coefficient on S0)",
+    "def": "sum_t(dD_B2 * V_true * dt) / sum_t(qbar*S0 * V_true * dt); dD_B2 = aero/coefficient/b2_dCD0 + b2_dCDcam + b2_dCDwave (lbf), one sample per JSBSim frame"
+   },
+   "cd_ref": {
+    "unit": "-",
+    "def": "baseline aircraft (<root>_v2, A1 masses, no B2) trimmed D0/(qbar S0) at the scenario IC; FROZEN in v2_results/p3b2a_energy_ref.json, key 'h0=<h0_ft>|kcas=<speed_kts>'; gene- and gain-independent; ref_source='frozen' (or 'computed' with the same rule for an IC not in the file)"
+   },
+   "energy_drag_ratio": {
+    "unit": "-",
+    "def": "informational: sum(D V dt) / (P_ref * t_flown), total aero drag work vs baseline trimmed drag power D0 V0 (gain-dependent, ~1.001-1.015 at baseline)"
+   },
+   "drag_work_ftlbf": {
+    "unit": "ft lbf",
+    "def": "sum(D V_true dt), total aero drag"
+   },
+   "drag_power_ref_ftlbf_s": {
+    "unit": "ft lbf / s",
+    "def": "D0 V0 (frozen file)"
+   },
+   "throttle_mean": {
+    "unit": "- (cmd norm)",
+    "def": "mean fcs/throttle-cmd-norm"
+   },
+   "throttle_max_cmd": {
+    "unit": "-",
+    "def": "max throttle cmd"
+   },
+   "throttle_sat_frac": {
+    "unit": "-",
+    "def": "fraction of frames with throttle cmd >= throttle_max - 1e-6 (informational; Phase-1 baselines 0-0.25)"
+   },
+   "fuel_burned_lbs": {
+    "unit": "lbm",
+    "def": "propulsion/total-fuel-lbs start - end"
+   },
+   "alpha_max_deg": {
+    "unit": "deg",
+    "def": "max aero/alpha"
+   },
+   "v_target_kcas": {
+    "unit": "kt",
+    "def": "IC KCAS (= sim.py v_target)"
+   },
+   "speed_deficit_kts_mean": {
+    "unit": "kt",
+    "def": "mean(max(0, v_target - V_cas))"
+   },
+   "speed_low_frac": {
+    "unit": "-",
+    "def": "fraction of frames with V_cas < v_target - 5 kt"
+   },
+   "speed_hold_ok": {
+    "unit": "bool",
+    "def": "speed_deficit_kts_mean <= 2 kt"
+   }
+  },
+  "aggregates": "evaluate()['energy'][<field>] = mean over status-ok scenarios; speed_hold_ok = all(); per_scenario list carries every field + status, ref_source",
+  "speed_gaming": "primary signal is a q.V-weighted drag COEFFICIENT increment: flying slower or saturating throttle does not lower it (unlike D.V). Speed loss itself is uncosted in sim.py (track = altitude only), so the speed_hold_ok / speed_deficit fields are exported for ER's guard term.",
+  "not_included": "trim drag of the camber dCm0 (elevator deflection) and any elastic-shape drag; hence the hinge (no credit for drag reductions)"
+ },
+ "energy_cost_recommendation": {
+  "owner": "Evolution (TERM_KEYS stay 24)",
+  "status": "approved by Corleone 20:19 PT; thickness genes require it",
+  "J_energy": "w_E[model] * max(0, energy_drag_increment)",
+  "J_speed_guard": "w_E[model] * 3 * max(0, speed_deficit_kts_mean - 2) / v_target_kcas   (power ~ V^3: equivalent drag of the uncosted speed loss; 0 at all 4 Phase-1 baselines, deficits 0.14-0.90 kt)",
+  "weights": {
+   "c172x": {
+    "w_E": 2.175,
+    "W_trim_lb": 2480.0,
+    "m_flex0_lb": 342.0,
+    "w_mass": 0.3
+   },
+   "T38": {
+    "w_E": 1.663,
+    "W_trim_lb": 11474.0,
+    "m_flex0_lb": 2070.0,
+    "w_mass": 0.3
+   },
+   "737": {
+    "w_E": 1.202,
+    "W_trim_lb": 107000.0,
+    "m_flex0_lb": 26700.0,
+    "w_mass": 0.3
+   },
+   "f16": {
+    "w_E": 1.303,
+    "W_trim_lb": 20630.0,
+    "m_flex0_lb": 4750.0,
+    "w_mass": 0.3
+   }
+  },
+  "weight_rule": "Breguet exchange: +1 % drag ~ +1 % gross weight -> J_mass-equivalent = w_mass * (W_trim / baseline_flexible_lb) per unit fractional drag",
+  "calibration": "v2_results/p3b2a_energy_calibration.json"
+ },
+ "pins_full_a1_b2a": {
+  "c172x": "full_a1_b2a:flexv2b2a:847bed9b",
+  "T38": "full_a1_b2a:flexv2b2a:b635a51d",
+  "737": "full_a1_b2a:flexv2b2a:5d5a8f17",
+  "f16": "full_a1_b2a:flexv2b2a:07b08913"
+ },
+ "acceptance_summary": {
+  "A_cases": 64,
+  "A_max_abs_diff": 0.0,
+  "A_non_numeric": 0,
+  "B_all_equal": true,
+  "C_max_term_abs": 1.154209422482566e-09,
+  "C_max_abs_dcost90": 1.1511833430954965e-09,
+  "D_all_equal": true
+ },
+ "frozen_list": "v2_results/FROZEN_B2a.md5",
+ "genome_review_responses": {
+  "1_flags_and_energy_keys": "per-gene requires/locked_until in genes[] and shape_schema_b2 rows; thickness requires=energy_cost; B2b locked_until=energy_cost; energy keys/units/normalisation in energy_export + INTERFACE 15.10.2",
+  "2_testA_identity_encode": "Test A = 4 encodings (None, {}, defaults dict, identity u-vector); zero vector = lower bounds; identity_u per aircraft published; encode_shape_b2(model, dict), identity_u(model, stage), pad_b2a_to_b2b(u, model)",
+  "3_inclusive_gates": "all gate comparisons inclusive with GATE_TOL=1e-9; c172x camber gradient 3.0 and T38 m_eq -0.5 pass; all 32 corners x 4 aircraft pass every gate (test + gatescan 0/2032)",
+  "4_b2b_locked": "wing_area_scale / wing_aspect_scale locked_until=energy_cost, unimplemented (decode rejects)",
+  "5_reflex": "no flown credit: reflex raises J_wing_torque_limit on all 4 (c172x +0.061 at -1%c, T38 +0.023 at -0.5%c, 737 +0.089 at -1%c); torque/twist/J_bm_rms deltas <= 3e-4; reflex polar adds J_energy; range unchanged",
+  "6_camber_clmax": "gate-only: stall fade -> 0 at alpha_s (no flown CLmax gain); INTERFACE 15.2 corrected",
+  "7_dihedral": "one-sided (f16 monotone anhedral comfort credit -0.00048 at -3 deg; c172x same sign, noisy; T38/737 neutral) -> lo = 0 on all 4",
+  "8_cache_key_env": "shape_cache_key_b2(genes, model, envelope) appends |env=<sha8 of sorted (KCAS, h_ft)>; evaluate passes its scenarios' envelope"
+ }
+}

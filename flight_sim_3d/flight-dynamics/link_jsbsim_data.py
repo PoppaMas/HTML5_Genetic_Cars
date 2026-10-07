@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Link <root>/engine and <root>/systems to the installed jsbsim package data, for both model roots
-(jsbsim_root: rigid / flex v1, jsbsim_root_v2: flex v2), in flight-dynamics/ and in the frozen FD copies
-evolution/_fd_pin_post_mass/ and evolution/_fd_pin_p3b1r1/ if present. Run once after cloning.
+(jsbsim_root: rigid / flex v1, jsbsim_root_v2: flex v2, jsbsim_root_v2b2: P3-B2a), in flight-dynamics/ and in the frozen FD
+copies evolution/_fd_pin_post_mass/, _fd_pin_p3b1r1/ and _fd_pin_p3b2a/ if present. Run once after cloning.
 
 <root>/aircraft/ holds Flight Dynamics' patched aircraft copies (in the repo). Engines and systems come
 unmodified from the jsbsim pip package, as flexwing.prepare_aircraft sets them up. The links are machine-specific,
@@ -16,9 +16,9 @@ import sys
 import jsbsim
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# FD's model roots, plus the frozen FD copies selected with EVOLUTION_FD_DIR: pre-P2.5 (Phase 2 pilot seeds) and P3-B1 r1
-PINS = [os.path.join(os.path.dirname(HERE), "evolution", p) for p in ("_fd_pin_post_mass", "_fd_pin_p3b1r1")]
-ROOTS = [os.path.join(d, r) for d in (HERE, *PINS) for r in ("jsbsim_root", "jsbsim_root_v2")]
+# FD's model roots, plus the frozen FD copies selected with EVOLUTION_FD_DIR: pre-P2.5 (Phase 2 pilot seeds), P3-B1 r1, P3-B2a
+PINS = [os.path.join(os.path.dirname(HERE), "evolution", p) for p in ("_fd_pin_post_mass", "_fd_pin_p3b1r1", "_fd_pin_p3b2a")]
+ROOTS = [os.path.join(d, r) for d in (HERE, *PINS) for r in ("jsbsim_root", "jsbsim_root_v2", "jsbsim_root_v2b2")]
 SRC = os.path.dirname(jsbsim.__file__)
 
 

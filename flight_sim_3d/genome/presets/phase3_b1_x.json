@@ -1,0 +1,86 @@
+{
+  "_comment": "P3-B1 tweaked (opt-in, approved by Corleone 2026-10-06): identical to phase3_b1 (26 genes = controller 8 + FD structure_v2 12 + FD shape_b1 6, fidelity full_a1_b1, same decode / gate / init / mutation / evaluator) plus the preset 'ga' block, option names mirrored from Evolution Runner's batch config: (a) ga.shape_crossover 'uniform': per child, after parent selection, 8 draws = rng.random(8): controller, structure, then the 6 shape genes in gene order; draw < 0.5 -> parent A (ranked[i]); controller and structure stay whole blocks, each shape gene is inherited on its own; replaces the shape block's whole-block draw (default 'block' = rng.random(3) < 0.5, unchanged). Mutation unchanged, drawn after crossover. (b) ga.elite 4: the top 4 rows of the stable-argsort cost ranking copied unchanged before reproduction (no re-rank, no mutation); applied by run_evolve.py unless --elite is given on the CLI. Selection stays flat rank, p = 0.2. Shape genes: all 6 LINEAR in value (FD r1 GENE_ENCODING); 'log' is FD's spanwise chord interpolation, and genome's shape init / mutation work in ln x internally for the 3 chord tapers. See PHASE3_B1_SPEC.md section 9.",
+  "name": "phase3_b1_x",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure_v2": true,
+    "shape_b1": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01,
+      "structural_v2": 1.0
+    },
+    "params": {
+      "struct_v2_source": "fd"
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "structural_v2"
+    ]
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "version": 2,
+    "asymmetric": false,
+    "substeps": 2,
+    "fidelity": "full_a1_b1",
+    "model_version_check": "warn"
+  },
+  "shape_b1": {
+    "er_profile_config": "evolution/configs/phase2_smoke_p25.json"
+  },
+  "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+      "structure_v2"
+    ],
+    "seed_runs": {}
+  },
+  "operators": {
+    "crossover": "blocks",
+    "shape": {
+      "init": "identity",
+      "log_genes": [
+        "wing_chord_taper_1",
+        "wing_chord_taper_2",
+        "wing_chord_taper_3"
+      ],
+      "init_sigma_half_range": 0.25,
+      "mutation_sigma_half_range": 0.25,
+      "mutation_rate": null
+    }
+  },
+  "ga": {
+    "elite": 4,
+    "shape_crossover": "uniform"
+  },
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
+}

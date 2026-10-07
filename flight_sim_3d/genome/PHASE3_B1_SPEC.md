@@ -89,12 +89,18 @@ flight, as ER does.
 
 ## 4. Operators. **Identical to ER's `evolution/ga.py` P3-B1 operators (bit for bit, tested)**
 
-Agreed via the parent agent (2026-10-06 ~18:04 PT): clipped Gaussian in FD's encoded space (ln x for the 3
-`wing_chord_taper_*` genes, x for twist/sweep), init and mutation σ = 0.25 × half-range in that space, gen 0 at the
-identity, and crossover swapping whole blocks controller | structure | shape. (r1 wording: FD's *gene encoding* is linear for all 6
-genes; "encoded space" here means the **operator space**, ln x for the chord tapers, used only inside init/mutation.
-Results are handed back as FD-linear u, which FD explicitly allows: "we may still mutate in log space internally".) Code: `block_ops.py`. Config:
-`operators` in `presets/phase3_b1.json`, using the same keys as ER's `shape_ops`.
+Agreed via the parent agent (2026-10-06 ~18:04 PT; wording corrected for FD r1):
+- **Genes are linear in value.** All 6 shape genes, including the 3 chord tapers, decode as lo + u·(hi − lo) (FD r1
+  `GENE_ENCODING`). FD's "log" describes only how chord is interpolated along the span (log-PCHIP). It is **not** a
+  log-scale gene.
+- **Init and mutation work in log space internally.** They use a clipped Gaussian in an internal operator space: ln x
+  for the 3 `wing_chord_taper_*` genes, x for twist and sweep. σ = 0.25 × half-range in that space, and gen 0 sits at
+  the identity. Results go back as FD-linear u, which FD explicitly allows: "we may still mutate in log space
+  internally".
+- **Crossover** swaps whole blocks controller | structure | shape (the default; see §9 for the opt-in per-gene shape
+  variant).
+- **Code and config:** `block_ops.py`; `operators` in `presets/phase3_b1.json`, using the same keys as ER's
+  `shape_ops`.
 
 | | controller (8) | structure (12) | shape (6) |
 |---|---|---|---|
@@ -150,7 +156,7 @@ shaped genomes (§6); baseline-shape results are.
 | shaped r0 → r1 | washout −2.25e-3, tip chord 0.9 −1.68e-4, sweep +3 0, combo (twist_mid −0.5) −1.21e-3; ER: tip_taper −2.57e-4, tip_twist −3 −3.50e-3, sweep ±5 0, fd_bench −1.21e-3. Mostly `J_bm_rms`; flight terms move only where twist_mid ≠ 0 |
 | twist_mid range ends (r1-only) | −2: 0.34549 (tip-BM 0.1016); +1: 0.24127 (−6.7e-4 vs baseline) |
 | gate reject | `geometry_gate:extreme_taper`, cost 2000, not flown (injected bound) |
-| Phase 2 / legacy | full genome suite green (**179**); `phase2_flex` and other presets unchanged |
+| Phase 2 / legacy | full genome suite green (**179** at r1; **193** with phase3_b1_x); `phase2_flex` and other presets unchanged |
 
 ## 7. Non-negotiables (unchanged)
 
@@ -173,3 +179,44 @@ shaped genomes (§6); baseline-shape results are.
    the baseline shape. Drop the r0 table once ER has re-cut its runs at r1.
 5. **twist_mid range option** (not adopted; FD range kept for parity): see §2. At r1, −2° costs +0.104 (tip-BM
    limit) on c172x and +1° −6.7e-4, so the GA should not pile up at −2; watch the r1 smoke runs for +1 pile-up.
+
+## 9. `phase3_b1_x`: tweaked GA (opt-in; approved by Corleone 2026-10-06, RNG order LOCKED with Evolution Runner ~20:07 PT)
+
+Preset `presets/phase3_b1_x.json` = `phase3_b1` + a `ga` block with ER's option names: `{"elite": 4, "shape_crossover": "uniform"}`.
+Genes, decode, gate, evaluator, gen 0, mutation and selection (flat rank, p = 0.2) are unchanged.
+
+**Tweaked shape crossover, per child, after parent selection:**
+- Draws: `rng.random()` for controller, `rng.random()` for structure, then 6 `rng.random()` for the shape genes in gene
+  order. That's 8 doubles total, the same as `rng.random(8)`.
+- Uniform REPLACES the shape block's whole-block draw. There is no unused `blk[2]`.
+- Draw < 0.5 means parent A (`ranked[i]`). Swap probability is 0.5.
+- Default `block` mode stays exactly `rng.random(3) < 0.5`, unchanged.
+
+**Mutation:** unchanged, drawn after crossover.
+
+**Elites = 4:** the top 4 rows of the stable-argsort cost ranking, copied unchanged before reproduction. No re-rank, no
+mutation.
+
+**ER's side** uses GA config options, not a new genome kind: `ga.elite: 4` and `ga.shape_crossover: 'uniform'`
+(default `'block'`). Genome mirrors those names in the preset's `ga` block.
+
+Implementation (genome):
+- `block_ops.resolve_ga` validates the `ga` block (keys `elite`, `shape_crossover` only).
+- `block_ops.crossover_shape_uniform` implements the crossover with one `rng.random(8)` call. `block_ops.block_crossover`
+  dispatches on `ops["shape_crossover"]`; the `block` branch is the original code.
+- `block_ops.next_generation_tweaked` is the public entry point. `block_ops.next_generation` takes an optional `trace`
+  hook that records parents and draws without touching the RNG.
+- `run_evolve.apply_ga_overrides` sets evolve.py's `elite` from the preset. An explicit `--elite` on the CLI wins (with a
+  warning). The preset beats `--config` files and evolve.py's default of 2. Presets without a `ga` block are untouched.
+- `phase3_b1` resolves to `shape_crossover: "block"` and has no elite override. Its RNG stream and outputs are unchanged.
+
+Verification (`runs/p3b1x_operator_trace.json`, `CROSSCHECK_p3b1.md` §tweaked):
+- Fixed-seed operator trace: seed 1, pop 64, gen 0 + 4 bred generations, synthetic deterministic cost, nothing flown.
+- The phase3_b1 and phase2_flex control traces equal the golden captured **before** the change
+  (`runs/p3b1x_golden_pre_change.json`) and ER's own functions, bit for bit.
+- phase3_b1_x equals ER's `next_generation_blocks(GAConfig(shape_crossover="uniform", elite=4))` bit for bit, and an
+  independent inline reference of the spec text.
+- ER fixture `evolution/analysis/tweaked_preset_crosscheck.json` (T38 gen-4, seeds 0–4): default and tweaked both
+  **BIT-IDENTICAL** (rows, SHA-256, RNG end state, per-child traces) → `runs/p3b1x_er_fixture_check.json`.
+- Tests: `tests/test_phase3_b1_x.py`.
+

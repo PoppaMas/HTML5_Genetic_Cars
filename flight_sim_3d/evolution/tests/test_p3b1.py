@@ -60,7 +60,7 @@ def _sc(pd, n=1):
 @need_b1
 def test_full_a1_b1_resolves_to_published_strings():
     b1, a1, p25 = (json.load(open(f)) for f in (B1_PINS_FILE, A1_PINS_FILE, P25_PINS_FILE))
-    assert F.FIDELITIES == ("rigid", "reduced", "full", "full_a1", "full_a1_b1") and F.B1 == "full_a1_b1"
+    assert F.FIDELITIES[:5] == ("rigid", "reduced", "full", "full_a1", "full_a1_b1") and F.B1 == "full_a1_b1"
     assert F.RANK["full_a1_b1"] > F.RANK["full_a1"] and "full_a1_b1" in F.FULL_LIKE
     for ac in ("c172x", "T38", "737", "f16"):
         pd = profile_d("c172x", aircraft=ac)

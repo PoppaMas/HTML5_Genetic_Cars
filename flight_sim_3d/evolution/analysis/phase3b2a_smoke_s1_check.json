@@ -1,0 +1,272 @@
+{
+ "run_dir": "evolution/runs/phase3b2a-smoke-s1",
+ "aircraft": {
+  "737": {
+   "best": {
+    "individual_id": "737:g4:r0",
+    "cost": 0.22351666196599074,
+    "rank": 0,
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:5d5a8f17",
+    "cost_fd": 0.22290370547699837,
+    "J_energy": 0.0006129564889923548,
+    "J_speed_guard": 0.0,
+    "energy_share": 0.002742330185145747,
+    "energy_drag_increment": 0.0005099471622232568,
+    "shape": {
+     "wing_chord_taper_1": 1.0059015913945868,
+     "wing_chord_taper_2": 1.0238906286600111,
+     "wing_chord_taper_3": 1.0280000898426789,
+     "wing_twist_mid_deg": 0.05238282699187735,
+     "wing_twist_tip_deg": -0.7494110833404832,
+     "wing_sweep_qc_delta_deg": 0.9302329640362439,
+     "wing_dihedral_delta_deg": 0.0,
+     "wing_camber_root_delta_pct": -0.2104481483351507,
+     "wing_camber_tip_delta_pct": 0.23276695007070325
+    }
+   },
+   "best_per_gen": [
+    0.3775609426185296,
+    0.3775609426185296,
+    0.2845287067303042,
+    0.2845287067303042,
+    0.22351666196599074
+   ],
+   "energy_share_all_ok_rows": {
+    "n": 79,
+    "mean": 0.0006474830132519105,
+    "max": 0.00503717012557467
+   },
+   "frac_rows_J_speed_guard_pos": 0.0,
+   "b2a_genes_last_gen": {
+    "wing_dihedral_delta_deg": {
+     "range": [
+      0.0,
+      2.0
+     ],
+     "default": 0.0,
+     "best": 0.0,
+     "last_gen_mean": 0.11082896621008817,
+     "last_gen_min": 0.0,
+     "last_gen_max": 0.3562005094007013,
+     "frac_moved_from_default": 0.5625,
+     "frac_at_lo": 0.4375,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_root_delta_pct": {
+     "range": [
+      -1.0,
+      1.0
+     ],
+     "default": 0.0,
+     "best": -0.2104481483351507,
+     "last_gen_mean": 0.16625255694581287,
+     "last_gen_min": -0.2104481483351507,
+     "last_gen_max": 0.4471436969918341,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.0,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_tip_delta_pct": {
+     "range": [
+      -1.0,
+      1.0
+     ],
+     "default": 0.0,
+     "best": 0.23276695007070325,
+     "last_gen_mean": 0.08530415834960228,
+     "last_gen_min": -0.08190692163682156,
+     "last_gen_max": 0.23276695007070325,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.0,
+     "frac_at_hi": 0.0
+    }
+   },
+   "bound_piling_ge50pct_last_gen": {},
+   "status_counts": {
+    "ok": 79,
+    "overload": 1
+   },
+   "geometry_gate_rejects": 0,
+   "tc_locked_all_rows": true
+  },
+  "T38": {
+   "best": {
+    "individual_id": "T38:g4:r0",
+    "cost": 0.15516077310585433,
+    "rank": 0,
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:b635a51d",
+    "cost_fd": 0.15516077310585433,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_share": 0.0,
+    "energy_drag_increment": -0.004861939903091988,
+    "shape": {
+     "wing_chord_taper_1": 0.9808624412595728,
+     "wing_chord_taper_2": 1.0238906286600111,
+     "wing_chord_taper_3": 1.0280000898426789,
+     "wing_twist_mid_deg": -0.33693219380655703,
+     "wing_twist_tip_deg": -0.3318426360742466,
+     "wing_sweep_qc_delta_deg": -1.4699377241343745,
+     "wing_dihedral_delta_deg": 0.0,
+     "wing_camber_root_delta_pct": 0.447143696991834,
+     "wing_camber_tip_delta_pct": 0.0449240504806403
+    }
+   },
+   "best_per_gen": [
+    0.25302566122878045,
+    0.203598115076879,
+    0.15516077310585433,
+    0.15516077310585433,
+    0.15516077310585433
+   ],
+   "energy_share_all_ok_rows": {
+    "n": 80,
+    "mean": 0.010716139941708148,
+    "max": 0.11783763945954367
+   },
+   "frac_rows_J_speed_guard_pos": 0.05,
+   "b2a_genes_last_gen": {
+    "wing_dihedral_delta_deg": {
+     "range": [
+      0.0,
+      3.0
+     ],
+     "default": 0.0,
+     "best": 0.0,
+     "last_gen_mean": 0.1911956842426856,
+     "last_gen_min": 0.0,
+     "last_gen_max": 0.7476865703181104,
+     "frac_moved_from_default": 0.6875,
+     "frac_at_lo": 0.3125,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_root_delta_pct": {
+     "range": [
+      -0.5,
+      1.5
+     ],
+     "default": 0.0,
+     "best": 0.447143696991834,
+     "last_gen_mean": -0.09091092689846035,
+     "last_gen_min": -0.4955804852476567,
+     "last_gen_max": 0.6573210861545888,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.3125,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_tip_delta_pct": {
+     "range": [
+      -0.5,
+      1.5
+     ],
+     "default": 0.0,
+     "best": 0.0449240504806403,
+     "last_gen_mean": 0.2163227031155986,
+     "last_gen_min": -0.4134799025252688,
+     "last_gen_max": 0.5104039203139354,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.0,
+     "frac_at_hi": 0.0
+    }
+   },
+   "bound_piling_ge50pct_last_gen": {},
+   "status_counts": {
+    "ok": 80
+   },
+   "geometry_gate_rejects": 0,
+   "tc_locked_all_rows": true
+  },
+  "c172x": {
+   "best": {
+    "individual_id": "c172x:g4:r0",
+    "cost": 0.3878333132087896,
+    "rank": 0,
+    "status": "ok",
+    "model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+    "cost_fd": 0.3878333132087896,
+    "J_energy": 0.0,
+    "J_speed_guard": 0.0,
+    "energy_share": 0.0,
+    "energy_drag_increment": -0.004295476195535854,
+    "shape": {
+     "wing_chord_taper_1": 0.9808624412595728,
+     "wing_chord_taper_2": 1.0238906286600111,
+     "wing_chord_taper_3": 1.034284146893768,
+     "wing_twist_mid_deg": 0.34970382525146526,
+     "wing_twist_tip_deg": -0.2921734084176446,
+     "wing_sweep_qc_delta_deg": 0.8431395945827092,
+     "wing_dihedral_delta_deg": 0.0,
+     "wing_camber_root_delta_pct": 0.6707155454877509,
+     "wing_camber_tip_delta_pct": 0.19164372376155914
+    }
+   },
+   "best_per_gen": [
+    0.5331070771639882,
+    0.5182600410206574,
+    0.45761084052511264,
+    0.4172860780294049,
+    0.3878333132087896
+   ],
+   "energy_share_all_ok_rows": {
+    "n": 72,
+    "mean": 0.005126532680756041,
+    "max": 0.03568518129488517
+   },
+   "frac_rows_J_speed_guard_pos": 0.1388888888888889,
+   "b2a_genes_last_gen": {
+    "wing_dihedral_delta_deg": {
+     "range": [
+      0.0,
+      3.0
+     ],
+     "default": 0.0,
+     "best": 0.0,
+     "last_gen_mean": 0.4577621550590819,
+     "last_gen_min": 0.0,
+     "last_gen_max": 1.2452920524602658,
+     "frac_moved_from_default": 0.625,
+     "frac_at_lo": 0.375,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_root_delta_pct": {
+     "range": [
+      -1.0,
+      2.0
+     ],
+     "default": 0.0,
+     "best": 0.6707155454877509,
+     "last_gen_mean": 0.10503567388517886,
+     "last_gen_min": -0.8414504578363928,
+     "last_gen_max": 1.2221401194904828,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.0,
+     "frac_at_hi": 0.0
+    },
+    "wing_camber_tip_delta_pct": {
+     "range": [
+      -1.0,
+      2.0
+     ],
+     "default": 0.0,
+     "best": 0.19164372376155914,
+     "last_gen_mean": 0.13328309319978104,
+     "last_gen_min": 0.06738607572096034,
+     "last_gen_max": 0.30465450675298333,
+     "frac_moved_from_default": 1.0,
+     "frac_at_lo": 0.0,
+     "frac_at_hi": 0.0
+    }
+   },
+   "bound_piling_ge50pct_last_gen": {},
+   "status_counts": {
+    "overload": 8,
+    "ok": 72
+   },
+   "geometry_gate_rejects": 0,
+   "tc_locked_all_rows": true
+  }
+ },
+ "wall_s": 262.5313905130024
+}

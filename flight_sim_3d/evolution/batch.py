@@ -34,7 +34,7 @@ import sys
 import threading
 import time
 import traceback
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 import numpy as np
 
@@ -72,8 +72,12 @@ DEFAULTS: Dict = {
     "seed": 1,                      # GA seed (each aircraft gets this unless it sets its own "seed")
     "scenario_seed": None,          # None = seed (as in the original evolve.py)
     "scenarios": 3,
+    # ga.shape_crossover (genome_kind phase3_b1 only): "block" (default: whole-block crossover, Genome's B1 spec) |
+    # "uniform" (opt-in tweaked preset = Genome's phase3_b1_x: per-gene uniform crossover inside the shape block, see
+    # ga.crossover_blocks_uniform_shape). At "block" it is dropped from the resolved config (old run ids / resume unchanged).
     "ga": {"pop_size": 24, "generations": 15, "elite": 2, "selection_p": 0.2, "crossover": "uniform",
-           "blx_alpha": 0.3, "mutation_rate": 0.15, "mutation_sigma": 0.08, "mutation_mode": "gauss"},
+           "blx_alpha": 0.3, "mutation_rate": 0.15, "mutation_sigma": 0.08, "mutation_mode": "gauss",
+           "shape_crossover": "block"},
     "trajectories": {"generations": "auto", "scenario": 0, "sample_hz": 30},   # auto = [0, (G-1)//2, G-1]
     "metrics": {"band_ft": 20.0, "hold_after_s": 20.0},
     "source_repo": DEFAULT_SOURCE_REPO,
@@ -105,10 +109,24 @@ DEFAULTS: Dict = {
     # (None -> SHAPE_OPS_DEFAULT, filled in by resolve_config so config.json records them).
     "genome_kind": None,
     "shape_ops": None,
+    # ---- Phase 3 B2a (default-off; omitted from the run identity while None)
+    # genome_kind 'phase3_b2a': controller (8) | 12 structure genes | FD's B2a shape block (6 B1 + 5 B2a, per-aircraft
+    # ranges) minus shape_locked (None -> wing_tc_root_scale / wing_tc_tip_ratio = Genome's phase3_b2a: 29 genes; locked
+    # genes are not in the GA vector, FD decode fills their default 1.0). Needs fidelity full_a1_b2a.
+    # energy_cost (full_a1_b2a only): True adds the Evolution-side J_energy + J_speed_guard (INTERFACE_v2 15.10.3,
+    # outside TERM_KEYS) to the cost; required before a thickness gene may be unlocked.
+    "shape_locked": None,
+    "energy_cost": None,
 }
 OPTIONAL_DEFAULTS = {"struct_asymmetric": False, "init": {"mode": "uniform", "sigma": 0.10, "blocks": ["struct"]},
-                     "multi_fidelity_per_aircraft": {}, "pin_model_version": {}, "genome_kind": None, "shape_ops": None}
-GENOME_KINDS = ("phase3_b1",)
+                     "multi_fidelity_per_aircraft": {}, "pin_model_version": {}, "genome_kind": None, "shape_ops": None,
+                     "shape_locked": None, "energy_cost": None}
+GENOME_KINDS = ("phase3_b1", "phase3_b2a")
+SHAPED_KINDS = {"phase3_b1": "full_a1_b1", "phase3_b2a": "full_a1_b2a"}
+B2A_DEFAULT_LOCKED = ["wing_tc_root_scale", "wing_tc_tip_ratio"]   # planform_b2.REQUIRES_ENERGY (Genome phase3_b2a)
+B2A_THICKNESS = ("wing_tc_root_scale", "wing_tc_tip_ratio")
+B2A_NAMES = ("wing_dihedral_delta_deg", "wing_tc_root_scale", "wing_tc_tip_ratio", "wing_camber_root_delta_pct",
+             "wing_camber_tip_delta_pct")
 # Genome Architect's B1 operator spec (2026-10-06): sigma = 0.25 x half-range in FD's encoded space (ln x for the chord
 # tapers), gen-0 around the identity planform, whole-block crossover controller | structure | shape
 SHAPE_OPS_DEFAULT = {"init": "identity", "init_sigma_half_range": 0.25, "mutation_sigma_half_range": 0.25,
@@ -154,6 +172,7 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
         cfg["scenario_seed"] = cfg["seed"]
     if cfg["ga"]["elite"] >= cfg["ga"]["pop_size"]:
         raise ValueError("ga.elite must be smaller than ga.pop_size")
+    _resolve_shape_crossover(cfg)
     if cfg["schedule"] not in ("concurrent", "sequential"):
         raise ValueError("schedule must be 'concurrent' or 'sequential'")
     if cfg["fidelity"] not in fid_mod.FIDELITIES:
@@ -185,8 +204,8 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
             raise ValueError(f"aircraft {a['name']}: unknown profile {pname!r}")
         prof = sim.Profile.from_dict({**cfg["profiles"][pname], **a.get("overrides", {}), "aircraft": a["name"]})
         genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)  # validate
-        if cfg.get("genome_kind") == "phase3_b1" and not prof.heading_hold:
-            raise ValueError(f"aircraft {a['name']}: genome_kind phase3_b1 = phase2_flex controller (8 genes): needs heading_hold")
+        if cfg.get("genome_kind") in SHAPED_KINDS and not prof.heading_hold:
+            raise ValueError(f"aircraft {a['name']}: genome_kind {cfg['genome_kind']} = phase2_flex controller (8 genes): needs heading_hold")
         acs.append({"name": a["name"], "profile": pname, "overrides": a.get("overrides", {}),
                     "seed": int(a.get("seed", cfg["seed"])), "resolved_profile": prof.to_dict()})
         if a["name"] in mfa:   # only then (old configs keep their aircraft entries / run ids)
@@ -204,6 +223,19 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
         h = hashlib.sha256(json.dumps(identity(cfg), sort_keys=True).encode()).hexdigest()[:8]
         cfg["run_id"] = f"{stem}-{h}"
     return cfg
+
+
+def _resolve_shape_crossover(cfg: Dict) -> None:
+    """ga.shape_crossover: 'block' (default) is removed from the resolved config, so every config without the option (or
+    with it at the default) resolves exactly as before (same identity / run id / resume check, GAConfig default 'block').
+    'uniform' (tweaked preset) needs genome_kind phase3_b1 and stays in the resolved config (part of the run identity)."""
+    sx = cfg["ga"].get("shape_crossover", "block")
+    if sx not in ga.SHAPE_CROSSOVERS:
+        raise ValueError(f"ga.shape_crossover must be one of {ga.SHAPE_CROSSOVERS}, got {sx!r}")
+    if sx == "block":
+        cfg["ga"].pop("shape_crossover", None)
+    elif cfg.get("genome_kind") not in SHAPED_KINDS:
+        raise ValueError("ga.shape_crossover 'uniform' needs genome_kind 'phase3_b1' / 'phase3_b2a' (it acts on the shape block)")
 
 
 def _validate_mf(mf: Dict, cfg: Dict, where: str = "multi_fidelity") -> Dict:
@@ -249,6 +281,15 @@ def _validate_phase2(cfg: Dict) -> None:
 def _validate_p3b1(cfg: Dict) -> None:
     """genome_kind 'phase3_b1' (P3-B1): controller | 12 structure genes (P2.5, symmetric) | FD's 6 shape genes."""
     kind = cfg.get("genome_kind")
+    if cfg.get("energy_cost") is not None:
+        if not isinstance(cfg["energy_cost"], bool):
+            raise ValueError("energy_cost must be true / false / null")
+        if cfg["fidelity"] != fid_mod.B2:
+            raise ValueError(f"energy_cost is only defined for fidelity {fid_mod.B2!r}")
+        if cfg["energy_cost"] is False:
+            cfg["energy_cost"] = None          # false == default (identity / run id unchanged)
+    if cfg.get("shape_locked") is not None and kind != "phase3_b2a":
+        raise ValueError("shape_locked needs genome_kind 'phase3_b2a'")
     if kind is None:
         if cfg.get("shape_ops") is not None:
             raise ValueError("shape_ops needs genome_kind 'phase3_b1'")
@@ -257,8 +298,16 @@ def _validate_p3b1(cfg: Dict) -> None:
         raise ValueError(f"genome_kind must be null or one of {GENOME_KINDS}, got {kind!r}")
     if not cfg["struct_genes"] or cfg["struct_asymmetric"]:
         raise ValueError("genome_kind phase3_b1: struct_genes true and struct_asymmetric false (12 P2.5 structure genes)")
-    if cfg["fidelity"] != fid_mod.B1:
-        raise ValueError(f"genome_kind phase3_b1: fidelity must be {fid_mod.B1!r} (the only fidelity that consumes shape genes)")
+    if kind in SHAPED_KINDS and cfg["fidelity"] != SHAPED_KINDS[kind]:
+        raise ValueError(f"genome_kind {kind}: fidelity must be {SHAPED_KINDS[kind]!r} (the fidelity that consumes its shape genes)")
+    if kind == "phase3_b2a":
+        lk = B2A_DEFAULT_LOCKED if cfg.get("shape_locked") is None else list(cfg["shape_locked"])
+        if set(lk) - set(B2A_NAMES):
+            raise ValueError(f"shape_locked: only B2a genes can be locked, got {sorted(set(lk) - set(B2A_NAMES))}")
+        if set(B2A_THICKNESS) - set(lk) and not cfg.get("energy_cost"):
+            raise ValueError("shape_locked: thickness genes (wing_tc_*) require energy_cost true (FD requires='energy_cost')")
+        if cfg.get("shape_locked") is not None and sorted(lk) == sorted(B2A_DEFAULT_LOCKED):
+            cfg["shape_locked"] = None        # default spelled out == default (identity unchanged)
     if cfg["init"]["mode"] != "baseline":
         raise ValueError("genome_kind phase3_b1: init.mode 'baseline' (structure block seeded at FD's baseline)")
     for where, mf in [("multi_fidelity", cfg["multi_fidelity"])] + [
@@ -267,7 +316,7 @@ def _validate_p3b1(cfg: Dict) -> None:
             scr = mf.get("screen", cfg["multi_fidelity"]["screen"])
             scr = [scr] if isinstance(scr, str) else list(scr)
             if any(f != "rigid" for f in scr):
-                raise ValueError(f"{where}.screen: genome_kind phase3_b1 allows only 'rigid' screens below full_a1_b1 "
+                raise ValueError(f"{where}.screen: genome_kind {kind} allows only 'rigid' screens below {cfg['fidelity']} "
                                  "(rigid ignores the shape; reduced / full / full_a1 cannot fly a shaped planform)")
     ops = dict(SHAPE_OPS_DEFAULT, **(cfg.get("shape_ops") or {}))
     bad = set(ops) - set(SHAPE_OPS_DEFAULT)
@@ -283,6 +332,8 @@ def _validate_p3b1(cfg: Dict) -> None:
     if not 0.0 <= float(ops["mutation_rate"]) <= 1.0:
         raise ValueError("shape_ops.mutation_rate must be in [0, 1]")
     names = set(SHAPE_OPS_DEFAULT["log_genes"]) | {"wing_twist_mid_deg", "wing_twist_tip_deg", "wing_sweep_qc_delta_deg"}
+    if kind == "phase3_b2a":
+        names |= set(B2A_NAMES)
     if set(ops["log_genes"]) - names:
         raise ValueError(f"shape_ops.log_genes: unknown shape genes {sorted(set(ops['log_genes']) - names)}")
     if cfg["ga"]["mutation_mode"] != "gauss":
@@ -399,7 +450,13 @@ def _now() -> str:
 
 
 # --------------------------------------------------------------------------- runner
-def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = False, genome_kind: Optional[str] = None):
+def shape_locked_of(cfg: Dict) -> List[str]:
+    """phase3_b2a: genes excluded from the GA vector (FD default injected by decode)."""
+    return list(B2A_DEFAULT_LOCKED if cfg.get("shape_locked") is None else cfg["shape_locked"])
+
+
+def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = False, genome_kind: Optional[str] = None,
+                shape_locked: Optional[Sequence[str]] = None):
     """(schema, groups): controller genes (6, +2 heading) then, with struct_genes, FD's v2 struct genes (12, 14 asym);
     genome_kind 'phase3_b1' appends FD's 6 P3-B1 shape genes (group 'shape', FD order, FD [0,1] linear storage)."""
     sch = genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)
@@ -409,6 +466,9 @@ def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = Fals
         sch, groups = sch + st, groups + ["struct"] * len(st)
     if genome_kind == "phase3_b1":
         sh = fid_mod.shape_schema()
+        sch, groups = sch + sh, groups + ["shape"] * len(sh)
+    elif genome_kind == "phase3_b2a":   # per-aircraft B2 ranges; locked genes excluded
+        sh = fid_mod.shape_schema_b2(prof.aircraft, B2A_DEFAULT_LOCKED if shape_locked is None else shape_locked)
         sch, groups = sch + sh, groups + ["shape"] * len(sh)
     return sch, groups
 
@@ -582,11 +642,12 @@ class Batch:
                 self.cache.pins[ac["name"]] = check_pins(self.cfg, ac["name"], fids, d["model_version"], ac["resolved_profile"])
             prof = sim.Profile.from_dict(ac["resolved_profile"])
             sch, groups = full_schema(prof, self.cfg.get("struct_genes", False), self.cfg.get("struct_asymmetric", False),
-                                      self.cfg.get("genome_kind"))
+                                      self.cfg.get("genome_kind"),
+                                      shape_locked_of(self.cfg) if self.cfg.get("genome_kind") == "phase3_b2a" else None)
             self.info[ac["name"]] = {"schema": sch, "groups": groups, "model_files_sha": d["model_files_sha"],
                                      "model_version": d["model_version"].get(self.fidelity),
                                      "mv": d["model_version"], "error": d.get("error")}
-            if any(f in fids for f in ("reduced", "full", "full_a1", "full_a1_b1")):
+            if any(f in fids for f in ("reduced", "full", "full_a1", "full_a1_b1", "full_a1_b2a")):
                 self.info[ac["name"]]["reduced_gate"] = pa[ac["name"]]["reduced_gate"]
             if mfa.get("enabled"):
                 self.info[ac["name"]]["screen_model_version"] = d["model_version"].get(mfa["ladder"][0])
@@ -733,10 +794,18 @@ class Batch:
         unit = {"scenarios": scs, "reduced_gate": gate if fid == "reduced" else None, "unit": "genome"}
         gmap = dict(zip([g.name for g in schema], groups))
         # full_a1_b1: the decoded shape genes (None = baseline planform) and FD's shape_cache_key go into the key
-        shapes = [eval_mod.shape_values(genome.decode(g, schema), gmap) if fid == fid_mod.B1 else None for g in pop]
+        shapes = [eval_mod.shape_values(genome.decode(g, schema), gmap) if fid in fid_mod.SHAPED else None for g in pop]
+        b2 = fid == fid_mod.B2
+        ecost = bool(self.cfg.get("energy_cost")) if b2 else None
+        env = [(float(s["speed_kts"]), float(s["h0_ft"])) for s in scs] if b2 else None
+
+        def skey(sh):
+            if b2:
+                return fid_mod.shape_cache_key_b2(sh, ac["name"], env)
+            return fid_mod.shape_cache_key(sh) if fid == fid_mod.B1 else None
         keys = [cache_mod.eval_key(ac["name"], g, prof_d, unit, self.cfg["scenario_seed"], self.jsbsim_version,
                                    self.code_sha, st["model_sha"], fidelity=fid, model_version=mv,
-                                   shape_key=fid_mod.shape_cache_key(sh) if fid == fid_mod.B1 else None)
+                                   shape_key=skey(sh), **({"energy_cost": ecost} if b2 else {}))
                 for g, sh in zip(pop, shapes)]
         need: Dict[str, int] = {}
         for i, k in enumerate(keys):
@@ -752,7 +821,9 @@ class Batch:
         futs = {}
         for k in miss:
             gains, struct = eval_mod.split_values(genome.decode(pop[need[k]], schema), gmap)
-            kw = {"shape": shapes[need[k]]} if fid == fid_mod.B1 else {}
+            kw = {"shape": shapes[need[k]]} if fid in fid_mod.SHAPED else {}
+            if b2 and ecost:
+                kw["energy_cost"] = True
             futs[self.pool.submit(eval_mod.task_genome, prof_d, gains, struct, scs, fid, gate, viz,
                                   self.cfg["trajectories"]["sample_hz"], **kw)] = k
         new, cpu = [], 0.0
@@ -807,6 +878,12 @@ class Batch:
                 row["shape"] = shape
             if agg.get("geometry_gate_reject"):
                 row["geometry_gate"] = agg.get("geometry_gate")
+                if agg.get("geometry_gate_b2") is not None:
+                    row["geometry_gate_b2"] = agg.get("geometry_gate_b2")
+            if agg.get("energy_terms") is not None:     # full_a1_b2a rows only
+                et = agg["energy_terms"]
+                row["energy_terms"] = {k: et.get(k) for k in ("J_energy", "J_speed_guard", "in_cost", "cost_fd",
+                                                              "energy_drag_increment", "speed_deficit_kts_mean")}
             if "margins" in agg:
                 row["margins"], row["margins_fidelity"] = agg["margins"], agg["margins_fidelity"]
             for k in ("mass_total_frac", "mass_lb", "J_mass_fd", "mass_credit_clip", "mass_credit_delta", "task_cpu_s"):
@@ -836,7 +913,9 @@ class Batch:
         gains, struct = eval_mod.split_values(vals, dict(zip([g.name for g in st["schema"]], st["groups"])))
         if tr is None:   # cache hit: re-fly once with the recorder
             kw = {"shape": eval_mod.shape_values(vals, dict(zip([g.name for g in st["schema"]], st["groups"])))} \
-                if self.fidelity == fid_mod.B1 else {}
+                if self.fidelity in fid_mod.SHAPED else {}
+            if self.fidelity == fid_mod.B2 and self.cfg.get("energy_cost"):
+                kw["energy_cost"] = True
             r = self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s_idx], self.fidelity,
                                  True, self.cfg["trajectories"]["sample_hz"], st["reduced_gate"], "fd", **kw).result()
         elif self.fidelity == "rigid":
@@ -893,8 +972,8 @@ class Batch:
 
         ck = self._load_ck(name)
         kind = self.cfg.get("genome_kind")
-        sspec = shape_spec(st["schema"], st["groups"], self.cfg["shape_ops"]) if kind == "phase3_b1" else None
-        blocks = gene_blocks(st["groups"]) if kind == "phase3_b1" else None
+        sspec = shape_spec(st["schema"], st["groups"], self.cfg["shape_ops"]) if kind in SHAPED_KINDS else None
+        blocks = gene_blocks(st["groups"]) if kind in SHAPED_KINDS else None
         if ck is None:
             rng = np.random.default_rng(ac["seed"])
             if sspec is None:
@@ -1005,7 +1084,9 @@ class Batch:
         def submit(norm, s, fidl):
             vals = genome.decode(norm, st["schema"])
             gains, struct = eval_mod.split_values(vals, gmap)
-            kw = {"shape": eval_mod.shape_values(vals, gmap)} if fidl == fid_mod.B1 else {}
+            kw = {"shape": eval_mod.shape_values(vals, gmap)} if fidl in fid_mod.SHAPED else {}
+            if fidl == fid_mod.B2 and self.cfg.get("energy_cost"):
+                kw["energy_cost"] = True
             return self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s], fidl, True,
                                     tcfg["sample_hz"], st["reduced_gate"], "sb", **kw)
         jobs = {}

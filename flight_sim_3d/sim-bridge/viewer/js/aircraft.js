@@ -104,16 +104,17 @@ export function planformStations(pf, semiSpan, sweepQc) {
     le = y.map((yy, i) => -tq * (yy - y[0]) + 0.25 * pf.chord_m[i]);
   }
   const eaOf = (i) => (pf.ea_x_m ? pf.ea_x_m[i] - le[i] : -0.25 * pf.chord_m[i]);   // elastic axis x - LE x
-  const f = [0], c = [pf.chord_m[0]], dle = [0], tw = [pf.twist_rad ? pf.twist_rad[0] : 0], ea = [eaOf(0)];
+  const zOf = (i) => (pf.z_rel_m ? pf.z_rel_m[i] : 0);   // B2a: FD node z relative to the root node (dihedral delta)
+  const f = [0], c = [pf.chord_m[0]], dle = [0], tw = [pf.twist_rad ? pf.twist_rad[0] : 0], ea = [eaOf(0)], zr = [zOf(0)];
   for (let i = 0; i < n; i++) {
     const fi = y[i] / semiSpan;
-    if (fi <= f[f.length - 1] + 1e-9) { c[c.length - 1] = pf.chord_m[i]; ea[ea.length - 1] = eaOf(i); continue; }
-    f.push(fi); c.push(pf.chord_m[i]); dle.push(le[i] - le[0]); tw.push(pf.twist_rad ? pf.twist_rad[i] : 0); ea.push(eaOf(i));
+    if (fi <= f[f.length - 1] + 1e-9) { c[c.length - 1] = pf.chord_m[i]; ea[ea.length - 1] = eaOf(i); zr[zr.length - 1] = zOf(i); continue; }
+    f.push(fi); c.push(pf.chord_m[i]); dle.push(le[i] - le[0]); tw.push(pf.twist_rad ? pf.twist_rad[i] : 0); ea.push(eaOf(i)); zr.push(zOf(i));
   }
   if (f[f.length - 1] < 1 - 1e-9) {  // strips end at the last strip centre: extrapolate the last segment to the tip
     const k = f.length - 1, g = (1 - f[k]) / Math.max(1e-9, f[k] - f[k - 1]);
     f.push(1); c.push(Math.max(0.05 * c[0], c[k] + (c[k] - c[k - 1]) * g)); dle.push(dle[k] + (dle[k] - dle[k - 1]) * g);
-    tw.push(tw[k] + (tw[k] - tw[k - 1]) * g); ea.push(ea[k] + (ea[k] - ea[k - 1]) * g);
+    tw.push(tw[k] + (tw[k] - tw[k - 1]) * g); ea.push(ea[k] + (ea[k] - ea[k - 1]) * g); zr.push(zr[k] + (zr[k] - zr[k - 1]) * g);
   }
   const lerp = (arr) => (q) => {
     if (q <= f[0]) return arr[0];
@@ -127,6 +128,8 @@ export function planformStations(pf, semiSpan, sweepQc) {
     out.le0 = le[0];
     out.pivotAt = (q) => le[0] + out.dleAt(q) + eaAt(q);
   }
+  // B2a: node z (dihedral delta, baked in by FD) relative to the root, applied on top of the procedural wing height
+  if (pf.z_rel_m) out.zAt = lerp(zr);
   return out;
 }
 
@@ -189,7 +192,7 @@ function halfSurface({ side, xLE, rootChord, tipChord, semiSpan, sweepDeg, thick
     hinge.add(inner);
     grp.add(hinge);
   }
-  if (pst && pst.hasTwist) {
+  if (pst && (pst.hasTwist || pst.zAt)) {
     // built-in (geometric) twist: rotate each station's section about its quarter-chord point (r1 per-node geometry:
     // about FD's elastic axis), + = LE up (-z)
     grp.updateMatrixWorld(true);
@@ -200,9 +203,12 @@ function halfSurface({ side, xLE, rootChord, tipChord, semiSpan, sweepDeg, thick
       const pa = m.geometry.attributes.position;
       for (let k = 0; k < pa.count; k++) {
         v.fromBufferAttribute(pa, k).applyMatrix4(M);
-        const f = Math.min(1, Math.abs(v.y) / semiSpan), th = pst.twistAt(f);
-        const xq = pst.pivotAt ? pst.pivotAt(f) : leAt(f) - 0.25 * chordAt(f), dx = v.x - xq;
-        v.x = xq + dx * Math.cos(th); v.z -= dx * Math.sin(th);
+        const f = Math.min(1, Math.abs(v.y) / semiSpan), th = pst.hasTwist ? pst.twistAt(f) : 0;
+        if (th) {
+          const xq = pst.pivotAt ? pst.pivotAt(f) : leAt(f) - 0.25 * chordAt(f), dx = v.x - xq;
+          v.x = xq + dx * Math.cos(th); v.z -= dx * Math.sin(th);
+        }
+        if (pst.zAt) v.z += pst.zAt(f);   // FD node z (dihedral delta): absolute node shape, not re-derived from dGamma
         v.applyMatrix4(Mi);
         pa.setXYZ(k, v.x, v.y, v.z);
       }
@@ -280,9 +286,14 @@ export function buildProcedural(cfg, color = '#ff6b35', planform = null) {
   const xWingLE = xNose - L * cfg.wing_x_frac;
   const wingT = Math.max(0.08, cfg.wing_root_chord_m * 0.09);
   const surfaces = {};
+  // B2b (area_scale / aspect_scale, span-scaled stations): the wing span follows FD's node tip; B1 r1 / B2a keep the
+  // procedural span (identical rendering)
+  const b2b = planform && planform.b2 && (planform.b2.area_scale != null || planform.b2.aspect_scale != null);
+  const tipY = b2b && planform.wingR && planform.wingR.y_m ? planform.wingR.y_m[planform.wingR.n - 1] : null;
+  const wingSemi = Number.isFinite(tipY) && tipY > 0 ? tipY : cfg.span_m / 2;
   for (const side of [1, -1]) {
     const s = halfSurface({ side, xLE: xWingLE, rootChord: cfg.wing_root_chord_m, tipChord: cfg.wing_tip_chord_m,
-      semiSpan: cfg.span_m / 2, sweepDeg: cfg.sweep_deg, thickness: wingT, mat: wingMat, ctrlMat,
+      semiSpan: wingSemi, sweepDeg: cfg.sweep_deg, thickness: wingT, mat: wingMat, ctrlMat,
       ctrlFrac: 0.25, ctrlFrom: 0.55, ctrlTo: 0.95, dihedralDeg: cfg.dihedral_deg,
       planform: planform ? planform[side > 0 ? 'wingR' : 'wingL'] : null, sweepQc: planform ? planform.sweep_qc_rad : null });
     s.group.position.z = zWing;
@@ -293,7 +304,12 @@ export function buildProcedural(cfg, color = '#ff6b35', planform = null) {
     if (cfg.wing_pos === 'high') { // struts
       const sg = new THREE.CylinderGeometry(0.035, 0.035, 1, 5);
       const strut = new THREE.Mesh(sg, dark);
-      const a = new THREE.Vector3(xWingLE - cfg.wing_root_chord_m * 0.4, side * cfg.span_m * 0.28, zWing);
+      // B2a: the strut top follows FD's node z (dihedral delta) at its span station
+      const pw = planform && planform.b2 ? planform[side > 0 ? 'wingR' : 'wingL'] : null;
+      let zs = 0;
+      if (pw && pw.z_rel_m && pw.y_m) { const ys = cfg.span_m * 0.28, yy = pw.y_m; let j = 1; while (j < yy.length - 1 && yy[j] < ys) j++;
+        const u = Math.max(0, Math.min(1, (ys - yy[j - 1]) / ((yy[j] - yy[j - 1]) || 1))); zs = pw.z_rel_m[j - 1] + (pw.z_rel_m[j] - pw.z_rel_m[j - 1]) * u; }
+      const a = new THREE.Vector3(xWingLE - cfg.wing_root_chord_m * 0.4, side * cfg.span_m * 0.28, zWing + zs);
       const b = new THREE.Vector3(xWingLE - cfg.wing_root_chord_m * 0.4, side * W * 0.45, H * 0.4);
       strut.position.copy(a).add(b).multiplyScalar(0.5);
       strut.scale.y = a.distanceTo(b);

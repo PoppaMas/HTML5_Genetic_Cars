@@ -92,8 +92,37 @@ function angleScale(units, name) {
   return /deg/i.test(String(u)) ? D2R : 1;
 }
 
+// Display-only CG centring: FD / ER structure nodes are measured from the CG; on the c172x the JSBSim pointmasses are
+// asymmetric (CG at y +4.18 in), so every node sits at y -0.106 m and the wings look off-centre against the procedural
+// fuselage (drawn on y = 0). When the fuselage component's axis is a straight line at constant y != 0, shift all node
+// y by -that y for DISPLAY (copies; the trajectory data / channels / proofs are untouched). URL cgcentre=0 turns it off.
+let _cgCentre = true;
+export function setCgCentre(on) { _cgCentre = !!on; }
+export function cgDisplayOffset(obj) {
+  const comps = (obj && obj.structure && Array.isArray(obj.structure.components)) ? obj.structure.components : [];
+  const fus = comps.find((c) => c && c.name === 'fuselage');
+  const ax = fus && Array.isArray(fus.axis_nodes_body_m) ? fus.axis_nodes_body_m : null;
+  if (!ax || ax.length < 2 || !ax.every((p) => Array.isArray(p) && Number.isFinite(p[1]))) return 0;
+  const y0 = ax[0][1];
+  if (!ax.every((p) => Math.abs(p[1] - y0) < 1e-6)) return 0;          // not a straight centre line: leave it
+  return Math.abs(y0) > 1e-4 && Math.abs(y0) < 0.5 ? -y0 : 0;           // small lateral CG offsets only
+}
+export function centreOnFuselage(obj, dy) {
+  if (!dy) return obj;
+  const sh = (arr) => (Array.isArray(arr) ? arr.map((p) => (Array.isArray(p) && p.length >= 3 ? [p[0], p[1] + dy, p[2]] : p)) : arr);
+  const comps = obj.structure.components.map((c) => {
+    if (!c || typeof c !== 'object') return c;
+    const o = { ...c };
+    for (const k of ['axis_nodes_body_m', 'le_nodes_body_m', 'te_nodes_body_m']) if (k in o) o[k] = sh(o[k]);
+    return o;
+  });
+  return { ...obj, structure: { ...obj.structure, components: comps, display_offset_y_m: dy } };
+}
+
 export function parseTrajectory(obj, source = '') {
   if (!obj || !Array.isArray(obj.channels) || !Array.isArray(obj.data)) throw new Error(`${source}: not a trajectory (no channels/data)`);
+  const cgDy = _cgCentre ? cgDisplayOffset(obj) : 0;
+  if (cgDy) obj = centreOnFuselage(obj, cgDy);
   if (obj.schema && !SUPPORTED_SCHEMA.test(obj.schema)) console.warn(`${source}: schema ${obj.schema} not ga-flightsim-traj/1|/2; trying anyway`);
   const idx = {};
   obj.channels.forEach((c, i) => { idx[c] = i; });
@@ -185,7 +214,7 @@ export function parseTrajectory(obj, source = '') {
   const structure = parseStructure(obj, ch);
   const planform = parsePlanform(obj);
   return {
-    structure, planform,
+    structure, planform, cgDisplayOffsetY: cgDy,
     meta, source, n, t, x: ch.x, y: ch.y, z, alt, qENU, hud, ch, frame, originAlt, targetAt, stepAt, schedule,
     hasTarget: !!(rampCh || stepCh || schedule || (tgt && Number.isFinite(tgt.alt_m))),
     hasRamp: !!rampCh, rampChannel: rampCh, stepChannel: stepCh,
@@ -237,7 +266,87 @@ function _nodeSide(c) {
     : y.map((v) => (v - y[0]) / (y[n - 1] - y[0]));
   const tw = _num(c.geometric_twist_rad) && c.geometric_twist_rad.length === n ? c.geometric_twist_rad.slice() : null;
   const eax = Array.isArray(ax) && ax.length === n && ax.every(pt) ? ax.map((p) => p[0]) : le.map((p, i) => p[0] - 0.25 * chord[i]);
-  return { span_frac: sf, y_m: y, chord_m: chord, le_x_m: le.map((p) => p[0]), twist_rad: tw, ea_x_m: eax, n, absolute: true };
+  // P3-B2a: FD bakes the dihedral delta into the node z (z += -(y - y0) tan dGamma, tip up = -z). Node z relative to
+  // the root node (elastic axis, else LE) -> z_rel_m; null when flat (B1 r1: identical behaviour)
+  const zsrc = Array.isArray(ax) && ax.length === n && ax.every(pt) ? ax : le;
+  const zr = zsrc.map((p) => p[2] - zsrc[0][2]);
+  const z_rel_m = zr.some((v) => Math.abs(v) > 1e-9) ? zr : null;
+  return { span_frac: sf, y_m: y, chord_m: chord, le_x_m: le.map((p) => p[0]), twist_rad: tw, ea_x_m: eax, n, absolute: true, z_rel_m };
+}
+
+// ---------------------------------------------------------------- P3-B2 (FD INTERFACE_v2 section 15.6), all OPTIONAL
+export const B2A_NOTE = 'B2a: dihedral baked into FD node layout; t/c and camber shown as section metadata.';
+export const B2_GENE_DEFAULTS = { wing_dihedral_delta_deg: 0, wing_tc_root_scale: 1, wing_tc_tip_ratio: 1,
+  wing_camber_root_delta_pct: 0, wing_camber_tip_delta_pct: 0, wing_area_scale: 1, wing_aspect_scale: 1 };
+export const B2_KEYS = ['tc_local', 'camber_meq_pct_local', 'dihedral_delta_deg', 'dihedral_baseline_deg', 'section_baseline',
+  'area_scale', 'aspect_scale'];
+// {tc, camber_pct, dihedral_delta_deg, dihedral_baseline_deg, section_baseline, area_scale, aspect_scale, isDefault, stage}
+// from the wing components (wingR first); null when no B2 key is present. isDefault: every B2 value / gene at its
+// default (FD only emits the keys for non-default B2, but an exporter may write defaults) -> treated as absent.
+export function b2Info(obj) {
+  const comps = (obj && obj.structure && Array.isArray(obj.structure.components)) ? obj.structure.components : [];
+  const c = ['wingR', 'wingL'].map((nm) => comps.find((x) => x && x.name === nm)).find((x) => x && B2_KEYS.some((k) => k in x));
+  if (!c) return null;
+  const arr = (v) => (_num(v) && v.length ? v.slice() : null);
+  const fin = (v) => (Number.isFinite(v) ? +v : null);
+  const b = { tc: arr(c.tc_local), camber_pct: arr(c.camber_meq_pct_local), dihedral_delta_deg: fin(c.dihedral_delta_deg),
+    dihedral_baseline_deg: fin(c.dihedral_baseline_deg), section_baseline: typeof c.section_baseline === 'string' ? c.section_baseline : null,
+    area_scale: fin(c.area_scale), aspect_scale: fin(c.aspect_scale) };
+  b.stage = (b.area_scale != null || b.aspect_scale != null) ? 'B2b' : 'B2a';
+  const genes = { ...((obj.planform && obj.planform.genes && typeof obj.planform.genes === 'object' && !Array.isArray(obj.planform.genes)) ? obj.planform.genes : {}), ...(obj.genome || {}) };
+  const known = Object.keys(B2_GENE_DEFAULTS).filter((k) => Number.isFinite(genes[k]));
+  const genesDefault = known.length > 0 && known.every((k) => Math.abs(genes[k] - B2_GENE_DEFAULTS[k]) < 1e-12);
+  const scalarsDefault = !b.dihedral_delta_deg && (b.area_scale == null || b.area_scale === 1) && (b.aspect_scale == null || b.aspect_scale === 1);
+  b.isDefault = scalarsDefault && (genesDefault || (!b.tc && !b.camber_pct));
+  return b;
+}
+// NACA 4-digit style section (chord units, x 0 = LE .. 1 = TE, y up): thickness t (t/c), max camber m (fraction of
+// chord) at p. p from a "NACA mpxx" section_baseline name when it has one, else 0.4. Metadata display only.
+export function sectionCamberPos(name) {
+  const mm = /NACA\s*(\d)(\d)(\d\d)\b/i.exec(name || '');
+  return mm && +mm[2] > 0 ? +mm[2] / 10 : 0.4;
+}
+export function sectionShape(tc, camberPct, p = 0.4, n = 24) {
+  const t = Math.max(0, +tc || 0), m = (+camberPct || 0) / 100;
+  const upper = [], lower = [];
+  for (let i = 0; i <= n; i++) {
+    const x = 0.5 * (1 - Math.cos(Math.PI * i / n));
+    const yt = 5 * t * (0.2969 * Math.sqrt(x) - 0.1260 * x - 0.3516 * x * x + 0.2843 * x ** 3 - 0.1015 * x ** 4);
+    const yc = m === 0 ? 0 : (x < p ? m / (p * p) * (2 * p * x - x * x) : m / ((1 - p) ** 2) * ((1 - 2 * p) + 2 * p * x - x * x));
+    const dy = m === 0 ? 0 : (x < p ? 2 * m / (p * p) * (p - x) : 2 * m / ((1 - p) ** 2) * (p - x));
+    const th = Math.atan(dy);
+    upper.push([x - yt * Math.sin(th), yc + yt * Math.cos(th)]);
+    lower.push([x + yt * Math.sin(th), yc - yt * Math.cos(th)]);
+  }
+  let tmax = 0, cmax = 0;
+  for (let i = 0; i <= n; i++) { tmax = Math.max(tmax, upper[i][1] - lower[i][1]); cmax = Math.max(cmax, (upper[i][1] + lower[i][1]) / 2); }
+  return { upper, lower, t, m, p, tmax, cmax };
+}
+// HUD text for B2 (null when absent / default)
+export function b2HudText(b) {
+  if (!b || b.isDefault) return null;
+  const f1 = (v, d = 1) => (Number.isFinite(v) ? v.toFixed(d) : '—');
+  const sg = (v) => (Number.isFinite(v) ? (v >= 0 ? '+' : '') + v.toFixed(1) : '—');
+  const ends = (a, k = 1) => (a && a.length ? `${f1(a[0] * k)}→${f1(a[a.length - 1] * k)}` : '—');
+  let h = `${b.stage} dihedral Δ ${sg(b.dihedral_delta_deg)}° (baseline ${f1(b.dihedral_baseline_deg)}°)`;
+  if (b.section_baseline) h += ` · ${b.section_baseline}`;
+  h += `\nsection t/c ${ends(b.tc, 100)}% · camber ${ends(b.camber_pct)}%c (root→tip, metadata)`;
+  if (b.area_scale != null || b.aspect_scale != null) h += `\nsize area ×${f1(b.area_scale ?? 1, 3)} aspect ×${f1(b.aspect_scale ?? 1, 3)}`;
+  return h;
+}
+// small inline SVG: root (solid) and tip (dashed) sections, true relative chord, y exaggerated ×2 for legibility
+export function sectionSvg(b, chordRoot, chordTip, w = 230, h = 46) {
+  if (!b || b.isDefault || !b.tc) return '';
+  const p = sectionCamberPos(b.section_baseline), k = b.tc.length - 1;
+  const cam = (i) => (b.camber_pct ? b.camber_pct[i] : 0);
+  const cr = chordRoot > 0 ? chordRoot : 1, ct = chordTip > 0 ? chordTip : cr;
+  const sx = (w - 10) / cr, sy = sx * 2, y0 = h * 0.62;
+  const path = (sh, c) => { const pts = [...sh.upper, ...sh.lower.slice().reverse()];
+    return pts.map(([x, y], i) => `${i ? 'L' : 'M'}${(5 + x * c * sx).toFixed(1)},${(y0 - y * c * sy).toFixed(1)}`).join('') + 'Z'; };
+  const r = sectionShape(b.tc[0], cam(0), p), t = sectionShape(b.tc[k], cam(k), p);
+  return `<svg class="b2sec" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><path d="${path(r, cr)}" fill="rgba(141,255,176,.18)" stroke="#8dffb0" stroke-width="1"/>` +
+    `<path d="${path(t, ct)}" fill="none" stroke="#ffd27a" stroke-width="1" stroke-dasharray="3 2"/>` +
+    `<line x1="5" y1="${y0}" x2="${w - 5}" y2="${y0}" stroke="rgba(255,255,255,.25)" stroke-width=".5"/></svg>`;
 }
 export function nodePlanform(obj) {
   const comps = (obj && obj.structure && Array.isArray(obj.structure.components)) ? obj.structure.components : [];
@@ -271,7 +380,10 @@ export function parsePlanform(obj) {
   const sweep = Number.isFinite(raw.sweep_qc_rad) ? raw.sweep_qc_rad
     : (Number.isFinite(raw.sweep_qc_deg) ? raw.sweep_qc_deg * Math.PI / 180 : null);
   const tw = R.twist_rad;
-  return { field, schema: raw.schema || null, source: raw.source || null, genes: raw.genes || null,
+  const b2raw = b2Info(obj);
+  const b2 = b2raw && !b2raw.isDefault ? b2raw : null;
+  if (nodes && !b2) { R = { ...R, z_rel_m: null }; L = L === nodes.wingR ? R : { ...L, z_rel_m: null }; }   // B2 absent / default: B1 r1 exactly
+  return { b2, field, schema: raw.schema || null, source: raw.source || null, genes: raw.genes || null,
     synthetic: raw.synthetic === true, symmetric: raw.symmetric === true || R === L || _sameSide(R, L), wingR: R, wingL: L,
     sweep_qc_rad: sweep, taper: (strips ? strips.wingR : R).chord_m[(strips ? strips.wingR : R).n - 1] / (strips ? strips.wingR : R).chord_m[0],
     twist_tip_rad: tw ? tw[R.n - 1] : null, geom, strips,

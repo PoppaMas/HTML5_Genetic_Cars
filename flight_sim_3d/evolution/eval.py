@@ -125,32 +125,35 @@ def shape_values(values: Dict[str, float], groups: Dict[str, str]) -> Optional[D
 
 def evaluate_one(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict,
                  fidelity: str = "rigid", recorder=None, record: bool = False, sample_hz: float = 30.0,
-                 reduced_gate: Optional[float] = None, telemetry: str = "sb", shape=None) -> Dict:
+                 reduced_gate: Optional[float] = None, telemetry: str = "sb", shape=None,
+                 energy_cost: bool = False) -> Dict:
     """One genome x one scenario at one fidelity (JSON-able; what the batch caches for rigid)."""
     return fid_mod.evaluate_scenario(profile_d, gains, struct, runinfo.scenario_fields(sc_d), fidelity,
                                      recorder=recorder, record=record, sample_hz=sample_hz, reduced_gate=reduced_gate,
-                                     telemetry=telemetry, shape=shape)
+                                     telemetry=telemetry, shape=shape, **({"energy_cost": True} if energy_cost else {}))
 
 
 def task(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict, fidelity: str,
          viz: bool = False, sample_hz: float = 30.0, reduced_gate: Optional[float] = None,
-         telemetry: str = "fd", shape=None) -> Dict:
+         telemetry: str = "fd", shape=None, energy_cost: bool = False) -> Dict:
     """Batch worker entry (picklable), one scenario. viz=True records the ga-flightsim-traj/1 trajectory."""
     c0 = time.process_time()
     r = evaluate_one(profile_d, gains, struct, sc_d, fidelity, record=viz, sample_hz=sample_hz,
-                     reduced_gate=reduced_gate, telemetry=telemetry, shape=shape)
+                     reduced_gate=reduced_gate, telemetry=telemetry, shape=shape,
+                     **({"energy_cost": True} if energy_cost else {}))
     r["task_cpu_s"] = time.process_time() - c0
     return r
 
 
 def task_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], scs_d: Sequence[Dict],
                 fidelity: str, reduced_gate: Optional[float], viz: bool = False, sample_hz: float = 30.0,
-                shape=None) -> Dict:
+                shape=None, energy_cost: bool = False) -> Dict:
     """Batch worker entry for reduced/full/full_a1/full_a1_b1: one genome over all scenarios (one FD flexeval.evaluate
     call; flexeval_a1.evaluate for full_a1; flexeval_b1.evaluate with the shape genes for full_a1_b1)."""
     c0, w0 = time.process_time(), time.perf_counter()
     r = fid_mod.evaluate_genome(profile_d, gains, struct, [runinfo.scenario_fields(s) for s in scs_d], fidelity,
-                                reduced_gate, record=viz, sample_hz=sample_hz, telemetry="fd", shape=shape)
+                                reduced_gate, record=viz, sample_hz=sample_hz, telemetry="fd", shape=shape,
+                                **({"energy_cost": True} if energy_cost else {}))
     r["task_cpu_s"], r["task_wall_s"] = time.process_time() - c0, time.perf_counter() - w0
     return r
 
@@ -190,8 +193,9 @@ def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelit
         gate = entry.get("reduced_gate")
         if gate is None:
             gate = fid_mod.per_aircraft(aircraft)["reduced_gate"]
+        ekw = {"energy_cost": True} if (fid == fid_mod.B2 and run_cfg.get("energy_cost")) else {}
         out = fid_mod.evaluate_genome(prof_d, gains, struct, [runinfo.scenario_fields(s) for s in scs], fid, gate,
-                                      recorder=recorder, shape=shape)   # non-baseline shape below full_a1_b1 raises
+                                      recorder=recorder, shape=shape, **ekw)   # non-baseline shape below full_a1_b1 raises
         per = out.pop("per_scenario")
     out["per_scenario_cost"] = [p["cost"] for p in per]
     out["scenario_ids"] = [s.get("id") for s in scs]

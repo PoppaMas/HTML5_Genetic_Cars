@@ -23,7 +23,7 @@ PY = sys.executable
 SHORT = {"duration_s": 12.0, "steps_rel_ft": [[0.0, 0.0], [2.0, 100.0]]}
 MV_RE = {"rigid": r"^rigid:jsbsim\d+\.\d+\.\d+:[0-9a-f]{8}$", "reduced": r"^reduced:flexv1:[0-9a-f]{8}$",
          "full": r"^full:flexv2:[0-9a-f]{8}$", "full_a1": r"^full_a1:flexv2a1:[0-9a-f]{8}$",
-         "full_a1_b1": r"^full_a1_b1:flexv2b1:[0-9a-f]{8}$"}
+         "full_a1_b1": r"^full_a1_b1:flexv2b1:[0-9a-f]{8}$", "full_a1_b2a": r"^full_a1_b2a:flexv2b2a:[0-9a-f]{8}$"}
 
 
 def cfg_file(name):

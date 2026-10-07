@@ -1,0 +1,1 @@
+{"session": 0, "started": "2026-10-06T23:54:55-07:00", "host": "grok-bot-vm-405693560", "workers": 8, "schedule": "concurrent", "resumed_at_generation": {}, "argv": ["/workspace/er_pilot_code_b1r1_tweaked/evolution/batch.py", "--config", "/workspace/flight-sim-team/evolution/configs/phase3b1_pilot_tweaked_s2.json", "--run-id", "phase3b1r1-pilot-tweaked-s2", "--workers", "8"]}

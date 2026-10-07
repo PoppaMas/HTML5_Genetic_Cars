@@ -45,3 +45,33 @@ def test_proof_verdict_rules(tmp_path):
     v = B.proof_verdict(_manifest(sub, failed=["wingR.dz.3"]), 0)
     assert v["ok"] and v["files"][0]["failed_wing"] == 1   # wing channels reported, not fatal
     assert not B.proof_verdict(str(tmp_path / "missing"), 3)["ok"]
+
+
+# ---------------------------------------------------------------- A/B (baseline vs tweaked) and pilot gen numbers
+def test_ab_names_and_families():
+    a, b = "phase3b1r1-pilot-s1", "phase3b1r1-pilot-tweaked-s1"
+    assert B.run_family(a) == "phase3b1r1-pilot" and B.run_family(b) == "phase3b1r1-pilot-tweaked"
+    assert B.ab_tags([a, b]) == ["base", "tweaked"]
+    assert B.ab_tags(["x-s1", "x-s2"]) == ["s1", "s2"]
+    assert B.ab_tags(["same", "same"]) == ["same", "same"]          # not distinct -> full ids
+
+
+def _R(rid, gens, acs=("737", "T38", "c172x")):
+    return {"id": rid, "entries": [{"aircraft": ac, "generation": g, "fitness": 1.0 / (g + 1), "file": f"traj_{ac}_{rid}_g{g}.json"}
+                                   for ac in acs for g in gens]}
+
+
+def test_common_gens_matching_only():
+    base, tw = _R("p-s1", [0, 29, 59]), _R("p-tweaked-s1", [0, 30, 59])
+    assert B.common_gens([base, tw]) == [0, 59]
+    assert B.common_gens([base, tw], "T38") == [0, 59]
+    assert B.common_gens([base, _R("q-s1", [5])]) == []
+    assert B.gens_of(base, "737") == [0, 29, 59]                   # pilot numbering (not 0/2/4)
+
+
+def test_parse_shot_report_ignores_trailing_warnings():
+    out = 'noise\n{"a": {"png": "/x/p_a.png", "render": {"covered": [["tipR"]]}}, "console": []}\n' \
+          'AIRCRAFT UNDER AN OVERLAY (warning): {"a": [["tipR"]]}\nRESULT: PASS\n'
+    rep = B.parse_shot_report(out)
+    assert rep["a"]["png"] == "/x/p_a.png" and rep["console"] == []
+    assert B.parse_shot_report("no json") == {}

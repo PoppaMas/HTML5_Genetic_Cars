@@ -1,0 +1,767 @@
+{
+  "resolved": {
+    "run_id": "phase3b1r1-pilot-s1",
+    "runs_dir": "runs",
+    "cache": {
+      "enabled": true,
+      "path": "cache/evals.sqlite"
+    },
+    "workers": 0,
+    "schedule": "concurrent",
+    "seed": 1,
+    "scenario_seed": 1,
+    "scenarios": 3,
+    "ga": {
+      "pop_size": 64,
+      "generations": 60,
+      "elite": 2,
+      "selection_p": 0.2,
+      "crossover": "uniform",
+      "blx_alpha": 0.3,
+      "mutation_rate": 0.15,
+      "mutation_sigma": 0.08,
+      "mutation_mode": "gauss"
+    },
+    "trajectories": {
+      "generations": "auto",
+      "scenario": 0,
+      "sample_hz": 30,
+      "generations_resolved": [
+        0,
+        29,
+        59
+      ]
+    },
+    "metrics": {
+      "band_ft": 20,
+      "hold_after_s": 20
+    },
+    "source_repo": "/workspace/sandbox-run-20261006-023947/HTML5_Genetic_Cars",
+    "profiles": {
+      "baseline": {},
+      "phase2_c172x": {
+        "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+        "h0_ft": 4000.0,
+        "speed_kts": 100.0,
+        "duration_s": 90.0,
+        "steps_rel_ft": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            5.0,
+            200.0
+          ],
+          [
+            50.0,
+            0.0
+          ]
+        ],
+        "min_agl_ft": 500.0,
+        "min_kcas": 55.0,
+        "max_abs_theta_deg": 30.0,
+        "max_abs_phi_deg": 45.0,
+        "nz_limits": [
+          -1.0,
+          3.8
+        ],
+        "max_alt_err_ft": 1000.0,
+        "pitch_cmd_limits_deg": [
+          -8.0,
+          12.0
+        ],
+        "alt_i_limit_deg": 5.0,
+        "pitch_i_limit": 0.4,
+        "thr_kp": 0.05,
+        "thr_ki": 0.01,
+        "throttle_max": 1.0,
+        "throttle_all_engines": true,
+        "gear_up": true,
+        "alt_err_scale_ft": 100.0,
+        "itae_t0_s": 10.0,
+        "itae_cap_s": 30.0,
+        "w_effort": 2.0,
+        "gain_bounds": {
+          "kp_alt": [
+            0.002,
+            2.0
+          ],
+          "ki_alt": [
+            1e-06,
+            0.5
+          ],
+          "kd_alt": [
+            0.01,
+            3.0
+          ],
+          "kp_pitch": [
+            0.002,
+            0.5
+          ],
+          "ki_pitch": [
+            1e-05,
+            0.2
+          ],
+          "kd_pitch": [
+            0.0001,
+            0.5
+          ],
+          "kp_hdg": [
+            0.05,
+            5.0
+          ],
+          "ki_hdg": [
+            1e-05,
+            0.1
+          ]
+        },
+        "ramp_fpm": 600.0,
+        "ramp_accel_g": 0.1,
+        "alt_ref_ff": true,
+        "w_comfort": 0.05,
+        "comfort_params": {
+          "pitch_free_deg": 5.0,
+          "q_free_dps": 3.0
+        },
+        "gene_kinds": {
+          "ki_alt": "log0",
+          "ki_pitch": "log0",
+          "ki_hdg": "log0"
+        },
+        "roll_kp": 0.05,
+        "roll_kd": 0.02,
+        "aircraft_root": "flight-dynamics/jsbsim_root",
+        "heading_hold": true,
+        "bank_limit_deg": 16.0,
+        "hdg_i_limit_deg": 10.0,
+        "w_heading": 0.01,
+        "hdg_rms_ref_deg": 5.0
+      },
+      "phase2_T38": {
+        "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+        "h0_ft": 10000.0,
+        "speed_kts": 300.0,
+        "duration_s": 90.0,
+        "steps_rel_ft": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            5.0,
+            200.0
+          ],
+          [
+            50.0,
+            0.0
+          ]
+        ],
+        "min_agl_ft": 500.0,
+        "min_kcas": 180.0,
+        "max_abs_theta_deg": 30.0,
+        "max_abs_phi_deg": 45.0,
+        "nz_limits": [
+          -3.0,
+          7.33
+        ],
+        "max_alt_err_ft": 1000.0,
+        "pitch_cmd_limits_deg": [
+          -10.0,
+          15.0
+        ],
+        "alt_i_limit_deg": 5.0,
+        "pitch_i_limit": 0.4,
+        "thr_kp": 0.036674370574350905,
+        "thr_ki": 0.007334874114870181,
+        "throttle_max": 0.5,
+        "throttle_all_engines": true,
+        "gear_up": true,
+        "alt_err_scale_ft": 100.0,
+        "itae_t0_s": 10.0,
+        "itae_cap_s": 30.0,
+        "w_effort": 2.0,
+        "gain_bounds": {
+          "kp_alt": [
+            0.000608,
+            0.608
+          ],
+          "ki_alt": [
+            3.04e-07,
+            0.5
+          ],
+          "kd_alt": [
+            0.00304,
+            3.0
+          ],
+          "kp_pitch": [
+            0.002,
+            2.48
+          ],
+          "ki_pitch": [
+            1e-05,
+            0.992
+          ],
+          "kd_pitch": [
+            0.0001,
+            2.48
+          ],
+          "kp_hdg": [
+            0.164,
+            16.4
+          ],
+          "ki_hdg": [
+            3.29e-05,
+            0.329
+          ]
+        },
+        "ramp_fpm": 600.0,
+        "ramp_accel_g": 0.1,
+        "alt_ref_ff": true,
+        "w_comfort": 0.05,
+        "comfort_params": {
+          "pitch_free_deg": 5.0,
+          "q_free_dps": 3.0
+        },
+        "gene_kinds": {
+          "ki_alt": "log0",
+          "ki_pitch": "log0",
+          "ki_hdg": "log0"
+        },
+        "roll_kp": 0.11802009775780833,
+        "roll_kd": 0.04720803910312333,
+        "aircraft_root": "flight-dynamics/jsbsim_root",
+        "heading_hold": true,
+        "bank_limit_deg": 25.0,
+        "hdg_i_limit_deg": 10.0,
+        "w_heading": 0.01,
+        "hdg_rms_ref_deg": 5.0
+      },
+      "phase2_737": {
+        "_why": "phase1_hdg.json (v4 controller = Genome phase2_flex's phase1_v4 block) with v5's ki_alt upper bound 0.5",
+        "h0_ft": 10000.0,
+        "speed_kts": 250.0,
+        "duration_s": 90.0,
+        "steps_rel_ft": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            5.0,
+            200.0
+          ],
+          [
+            50.0,
+            0.0
+          ]
+        ],
+        "min_agl_ft": 500.0,
+        "min_kcas": 195.0,
+        "max_abs_theta_deg": 30.0,
+        "max_abs_phi_deg": 45.0,
+        "nz_limits": [
+          -1.0,
+          2.5
+        ],
+        "max_alt_err_ft": 1000.0,
+        "pitch_cmd_limits_deg": [
+          -5.0,
+          10.0
+        ],
+        "alt_i_limit_deg": 5.0,
+        "pitch_i_limit": 0.4,
+        "thr_kp": 0.0350554435483871,
+        "thr_ki": 0.007011088709677419,
+        "throttle_max": 1.0,
+        "throttle_all_engines": true,
+        "gear_up": true,
+        "alt_err_scale_ft": 100.0,
+        "itae_t0_s": 10.0,
+        "itae_cap_s": 30.0,
+        "w_effort": 2.0,
+        "gain_bounds": {
+          "kp_alt": [
+            0.00073,
+            0.73
+          ],
+          "ki_alt": [
+            3.65e-07,
+            0.5
+          ],
+          "kd_alt": [
+            0.00365,
+            3.0
+          ],
+          "kp_pitch": [
+            0.002,
+            7.51
+          ],
+          "ki_pitch": [
+            1e-05,
+            3.01
+          ],
+          "kd_pitch": [
+            0.0001,
+            7.51
+          ],
+          "kp_hdg": [
+            0.137,
+            13.7
+          ],
+          "ki_hdg": [
+            2.74e-05,
+            0.274
+          ]
+        },
+        "ramp_fpm": 600.0,
+        "ramp_accel_g": 0.1,
+        "alt_ref_ff": true,
+        "w_comfort": 0.05,
+        "comfort_params": {
+          "pitch_free_deg": 5.0,
+          "q_free_dps": 3.0
+        },
+        "gene_kinds": {
+          "ki_alt": "log0",
+          "ki_pitch": "log0",
+          "ki_hdg": "log0"
+        },
+        "roll_kp": 0.616155991923067,
+        "roll_kd": 0.2464623967692268,
+        "aircraft_root": "flight-dynamics/jsbsim_root",
+        "heading_hold": true,
+        "bank_limit_deg": 25.0,
+        "hdg_i_limit_deg": 10.0,
+        "w_heading": 0.01,
+        "hdg_rms_ref_deg": 5.0
+      }
+    },
+    "aircraft": [
+      {
+        "name": "c172x",
+        "profile": "phase2_c172x",
+        "overrides": {},
+        "seed": 1,
+        "resolved_profile": {
+          "aircraft": "c172x",
+          "h0_ft": 4000.0,
+          "speed_kts": 100.0,
+          "duration_s": 90.0,
+          "steps_rel_ft": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              5.0,
+              200.0
+            ],
+            [
+              50.0,
+              0.0
+            ]
+          ],
+          "min_agl_ft": 500.0,
+          "min_kcas": 55.0,
+          "max_abs_theta_deg": 30.0,
+          "max_abs_phi_deg": 45.0,
+          "nz_limits": [
+            -1.0,
+            3.8
+          ],
+          "max_alt_err_ft": 1000.0,
+          "pitch_cmd_limits_deg": [
+            -8.0,
+            12.0
+          ],
+          "alt_i_limit_deg": 5.0,
+          "pitch_i_limit": 0.4,
+          "thr_kp": 0.05,
+          "thr_ki": 0.01,
+          "throttle_max": 1.0,
+          "throttle_all_engines": true,
+          "gear_up": true,
+          "roll_kp": 0.05,
+          "roll_kd": 0.02,
+          "heading_hold": true,
+          "bank_limit_deg": 16.0,
+          "hdg_i_limit_deg": 10.0,
+          "w_heading": 0.01,
+          "hdg_rms_ref_deg": 5.0,
+          "w_hold": 0.0,
+          "hold_ref_ft": 5.0,
+          "hold_settle_s": 5.0,
+          "disturbance_scenario": null,
+          "ramp_fpm": 600.0,
+          "ramp_accel_g": 0.1,
+          "alt_ref_ff": true,
+          "alt_err_scale_ft": 100.0,
+          "itae_t0_s": 10.0,
+          "itae_cap_s": 30.0,
+          "w_effort": 2.0,
+          "fail_base": 1000.0,
+          "w_comfort": 0.05,
+          "comfort_params": {
+            "pitch_free_deg": 5.0,
+            "q_free_dps": 3.0
+          },
+          "comfort_weights": {},
+          "gain_bounds": {
+            "kp_alt": [
+              0.002,
+              2.0
+            ],
+            "ki_alt": [
+              1e-06,
+              0.5
+            ],
+            "kd_alt": [
+              0.01,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              0.5
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.2
+            ],
+            "kd_pitch": [
+              0.0001,
+              0.5
+            ],
+            "kp_hdg": [
+              0.05,
+              5.0
+            ],
+            "ki_hdg": [
+              1e-05,
+              0.1
+            ]
+          },
+          "gene_kinds": {
+            "ki_alt": "log0",
+            "ki_pitch": "log0",
+            "ki_hdg": "log0"
+          },
+          "aircraft_root": "evolution/_fd_pin_p3b1r1/jsbsim_root",
+          "origin_lat_deg": null,
+          "origin_lon_deg": null,
+          "extra_props": {}
+        }
+      },
+      {
+        "name": "T38",
+        "profile": "phase2_T38",
+        "overrides": {},
+        "seed": 2,
+        "resolved_profile": {
+          "aircraft": "T38",
+          "h0_ft": 10000.0,
+          "speed_kts": 300.0,
+          "duration_s": 90.0,
+          "steps_rel_ft": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              5.0,
+              200.0
+            ],
+            [
+              50.0,
+              0.0
+            ]
+          ],
+          "min_agl_ft": 500.0,
+          "min_kcas": 180.0,
+          "max_abs_theta_deg": 30.0,
+          "max_abs_phi_deg": 45.0,
+          "nz_limits": [
+            -3.0,
+            7.33
+          ],
+          "max_alt_err_ft": 1000.0,
+          "pitch_cmd_limits_deg": [
+            -10.0,
+            15.0
+          ],
+          "alt_i_limit_deg": 5.0,
+          "pitch_i_limit": 0.4,
+          "thr_kp": 0.036674370574350905,
+          "thr_ki": 0.007334874114870181,
+          "throttle_max": 0.5,
+          "throttle_all_engines": true,
+          "gear_up": true,
+          "roll_kp": 0.11802009775780833,
+          "roll_kd": 0.04720803910312333,
+          "heading_hold": true,
+          "bank_limit_deg": 25.0,
+          "hdg_i_limit_deg": 10.0,
+          "w_heading": 0.01,
+          "hdg_rms_ref_deg": 5.0,
+          "w_hold": 0.0,
+          "hold_ref_ft": 5.0,
+          "hold_settle_s": 5.0,
+          "disturbance_scenario": null,
+          "ramp_fpm": 600.0,
+          "ramp_accel_g": 0.1,
+          "alt_ref_ff": true,
+          "alt_err_scale_ft": 100.0,
+          "itae_t0_s": 10.0,
+          "itae_cap_s": 30.0,
+          "w_effort": 2.0,
+          "fail_base": 1000.0,
+          "w_comfort": 0.05,
+          "comfort_params": {
+            "pitch_free_deg": 5.0,
+            "q_free_dps": 3.0
+          },
+          "comfort_weights": {},
+          "gain_bounds": {
+            "kp_alt": [
+              0.000608,
+              0.608
+            ],
+            "ki_alt": [
+              3.04e-07,
+              0.5
+            ],
+            "kd_alt": [
+              0.00304,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              2.48
+            ],
+            "ki_pitch": [
+              1e-05,
+              0.992
+            ],
+            "kd_pitch": [
+              0.0001,
+              2.48
+            ],
+            "kp_hdg": [
+              0.164,
+              16.4
+            ],
+            "ki_hdg": [
+              3.29e-05,
+              0.329
+            ]
+          },
+          "gene_kinds": {
+            "ki_alt": "log0",
+            "ki_pitch": "log0",
+            "ki_hdg": "log0"
+          },
+          "aircraft_root": "evolution/_fd_pin_p3b1r1/jsbsim_root",
+          "origin_lat_deg": null,
+          "origin_lon_deg": null,
+          "extra_props": {}
+        }
+      },
+      {
+        "name": "737",
+        "profile": "phase2_737",
+        "overrides": {},
+        "seed": 3,
+        "resolved_profile": {
+          "aircraft": "737",
+          "h0_ft": 10000.0,
+          "speed_kts": 250.0,
+          "duration_s": 90.0,
+          "steps_rel_ft": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              5.0,
+              200.0
+            ],
+            [
+              50.0,
+              0.0
+            ]
+          ],
+          "min_agl_ft": 500.0,
+          "min_kcas": 195.0,
+          "max_abs_theta_deg": 30.0,
+          "max_abs_phi_deg": 45.0,
+          "nz_limits": [
+            -1.0,
+            2.5
+          ],
+          "max_alt_err_ft": 1000.0,
+          "pitch_cmd_limits_deg": [
+            -5.0,
+            10.0
+          ],
+          "alt_i_limit_deg": 5.0,
+          "pitch_i_limit": 0.4,
+          "thr_kp": 0.0350554435483871,
+          "thr_ki": 0.007011088709677419,
+          "throttle_max": 1.0,
+          "throttle_all_engines": true,
+          "gear_up": true,
+          "roll_kp": 0.616155991923067,
+          "roll_kd": 0.2464623967692268,
+          "heading_hold": true,
+          "bank_limit_deg": 25.0,
+          "hdg_i_limit_deg": 10.0,
+          "w_heading": 0.01,
+          "hdg_rms_ref_deg": 5.0,
+          "w_hold": 0.0,
+          "hold_ref_ft": 5.0,
+          "hold_settle_s": 5.0,
+          "disturbance_scenario": null,
+          "ramp_fpm": 600.0,
+          "ramp_accel_g": 0.1,
+          "alt_ref_ff": true,
+          "alt_err_scale_ft": 100.0,
+          "itae_t0_s": 10.0,
+          "itae_cap_s": 30.0,
+          "w_effort": 2.0,
+          "fail_base": 1000.0,
+          "w_comfort": 0.05,
+          "comfort_params": {
+            "pitch_free_deg": 5.0,
+            "q_free_dps": 3.0
+          },
+          "comfort_weights": {},
+          "gain_bounds": {
+            "kp_alt": [
+              0.00073,
+              0.73
+            ],
+            "ki_alt": [
+              3.65e-07,
+              0.5
+            ],
+            "kd_alt": [
+              0.00365,
+              3.0
+            ],
+            "kp_pitch": [
+              0.002,
+              7.51
+            ],
+            "ki_pitch": [
+              1e-05,
+              3.01
+            ],
+            "kd_pitch": [
+              0.0001,
+              7.51
+            ],
+            "kp_hdg": [
+              0.137,
+              13.7
+            ],
+            "ki_hdg": [
+              2.74e-05,
+              0.274
+            ]
+          },
+          "gene_kinds": {
+            "ki_alt": "log0",
+            "ki_pitch": "log0",
+            "ki_hdg": "log0"
+          },
+          "aircraft_root": "evolution/_fd_pin_p3b1r1/jsbsim_root",
+          "origin_lat_deg": null,
+          "origin_lon_deg": null,
+          "extra_props": {}
+        }
+      }
+    ],
+    "fidelity": "full_a1_b1",
+    "multi_fidelity": {
+      "enabled": true,
+      "screen": "rigid",
+      "top_k": 4,
+      "min_full_frac": 0.25,
+      "mid_k": null,
+      "ladder": [
+        "rigid",
+        "full_a1_b1"
+      ]
+    },
+    "fidelity_per_aircraft": {
+      "c172x": {
+        "reduced_gate": 0.9
+      },
+      "T38": {
+        "reduced_gate": 1.0
+      },
+      "737": {
+        "reduced_gate": 1.0
+      }
+    },
+    "struct_genes": true,
+    "viz": "off",
+    "struct_asymmetric": false,
+    "init": {
+      "mode": "baseline",
+      "sigma": 0.1,
+      "blocks": [
+        "struct"
+      ]
+    },
+    "multi_fidelity_per_aircraft": {},
+    "pin_model_version": {
+      "c172x": {
+        "rigid": "rigid:jsbsim1.3.1:e0a73fc9",
+        "full_a1_b1": "full_a1_b1:flexv2b1:56ee798e"
+      },
+      "T38": {
+        "rigid": "rigid:jsbsim1.3.1:69ac40f7",
+        "full_a1_b1": "full_a1_b1:flexv2b1:7e871977"
+      },
+      "737": {
+        "rigid": "rigid:jsbsim1.3.1:19463d4b",
+        "full_a1_b1": "full_a1_b1:flexv2b1:6523753c"
+      }
+    },
+    "genome_kind": "phase3_b1",
+    "shape_ops": {
+      "init": "identity",
+      "init_sigma_half_range": 0.25,
+      "mutation_sigma_half_range": 0.25,
+      "mutation_rate": 0.15,
+      "log_genes": [
+        "wing_chord_taper_1",
+        "wing_chord_taper_2",
+        "wing_chord_taper_3"
+      ],
+      "crossover": "blocks"
+    }
+  },
+  "provenance": {
+    "seed": 1,
+    "scenario_seed": 1,
+    "git": {
+      "sha": "5850721fb45c474b7af6351863f782661ce6ddf8",
+      "dirty": false,
+      "branch": "flight-sim-prototype",
+      "repo": "/workspace/sandbox-run-20261006-023947/HTML5_Genetic_Cars"
+    },
+    "git_sha": "5850721fb45c474b7af6351863f782661ce6ddf8",
+    "jsbsim_version": "1.3.1",
+    "code_sha": "6e8239d0e3c8634f",
+    "host": "grok-bot-vm-405693560",
+    "cpu_count": 8,
+    "usable_cores": 8,
+    "workers": 8,
+    "python": "3.13.5",
+    "numpy": "2.5.3",
+    "platform": "Linux-6.12.94+-x86_64-with-glibc2.41"
+  },
+  "created": "2026-10-06T20:08:46-07:00"
+}

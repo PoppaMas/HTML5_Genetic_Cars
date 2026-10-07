@@ -717,6 +717,47 @@ sweep still come from the strips; the HUD line adds "FD r1 node geometry". Fusel
 737 the FD wing root LE (2.87 m) sits aft of the procedural one (1.67 m). `trajdiff` trusts
 `structure.modal_twist_sign_fixed: true` (source `header`) instead of detecting the modal twist sign from data.
 
+**Pilot `phase3b1r1-pilot-s1`** (64x60, gens 0/29/59; 2026-10-06 ~21:30 MST): `tools/build_b1_page.sh
+phase3b1r1-pilot-s1 --replay-proof --shot-prefix phase3b1r1_pilot_` -> 19.39 MB raw / 1.50 MB gzip, 10 Hz stride 2,
+all gens; proof EXACT 9 rows x 3 scenarios (rel 0.0, pinned), 9/9 files 681/681 channels bit-identical; ER's check value
+T38 g59 T38:s0 = 0.07783981426439955 reproduced in a fresh process. Nothing in the script depended on gens 0/2/4.
+
+### A/B page: baseline vs tweaked at matching gens
+```bash
+tools/build_b1_page.sh phase3b1r1-pilot-s1,phase3b1r1-pilot-tweaked-s1 --replay-proof --reuse-proof --shot-prefix phase3b1r1_ab_
+tools/build_b1_page.sh phase3b1r1-pilot-tweaked-s1 --replay-proof --shot-prefix phase3b1r1_tweaked_     # tweaked alone
+```
+Two runs of different families (`run_family` = id without the last `-` token) switch to A/B automatically (`--ab` to
+force, `--no-ab` for a plain multi-run page). Page `data/<baseline>_vs_<tag>_ab_standalone.html`, only the gens both
+runs logged, default view = every aircraft of both runs at the final common gen. Short names drop the `-` tokens both
+ids share ("base" / "tweaked"); they appear in the run selector, gen list, legend and HUD title. Presets: "A/B base vs
+tweaked g<N>" (per aircraft + all, `ab:<ac|*>:<gen>`) for every common gen and "A/B planform top g<final>"
+(`abplan:<ac>:<gen>`, top camera). Screenshots `ab_formation_g<N>_defl8`, `ab_planform_top_<ac>_g<N>`,
+`ab_T38_g<N>_t45_chase_defl8`. The proof runs per run; `--reuse-proof` reuses an existing EXACT proof of the same gens
+whose replay model_versions contain the pins and which is newer than the trajectory files. Summary adds an A/B cost
+table per aircraft and gen. Rehearsed on a renamed copy of the pilot (tweaked = gens 0/59 only): matching gens [0, 59],
+16.7 MB (10 Hz stride 4), both proofs EXACT.
+
+Viewer: the plan-view camera fits the formation into the free band between the side panel and the HUD / legend / chart
+(measured from the DOM); the legend moves to the top, left of the HUD, when it would run into the chart (A/B with six
+aircraft); key `c` now cycles through `top` too. `screenshots.py` warns when an aircraft's centre or a wing tip sits
+under an overlay (`render.covered`); the build fails when a requested screenshot is missing. Shot views may end in `+fit` (`rear+fit`, `top+fit`): the aircraft is fitted into that free band instead of the screen centre (B1 close-ups). URL `hud=0` hides the HUD (A/B T38 shot). Legend: when it moves to the top it is clipped so it stays clear of the side panel.
+
+### P3-B2a viewer support (`notes/b2_fd_spec.md`, FD INTERFACE_v2 §15.6)
+Every B2 key is optional. With no B2 key present, or all of them at default, rendering is B1 r1 exactly (tests compare
+station outputs). With B2 fields on wingR / wingL:
+- dihedral: FD node z (dihedral delta, baked in by FD as z += -(|y| - |y0|) tan dGamma) relative to the root node is
+  added to the procedural wing (and the c172x struts). It is not recomputed from `dihedral_delta_deg`.
+- HUD: `B2a dihedral Δ +3.0° (baseline 1.7°) · NACA 2412`, a `section t/c root→tip · camber root→tip` line and a small
+  root (solid) / tip (dashed) NACA-4-style section sketch built from chord + tc_local + camber_meq_pct_local (metadata only).
+- B2b keys (`area_scale`, `aspect_scale`): stage "B2b", a HUD size line, wing span from FD's node tip.
+- On-page note "B2a: dihedral baked into FD node layout; t/c and camber shown as section metadata." (added to any `note=`).
+
+Fixture: `$PY tools/make_b2a_fixture.py` (checks `FROZEN_B2a.md5` first) -> `tests/fixtures/b2a_c172x_node_layout.json`
+(c172x, pilot g59 structure + B1 shape, B2a dihedral +3 / tc_root 1.2 / camber_root +1) and `data/b2a_fixture/` (same
+30 s flight with B1 r1 geometry as g0 and B2a geometry as g1; display fixture, not a B2 simulation).
+`$PY tools/build_b2a_page.py` -> `data/b2a_fixture_standalone.html` + `screenshots/b2a_*.png`. Tests: `tests/test_b2a.py`.
+
 ## Soft-body v2: FD v2 node mapping (`sim_bridge/v2_map.py`, version 2.0.0)
 
 A trajectory may carry an optional `structure` block plus channels named `<component>.<dof>.<node_idx>`:
@@ -959,7 +1000,7 @@ python3 -m venv .venv-shots && .venv-shots/bin/pip install playwright==1.48.0
   and Evolution Runner runs all work. There are no console errors.
 * **Replay** (`--bench data/replays/phase1-s1/proof-g0.9.19/viewer.html --shots replay --prefix replay_`): 4 shots,
   no console/page errors; HUD shows `cost … (lower=better; scenario k: …)` and the replay/fidelity/model_version line.
-* **Tests** (`PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -p no:cacheprovider tests/`): 73 passed, 0 skipped
+* **Tests** (`PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -p no:cacheprovider tests/`): 82 passed, 1 skipped (test_replay.py:39, FD v2 model root not prepared here)
   (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15, test_planform 16, test_build_b1 2; FlexState /3 + pin= path exercised;
   the replay ladder uses ER's frozen `_fd_pin_post_mass` FD copy when FD's live hashes have moved on).
 * **Phase 2 seeds** (`--bench data/phase2_pilot_standalone.html --shots phase2_seeds --prefix phase2_pilot_seeds_`):
@@ -1020,3 +1061,32 @@ type="FLIGHTGEAR" port="5500" protocol="UDP" rate="30"/>` directive, or use
 `fdm.set_output_directive(...)`, and run `fgfs --fdm=null --native-fdm=socket,in,30,,5500,udp`.
 Replaying a logged genome through `trajlog.py` with that output enabled would show the same
 flight in FlightGear's scenery. This was not implemented.
+
+### Phase 3-B1 r1 tweaked pilot + A/B (2026-10-06)
+
+* `data/phase3b1r1-pilot-tweaked-s1_standalone.html` (19.4 MB, 10 Hz, stride 2) and
+  `data/phase3b1r1-pilot-s1_vs_tweaked_ab_standalone.html` (14.3 MB, 5 Hz, stride 4), gens 0/29/59.
+  Both replay proofs EXACT (9 rows x 3 scenarios, rel 0.0, pinned, 681/681 channels bit-identical); frozen md5 13/13 OK;
+  ER's check value T38 g59 T38:s0 = 0.07474663523979805 reproduced via `_fd_pin_p3b1r1`.
+* A/B g59 cost (base -> tweaked): 737 0.135173 -> 0.140783 (+4.2%), T38 0.109280 -> 0.109360 (+0.1%),
+  c172x 0.248063 -> 0.240135 (-3.2%).
+
+### Display-only CG centring (c172x)
+
+c172x FD nodes are measured from the CG, which sits at y = +4.18 in (asymmetric pointmasses), so the logged
+fuselage axis is at y ~ -0.107 m. When the fuselage axis is a straight line at constant y with
+1e-4 < |y| < 0.5 m, the viewer shifts all node y values by -y **on display copies only** (wings become symmetric,
+roots +/-0.54864 m). Data, costs and proofs are untouched. On by default; `?cgcentre=0` shows nodes as logged.
+The HUD says when it is active. Test: `tests/test_cg_centre.py`.
+
+### Phase 3-B2a smoke (2026-10-07)
+
+* **SUPERSEDED:** `data/phase3b2a-smoke-s1_standalone.html` (run `phase3b2a-smoke-s1`). Kept for reference, not deleted.
+  Its best-of-gen proof was EXACT, but a full replay of all 240 individuals x 3 scenarios found 3 non-exact c172x rows
+  (g0:r9, g0:r10, g1:r15). ER traced this to a batch-mode bug in fidelity.py:946: energy/speed-guard terms were dropped
+  for ok scenarios when another scenario of the same genome overloaded.
+* **Current:** `data/phase3b2a-smoke-detfix-s1_standalone.html` (run `phase3b2a-smoke-detfix-s1`, ER code snapshot
+  `/workspace/er_smoke_code_b2a_detfix`, code_sha c72951169fbccafe, FD `_fd_pin_p3b2a`). Replay with
+  `SIMBRIDGE_EVOLUTION_ROOT=/workspace/er_smoke_code_b2a_detfix/evolution`.
+* Multi-seed A/B: `tools/build_b1_page.sh <base-s1>,<tweaked-s1>,<base-s2>,<tweaked-s2> --replay-proof --reuse-proof`
+  builds one page with labels base-sN / tweaked-sN (viewer params `labels=`, `abseeds=1`) and a per-seed cost table.

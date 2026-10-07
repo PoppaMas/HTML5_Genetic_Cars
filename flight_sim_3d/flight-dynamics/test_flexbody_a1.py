@@ -166,7 +166,7 @@ def test_a1_model_version_distinct_pinned_and_tracking(tmp_path, monkeypatch):
     # A1 code is hashed (copy of flexbody_a1.py with one extra byte)
     src = os.path.join(HERE, "flexbody_a1.py")
     cp = tmp_path / "flexbody_a1.py"
-    shutil.copy(src, cp)
+    shutil.copyfile(src, cp)  # content only: the frozen source is read-only
     with open(cp, "a") as f:
         f.write("\n")
     monkeypatch.setattr(fa, "CODE_FILES_A1", tuple(cp if p == src else p for p in fa.CODE_FILES_A1))

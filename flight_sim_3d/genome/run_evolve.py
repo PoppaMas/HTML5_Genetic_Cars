@@ -61,6 +61,25 @@ def post_run(task, summary, out):
     return detail, rep
 
 
+def apply_ga_overrides(task, cfg, rest) -> dict:
+    """Preset ``ga`` block (phase3_b1_x: ``ga.elite``) onto evolve.py's parsed config. Tasks without it (every other
+    preset) leave cfg exactly as evolve.parse_args made it (CLI / --config / evolve.py default). An explicit ``--elite``
+    on the command line wins over the preset (with a warning); the preset wins over --config files and the default."""
+    ov = dict(getattr(task, "ga_overrides", None) or {})
+    if "elite" not in ov:
+        return cfg
+    cli = any(x == "--elite" or x.startswith("--elite=") for x in rest)
+    if cli:
+        if cfg["elite"] != ov["elite"]:
+            print(f"[genome] WARNING: --elite {cfg['elite']} on the command line overrides preset ga.elite {ov['elite']}")
+        return cfg
+    cfg["elite"] = int(ov["elite"])
+    if cfg["elite"] >= cfg["pop_size"]:
+        raise SystemExit(f"preset ga.elite {cfg['elite']} must be smaller than pop_size {cfg['pop_size']}")
+    print(f"[genome] ga.elite = {cfg['elite']} (preset {task.name})")
+    return cfg
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     rest = []
@@ -97,6 +116,7 @@ def main(argv=None):
         evolve.ga = init_pop.seeded_ga(evolve.ga, task)
         print(f"[genome] generation 0: {task.init}")
     cfg = evolve.parse_args(rest)
+    apply_ga_overrides(task, cfg, rest)
     summary = evolve.run(cfg)
     if not a.no_post:
         post_run(task, summary, cfg["out"])

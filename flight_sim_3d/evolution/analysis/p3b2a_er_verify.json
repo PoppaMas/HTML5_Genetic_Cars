@@ -1,0 +1,106 @@
+{
+ "fd_dir": "/workspace/flight-sim-team/evolution/_fd_pin_p3b2a",
+ "cases": {
+  "baseline": {
+   "b1": 0.2419400885448951,
+   "b2a": 0.2419400885448951,
+   "b2a_energy_on": 0.2419400885448951,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b",
+   "expected": 0.2419400885448951,
+   "matches_expected": true
+  },
+  "soft_tip_taper4_0.75": {
+   "b1": 0.25879473336084763,
+   "b2a": 0.25879473336084763,
+   "b2a_energy_on": 0.25879473336084763,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b",
+   "expected": 0.25879473336084763,
+   "matches_expected": true
+  },
+  "washout_tip_m2": {
+   "b1": 0.24368540375238332,
+   "b2a": 0.24368540375238332,
+   "b2a_energy_on": 0.24368540375238332,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "chord_taper3_0.9": {
+   "b1": 0.24733718272264985,
+   "b2a": 0.24733718272264985,
+   "b2a_energy_on": 0.24733718272264985,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "sweep_p3": {
+   "b1": 0.24342259340914543,
+   "b2a": 0.24342259340914543,
+   "b2a_energy_on": 0.24342259340914543,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "combo_fd_bench": {
+   "b1": 0.26347717007287635,
+   "b2a": 0.26347717007287635,
+   "b2a_energy_on": 0.26347717007287635,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "twist_mid_m2": {
+   "b1": 0.34548545795950564,
+   "b2a": 0.34548545795950564,
+   "b2a_energy_on": 0.34548545795950564,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "twist_mid_p1": {
+   "b1": 0.2412728501294835,
+   "b2a": 0.2412728501294835,
+   "b2a_energy_on": 0.2412728501294835,
+   "status": "ok",
+   "bit_identical_b2a_vs_b1": true,
+   "energy_on_equal": true,
+   "J_energy": 0.0,
+   "J_speed_guard": 0.0,
+   "mv_b1": "full_a1_b1:flexv2b1:56ee798e",
+   "mv_b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  }
+ },
+ "all_ok": true
+}

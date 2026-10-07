@@ -1,0 +1,215 @@
+{
+ "run_dir": "evolution/runs/phase3b1r1-pilot-s2",
+ "code_root": "/workspace/er_pilot_code_b1r1",
+ "run_json_fd_dir": "evolution/_fd_pin_p3b1r1",
+ "this_process_fd_dir": "evolution/_fd_pin_p3b1r1",
+ "this_process_flexeval_b1": "evolution/_fd_pin_p3b1r1/flexeval_b1.py",
+ "validate_traj_exit": 0,
+ "files": {
+  "traj_737_phase3b1r1-pilot-s2_g0.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:6523753c",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.1791476085704369,
+   "row_id": "737:g0:r0",
+   "row_scenario_cost": 0.1791476085704369,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_737_phase3b1r1-pilot-s2_g29.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:6523753c",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.10214079135132216,
+   "row_id": "737:g29:r0",
+   "row_scenario_cost": 0.10214079135132216,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_737_phase3b1r1-pilot-s2_g59.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:6523753c",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.09762667137115692,
+   "row_id": "737:g59:r0",
+   "row_scenario_cost": 0.09762667137115692,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_T38_phase3b1r1-pilot-s2_g0.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:7e871977",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.14713889538958264,
+   "row_id": "T38:g0:r0",
+   "row_scenario_cost": 0.14713889538958264,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_T38_phase3b1r1-pilot-s2_g29.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:7e871977",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.07336415149675671,
+   "row_id": "T38:g29:r0",
+   "row_scenario_cost": 0.07336415149675671,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_T38_phase3b1r1-pilot-s2_g59.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:7e871977",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.07335263462466757,
+   "row_id": "T38:g59:r0",
+   "row_scenario_cost": 0.07335263462466757,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_c172x_phase3b1r1-pilot-s2_g0.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:56ee798e",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.3289177379100145,
+   "row_id": "c172x:g0:r0",
+   "row_scenario_cost": 0.3289177379100145,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_c172x_phase3b1r1-pilot-s2_g29.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:56ee798e",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.15419836395312736,
+   "row_id": "c172x:g29:r0",
+   "row_scenario_cost": 0.15419836395312736,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  },
+  "traj_c172x_phase3b1r1-pilot-s2_g59.json": {
+   "schema": "ga-flightsim-traj/2",
+   "planform_schema": "fd-planform/1",
+   "planform_source": "P3-B1",
+   "planform_genes_equal_row_shape": true,
+   "node_layout": "FD flexbody_b1.node_layout_b1 (P3-B1 r1)",
+   "node_layout_r1": true,
+   "shaped_wings_with_per_node_fields": {
+    "wingR": true,
+    "wingL": true
+   },
+   "modal_twist_sign_fixed": true,
+   "fidelity": "full_a1_b1",
+   "model_version": "full_a1_b1:flexv2b1:56ee798e",
+   "model_version_is_pin": true,
+   "scenario_cost": 0.14374977991795562,
+   "row_id": "c172x:g59:r0",
+   "row_scenario_cost": 0.14374977991795562,
+   "cost_equals_row": true,
+   "genome_equals_row": true
+  }
+ },
+ "fd_dir_ok": true,
+ "index_entries": 9,
+ "all_headers_ok": true,
+ "replay": {
+  "trajectory": "evolution/runs/phase3b1r1-pilot-s2/trajectories/traj_T38_phase3b1r1-pilot-s2_g59.json",
+  "individual_id": "T38:g59:r0",
+  "scenario_id": "T38:s0",
+  "traj_scenario_cost": 0.07335263462466757,
+  "row_per_scenario_cost": 0.07335263462466757,
+  "replayed_cost": 0.07335263462466757,
+  "replayed_model_version": "full_a1_b1:flexv2b1:7e871977",
+  "traj_model_version": "full_a1_b1:flexv2b1:7e871977",
+  "bit_identical_vs_traj": true,
+  "bit_identical_vs_row": true,
+  "model_version_match": true
+ }
+}

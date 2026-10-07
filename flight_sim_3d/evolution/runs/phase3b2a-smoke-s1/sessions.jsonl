@@ -1,0 +1,1 @@
+{"session": 0, "started": "2026-10-06T22:36:05-07:00", "host": "grok-bot-vm-405693560", "workers": 8, "schedule": "concurrent", "resumed_at_generation": {}, "argv": ["/workspace/er_smoke_code_b2a/evolution/batch.py", "--config", "/workspace/er_smoke_code_b2a/evolution/configs/phase3b2a_smoke.json", "--run-id", "phase3b2a-smoke-s1", "--workers", "8"]}

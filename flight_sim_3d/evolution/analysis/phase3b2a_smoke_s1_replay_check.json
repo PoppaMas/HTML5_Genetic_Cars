@@ -1,0 +1,37 @@
+{
+ "run_json_fd_dir": "evolution/_fd_pin_p3b2a",
+ "this_process_fd_dir": "evolution/_fd_pin_p3b2a",
+ "this_process_flexeval_b2": "evolution/_fd_pin_p3b2a/flexeval_b2.py",
+ "energy_cost": true,
+ "fd_dir_ok": true,
+ "replay": {
+  "trajectory": "evolution/runs/phase3b2a-smoke-s1/trajectories/traj_c172x_phase3b2a-smoke-s1_g2.json",
+  "individual_id": "c172x:g2:r0",
+  "scenario_id": "c172x:s0",
+  "dihedral_delta_deg": 0.7109912883592138,
+  "traj_genome_equals_row": true,
+  "traj_scenario_cost": 0.36295522019959575,
+  "row_per_scenario_cost": 0.36295522019959575,
+  "replayed_cost": 0.36295522019959575,
+  "replayed_energy_terms": {
+   "J_energy": 0.011925839212506437,
+   "J_speed_guard": 0.0,
+   "per_scenario": [
+    {
+     "J_energy": 0.011925839212506437,
+     "J_speed_guard": 0.0
+    }
+   ],
+   "w_E": 2.175,
+   "energy_drag_increment": 0.005483144465520201,
+   "speed_deficit_kts_mean": 1.0835044347813518,
+   "rule": "per scenario: w_E max(0, x_s) + w_E 3 max(0, deficit_s - 2 kt) / v_target_s; added to per-scenario cost of status-ok genomes (INTERFACE_v2 15.10.3; outside TERM_KEYS)",
+   "in_cost": true,
+   "cost_fd": 0.3510293809870893
+  },
+  "bit_identical_vs_traj": true,
+  "bit_identical_vs_row": true,
+  "replayed_model_version": "full_a1_b2a:flexv2b2a:847bed9b",
+  "model_version_match": true
+ }
+}

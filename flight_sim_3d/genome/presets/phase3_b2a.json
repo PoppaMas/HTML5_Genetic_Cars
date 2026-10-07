@@ -1,0 +1,86 @@
+{
+  "_comment": "P3-B2a (2026-10-06, opt-in, FD B2a SIGNED OFF ~21:31 PT): phase2_flex controller (8) + FD structure_v2 (12, P2.5 ranges) + FD shape_b2 active genes (9 = 6 B1 + dihedral + 2 camber; wing_tc_* LOCKED until ER wires J_energy) = 29 genes. Fidelity full_a1_b2a = FD flexeval_b2.evaluate (ER evaluate_genome when wired). locked_genes excluded from the encoded GA vector; evaluator injects FD defaults (1.0). struct_v2_source fd. Geometry gate = hard fail_cost. Init: controller uniform, structure baseline+N(0,0.10), shape = FD identity_u (locked stripped) + clipped Gaussian (B1 chord log-internal σ 0.25×half-range; B2 genes linear σ 0.125 in u). Operators: whole-block crossover; see PHASE3_B2_SKETCH.md.",
+  "name": "phase3_b2a",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure_v2": true,
+    "shape_b2": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01,
+      "structural_v2": 1.0
+    },
+    "params": {
+      "struct_v2_source": "fd"
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "structural_v2"
+    ]
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "version": 2,
+    "asymmetric": false,
+    "substeps": 2,
+    "fidelity": "full_a1_b2a",
+    "model_version_check": "warn"
+  },
+  "shape_b2": {
+    "er_profile_config": "evolution/configs/phase2_smoke_p25.json"
+  },
+  "locked_genes": [
+    "wing_tc_root_scale",
+    "wing_tc_tip_ratio"
+  ],
+  "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+      "structure_v2"
+    ],
+    "seed_runs": {}
+  },
+  "operators": {
+    "crossover": "blocks",
+    "shape": {
+      "init": "identity",
+      "log_genes": [
+        "wing_chord_taper_1",
+        "wing_chord_taper_2",
+        "wing_chord_taper_3"
+      ],
+      "init_sigma_half_range": 0.25,
+      "mutation_sigma_half_range": 0.25,
+      "mutation_rate": null
+    }
+  },
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
+}

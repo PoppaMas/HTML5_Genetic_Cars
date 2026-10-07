@@ -1,4 +1,19 @@
-# STATUS P3 — B1 r1 PINNED + SMOKED; r0 superseded; 64x60 B1 pilot (r1 pins) HELD for tomorrow pending Corleone (2026-10-06 ~19:01 PT)
+# STATUS P3 — B1 r1 64x60 PILOT DONE (`phase3b1r1-pilot-s1`); tweaked A/B RUNNING (2026-10-06 ~21:15 PT)
+
+**State (~21:15 PT):** the B1 r1 pilot `phase3b1r1-pilot-s1` (configs/phase3b1_pilot.json, rigid→full_a1_b1, 64×60, launched
+20:08 PT from snapshot `/workspace/er_pilot_code_b1r1`, fd_dir `evolution/_fd_pin_p3b1r1`) exited 0 at ~21:04 PT
+(3312.3 s, no resume). Bests (rank 0 of g59 at full_a1_b1): **c172x 0.248063 / T38 0.109280 / 737 0.135173** (r1 smoke
+0.3830 / 0.1571 / 0.2721; Phase 2 seeds 1–3 0.21539±0.01337 / 0.09580±0.00321 / 0.12348±0.00284 — not like-for-like, B1 is
++2.4 / +4.2 / +4.1 sd above). Σ J_* ≥ 0; no stiffness at floor; 0 geometry-gate rejects; best-so-far monotone. Shape
+contribution at the best (baseline-shape re-fly): −0.0075 / −0.0079 / −0.0007. Bound piles: c172x twist_mid −2° (84 %),
+737 sweep −5° (67 %); T38 twist_mid not piled (best +0.79). **Ladder:** rigid-vs-full rho mostly negative (mean −0.13 /
+−0.13 / −0.16, 70–77 % of gens < 0; also negative in the Phase 2 pilots) — within the promoted set the rigid order is no
+better than random. Trajectories g0/29/59 valid; replay bit for bit. Tweaked A/B `phase3b1r1-pilot-tweaked-s1` (elite 4,
+uniform shape crossover; snapshot `/workspace/er_pilot_code_b1r1_tweaked`) launched 21:06 PT, gen 0 identical, ETA ≈ 22:02 PT.
+**Details: `STATUS_P3B1_pilot.md`.**
+
+## Earlier (B1 r1 pin + smoke)
+# (was) STATUS P3 — B1 r1 PINNED + SMOKED; r0 superseded; 64x60 B1 pilot (r1 pins) HELD for tomorrow pending Corleone (2026-10-06 ~19:01 PT)
 
 **State:** FD shipped B1 r1 (signed off, frozen 18:47 PT). Evolution re-pinned to `model_versions_post_p3b1r1.json`,
 froze an FD copy for replay (`evolution/_fd_pin_p3b1r1`), switched the full_a1_b1 node layout to FD's `node_layout_b1`,
@@ -235,3 +250,6 @@ J_wing_tip_bm_limit: A1 = station-exact, P2.5 = strip-discrete (different defini
 
 ## Non-goals (still)
 No GitHub push; no Phase 2 pin/cache breakage; no Phase 3 implementation; no parallel structural cost formula.
+
+## P3-B2a (2026-10-06 ~22:50 PT)
+Wired, not launched; see STATUS_P3B2a.md. A/B B1 (2 seeds, seed 3 skipped for time; see STATUS_P3B1_ab.md): mean paired Δ tweaked−baseline c172x −0.002053 (−0.85%, 1/2 seeds better), T38 +0.000234 (+0.22%, 0/2), 737 +0.003278 (+2.46%, 0/2), all ≤ ~1 Phase 2 seed sd → recommend the baseline operators for B2 (not _x). s2 runs phase3b1r1-pilot-s2 / phase3b1r1-pilot-tweaked-s2 replay bit-identical; screen probe g40 done (phase3b1r1_screen_vs_random_g40.json).
