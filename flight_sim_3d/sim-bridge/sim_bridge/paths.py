@@ -7,7 +7,8 @@ Layout assumed (both the local team tree and the phase-1 repo use it)::
         evolution/               SIMBRIDGE_EVOLUTION_ROOT (alias EVOLUTION_DIR)   default <team root>/evolution
             runs/                SIMBRIDGE_RUNS_ROOT                              default <evolution root>/runs
         flight-dynamics/         FLIGHT_DYNAMICS_DIR                              default <team root>/flight-dynamics
-            v2_results/model_versions_post_mass.json   SIMBRIDGE_FD_MODEL_VERSIONS (FD's current model_version strings)
+            v2_results/model_versions_post_*.json      SIMBRIDGE_FD_MODEL_VERSIONS (FD's current model_version strings;
+                                                       default: the newest such file)
     <team root>/../flight_sim/   SIMBRIDGE_SANDBOX (alias FLIGHT_SIM_DIR)         default <team root>/../flight_sim
 
 ``evolution`` is imported as a package, so the directory that contains it (its parent) goes on sys.path; with a
@@ -36,8 +37,19 @@ RUNS_ROOT = _env("SIMBRIDGE_RUNS_ROOT", default=os.path.join(EVOLUTION_ROOT, "ru
 FLIGHT_DYNAMICS_DIR = _env("FLIGHT_DYNAMICS_DIR", default=os.path.join(TEAM_ROOT, "flight-dynamics"))
 SANDBOX_DIR = _env("SIMBRIDGE_SANDBOX", "FLIGHT_SIM_DIR", default=os.path.join(os.path.dirname(TEAM_ROOT), "flight_sim"))
 DATA_DIR = _env("SIMBRIDGE_DATA_DIR", default=os.path.join(SIM_BRIDGE, "data"))
-FD_MODEL_VERSIONS = _env("SIMBRIDGE_FD_MODEL_VERSIONS",
-                         default=os.path.join(FLIGHT_DYNAMICS_DIR, "v2_results", "model_versions_post_mass.json"))
+
+
+def _newest_fd_model_versions(fd_dir):
+    """FD publishes one file per model change (model_versions_post_mass / _post_p25 / _post_p3a1 / _post_p3b1 ...);
+    the newest (mtime, then name) is FD's current set. Falls back to the post-mass name if none exist."""
+    import glob
+    c = glob.glob(os.path.join(fd_dir, "v2_results", "model_versions_post_*.json"))
+    if not c:
+        return os.path.join(fd_dir, "v2_results", "model_versions_post_mass.json")
+    return max(c, key=lambda p: (os.path.getmtime(p), os.path.basename(p)))
+
+
+FD_MODEL_VERSIONS = _env("SIMBRIDGE_FD_MODEL_VERSIONS", default=_newest_fd_model_versions(FLIGHT_DYNAMICS_DIR))
 
 ENV_VARS = {
     "FLIGHT_SIM_TEAM_ROOT": ("team root (contains evolution/, flight-dynamics/, sim-bridge/)", "parent of sim-bridge/"),
@@ -48,7 +60,7 @@ ENV_VARS = {
     "SIMBRIDGE_SANDBOX": ("prototype flight_sim checkout used by trajlog.py (alias FLIGHT_SIM_DIR)", "<team root>/../flight_sim"),
     "SIMBRIDGE_DATA_DIR": ("sim-bridge outputs (replays, demo data)", "sim-bridge/data"),
     "SIMBRIDGE_FD_MODEL_VERSIONS": ("FD's published current model_version per aircraft and fidelity (replay checks "
-                                    "replayed versions against it)", "<flight-dynamics>/v2_results/model_versions_post_mass.json"),
+                                    "replayed versions against it)", "newest <flight-dynamics>/v2_results/model_versions_post_*.json"),
 }
 
 
@@ -66,7 +78,9 @@ def fd_model_versions() -> dict:
     try:
         with open(FD_MODEL_VERSIONS) as f:
             d = json.load(f)
-        return d if isinstance(d, dict) else {}
+        # newer files carry doc / schema keys next to the aircraft entries: keep {aircraft: {fidelity: str}} only
+        return {k: v for k, v in d.items() if isinstance(v, dict) and all(isinstance(x, str) for x in v.values())} \
+            if isinstance(d, dict) else {}
     except (OSError, ValueError):
         return {}
 

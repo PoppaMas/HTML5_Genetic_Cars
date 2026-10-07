@@ -44,7 +44,11 @@ sim-bridge/
     c172x_seed1-pop48_standalone.html       self-contained viewer + 8 generations @10 Hz (3 MB)
     bench_jets-j1_standalone.html           self-contained 4-aircraft bench (c172x/T38/737/f16, g0/g9/g19 @10 Hz, 2.5 MB)
     phase1_standalone.html                  phase-1 seeds s1/s2/s3 (36 files) + bench_jets-j1 g19 (4 files) @10 Hz, 6.6 MB
-    phase2_pilot_s1_standalone.html         phase2-pilot-s1 full nodal soft-body, gen 0/29/59 × {c172x,T38,737} @10 Hz
+    phase2_pilot_standalone.html            phase2-pilot s1/s2/s3 full nodal soft-body, gen 0/29/59 × {c172x,T38,737}
+                                            (27 files) @10 Hz, display structure slim, 37 MB
+    phase2_pilot_s1_standalone.html         phase2-pilot-s1 only (ER's /2 re-export), gen 0/29/59, full node resolution
+    phase3b1_smoke_planform_standalone.html REAL P3-B1 planform data: ER's phase3b1-smoke-s1, g0/2/4 x 3 aircraft
+    planform_synthetic_standalone.html      SYNTHETIC P3-B1 planform loader test page (tests/fixtures/planform_synthetic)
     replays/<run_id>/<replay_id>/           replay.py output (trajectories/, index.json, replay_manifest.json, viewer.html);
                                             v2nodes-full-g19[-sc1] = real FD v2 full fidelity with nodal data
     examples/synthetic_softbody_test.json   SYNTHETIC soft-body test pattern (sinusoids, not a simulation) + _standalone.html
@@ -59,14 +63,23 @@ sim-bridge/
   tests/test_ids.py     unit tests: opaque string ids, mixed aircraft, elite/best selection, paths
   tests/test_v2_map.py  unit tests for v2_map (synthetic fixture in the documented FD v2 format)
   tests/test_v2_signs.py every sign convention vs flight-dynamics/v2_results/sign_probe.json + live FD mode probes
+  tests/test_planform.py P3-B1 planform header (python + node check of the viewer loader), display structure slim,
+                        wingR_modal twist-sign detection (pre-fix / post-fix ER files)
   tests/fixtures/       er_interface/phase1-s1/{run.json,genomes.jsonl} (copy of ER's real files, aircraft_root
                         made relative) + fake_evolution_eval.py (protocol edge cases) + v2_synthetic_raw.json (SYNTHETIC)
+                        + planform_synthetic/ (SYNTHETIC planform headers on short real phase2-pilot-s1 g59 flights)
   patches/              replay-er-format.patch (all of this work relative to the phase-1 staging snapshot);
                         v2-nodes.patch (only the FD/ER-answers update, on top of the previous replay-er-format.patch)
   screenshots/          PNGs from tools/screenshots.py (bench_jets_*.png = jet bench, phase1_*.png = phase 1,
                         replay_*.png = replay proof viewer, softbody_synthetic_*.png = synthetic soft-body test,
                         v2_*.png = real FD v2 full-fidelity replay, v2nodes_*.png = FD nodal data: wing in-plane,
-                        tail L/R, fin bending, phase2_pilot_*.png = phase2-pilot-s1 full soft-body)
+                        tail L/R, fin bending, phase2_pilot_*.png = phase2-pilot-s1 full soft-body,
+                        phase2_pilot_seeds_*.png = s1/s2/s3 page, planform_phase3b1_smoke_*.png = real planform,
+                        planform_synthetic_*.png = synthetic planform fixture)
+  tools/build_phase2_pages.py  rebuilds data/phase2_pilot_standalone.html + phase2_pilot_s1_standalone.html
+  tools/make_planform_fixture.py  writes tests/fixtures/planform_synthetic/ (FD planform_b1 decode, read-only import)
+  tools/build_b1_page.sh / .py  one-command Phase 3-B1 page: validate, auto-fit build, screenshots, --replay-proof
+  tools/build/jscheck.mjs  node check of the viewer's planform loader (used by tests/test_planform.py)
   tools/screenshots.py  headless checks + screenshots (--bench for a standalone multi-aircraft file)
   tools/check_traj.py   read-only data sanity report for a run (fitness ordering, tracking, trim, quat/Euler, NaNs)
   tools/compare_traj.py channel-by-channel diff of two trajectory directories
@@ -528,11 +541,21 @@ ER (answered by NOTE_v2_map / STATUS_v2_map, 09:44 PT — implemented on our sid
 - `evaluate(..., pin=)` raises on mismatch — replay passes run.json `pin_model_version`.
 - Traj schema `/2` at full with FE `wingR`/`wingL` + `wing*_modal`; reduced keeps modal names.
 
+Answered since (ER STATUS_P2_pilot, 2026-10-06 afternoon):
+- phase2-pilot-s1 re-exported as `/2` + FlexState /3 (`reexported: "schema3_v2_map"`; old `/1` copies in
+  `trajectories_traj1/`).
+- `fd_to_structure_channels` now uses `name.startswith("wingR")` (wingR_modal twist sign fixed).
+
 Still open:
-1. phase2-pilot-s1 on-disk traj files are still `/1` with 9-node `wingR`/`wingL` (written before the wiring). Will
-   ER re-export them as `/2`? Until then trajdiff rediscretises against the old files.
-2. `fd_to_structure_channels`: change `name == "wingR"` → `name.startswith("wingR")` so `wingR_modal.twist` keeps
-   the right-wing sign after the /3 rename (FE `wingR.twist` is correct; modal tip shows the flipped sign in the HUD).
+1. **No header marker for the wingR_modal twist fix.** Pre-fix and post-fix files have the same traj / flex-state
+   schema, v2_map version, `git_sha` and `twist_doc`; only s1 has `reexported`. phase2-pilot-s2 (written 13:14 PT)
+   is pre-fix, s1 (re-export) and s3 (14:12 PT) are post-fix. We detect it from the data (see "wingR_modal twist
+   sign" below). Could ER add e.g. `structure.v2_map.modal_twist_sign_fixed: true` (or bump a doc version) to new
+   exports?
+2. Planform (P3-B1): ANSWERED by ER's phase3b1-smoke-s1 export (18:20 PT): top-level `planform`, `symmetric: true` +
+   one `wing` block, `le_x_m` relative to the root quarter-chord point (+ forward), not absolute body x. The viewer only
+   uses LE offsets between strips, so this works as is. Still open: ER's `structure.axis_nodes_body_m` follow the
+   shaped sweep only (not the chord / AC shift), so FE nodes can sit slightly off the drawn chord-wise position.
 
 FD:
 1. Node coordinates have no dihedral and no HT height (documented in §11). Is a 3-D layout planned?
@@ -544,45 +567,155 @@ FD:
    (`root_bm_lbft_R`, `tip_twist_deg_R`, ...) differ from v2's, so only `struct.wing*_tip_dz` and
    `struct.elastic_dlift/dpitch/droll` are mapped there. Will reduced move to v2 key names?
 
-## Phase 2 pilot: `phase2-pilot-s1` (full soft-body, FD nodal)
+## Phase 2 pilot: `phase2-pilot-s1/s2/s3` (full soft-body, FD nodal)
 
-ER's phase-2 pilot (60 gens, multi-fidelity screen→full, pinned post-mass model_versions). Trajectories written by ER
-during the run are still `ga-flightsim-traj/1` with 9-node modal wings only (pre-v2_map wiring). Our replay at full
-fidelity through FlexState /3 produces `ga-flightsim-traj/2` with FE nodal wings (incl. `dx`), empennage, fuselage,
-`struct.*`, and `wing*_modal` kept for comparison.
+ER's phase-2 pilot (60 gens, rigid → full ladder, pinned post-mass model_versions; s1 c172x used rigid → reduced →
+full). ER's trajectory exports (scenario 0, best of g0 / g29 / g59) are all `ga-flightsim-traj/2` +
+`evolution-flex-state/3`: FE nodal wings (33 nodes, dz/dx/twist), `wing*_modal` (9 nodes), htail / vtail / fuselage,
+`struct.*`. s1 was re-exported by ER (old `/1` in `trajectories_traj1/`).
 
 ```bash
-# re-fly gens 0 / 29 / 59 at full (costs exact; nodal structure)
-PYTHONDONTWRITEBYTECODE=1 $PY replay.py --run phase2-pilot-s1 --gens 0,29,59 --fidelity full --html \
-  --replay-id phase2-pilot-s1-full-g0.29.59
-# standalone (scenario 0, default = gen 59 formation, flex ×8, chart = ramp error)
-# -> data/phase2_pilot_s1_standalone.html
-.venv-shots/bin/python tools/screenshots.py --bench data/phase2_pilot_s1_standalone.html \
-  --shots phase2 --prefix phase2_pilot_
+# pages (read ER's files only): data/phase2_pilot_standalone.html (s1/s2/s3) + data/phase2_pilot_s1_standalone.html
+PYTHONDONTWRITEBYTECODE=1 $PY tools/build_phase2_pages.py
+# replay proof at the PINNED post-mass FD (FD's live tree moved to P2.5 at ~13:55 PT -> full hashes changed, pin=
+# refuses); ER keeps the frozen post-mass FD sources in evolution/_fd_pin_post_mass (read-only use):
+FDP=$(cd ../evolution/_fd_pin_post_mass && pwd)
+for s in 2 3; do EVOLUTION_FD_DIR=$FDP FLIGHT_DYNAMICS_DIR=$FDP PYTHONDONTWRITEBYTECODE=1 $PY replay.py \
+  --run phase2-pilot-s$s --gens 0,59 --fidelity full --replay-id phase2-pilot-s$s-full-g0.59 \
+  --compare-traj ../evolution/runs/phase2-pilot-s$s/trajectories; done
+.venv-shots/bin/python tools/screenshots.py --bench data/phase2_pilot_standalone.html --shots phase2_seeds \
+  --prefix phase2_pilot_seeds_
 ```
 
-| aircraft | g0 cost | g29 | g59 | Δ g0→59 |
-|---|---:|---:|---:|---:|
-| c172x | 0.383367 | 0.236099 | 0.228694 | −0.155 |
-| T38 | 0.155968 | 0.099236 | 0.097582 | −0.058 |
-| 737 | 0.264272 | 0.128061 | 0.125939 | −0.138 |
+Best cost per logged generation (= ER's files and genomes.jsonl `is_best`; s2 matches ER's reported 0.2155 /
+0.0977 / 0.1241):
 
-Seeds: **s1 only** in the standalone (s2 exists under `evolution/runs/` but has no trajectories yet; s3 absent).
-When s2/s3 land with traj files, rebuild as `phase2_pilot_standalone.html` covering all three (same pattern as
-`phase1_standalone.html`).
+| aircraft | seed | g0 | g29 | g59 | g29→59 |
+|---|---|---:|---:|---:|---:|
+| c172x | s1 | 0.383367 | 0.236099 | 0.228694 | −3.1 % |
+| c172x | s2 | 0.340998 | 0.218916 | 0.215512 | −1.6 % |
+| c172x | s3 | 0.382846 | 0.210513 | 0.201961 | −4.1 % |
+| T38 | s1 | 0.155968 | 0.099236 | 0.097582 | −1.7 % |
+| T38 | s2 | 0.196627 | 0.100785 | 0.097710 | −3.1 % |
+| T38 | s3 | 0.142558 | 0.097465 | 0.092095 | −5.5 % |
+| 737 | s1 | 0.264272 | 0.128061 | 0.125939 | −1.7 % |
+| 737 | s2 | 0.215333 | 0.129068 | 0.124128 | −3.8 % |
+| 737 | s3 | 0.310691 | 0.124095 | 0.120378 | −3.0 % |
 
-Replay proof (2026-10-06): 9/9 costs exact at full with `pin=`; 9/9 traj files match ER's (61/61 channels
-bit-identical; wings compared at 9 coincident nodes because ER's on-disk files are still 9-node modal under
-`wingR`/`wingL`). FlexState API used: `flex_api=flexstate3`.
+Page: 27 entries (3 seeds × 3 aircraft × g0/29/59), 37.2 MB. To stay < 40 MB it uses 10 Hz slim channels plus a
+**display-only** structure slim (`colab_viewer._slim_structure`, `struct_slim={"node_stride": 2, "drop_modal": true,
+"drop_zero": true, "decimals": 4}`): wings 33 → 17 nodes, htail 26 → 14, `wing*_modal` and all-zero channels
+(wing dy) dropped, structure values at 0.1 mm / 1e-4 rad. No generation was dropped. Default: gen 59 of all three
+aircraft from s1 (`preset=last@phase2-pilot-s1`), formation, flex ×8, chart = ramp error. Presets: run selector,
+latest / mid / gen 0, gen 0 vs last per aircraft, gen 0/mid/last per aircraft (`evo:<ac>`), seeds s1/s2/s3 per
+aircraft (`seeds:<ac>`). The s1-only page was rebuilt from ER's `/2` files (full node resolution, 27.3 MB).
+
+Replay proof (2026-10-06 18:10 PT, `pin=` passed, pinned_mismatch []): s1 g0/29/59 9/9, s2 g0/59 6/6, s3 g0/59
+6/6 costs exact (rel 0.0); 21/21 files 489/489 channels bit-identical to ER's `/2` files (FE wings included, no
+rediscretisation now). s2's `wingR_modal.twist` is compared sign-corrected (pre-fix file, detected from the data).
+
+Seed spread (g59 cost, range / mean): c172x 0.2020–0.2287 (12 %), T38 0.0921–0.0977 (6 %), 737 0.1204–0.1259
+(4.5 %). Every best was still improving after g29 (last improvement g56–g59) but slowly (1.6–5.5 % from g29 to g59).
+Genes at bounds (normalised < 0.01 or > 0.99): `wing_nsm_root/tip` at the 0.8 floor on 7 of 9 bests (all but s1/s2
+c172x), `ki_alt` = 0 on T38 (3/3) and 737 (s1, s2), `ki_pitch` = 0 on T38 s3, `struct_damping_ratio` at the 0.05 ceiling on 737 s2/s3 and
+T38 s1, `wing_gj_ratio_root` ceiling on c172x s2 and T38 s3, `wing_ei_taper_4` ceiling c172x s1. Scenario 0 at g59:
+max |ramp error| 1.7–3.9 m, nz 0.85–1.13 g, wing tip dz −0.53…−0.41 m (737), −0.064…−0.043 m (T38), −0.104…−0.074 m
+(c172x), tip |dx| ≤ 5.7 mm, tip twist +0.3…+1.0°.
+Against phase 1 (phase1v5-s1..s3, rigid, 20 gens; different fitness setup, so costs are only roughly comparable):
+the g-final ranges are similar (phase1v5 c172x 0.206–0.232, T38 0.088–0.111, 737 0.109–0.114); phase 2's
+seed spread is smaller for T38/737; phase 1's bests piled on `ki_alt` = 0.05 ceiling, phase 2's on `ki_alt` = 0.
 
 ### FlexState /3 migration (recorder)
 - Prefer `flex_state.nodes()`, `.v2_geometry`, `.node_layout()`, `.v2_map_version` (no private helpers on the hot path).
 - `NodeSource.for_genome` kept as fallback for older FlexState; builds via public `fidelity.make_fd_model` when present.
 - `evaluate(..., pin=)` passed from run.json `pin_model_version[ac][fid]` (raises on mismatch).
 - Trajectory schema written: `ga-flightsim-traj/2` (viewer accepts `/1` and `/2`).
-- Known ER quirk: `fd_to_structure_channels` keys the twist sign on `name == "wingR"`, so after the rename to
-  `wingR_modal` the modal right-wing twist is written with the left-wing sign. FE `wingR.twist` is correct; we
-  undo the flip only in the modal-vs-nodal comparison metric.
+
+### wingR_modal twist sign (pre-fix / post-fix ER files)
+ER's `fd_to_structure_channels` used `name == "wingR"` for the +twist sign; after the /3 rename to `wingR_modal`
+that wrote the modal right-wing twist with the left-wing sign. ER fixed it (`startswith`). There is **no header
+marker** (same schemas, v2_map version, git_sha, twist_doc), so the convention is decided **from the data**:
+`trajdiff.modal_twist_sign` correlates the modal tip twist with the FE tip twist over the flight (|twist| ≥ 1e-4 rad,
+|r| ≥ 0.9): +1 = post-fix, −1 = pre-fix, None = undecidable (no modal/FE channels or no twist).
+- Recorder metric (`wing_modal_vs_nodal`): reports `modal_twist_sign`, `modal_twist_sign_corrected`, and undoes the
+  sign only when −1 is detected (current ER: +1, no correction).
+- trajdiff / replay `--compare-traj`: when replay and reference disagree, the reference's `wingR_modal.twist.*` is
+  compared negated and the file reports `wingR_modal_twist_sign {a, b, compared_sign_corrected}`.
+- Channels are always passed through unchanged; the viewer never renders `*_modal` (HUD shows FE tips).
+- On disk: phase2-pilot-s2 = pre-fix (−1); s1 (re-export) and s3 = post-fix (+1).
+
+### Planform loader (P3-B1, groundwork)
+Optional header field (no schema bump; ignored when absent; `planform_b1` and placement inside `structure` accepted):
+`planform: {schema: "fd-planform/1", source: "P3-B1", genes: {name: value}, symmetric: true + wing (ER's form) or
+wingR / wingL: {span_frac[], y_m[], chord_m[], le_x_m[], twist_rad[]}, sweep_qc_rad}` — SI, body FRD, twist + = LE up,
+one entry per FD strip (64 per semi-wing); `le_x_m` relative to the root quarter-chord point, + forward (ER also writes
+chord_baseline_m, te_x_m, sweep_qc_baseline_rad, planform_baseline, area_norm, ac_shift_x_m; shown/ignored). Viewer: `traj.parsePlanform` → `aircraft.planformStations` reshapes the procedural wing
+(chord, LE x offsets relative to the first strip anchored at the procedural root LE, built-in twist about the local
+quarter chord; inboard of the first strip the first strip is held; extrapolated to the tip) and the HUD shows
+`PLANFORM P3-B1 Λqc … taper … twist tip …` (+ `SYNTHETIC planform` warning), the compare legend a `Λ… λ…` tag.
+`sim_bridge/planform.py`: `find_planform`, `validate_planform`, `summary`, `from_fd_strips` (FD feet / LE aft →
+SI / FRD forward; `side_key="wing"` = ER's form, LE reference default 0 = relative like ER).
+**Status: REAL data** — ER's `runs/phase3b1-smoke-s1` (fidelity `full_a1_b1`, written 18:20 PT, g0/2/4 × 737/T38/c172x,
+65-node wings) carries the header; `data/phase3b1_smoke_planform_standalone.html` (12.6 MB; 10 Hz, display slim with
+wing node stride 4, default g4 formation) shows it: g4 737 Λqc 22.7° (baseline 25°) taper 0.30 twist tip +0.2°,
+T38 Λqc 23.6° (24°) taper 0.23, c172x Λqc −1.4° (0°) taper 0.77. `tests/test_planform.py` validates every
+`phase3b1-*` file (python + node viewer check) when present and skips otherwise. The synthetic fixture stays for the
+always-run tests. Fixture
+`tests/fixtures/planform_synthetic/` (`tools/make_planform_fixture.py`): FD's own B1 decode for 737 (tapers 0.85,
+twist −1/−4°, sweep +5° → Λqc 30°, taper 0.19) and c172x (`planform_b1`, symmetric), laid over short real
+phase2-pilot-s1 g59 flights, all marked `synthetic: true`, plus a 737 baseline without the field.
+
+### Phase 3-B1 page in one command (`tools/build_b1_page.sh`)
+```bash
+tools/build_b1_page.sh <run_id>                                   # validate + page + screenshots (~1.5 min on a 16x5 smoke)
+tools/build_b1_page.sh <run_id> --replay-proof                    # + full replay proof against ER's frozen FD copy
+tools/build_b1_page.sh <run_id> --replay-proof --fd-dir <frozen FD>   # explicit frozen copy
+tools/build_b1_page.sh <run1>,<run2>,<run3>                       # several seeds -> one page with seed presets
+```
+1. Validation (exit 2 on any error): ER's `evolution.validate_traj`, `tools/check_traj.py` hard checks (status, NaN,
+   quaternion, position vs velocity, index fitness; behavioural flags are info), and per file: `planform` fd-planform/1
+   valid and not synthetic, `fidelity == full_a1_b1`, `model_version` == run.json pin, FD nodal wing structure present.
+2. `data/<run_id>_standalone.html`: compare, final gen of every aircraft in formation, chase, flex x8, planform HUD line;
+   presets gen 0 vs last, **planform top: gen 0 vs last** (`plan:<ac>`, new camera `top` = plan view fitted between the
+   side panel and the HUD, spacing 1.3 x span), gen 0/mid/last, seeds (several runs). On-page banner (`note=` param,
+   bottom centre): r1 data (`structure.node_layout` contains `node_layout_b1`) -> "r1: FE nodes follow FD's shaped layout
+   (chord, sweep, AC shift; twist about the elastic axis). The 9-node wing modal display axes still use approximate
+   geometry."; files without the tag -> "FD structure nodes follow evolved sweep only; chord/twist from planform strips".
+3. Auto-fit to `--max-mb` (24): 10 Hz stride 2 -> 10 Hz stride 4 -> 5 Hz stride 4 -> drop middle gens (first and final
+   kept); display-only slim (modal + all-zero structure channels dropped, structure 1e-4). Prints raw and gzip size.
+4. Screenshots `screenshots/<run_id>_*.png` (`screenshots.py --shot-spec ... --strict`): default formation, planform top
+   gen 0 vs final per aircraft, 737 flex close-up (rear, x8). Fails (exit 5) on console/page errors, a blank render
+   (canvas luminance s.d. < 2 or < 6 colours) or a shown aircraft outside the view.
+5. `--replay-proof` (started first, runs in parallel): `replay.py` at the rows' own fidelity with pin= (ER raises on a
+   model_version mismatch) for every gen with an ER trajectory (`--proof-gens ends` = 0 + final). FD copy: `--fd-dir`,
+   else an fd/pin dir key in run.json / config.json, else the newest `evolution/_fd_pin_*` whose model_versions (ER's
+   `eval.describe`, probed in a subprocess) equal the pins; none -> exit 3 (live FD only with `--allow-live-fd`). Pass =
+   cost rel_err 0.0 everywhere, pinned match, every non-wing channel bit-identical to ER's scenario-0 file (exit 6 otherwise).
+6. Summary (stdout + `data/<run_id>_build_summary.json`): sizes and settings, cost gen 0 vs final, planform final vs
+   baseline (sweep, taper, tip/mid twist, shape genes, genes at FD's b1_schema bounds), screenshots, proof, timings.
+
+Dry run on `phase3b1-smoke-s1` (2026-10-06 ~18:55 MST): 89 s total with the proof (validate 9 s, page 5 s, screenshots
+46 s, proof 28 s in parallel); page 19.3 MB raw / 1.6 MB gzip at 10 Hz stride 2, all gens 0/2/4; proof EXACT 9/9 rows
+(rel 0.0, pinned), 9/9 files 681/681 channels bit-identical. FD replaced the r0 B1 code at 18:32 (r1 hashes); the smoke's
+r0 pins have no ER frozen copy, so the dry run used a private reconstruction `/workspace/b1work/fd_r0` (FD tree + FD's own
+`_scratch/p3b1/*.r0.py`), whose model_versions equal the smoke pins exactly. Without `--fd-dir` the proof fails loudly (exit 3).
+Since ER switched to `flexbody_b1.node_layout_b1` (r1, ~18:49) the r0 smoke is no longer exactly replayable with current ER
+code; that is expected.
+
+**Real build, `phase3b1r1-smoke-s1`** (r1, 2026-10-06 ~19:40 MST): `tools/build_b1_page.sh phase3b1r1-smoke-s1
+--replay-proof --shot-prefix phase3b1r1_` -> 82 s total (validate 8.6, page 4.8, screenshots 44.5, proof wait 23.9);
+19.39 MB raw / 1.61 MB gzip, 10 Hz stride 2, gens 0/2/4. FD copy `evolution/_fd_pin_p3b1r1` via run.json `fd_dir`
+(`md5sum -c v2_results/FROZEN_A1_B1r1.md5`: 13/13 OK). Proof EXACT: 9 rows x 3 scenarios rel 0.0, pinned; 9/9 files
+681/681 channels bit-identical (non-wing, structure 587 ch, wing max|d| 0). T38 g4 T38:s0 = 0.08165462998244637 in a
+fresh process.
+
+**r1 wing geometry in the viewer.** When wingR/wingL carry `le_nodes_body_m` / `te_nodes_body_m` / `chord_m` /
+`geometric_twist_rad` (FD r1), `parsePlanform` builds the wing from them (`geom: 'nodes'`): LE at absolute body x,
+chord and built-in twist per node, twist pivot = the elastic axis (`axis_nodes_body_m`), not the quarter chord; elastic
+twist rotates sections about the EA in the wing plane. Otherwise the planform strips are used as before. HUD taper/
+sweep still come from the strips; the HUD line adds "FD r1 node geometry". Fuselage/engines stay procedural, so on the
+737 the FD wing root LE (2.87 m) sits aft of the procedural one (1.67 m). `trajdiff` trusts
+`structure.modal_twist_sign_fixed: true` (source `header`) instead of detecting the modal twist sign from data.
 
 ## Soft-body v2: FD v2 node mapping (`sim_bridge/v2_map.py`, version 2.0.0)
 
@@ -826,12 +959,20 @@ python3 -m venv .venv-shots && .venv-shots/bin/pip install playwright==1.48.0
   and Evolution Runner runs all work. There are no console errors.
 * **Replay** (`--bench data/replays/phase1-s1/proof-g0.9.19/viewer.html --shots replay --prefix replay_`): 4 shots,
   no console/page errors; HUD shows `cost … (lower=better; scenario k: …)` and the replay/fidelity/model_version line.
-* **Tests** (`PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -p no:cacheprovider tests/`): 51 passed
-  (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15; FlexState /3 + pin= path exercised).
+* **Tests** (`PYTHONDONTWRITEBYTECODE=1 $PY -m pytest -q -p no:cacheprovider tests/`): 73 passed, 0 skipped
+  (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15, test_planform 16, test_build_b1 2; FlexState /3 + pin= path exercised;
+  the replay ladder uses ER's frozen `_fd_pin_post_mass` FD copy when FD's live hashes have moved on).
+* **Phase 2 seeds** (`--bench data/phase2_pilot_standalone.html --shots phase2_seeds --prefix phase2_pilot_seeds_`):
+  8 shots, PASS, no console/page errors: default s1 g59 formation (flex ×8), c172x and 737 seed overlays at g59
+  (rerr / nz), g0 vs g59 for c172x/T38/737 s1 and T38 s2, mid gen (g29) s3 formation.
+* **Planform (real)** (`--bench data/phase3b1_smoke_planform_standalone.html --shots planform_real
+  --prefix planform_phase3b1_smoke_`): 4 shots (737/T38/c172x g4 top, g4 formation), PASS, no console/page errors;
+  HUD `PLANFORM P3-B1 Λqc 22.7° taper 0.30 twist tip 0.2°` (no SYNTHETIC warning); 737 wing box x −6.24…1.67 m.
+* **Planform (synthetic)** (`--bench data/planform_synthetic_standalone.html --shots planform --prefix planform_synthetic_`):
+  4 shots, PASS, no console/page errors; shaped 737 wing box x −8.32…1.67 m vs baseline −7.60…1.67 m (sweep 30°),
+  HUD `PLANFORM P3-B1 Λqc 30.0° taper 0.19 twist tip −3.9°` + SYNTHETIC warning; baseline entry shows no line.
 * **Phase 2 pilot** (`--bench data/phase2_pilot_s1_standalone.html --shots phase2 --prefix phase2_pilot_`): 8 shots,
   no console/page errors; gen 59 formation with FD nodal flex; g0 vs g59 per aircraft; mid+final c172x.
-  (test_ids 12, test_v2_map 15, test_v2_signs 9, test_replay 15; test_replay and test_v2_signs run ER's real
-  `evolution.eval` / FD's real flexbody).
 * **FD v2 nodal** (`--bench data/replays/phase1v5-s1/v2nodes-full-g19/viewer.html --shots v2nodes --prefix v2nodes_`
   and `--bench data/replays/phase1v5-s1/v2nodes-full-g19-sc1/viewer.html --shots v2nodes_gust --prefix v2nodes_`):
   10 shots, no console/page errors: wing in-plane bending (top view, `dofs=dx`), HT left/right difference in the

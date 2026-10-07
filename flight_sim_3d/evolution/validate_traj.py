@@ -17,6 +17,13 @@ by the quaternion reproduces the ENU velocity (an independent check of the
 quaternion convention), plus position vs integrated velocity. For index.json:
 entry shape {generation, fitness, aircraft, file}, file exists, and the entry
 matches the file it points to.
+
+Optional header field `planform` (P3-B1, Sim Bridge spec "fd-planform/1"; additive, no schema bump): files with or
+without it are valid; when present: schema / source strings, `genes` {name: number}, `sweep_qc_rad` number, and per-wing
+strip arrays (`wing` + symmetric: true, or wingR / wingL) of equal length with finite numbers.
+
+Optional `structure.modal_twist_sign_fixed` (additive on the structure block; no schema bump): files with or without it
+are valid; when present it must be the boolean true (wingR_modal.twist sign post-fix: + = nose-up).
 """
 from __future__ import annotations
 
@@ -37,6 +44,8 @@ UNITS = {"phi": "rad", "theta": "rad", "psi": "rad", "controls": "norm -1..1, th
 TOP = {"schema": str, "run_id": str, "aircraft": str, "jsbsim_version": str, "git_sha": str, "seed": int,
        "generation": int, "fitness": (int, float), "genome": dict, "frame": dict, "units": dict, "dt_s": (int, float),
        "sample_hz": (int, float), "target": dict, "events": list, "channels": list, "data": list}
+PLANFORM_SCHEMA = "fd-planform/1"
+PLANFORM_ARRAYS = ("span_frac", "y_m", "chord_m", "twist_rad")      # + le_x_m or qc_x_m
 FRAME = {"origin_lat_deg": (int, float), "origin_lon_deg": (int, float), "origin_alt_m": (int, float),
          "axes": str, "attitude": str}
 # NED -> ENU fixed rotation
@@ -74,6 +83,44 @@ def rot_angle(Ra: np.ndarray, Rb: np.ndarray) -> np.ndarray:
     return 2 * np.arcsin(np.clip(f / (2 * np.sqrt(2)), 0, 1))
 
 
+def validate_planform(pf, name: str = "") -> List[str]:
+    """Light check of the optional `planform` header block (see module doc)."""
+    err: List[str] = []
+    E = lambda m: err.append(f"{name}: planform: {m}")  # noqa: E731
+    if not isinstance(pf, dict):
+        return [f"{name}: planform must be an object"]
+    if pf.get("schema") != PLANFORM_SCHEMA:
+        E(f"schema {pf.get('schema')!r} != {PLANFORM_SCHEMA!r}")
+    if not isinstance(pf.get("source"), str):
+        E("source must be a string")
+    g = pf.get("genes")
+    if not isinstance(g, dict) or not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in g.values()):
+        E("genes must be a {name: number} map")
+    if not isinstance(pf.get("sweep_qc_rad"), (int, float)) or not math.isfinite(pf["sweep_qc_rad"]):
+        E("sweep_qc_rad must be a finite number")
+    wings = ["wing"] if pf.get("symmetric") is True else ["wingR", "wingL"]
+    for w in wings:
+        blk = pf.get(w)
+        if not isinstance(blk, dict):
+            E(f"{w} missing (symmetric: true -> 'wing', else 'wingR' and 'wingL')")
+            continue
+        keys = list(PLANFORM_ARRAYS) + [k for k in ("le_x_m", "qc_x_m", "te_x_m", "chord_baseline_m") if k in blk]
+        if not any(k in blk for k in ("le_x_m", "qc_x_m")):
+            E(f"{w}: needs le_x_m (or qc_x_m)")
+        n = None
+        for k in keys:
+            a = blk.get(k)
+            if not isinstance(a, list) or not a or not all(isinstance(v, (int, float)) and not isinstance(v, bool)
+                                                             and math.isfinite(v) for v in a):
+                E(f"{w}.{k} must be a non-empty list of finite numbers")
+                continue
+            if n is None:
+                n = len(a)
+            elif len(a) != n:
+                E(f"{w}.{k} has length {len(a)} != {n}")
+    return err
+
+
 def validate_doc(doc: Dict, name: str = "") -> List[str]:
     err: List[str] = []
     E = lambda m: err.append(f"{name}: {m}")  # noqa: E731
@@ -103,6 +150,11 @@ def validate_doc(doc: Dict, name: str = "") -> List[str]:
         if not (isinstance(ev, dict) and isinstance(ev.get("t"), (int, float)) and isinstance(ev.get("type"), str)
                 and isinstance(ev.get("detail"), str)):
             E(f"events[{i}] must be {{t:number, type:str, detail:str}}")
+    if "planform" in doc:
+        err += validate_planform(doc["planform"], name)
+    st = doc.get("structure")
+    if isinstance(st, dict) and "modal_twist_sign_fixed" in st and st["modal_twist_sign_fixed"] is not True:
+        E("structure.modal_twist_sign_fixed must be true when present")
     if doc["sample_hz"] != 30:
         E(f"sample_hz {doc['sample_hz']} != 30")
     if abs(doc["dt_s"] - 1.0 / doc["sample_hz"]) > 1e-9:

@@ -91,22 +91,80 @@ function planformGeom(points, thickness) {
 // A lifting surface half (right side when side=+1) with an optional hinged trailing-edge control
 // surface on the outer part. Returns {mesh, hinge} where hinge rotates about its local y axis
 // (positive angle = trailing edge DOWN, i.e. +z in FRD).
+// Planform (P3-B1) -> station functions of f = |y| / semiSpan for halfSurface. Chord and built-in twist are taken
+// as given (metres / rad); the LE line keeps the procedural root LE as its anchor and follows the planform's LE x
+// offsets relative to its first station (le_x_m, else derived from sweep_qc_rad: x_qc = -tan(sweep) * dy,
+// LE = x_qc + c/4). Inboard of the first station (inside the fuselage) the first station is held.
+export function planformStations(pf, semiSpan, sweepQc) {
+  const n = pf.n;
+  const y = pf.y_m ? pf.y_m.map((v) => Math.min(Math.abs(v), semiSpan)) : pf.span_frac.map((f) => f * semiSpan);
+  let le = pf.le_x_m;
+  if (!le) {
+    const tq = Math.tan(Number.isFinite(sweepQc) ? sweepQc : 0);
+    le = y.map((yy, i) => -tq * (yy - y[0]) + 0.25 * pf.chord_m[i]);
+  }
+  const eaOf = (i) => (pf.ea_x_m ? pf.ea_x_m[i] - le[i] : -0.25 * pf.chord_m[i]);   // elastic axis x - LE x
+  const f = [0], c = [pf.chord_m[0]], dle = [0], tw = [pf.twist_rad ? pf.twist_rad[0] : 0], ea = [eaOf(0)];
+  for (let i = 0; i < n; i++) {
+    const fi = y[i] / semiSpan;
+    if (fi <= f[f.length - 1] + 1e-9) { c[c.length - 1] = pf.chord_m[i]; ea[ea.length - 1] = eaOf(i); continue; }
+    f.push(fi); c.push(pf.chord_m[i]); dle.push(le[i] - le[0]); tw.push(pf.twist_rad ? pf.twist_rad[i] : 0); ea.push(eaOf(i));
+  }
+  if (f[f.length - 1] < 1 - 1e-9) {  // strips end at the last strip centre: extrapolate the last segment to the tip
+    const k = f.length - 1, g = (1 - f[k]) / Math.max(1e-9, f[k] - f[k - 1]);
+    f.push(1); c.push(Math.max(0.05 * c[0], c[k] + (c[k] - c[k - 1]) * g)); dle.push(dle[k] + (dle[k] - dle[k - 1]) * g);
+    tw.push(tw[k] + (tw[k] - tw[k - 1]) * g); ea.push(ea[k] + (ea[k] - ea[k - 1]) * g);
+  }
+  const lerp = (arr) => (q) => {
+    if (q <= f[0]) return arr[0];
+    for (let j = 1; j < f.length; j++) if (q <= f[j]) return arr[j - 1] + (arr[j] - arr[j - 1]) * (q - f[j - 1]) / (f[j] - f[j - 1]);
+    return arr[arr.length - 1];
+  };
+  const out = { f, chordAt: lerp(c), dleAt: lerp(dle), twistAt: lerp(tw), hasTwist: tw.some((v) => v !== 0) };
+  if (pf.absolute) {  // r1 per-node geometry: absolute body x of the LE; built-in twist pivots on FD's elastic axis
+    const eaAt = lerp(ea);
+    out.absolute = true;
+    out.le0 = le[0];
+    out.pivotAt = (q) => le[0] + out.dleAt(q) + eaAt(q);
+  }
+  return out;
+}
+
+// A lifting surface half (right side when side=+1) with an optional hinged trailing-edge control
+// surface on the outer part. Returns {mesh, hinge} where hinge rotates about its local y axis
+// (positive angle = trailing edge DOWN, i.e. +z in FRD). `planform` (optional, parsePlanform side): chord / LE /
+// built-in twist per strip replace the straight-tapered trapezoid.
 function halfSurface({ side, xLE, rootChord, tipChord, semiSpan, sweepDeg, thickness, mat, ctrlMat,
-  ctrlFrac = 0.25, ctrlFrom = 0.0, ctrlTo = 1.0, dihedralDeg = 0 }) {
+  ctrlFrac = 0.25, ctrlFrom = 0.0, ctrlTo = 1.0, dihedralDeg = 0, planform = null, sweepQc = null }) {
   const grp = new THREE.Group();
   const sweep = Math.tan(THREE.MathUtils.degToRad(sweepDeg)) * semiSpan;
-  const chordAt = (f) => rootChord + (tipChord - rootChord) * f;
-  const leAt = (f) => xLE - sweep * f;
+  const pst = planform ? planformStations(planform, semiSpan, sweepQc) : null;
+  const chordAt = pst ? pst.chordAt : (f) => rootChord + (tipChord - rootChord) * f;
+  // r1 per-node geometry (pst.absolute): LE at FD's absolute body x; else anchored at the procedural root LE
+  const leAt = pst ? (pst.absolute ? (f) => pst.le0 + pst.dleAt(f) : (f) => xLE + pst.dleAt(f)) : (f) => xLE - sweep * f;
   // main surface (aft boundary = hinge line over the control-surface span)
   const pts = [];
   const N = 6;
-  pts.push([leAt(0), 0]);
-  pts.push([leAt(1), semiSpan]);
-  for (let i = N; i >= 0; i--) {
-    const f = i / N;
-    const inCtrl = f >= ctrlFrom - 1e-6 && f <= ctrlTo + 1e-6;
-    const c = chordAt(f) * (inCtrl ? (1 - ctrlFrac) : 1);
-    pts.push([leAt(f) - c, f * semiSpan]);
+  const fs = pst ? pst.f.slice() : [0, 1];
+  if (pst) for (const q of [ctrlFrom, ctrlTo]) if (!fs.some((v) => Math.abs(v - q) < 1e-6)) fs.push(q);
+  fs.sort((a, b) => a - b);
+  for (const f of fs) pts.push([leAt(f), f * semiSpan]);
+  if (pst) {
+    // trailing edge tip -> root; across the control span only its two ends (the hinge line is straight)
+    for (let i = fs.length - 1; i >= 0; i--) {
+      const f = fs[i];
+      const inCtrl = f >= ctrlFrom - 1e-6 && f <= ctrlTo + 1e-6;
+      const edge = Math.abs(f - ctrlFrom) < 1e-6 || Math.abs(f - ctrlTo) < 1e-6;
+      if (inCtrl && !edge) continue;
+      pts.push([leAt(f) - chordAt(f) * (inCtrl ? (1 - ctrlFrac) : 1), f * semiSpan]);
+    }
+  } else {
+    for (let i = N; i >= 0; i--) {
+      const f = i / N;
+      const inCtrl = f >= ctrlFrom - 1e-6 && f <= ctrlTo + 1e-6;
+      const c = chordAt(f) * (inCtrl ? (1 - ctrlFrac) : 1);
+      pts.push([leAt(f) - c, f * semiSpan]);
+    }
   }
   const g = planformGeom(pts.map(([x, y]) => [x, y * side]), thickness);
   if (side < 0) g.computeVertexNormals();
@@ -131,11 +189,32 @@ function halfSurface({ side, xLE, rootChord, tipChord, semiSpan, sweepDeg, thick
     hinge.add(inner);
     grp.add(hinge);
   }
+  if (pst && pst.hasTwist) {
+    // built-in (geometric) twist: rotate each station's section about its quarter-chord point (r1 per-node geometry:
+    // about FD's elastic axis), + = LE up (-z)
+    grp.updateMatrixWorld(true);
+    const M = new THREE.Matrix4(), Mi = new THREE.Matrix4(), v = new THREE.Vector3();
+    grp.traverse((m) => {
+      if (!m.isMesh) return;
+      M.copy(m.matrixWorld); Mi.copy(M).invert();
+      const pa = m.geometry.attributes.position;
+      for (let k = 0; k < pa.count; k++) {
+        v.fromBufferAttribute(pa, k).applyMatrix4(M);
+        const f = Math.min(1, Math.abs(v.y) / semiSpan), th = pst.twistAt(f);
+        const xq = pst.pivotAt ? pst.pivotAt(f) : leAt(f) - 0.25 * chordAt(f), dx = v.x - xq;
+        v.x = xq + dx * Math.cos(th); v.z -= dx * Math.sin(th);
+        v.applyMatrix4(Mi);
+        pa.setXYZ(k, v.x, v.y, v.z);
+      }
+      pa.needsUpdate = true;
+      m.geometry.computeVertexNormals();
+    });
+  }
   grp.rotation.x = -side * THREE.MathUtils.degToRad(dihedralDeg); // tips up (-z)
   return { group: grp, hinge };
 }
 
-export function buildProcedural(cfg, color = '#ff6b35') {
+export function buildProcedural(cfg, color = '#ff6b35', planform = null) {
   const accent = new THREE.Color(color);
   const body = new THREE.MeshStandardMaterial({ color: 0xf2f2f2, roughness: 0.55, metalness: 0.1, flatShading: true });
   const wingMat = new THREE.MeshStandardMaterial({ color: accent, roughness: 0.5, metalness: 0.1, flatShading: true, side: THREE.DoubleSide });
@@ -204,7 +283,8 @@ export function buildProcedural(cfg, color = '#ff6b35') {
   for (const side of [1, -1]) {
     const s = halfSurface({ side, xLE: xWingLE, rootChord: cfg.wing_root_chord_m, tipChord: cfg.wing_tip_chord_m,
       semiSpan: cfg.span_m / 2, sweepDeg: cfg.sweep_deg, thickness: wingT, mat: wingMat, ctrlMat,
-      ctrlFrac: 0.25, ctrlFrom: 0.55, ctrlTo: 0.95, dihedralDeg: cfg.dihedral_deg });
+      ctrlFrac: 0.25, ctrlFrom: 0.55, ctrlTo: 0.95, dihedralDeg: cfg.dihedral_deg,
+      planform: planform ? planform[side > 0 ? 'wingR' : 'wingL'] : null, sweepQc: planform ? planform.sweep_qc_rad : null });
     s.group.position.z = zWing;
     model.add(s.group);
     surfaces[side > 0 ? 'aileronR' : 'aileronL'] = s.hinge;
@@ -291,7 +371,7 @@ export function buildProcedural(cfg, color = '#ff6b35') {
     }
   }
   if (prop) parts.fuselage.push(prop);
-  return { root, model, parts, surfaces, prop, length: L, span: cfg.span_m };
+  return { root, model, parts, surfaces, prop, length: L, span: cfg.span_m, planform: planform || null };
 }
 
 // Optional glTF model. cfg.gltf = url; cfg.gltf_rotation_deg = [x, y, z] Euler (XYZ) that maps the
@@ -352,6 +432,9 @@ export function attachStructure(model, structure) {
       segLen.push(d.length() || 1e-9);
       segDir.push(d.normalize());
     }
+    // wings: elastic twist rotates each section about the elastic axis IN the wing plane (the procedural wing's
+    // height differs from FD's node z, e.g. 737 ~3 m; a vertical lever arm would turn twist into fake fore/aft motion)
+    const inPlane = c.name === 'wingR' || c.name === 'wingL';
     const meshes = [];
     const seen = new Set();
     for (const o of objs) o.traverse((m) => {
@@ -375,7 +458,7 @@ export function attachStructure(model, structure) {
         }
         seg[k] = bj; u[k] = bu;
         const a = nodes[bj].clone().addScaledVector(segDir[bj], bu * segLen[bj]);
-        r[3 * k] = _v.x - a.x; r[3 * k + 1] = _v.y - a.y; r[3 * k + 2] = _v.z - a.z;
+        r[3 * k] = _v.x - a.x; r[3 * k + 1] = _v.y - a.y; r[3 * k + 2] = inPlane ? 0 : _v.z - a.z;
       }
       meshes.push({ mesh: m, rest, seg, u, r });
     });

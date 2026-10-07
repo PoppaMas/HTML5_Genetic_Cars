@@ -87,7 +87,12 @@ def main(argv=None):
     sys.path.insert(0, FLIGHT_SIM_DIR)
     import evolve  # the original, unmodified file; binds to the shims
     assert evolve.genome is sys.modules["genome"] and evolve.sim is sys.modules["sim"]
-    if task.init:  # Phase 2: seeded generation 0 (init_pop.py); tasks without "init" use evolve.py's draw unchanged
+    if getattr(task, "operators", None):  # P3-B1: per-block operators (block_ops.py) + seeded generation 0
+        import block_ops
+        evolve.ga = block_ops.block_ga(evolve.ga, task)
+        print(f"[genome] generation 0: {task.init}; operators: "
+              f"{ {k: v for k, v in task.operators.items() if k in ('crossover', 'mutation_sigma_u')} }")
+    elif task.init:  # Phase 2: seeded generation 0 (init_pop.py); tasks without "init" use evolve.py's draw unchanged
         import init_pop
         evolve.ga = init_pop.seeded_ga(evolve.ga, task)
         print(f"[genome] generation 0: {task.init}")

@@ -1,0 +1,669 @@
+{
+ "A_full_a1": {
+  "run_id": "phase3a1-smoke-s1",
+  "wall_s": 168.3103377239895,
+  "workers": 8,
+  "loadavg_start": [
+   0.912109375,
+   0.998046875,
+   1.26953125
+  ],
+  "aircraft": {
+   "737": {
+    "best_id": "737:g4:r0",
+    "best_cost": 0.2564816976616621,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:522189cb",
+    "structural_sum": 0.09073030964489702,
+    "J_mass": 0.00023165468106529726,
+    "J_wing_tip_bm_limit": 5.380545694518335e-06,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.025979307420031468,
+     "J_mass": 0.00023165468106529726,
+     "J_bm_rms": 0.013703663041943754,
+     "J_smooth": 8.51721367948561e-05,
+     "J_wing_bm_limit": 5.728344486386931e-05,
+     "J_wing_torque_limit": 0.0004637439889288513,
+     "J_wing_ip_limit": 5.728344486386595e-06,
+     "J_wing_tip_bm_limit": 5.380545694518335e-06,
+     "J_tail_bm_limit": 0.05019837604108802
+    },
+    "mass_delta_pct": 0.07721822702176576,
+    "mass_lb": {
+     "wingR_lb": 96.30222712509877,
+     "wingL_lb": 96.30222712509877,
+     "ht_lb": -120.8063136001672,
+     "vt_lb": -90.6047352001254,
+     "fus_lb": 39.423861164906526,
+     "total_lb": 20.617266614811456,
+     "baseline_flexible_lb": 26700.0,
+     "total_frac": 0.0007721822702176575
+    },
+    "margins": {
+     "flutter_margin": 1.1677638045544878,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2620871031491712
+    },
+    "flutter_margin": 1.1677638045544878,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {},
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.5625,
+     "wing_nsm_tip": 0.5625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.0074681375757426,
+     "wing_ei_taper_3": 0.977807959972517,
+     "wing_ei_taper_4": 0.9668917220221664,
+     "wing_gj_ratio_root": 0.9475951226367275,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.018054275982108,
+     "wing_nsm_tip": 1.078062142140171,
+     "tail_stiffness_scale": 0.8169601309088373,
+     "fuselage_stiffness_scale": 1.0164266088187108,
+     "struct_damping_ratio": 0.021717852772058822
+    },
+    "rejected_rows_all_gens": 2,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 1,
+     "flutter": 1
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.3814927422539509,
+     0.3814927422539509,
+     0.3620923228970249,
+     0.29202421655360844,
+     0.2564816976616621
+    ],
+    "evolve_wall_s": 128.19283257302595,
+    "eval_wall_s": 128.12439747096505,
+    "eval_cpu_s": 389.9985855,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.8055490069444444,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_737_phase3a1-smoke-s1_g0.json",
+     "traj_737_phase3a1-smoke-s1_g2.json",
+     "traj_737_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "T38": {
+    "best_id": "T38:g4:r0",
+    "best_cost": 0.22622908042719758,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:f248873e",
+    "structural_sum": 0.02620645610300666,
+    "J_mass": 0.004907958396920098,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.0029884339684715412,
+     "J_mass": 0.004907958396920098,
+     "J_bm_rms": 0.015223959731032561,
+     "J_smooth": 0.000360591020780588,
+     "J_wing_bm_limit": 8.728016957378795e-05,
+     "J_wing_torque_limit": 1.2845350901701437e-06,
+     "J_wing_ip_limit": 8.728016957378795e-06,
+     "J_tail_bm_limit": 0.0026282202641805365
+    },
+    "mass_delta_pct": 1.6359861323066993,
+    "mass_lb": {
+     "wingR_lb": 4.963452570062304,
+     "wingL_lb": 4.963452570062304,
+     "ht_lb": -2.0116023920371036,
+     "vt_lb": -1.6092819136296832,
+     "fus_lb": 27.558892104290855,
+     "total_lb": 33.864912938748674,
+     "baseline_flexible_lb": 2070.0,
+     "total_frac": 0.016359861323066993
+    },
+    "margins": {
+     "flutter_margin": 1.1890666858300485,
+     "div_margin": 3.0,
+     "reversal_margin": 2.012631872744168
+    },
+    "flutter_margin": 1.1890666858300485,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_ei_taper_2": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 1.05,
+      "bounds": [
+       0.75,
+       1.05
+      ]
+     },
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.05,
+     "wing_ei_taper_3": 0.977447406061193,
+     "wing_ei_taper_4": 1.0204590329103982,
+     "wing_gj_ratio_root": 1.008265028237439,
+     "wing_gj_ratio_tip": 0.9953180553780377,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.0119561069172247,
+     "tail_stiffness_scale": 0.951233881405161,
+     "fuselage_stiffness_scale": 1.1102355684171636,
+     "struct_damping_ratio": 0.021109978383205906
+    },
+    "rejected_rows_all_gens": 3,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "structural_ultimate_empennage": 1,
+     "diverged": 2
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.2346000230390707,
+     0.2346000230390707,
+     0.2346000230390707,
+     0.22622908042719758,
+     0.22622908042719758
+    ],
+    "evolve_wall_s": 137.73734161100583,
+    "eval_wall_s": 137.68225528189214,
+    "eval_cpu_s": 397.91977143400004,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.8422211640462964,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_T38_phase3a1-smoke-s1_g0.json",
+     "traj_T38_phase3a1-smoke-s1_g2.json",
+     "traj_T38_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "c172x": {
+    "best_id": "c172x:g4:r0",
+    "best_cost": 0.3233991029179333,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:36fb4f5a",
+    "structural_sum": 0.036695079772802154,
+    "J_mass": 0.0010770200022265977,
+    "J_wing_tip_bm_limit": 0.0005379846808834132,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_mass": 0.0010770200022265977,
+     "J_bm_rms": 0.034213313519592684,
+     "J_smooth": 0.0003757913404737628,
+     "J_wing_bm_limit": 0.0004463365723869967,
+     "J_wing_ip_limit": 4.463365723869874e-05,
+     "J_wing_tip_bm_limit": 0.0005379846808834132
+    },
+    "mass_delta_pct": 0.35900666740886594,
+    "mass_lb": {
+     "wingR_lb": 0.11524189265842458,
+     "wingL_lb": 0.11524189265842458,
+     "ht_lb": 0.10516630515269743,
+     "vt_lb": 0.06471772624781381,
+     "fus_lb": 0.8274349858209611,
+     "total_lb": 1.2278028025383214,
+     "baseline_flexible_lb": 342.0,
+     "total_frac": 0.0035900666740886593
+    },
+    "margins": {
+     "flutter_margin": 1.235009343063703,
+     "div_margin": 1.6765540128277312,
+     "reversal_margin": 1.479835900651365
+    },
+    "flutter_margin": 1.235009343063703,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.5
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9793105736466257,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 0.9641251550598673,
+     "wing_ei_taper_3": 0.9902080037036219,
+     "wing_ei_taper_4": 1.0341361112273657,
+     "wing_gj_ratio_root": 1.0269720946749665,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.014325201342613,
+     "tail_stiffness_scale": 1.0147085741472308,
+     "fuselage_stiffness_scale": 1.0229843051616934,
+     "struct_damping_ratio": 0.021109978383205906
+    },
+    "rejected_rows_all_gens": 17,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 17
+    },
+    "rejected_last_gen": 1,
+    "best_per_gen": [
+     0.513410368411371,
+     0.513410368411371,
+     0.3233991029179333,
+     0.3233991029179333,
+     0.3233991029179333
+    ],
+    "evolve_wall_s": 148.16497878701193,
+    "eval_wall_s": 148.1268759960658,
+    "eval_cpu_s": 350.84673887199995,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.6242904577407404,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_c172x_phase3a1-smoke-s1_g0.json",
+     "traj_c172x_phase3a1-smoke-s1_g2.json",
+     "traj_c172x_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   }
+  }
+ },
+ "B_full_p25": {
+  "run_id": "phase2-smoke-p25-s1",
+  "wall_s": 153.56466307403753,
+  "workers": 8,
+  "loadavg_start": [
+   2.07763671875,
+   6.3583984375,
+   7.6552734375
+  ],
+  "aircraft": {
+   "737": {
+    "best_id": "737:g4:r0",
+    "best_cost": 0.25647872558108936,
+    "best_status": "ok",
+    "model_version": "full:flexv2:eeb82fb9",
+    "structural_sum": 0.09072225220007644,
+    "J_mass": 0.0002322366530928414,
+    "J_wing_tip_bm_limit": 7.947576121339077e-08,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.025979307420031468,
+     "J_mass": 0.0002322366530928414,
+     "J_bm_rms": 0.013700283725604591,
+     "J_smooth": 8.51721367948561e-05,
+     "J_wing_bm_limit": 5.732149169185983e-05,
+     "J_wing_torque_limit": 0.0004637431068424106,
+     "J_wing_ip_limit": 5.7321491691859835e-06,
+     "J_wing_tip_bm_limit": 7.947576121339077e-08,
+     "J_tail_bm_limit": 0.05019837604108802
+    },
+    "mass_delta_pct": 0.07741221769761379,
+    "mass_lb": {
+     "wingR_lb": 96.32812488032448,
+     "wingL_lb": 96.32812488032448,
+     "ht_lb": -120.8063136001672,
+     "vt_lb": -90.6047352001254,
+     "fus_lb": 39.423861164906526,
+     "total_lb": 20.669062125262883,
+     "baseline_flexible_lb": 26700.0,
+     "total_frac": 0.000774122176976138
+    },
+    "margins": {
+     "flutter_margin": 1.1677638045544878,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2686740581442508
+    },
+    "flutter_margin": 1.1677638045544878,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {},
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.5625,
+     "wing_nsm_tip": 0.5625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.0074681375757426,
+     "wing_ei_taper_3": 0.977807959972517,
+     "wing_ei_taper_4": 0.9668917220221664,
+     "wing_gj_ratio_root": 0.9475951226367275,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.018054275982108,
+     "wing_nsm_tip": 1.078062142140171,
+     "tail_stiffness_scale": 0.8169601309088373,
+     "fuselage_stiffness_scale": 1.0164266088187108,
+     "struct_damping_ratio": 0.021717852772058822
+    },
+    "rejected_rows_all_gens": 2,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 1,
+     "flutter": 1
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.3814202136584029,
+     0.3814202136584029,
+     0.362021322398382,
+     0.29200771375102086,
+     0.25647872558108936
+    ],
+    "evolve_wall_s": 116.6072580050095,
+    "eval_wall_s": 116.54681205603993,
+    "eval_cpu_s": 355.69084677499995,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.6467168832175925,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_737_phase2-smoke-p25-s1_g0.json",
+     "traj_737_phase2-smoke-p25-s1_g2.json",
+     "traj_737_phase2-smoke-p25-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "c172x": {
+    "best_id": "c172x:g4:r0",
+    "best_cost": 0.3300231645456844,
+    "best_status": "ok",
+    "model_version": "full:flexv2:e11b8214",
+    "structural_sum": 0.03503766056490322,
+    "J_mass": 0.0032894548874294453,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_mass": 0.0032894548874294453,
+     "J_bm_rms": 0.03161116262789834,
+     "J_smooth": 5.631644899920864e-05,
+     "J_wing_bm_limit": 7.261408369484163e-05,
+     "J_wing_torque_limit": 8.511085118980339e-07,
+     "J_wing_ip_limit": 7.261408369484164e-06
+    },
+    "mass_delta_pct": 1.0964849624764819,
+    "mass_lb": {
+     "wingR_lb": 1.376329777224048,
+     "wingL_lb": 1.376329777224048,
+     "ht_lb": 0.10516630515269743,
+     "vt_lb": 0.06471772624781381,
+     "fus_lb": 0.8274349858209611,
+     "total_lb": 3.749978571669568,
+     "baseline_flexible_lb": 342.0,
+     "total_frac": 0.010964849624764818
+    },
+    "margins": {
+     "flutter_margin": 1.25161779296497,
+     "div_margin": 1.694340787333891,
+     "reversal_margin": 1.4967075151717153
+    },
+    "flutter_margin": 1.25161779296497,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.5
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.0309051107466196,
+     "wing_ei_taper_3": 1.0050390171220815,
+     "wing_ei_taper_4": 1.0270799011165959,
+     "wing_gj_ratio_root": 1.0093572298652316,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.0150117467605624,
+     "wing_nsm_tip": 1.0,
+     "tail_stiffness_scale": 1.0147085741472308,
+     "fuselage_stiffness_scale": 1.0229843051616934,
+     "struct_damping_ratio": 0.035661027062055387
+    },
+    "rejected_rows_all_gens": 17,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 17
+    },
+    "rejected_last_gen": 1,
+    "best_per_gen": [
+     0.513436080989,
+     0.513436080989,
+     0.3400265256081119,
+     0.3400265256081119,
+     0.3300231645456844
+    ],
+    "evolve_wall_s": 126.46435185300652,
+    "eval_wall_s": 126.41773371200543,
+    "eval_cpu_s": 326.067379049,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.509571199300926,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_c172x_phase2-smoke-p25-s1_g0.json",
+     "traj_c172x_phase2-smoke-p25-s1_g2.json",
+     "traj_c172x_phase2-smoke-p25-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "T38": {
+    "best_id": "T38:g4:r0",
+    "best_cost": 0.22570865752040178,
+    "best_status": "ok",
+    "model_version": "full:flexv2:8bf7a250",
+    "structural_sum": 0.025714927977283582,
+    "J_mass": 0.004908196838110554,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.002502433185888443,
+     "J_mass": 0.004908196838110554,
+     "J_bm_rms": 0.015218161166525404,
+     "J_smooth": 0.000360591020780588,
+     "J_wing_bm_limit": 8.730995187569247e-05,
+     "J_wing_torque_limit": 1.284554734793856e-06,
+     "J_wing_ip_limit": 8.730995187569662e-06,
+     "J_tail_bm_limit": 0.0026282202641805365
+    },
+    "mass_delta_pct": 1.6360656127035182,
+    "mass_lb": {
+     "wingR_lb": 4.964275192169379,
+     "wingL_lb": 4.964275192169379,
+     "ht_lb": -2.0116023920371036,
+     "vt_lb": -1.6092819136296832,
+     "fus_lb": 27.558892104290855,
+     "total_lb": 33.86655818296283,
+     "baseline_flexible_lb": 2070.0,
+     "total_frac": 0.016360656127035182
+    },
+    "margins": {
+     "flutter_margin": 1.189995134811726,
+     "div_margin": 3.0,
+     "reversal_margin": 2.022616225263869
+    },
+    "flutter_margin": 1.189995134811726,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_ei_taper_2": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 1.05,
+      "bounds": [
+       0.75,
+       1.05
+      ]
+     },
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.05,
+     "wing_ei_taper_3": 0.977447406061193,
+     "wing_ei_taper_4": 1.0204590329103982,
+     "wing_gj_ratio_root": 1.008265028237439,
+     "wing_gj_ratio_tip": 0.9953180553780377,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.0119561069172247,
+     "tail_stiffness_scale": 0.951233881405161,
+     "fuselage_stiffness_scale": 1.1102355684171636,
+     "struct_damping_ratio": 0.021109978383205906
+    },
+    "rejected_rows_all_gens": 3,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "structural_ultimate_empennage": 1,
+     "diverged": 2
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.23461183312697784,
+     0.23461183312697784,
+     0.23461183312697784,
+     0.22570865752040178,
+     0.22570865752040178
+    ],
+    "evolve_wall_s": 135.57783612201456,
+    "eval_wall_s": 135.53221371694235,
+    "eval_cpu_s": 361.86682277,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.6753093646759258,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_T38_phase2-smoke-p25-s1_g0.json",
+     "traj_T38_phase2-smoke-p25-s1_g2.json",
+     "traj_T38_phase2-smoke-p25-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   }
+  }
+ },
+ "note": "J_wing_tip_bm_limit: A = station-exact at eta 0.875 (sizing_a1), B = strip-discrete (sizing_v2); not the same definition. Judge structure by structural_sum (>= 0), not by phase2_check's J_mass<0 flag.",
+ "delta_A_minus_B": {
+  "737": {
+   "best_cost": 2.9720805727606603e-06,
+   "structural_sum": 8.057444820575022e-06,
+   "cpu_s_per_scenario": 0.15883212372685196
+  },
+  "T38": {
+   "best_cost": 0.0005204229067957977,
+   "structural_sum": 0.0004915281257230793,
+   "cpu_s_per_scenario": 0.1669117993703706
+  },
+  "c172x": {
+   "best_cost": -0.006624061627751143,
+   "structural_sum": 0.0016574192078989344,
+   "cpu_s_per_scenario": 0.11471925843981445
+  }
+ },
+ "wall_ratio_A_over_B": 1.0960225767749883
+}

@@ -123,3 +123,40 @@ def test_validator_rejects_bad_index(small_run, tmp_path):
 def test_resim_matches_evaluation(small_run):
     for a in small_run["summary"]["aircraft"]:
         assert a["resim_mismatches"] == []
+
+
+def test_modal_twist_sign_fixed_export_and_validator_optional(small_run):
+    """New exports set structure.modal_twist_sign_fixed; validate_traj accepts with or without it."""
+    name, d = next(iter(_docs(small_run["run_dir"]).items()))
+    # build_doc path: structure is copied and flagged; source left untouched
+    st_src = {"schema": "evolution-flex-state/3", "fidelity": "full", "components": []}
+    tr = {
+        "channels": d["channels"], "data": d["data"], "dt_s": d["dt_s"], "sim_dt_s": d.get("sim_dt_s", 1 / 120),
+        "sample_hz": d["sample_hz"],
+        "origin": {"lat_deg": d["frame"]["origin_lat_deg"], "lon_deg": d["frame"]["origin_lon_deg"],
+                   "alt_m": d["frame"]["origin_alt_m"]},
+        "trim": {"throttle_trim": 0.5}, "structure": st_src,
+        "controls_timing": d.get("controls_timing", "pre_step"),
+    }
+    scenario = {"h0_ft": d["target"]["alt_m"] / trajectory.FT, "speed_kts": d["target"]["speed_kcas"],
+                "steps": [(s["t"], s["alt_m"] / trajectory.FT) for s in d["target"]["steps"]],
+                "wind_north_fps": 0.0, "wind_east_fps": 0.0, "gust_sigma_fps": 0.0, "ramp_fpm": None}
+    doc = trajectory.build_doc(
+        run_id=d["run_id"], aircraft=d["aircraft"], jsbsim_version=d["jsbsim_version"], git_sha=d["git_sha"],
+        seed=d["seed"], generation=d["generation"], fitness=d["fitness"], gains=d["genome"],
+        scenario=scenario, scenario_index=0,
+        sim_result={"cost": d.get("scenario_cost", d["fitness"]), "status": d["status"],
+                    "t_end": d["data"][-1][0], "trajectory": tr},
+        profile={},
+    )
+    assert doc["structure"]["modal_twist_sign_fixed"] is True
+    assert "modal_twist_sign_fixed" not in st_src
+    assert validate_traj.validate_doc(doc, "with_flag") == []
+    # without the flag (older exports): still valid
+    doc2 = copy.deepcopy(doc)
+    del doc2["structure"]["modal_twist_sign_fixed"]
+    assert validate_traj.validate_doc(doc2, "no_flag") == []
+    # present but not true: rejected
+    doc3 = copy.deepcopy(doc)
+    doc3["structure"]["modal_twist_sign_fixed"] = False
+    assert any("modal_twist_sign_fixed" in e for e in validate_traj.validate_doc(doc3, "bad_flag"))

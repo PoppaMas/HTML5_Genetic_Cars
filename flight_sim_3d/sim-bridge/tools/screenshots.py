@@ -40,8 +40,11 @@ def main():
     ap.add_argument("--bench", metavar="HTML", help="only screenshot a multi-aircraft standalone file "
                     "(e.g. data/bench_jets-j1_standalone.html) and write screenshots/<prefix>*.png")
     ap.add_argument("--prefix", default="bench_jets_")
-    ap.add_argument("--shots", choices=["bench", "phase1", "replay", "softbody", "v2", "v2nodes", "v2nodes_gust", "phase2"], default="bench",
+    ap.add_argument("--shots", choices=["bench", "phase1", "replay", "softbody", "v2", "v2nodes", "v2nodes_gust", "phase2", "phase2_seeds", "planform", "planform_real"], default="bench",
                     help="shot list for --bench: 'bench' (bench_jets-j1) or 'phase1' (3 seeds + bench g19)")
+    ap.add_argument("--shot-spec", metavar="JSON", help="--bench: shot list from a JSON file [[name, query, t, view?], ...] "
+                    "(overrides --shots; used by tools/build_b1_page.py)")
+    ap.add_argument("--strict", action="store_true", help="also FAIL on a blank render or a shown aircraft outside the view")
     a = ap.parse_args()
     if a.bench:
         return bench(a)
@@ -206,7 +209,9 @@ def bench(a):
     os.makedirs(OUT, exist_ok=True)
     url = "file://" + os.path.abspath(a.bench)
     logs, errors, report = [], [], {}
-    if a.shots == "phase1":
+    if getattr(a, "shot_spec", None):
+        shots = [tuple(x) for x in json.load(open(a.shot_spec))]
+    elif a.shots == "phase1":
         shots = [
             ("g19_s1_formation_chase", "", 20),                                              # file defaults (cy=rerr)
             ("ramp_c172x_g0_vs_g19_alt", "?preset=pair:c172x&cy=alt&cam=orbit&spacing=25", 15),
@@ -249,6 +254,31 @@ def bench(a):
             ("g0_mid_final_c172x", "?gens=c172x:0,c172x:29,c172x:59&cy=rerr&cam=orbit&spacing=25&defl=8", 20),
             ("T38_g59_single_flex_hud", "?mode=single&gen=T38:59&cam=chase&defl=20", 12),
             ("737_g59_wing_bend_front_defl10", "?mode=single&gen=737:59&cam=orbit&defl=10", 8.4, "front"),
+        ]
+    elif a.shots == "phase2_seeds":  # phase2-pilot s1/s2/s3 (data/phase2_pilot_standalone.html)
+        shots = [
+            ("default_s1_g59_formation_defl8", "", 12),                                 # file defaults: last@s1/formation/rerr/defl=8
+            ("seeds_c172x_s1_s2_s3_g59_rerr", "?preset=seeds:c172x&cy=rerr&cam=chase&spacing=30&defl=8", 12),
+            ("seeds_737_s1_s2_s3_g59_nz", "?preset=seeds:737&cy=nz&cam=chase&spacing=40&defl=8", 12),
+            ("g0_vs_g59_c172x_s1_rerr", "?preset=pair:c172x&cy=rerr&cam=chase&spacing=30&defl=8", 12),
+            ("g0_vs_g59_T38_s1_rerr", "?preset=pair:T38&cy=rerr&cam=chase&spacing=30&defl=8", 12),
+            ("g0_vs_g59_737_s1_rerr", "?preset=pair:737&cy=rerr&cam=chase&spacing=40&defl=8", 12),
+            ("g0_vs_g59_T38_s2_rerr", "?preset=pair:T38@phase2-pilot-s2&cy=rerr&cam=chase&spacing=30&defl=8", 12),
+            ("mid_g29_s3_formation", "?preset=mid@phase2-pilot-s3&cy=rerr&cam=chase&defl=8", 12),
+        ]
+    elif a.shots == "planform":  # SYNTHETIC planform fixture (tests/fixtures/planform_synthetic)
+        shots = [
+            ("737_shaped_top", "?mode=single&gen=737:59%23shaped&cam=orbit&defl=1", 8.0, "top"),
+            ("737_shaped_vs_baseline_formation", "?mode=compare&gens=737:59%23shaped,737:59%23baseline&layout=formation&cam=chase&spacing=22&defl=1", 8.0),
+            ("737_baseline_top", "?mode=single&gen=737:59%23baseline&cam=orbit&defl=1", 8.0, "top"),
+            ("c172x_shaped_front", "?mode=single&gen=c172x:59%23shaped&cam=orbit&defl=1", 8.0, "front"),
+        ]
+    elif a.shots == "planform_real":  # ER's REAL planform data (data/phase3b1_smoke_planform_standalone.html)
+        shots = [
+            ("737_g4_top", "?mode=single&gen=737:4&cam=orbit&defl=1", 8.0, "top"),
+            ("T38_g4_top", "?mode=single&gen=T38:4&cam=orbit&defl=1", 8.0, "top"),
+            ("c172x_g4_top", "?mode=single&gen=c172x:4&cam=orbit&defl=1", 8.0, "top"),
+            ("formation_g4_defl8", "", 12),
         ]
     elif a.shots == "v2nodes":  # FD NODAL data (fd-flexbody-nodes/1), sc0 (altitude steps): wing in-plane bending
         shots = [  # (name, query, time, view): view = camera placed in the aircraft's body frame (top / rear / ...)
@@ -314,15 +344,27 @@ def bench(a):
             page.screenshot(path=path)
             info = page.evaluate("""() => ({
               shown: fv.S.shown.map(d => [d.tr.aircraft, d.entry.run, d.tr.generation, d.preset.key, +(+d.tr.fitness).toFixed(4), +d.alongScale.toFixed(3), d.tr.hasRamp]),
-              hud: document.getElementById('hud').innerText.split(String.fromCharCode(10)).filter(l => /^(cost|fitness|replay|CMD|REF|TGT|KCAS|IAS|NZ|TIP|SYNTH|flex|ESTIMATED|FD nodal|m [/] deg)/.test(l)),
+              hud: document.getElementById('hud').innerText.split(String.fromCharCode(10)).filter(l => /^(cost|fitness|replay|CMD|REF|TGT|KCAS|IAS|NZ|TIP|SYNTH|flex|ESTIMATED|FD nodal|m [/] deg|PLANFORM)/.test(l)),
               entries: fv.S.shown.map(d => [d.entry.individual, d.entry.scenario, d.entry.verdict]),
               deflRowHidden: document.getElementById('defl-row').hidden, defl: fv.S.defl,
               flex: fv.S.shown.map(d => d.deformer ? d.deformer.comps.map(c => {
                 let mx = 0; for (const mm of c.meshes) { const a = mm.mesh.geometry.attributes.position.array; for (let k = 0; k < a.length; k++) mx = Math.max(mx, Math.abs(a[k] - mm.rest[k])); }
                 return [c.name, c.meshes.length, +mx.toFixed(3)]; }) : null),
+              planform: fv.S.shown.map(d => d.tr.planform ? [d.tr.planform.field, +(d.tr.planform.taper).toFixed(3), d.tr.planform.sweep_qc_rad == null ? null : +(d.tr.planform.sweep_qc_rad * 180 / Math.PI).toFixed(2), d.tr.planform.synthetic] : null),
+              wingBox: fv.S.shown.map(d => { const g = d.model.parts && d.model.parts.wingR && d.model.parts.wingR[0]; const m = g && g.children.find(c => c.isMesh); if (!m) return null; const gg = m.geometry; gg.computeBoundingBox(); const b = gg.boundingBox; const a = gg.attributes.position; let tipLE = -1e9, tipTE = 1e9; for (let k = 0; k < a.count; k++) if (a.getY(k) > b.max.y - 0.02 * b.max.y) { tipLE = Math.max(tipLE, a.getX(k)); tipTE = Math.min(tipTE, a.getX(k)); } return {xmin: +b.min.x.toFixed(2), xmax: +b.max.x.toFixed(2), semispan: +b.max.y.toFixed(2), tipChord: +(tipLE - tipTE).toFixed(2), zrange: +(b.max.z - b.min.z).toFixed(3)}; }),
               layout: fv.S.layout, vref: fv.S.vref, cy: fv.S.cy, cam: fv.S.cam,
               altErrMax: Math.max(...fv.S.shown.map((d, k) => { const v = fv.vectors(k); return Math.abs(v.modelY / fv.S.exag + v.originAlt - v.altLogged); })),
               rollSignOK: fv.S.shown.every((d, k) => { const v = fv.vectors(k); return Math.abs(v.phiDeg) < 0.2 || Math.sign(v.phiDeg) === -Math.sign(v.right[1]); }),
+              render: (() => {   // blank-render check: re-render, sample the WebGL canvas (same task -> buffer intact)
+                fv.renderer.render(fv.scene, fv.camera);
+                const c = fv.renderer.domElement, W = 128, H = 80, t = document.createElement('canvas'); t.width = W; t.height = H;
+                const g = t.getContext('2d'); g.drawImage(c, 0, 0, W, H);
+                const px = g.getImageData(0, 0, W, H).data; let n = 0, m = 0, m2 = 0; const cols = new Set();
+                for (let k = 0; k < px.length; k += 4) { const v = (px[k] + px[k + 1] + px[k + 2]) / 3; n++; m += v; m2 += v * v; cols.add((px[k] >> 4) * 256 + (px[k + 1] >> 4) * 16 + (px[k + 2] >> 4)); }
+                const sd = Math.sqrt(Math.max(0, m2 / n - (m / n) ** 2));
+                const inView = fv.S.shown.map(d => { const v = d.state.pos.clone().project(fv.camera); return Math.abs(v.x) <= 1 && Math.abs(v.y) <= 1 && v.z < 1; });
+                return {sd: +sd.toFixed(2), colors: cols.size, inView, blank: sd < 2 || cols.size < 6};
+              })(),
               noseVelMaxDeg: fv.S.layout === 'formation' ? null : Math.max(...fv.S.shown.map((d, k) => { const v = fv.vectors(k); return Math.acos(Math.min(1, v.nose[0]*v.vel[0]+v.nose[1]*v.vel[1]+v.nose[2]*v.vel[2])) * 180 / Math.PI; })),
             })""")
             report[name] = {"png": path, **info}
@@ -332,6 +374,14 @@ def bench(a):
     print(json.dumps(report, indent=1))
     bad = [l for l in logs if l.startswith("[error]")] + errors
     ok = not bad and all(r["altErrMax"] < 0.05 and r["rollSignOK"] for k, r in report.items() if isinstance(r, dict) and "png" in r)
+    blank = [k for k, r in report.items() if isinstance(r, dict) and "png" in r and r.get("render", {}).get("blank")]
+    offview = [k for k, r in report.items() if isinstance(r, dict) and "png" in r and not all(r.get("render", {}).get("inView", [True]))]
+    if blank:
+        print("BLANK RENDER:", blank)
+    if offview:
+        print("AIRCRAFT OUT OF VIEW:", offview)
+    if getattr(a, "strict", False) and (blank or offview):
+        ok = False
     print("RESULT:", "PASS" if ok else "FAIL")
     return 0 if ok else 1
 

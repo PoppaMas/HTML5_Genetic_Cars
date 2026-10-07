@@ -164,6 +164,9 @@ def _deep_merge(a: Dict, b: Dict) -> Dict:
 
 
 def build_task(raw: Dict) -> Task:
+    if isinstance(raw.get("blocks"), dict) and raw["blocks"].get("shape_b1"):
+        import shape_b1  # P3-B1 (opt-in): FD's 6 shape genes + full_a1_b1; builds the rest through this function
+        return shape_b1.build_task_b1(raw, build_task)
     raw = apply_shared(raw)
     raw = {k: v for k, v in raw.items() if not k.startswith("_")}
     prof = P.load_profile(raw.get("aircraft", P.REFERENCE_PROFILE))

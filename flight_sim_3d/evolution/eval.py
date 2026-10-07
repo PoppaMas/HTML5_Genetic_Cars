@@ -3,7 +3,9 @@
 The GA hot path (batch workers, via task() / task_genome()) and every re-flight (trajectory export, Sim Bridge replay,
 via evaluate()) go through evolution.fidelity: rigid -> sim.simulate() (unchanged Phase-1 path); reduced / full ->
 Flight Dynamics' flexeval.evaluate() (flight-dynamics/flexeval.py, imported read-only), which flies sim.simulate()
-with FD's FlexHookV2; full_a1 (P3-A1, opt-in) -> FD's flexeval_a1.evaluate() with FlexHookA1 / FlexBodyModelA1.
+with FD's FlexHookV2; full_a1 (P3-A1, opt-in) -> FD's flexeval_a1.evaluate() with FlexHookA1 / FlexBodyModelA1;
+full_a1_b1 (P3-B1, opt-in) -> FD's flexeval_b1.evaluate(shape_genome=...) with FlexHookB1 / FlexBodyModelB1 (genes of
+run.json group 'shape' = FD's 6 planform genes; a geometry-gate reject is not flown, status 'geometry_gate:<reason>').
 
     evaluate(genome, aircraft, scenario, run_cfg, recorder=None, *, fidelity=None)
         -> {cost, per_scenario_cost, terms, terms_available, status, feasible, feasibility_fidelity,
@@ -66,7 +68,7 @@ def _profile_d(entry: Dict) -> Dict:
 
 
 def gene_groups(entry: Dict) -> Dict[str, str]:
-    """gene name -> 'gains' | 'struct' (from run.json; default: pitch/altitude/heading genes are gains)."""
+    """gene name -> 'gains' | 'struct' | 'shape' (from run.json; default: pitch/altitude/heading genes are gains)."""
     if entry.get("genes"):
         return {g["name"]: g.get("group", "gains") for g in entry["genes"]}
     P = sim.Profile.from_dict(_profile_d(entry))
@@ -116,33 +118,39 @@ def split_values(values: Dict[str, float], groups: Dict[str, str]):
     return gains, struct
 
 
+def shape_values(values: Dict[str, float], groups: Dict[str, str]) -> Optional[Dict[str, float]]:
+    """P3-B1 shape genes (run.json group 'shape') as {name: physical value}, or None when the genome has no shape block."""
+    return {k: float(v) for k, v in values.items() if groups.get(k) == "shape"} or None
+
+
 def evaluate_one(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict,
                  fidelity: str = "rigid", recorder=None, record: bool = False, sample_hz: float = 30.0,
-                 reduced_gate: Optional[float] = None, telemetry: str = "sb") -> Dict:
+                 reduced_gate: Optional[float] = None, telemetry: str = "sb", shape=None) -> Dict:
     """One genome x one scenario at one fidelity (JSON-able; what the batch caches for rigid)."""
     return fid_mod.evaluate_scenario(profile_d, gains, struct, runinfo.scenario_fields(sc_d), fidelity,
                                      recorder=recorder, record=record, sample_hz=sample_hz, reduced_gate=reduced_gate,
-                                     telemetry=telemetry)
+                                     telemetry=telemetry, shape=shape)
 
 
 def task(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], sc_d: Dict, fidelity: str,
          viz: bool = False, sample_hz: float = 30.0, reduced_gate: Optional[float] = None,
-         telemetry: str = "fd") -> Dict:
+         telemetry: str = "fd", shape=None) -> Dict:
     """Batch worker entry (picklable), one scenario. viz=True records the ga-flightsim-traj/1 trajectory."""
     c0 = time.process_time()
     r = evaluate_one(profile_d, gains, struct, sc_d, fidelity, record=viz, sample_hz=sample_hz,
-                     reduced_gate=reduced_gate, telemetry=telemetry)
+                     reduced_gate=reduced_gate, telemetry=telemetry, shape=shape)
     r["task_cpu_s"] = time.process_time() - c0
     return r
 
 
 def task_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], scs_d: Sequence[Dict],
-                fidelity: str, reduced_gate: Optional[float], viz: bool = False, sample_hz: float = 30.0) -> Dict:
-    """Batch worker entry for reduced/full/full_a1: one genome over all scenarios (one FD flexeval.evaluate call;
-    flexeval_a1.evaluate for full_a1)."""
+                fidelity: str, reduced_gate: Optional[float], viz: bool = False, sample_hz: float = 30.0,
+                shape=None) -> Dict:
+    """Batch worker entry for reduced/full/full_a1/full_a1_b1: one genome over all scenarios (one FD flexeval.evaluate
+    call; flexeval_a1.evaluate for full_a1; flexeval_b1.evaluate with the shape genes for full_a1_b1)."""
     c0, w0 = time.process_time(), time.perf_counter()
     r = fid_mod.evaluate_genome(profile_d, gains, struct, [runinfo.scenario_fields(s) for s in scs_d], fidelity,
-                                reduced_gate, record=viz, sample_hz=sample_hz, telemetry="fd")
+                                reduced_gate, record=viz, sample_hz=sample_hz, telemetry="fd", shape=shape)
     r["task_cpu_s"], r["task_wall_s"] = time.process_time() - c0, time.perf_counter() - w0
     return r
 
@@ -172,9 +180,10 @@ def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelit
     if not isinstance(genome, dict):
         genome = genome_mod.decode(list(genome), schema_for(entry))
     gains, struct = split_values(genome, gene_groups(entry))
+    shape = shape_values(genome, gene_groups(entry))
     prof_d = _profile_d(entry)
     scs = scenario_dicts(aircraft, scenario, run_cfg)
-    if fid == "rigid":
+    if fid == "rigid":   # rigid physics has no planform: shape genes (if any) are ignored, as in the batch's rigid screen
         per = [evaluate_one(prof_d, gains, struct, s, fid, recorder=recorder) for s in scs]
         out = aggregate(per)
     else:
@@ -182,7 +191,7 @@ def evaluate(genome, aircraft: str, scenario, run_cfg, recorder=None, *, fidelit
         if gate is None:
             gate = fid_mod.per_aircraft(aircraft)["reduced_gate"]
         out = fid_mod.evaluate_genome(prof_d, gains, struct, [runinfo.scenario_fields(s) for s in scs], fid, gate,
-                                      recorder=recorder)
+                                      recorder=recorder, shape=shape)   # non-baseline shape below full_a1_b1 raises
         per = out.pop("per_scenario")
     out["per_scenario_cost"] = [p["cost"] for p in per]
     out["scenario_ids"] = [s.get("id") for s in scs]

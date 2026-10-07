@@ -7,6 +7,11 @@
     full_a1  FD flexeval_a1.evaluate(fidelity='full_a1'): P3-A1 denser full model (flexbody_a1.FlexBodyModelA1: 64 strips
              and 4b+3t+2ip modes per semi-wing, tails / fuselage as full, 31 DOF; J_wing_tip_bm_limit station-exact at
              eta 0.875); per genome. Opt-in (INTERFACE_v2 section 13). rigid / reduced / full never touch flexeval_a1.
+    full_a1_b1  FD flexeval_b1.evaluate(fidelity='full_a1_b1', shape_genome=...): P3-B1 = the A1 host + FD's 6 planform
+             shape genes (planform_b1: chord tapers 1..3, twist mid / tip, quarter-chord sweep delta; L = R). Order: shape ->
+             geometry gate (reject = status 'geometry_gate:<reason>', cost = fail_cost, NOT flown) -> rebuild ->
+             structure genes -> margins + flight. Baseline shape (None / {} / defaults) = full_a1 bit for bit (FD
+             acceptance). Opt-in (INTERFACE_v2 section 14); rigid / reduced / full / full_a1 never touch the B1 modules.
 
 FD's modules (flight-dynamics/flexeval.py, flexbody.py, flexwing.py, coupled_sim.py; flexeval_a1.py / flexbody_a1.py
 only for full_a1, imported lazily) are IMPORTED, never copied, with
@@ -41,13 +46,16 @@ from . import genome as genome_mod
 from . import sim
 
 FD_DIR = sim.fd_dir()   # $EVOLUTION_FD_DIR or <team root>/flight-dynamics; no absolute default
-FIDELITIES = ("rigid", "reduced", "full", "full_a1")
-RANK = {"rigid": 0, "reduced": 1, "full": 2, "full_a1": 3}
+FIDELITIES = ("rigid", "reduced", "full", "full_a1", "full_a1_b1")
+RANK = {"rigid": 0, "reduced": 1, "full": 2, "full_a1": 3, "full_a1_b1": 4}
 LABELS = {"rigid": "rigid", "reduced": "reduced(flexv1 on projected v2 genome)", "full": "full(flexv2)",
-          "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)"}
+          "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)",
+          "full_a1_b1": "full_a1_b1(flexv2b1: P3-B1, A1 host + 6 planform shape genes)"}
 A1 = "full_a1"
+B1 = "full_a1_b1"
 # FE-model fidelities (FD FlexBodyModel family: FE nodal wings + empennage + fuselage, prepared root <root>_v2, v2_map)
-FULL_LIKE = ("full", "full_a1")
+FULL_LIKE = ("full", "full_a1", "full_a1_b1")
+A1_LIKE = ("full_a1", "full_a1_b1")      # A1 host (64-strip wings): structural_model / tip_bm extras
 # reduced margin gate (FD default 0.9) and minimum fraction of the population re-scored at full in multi-fidelity mode.
 # Swept wings: FD found reduced margins optimistic (737: reduced passed all 32, full failed 9-12) -> gate 1.0, >= 25 %.
 DEFAULT_PER_AIRCRAFT = {"c172x": {"reduced_gate": 0.9, "min_full_frac": 0.0},
@@ -108,6 +116,26 @@ def fd_a1_modules():
     return _FDA1
 
 
+_FDB1: Dict[str, object] = {}
+
+
+def fd_b1_modules():
+    """dict(pb1=planform_b1, fbb1=flexbody_b1, fb1=flexeval_b1), imported from FD's folder without bytecode, only when
+    full_a1_b1 / the phase3_b1 shape block is used (an FD tree without the P3-B1 files still serves the other fidelities)."""
+    if not _FDB1:
+        fd_a1_modules()
+        prev = sys.dont_write_bytecode
+        sys.dont_write_bytecode = True
+        try:
+            import planform_b1, flexbody_b1, flexeval_b1   # noqa: E401,E402
+        except ImportError as e:
+            raise FidelityUnavailable(f"full_a1_b1 needs FD's planform_b1.py / flexbody_b1.py / flexeval_b1.py in {FD_DIR}: {e}") from e
+        finally:
+            sys.dont_write_bytecode = prev
+        _FDB1.update(pb1=planform_b1, fbb1=flexbody_b1, fb1=flexeval_b1)
+    return _FDB1
+
+
 def label(fidelity: str) -> str:
     return LABELS[fidelity]
 
@@ -140,6 +168,74 @@ def struct_from(struct_genome) -> Optional[Dict[str, float]]:
     if not isinstance(struct_genome, dict):
         struct_genome = genome_mod.decode(list(struct_genome), struct_schema(len(struct_genome) > 12))
     return {k: min(max(float(v), sch[k].min), sch[k].max) if k in sch else float(v) for k, v in struct_genome.items()}
+
+
+# ----------------------------------------------------------------------------- shape genes (FD P3-B1, 6 genes)
+def shape_schema() -> List[genome_mod.Gene]:
+    """FD's locked B1 shape block (planform_b1.SHAPE_GENES_B1: names, ranges, defaults, table order). Normalized storage
+    u in [0, 1] is FD's own vector encoding (decode_shape_b1: lo + u (hi - lo), 'linear'), so a genome_norm slice is a
+    valid FD [0,1]^6 vector and Gene.decode gives the same physical values bit for bit. The log-space chord mutation
+    (Genome Architect) lives in the operator (ga.mutate_blocks), not in the storage encoding."""
+    pb1 = fd_b1_modules()["pb1"]
+    return [genome_mod.Gene(g.name, g.lo, g.hi, kind="linear", doc=g.meaning, default=g.default) for g in pb1.SHAPE_GENES_B1]
+
+
+def shape_from(shape) -> Optional[Dict[str, float]]:
+    """None | {gene: value} | normalized [0,1]^6 vector (FD order) -> FD's decoded {gene: value} (planform_b1.decode_shape_b1:
+    raises ValueError on unknown / deferred / out-of-range values, never clips)."""
+    if shape is None:
+        return None
+    return dict(fd_b1_modules()["pb1"].decode_shape_b1(shape if isinstance(shape, dict) else list(shape)))
+
+
+def shape_cache_key(shape) -> str:
+    """FD's planform_b1.shape_cache_key on the decoded shape (None = baseline)."""
+    return fd_b1_modules()["pb1"].shape_cache_key(shape)
+
+
+def planform_header(obj) -> Optional[Dict]:
+    """Trajectory-header 'planform' block (Sim Bridge spec, fd-planform/1, ga-flightsim-traj/2 additive field) from FD's
+    shaped geometry of a FlexBodyModelB1 (obj.planform = planform_b1.PlanformStrips, obj.shape_genes): unit / axis
+    conversion only, nothing recomputed. One semi-wing (right; symmetric: true -> left = mirror y). None for other models."""
+    pf = getattr(obj, "planform", None)
+    if pf is None or not hasattr(pf, "c_ft"):
+        return None
+    ft = sim.FT
+    summ = obj.planform_summary() if hasattr(obj, "planform_summary") else {}
+    return {"schema": "fd-planform/1", "source": "P3-B1", "fd_model_class": type(obj).__name__,
+            "genes": {k: float(v) for k, v in obj.shape_genes.items()},
+            "planform_baseline": bool(getattr(obj, "planform_baseline", False)),
+            "symmetric": True, "n_strips": int(len(pf.c_ft)),
+            "wing": {"span_frac": [float(v) for v in pf.xi],
+                     "y_m": [float(v * ft) for v in pf.y_ft],
+                     "chord_m": [float(v * ft) for v in pf.c_ft],
+                     "chord_baseline_m": [float(v * ft) for v in pf.c0_ft],
+                     "le_x_m": [float(-v * ft) for v in pf.le_x_ft],
+                     "te_x_m": [float(-v * ft) for v in pf.te_x_ft],
+                     "twist_rad": [float(v) for v in pf.twist_rad]},
+            "sweep_qc_rad": float(math.radians(pf.sweep_qc_deg)),
+            "sweep_qc_baseline_rad": float(math.radians(pf.sweep_qc_deg_baseline)),
+            "area_norm": float(pf.area_norm),
+            "ac_shift_x_m": float(-float(summ.get("ac_shift_ft", 0.0)) * ft),
+            "doc": {"axes": "SI, body FRD (x forward, y right, z down); one semi-wing = the RIGHT wing (y_m > 0); "
+                            "symmetric: true -> left wing = same arrays with y -> -y (twist sign unchanged: + = LE up)",
+                    "span_frac": "FD beam coordinate xi = (y - y_root) / (s - y_root) at the strip centres (FD's 64 A1 strips)",
+                    "y_m": "spanwise station of the strip centre from the aircraft centreline, m",
+                    "chord_m": "FD shaped chord c(y) (area-preserving; chord_baseline_m = FD baseline trapezoid)",
+                    "le_x_m / te_x_m": "leading / trailing-edge x, m, body +x forward, relative to the shaped wing's "
+                                       "quarter-chord point at the beam root (FD PlanformStrips.le_x_ft / te_x_ft x -0.3048; "
+                                       "FD's x is + aft). Not CG-referenced: FD exposes no absolute LE position",
+                    "twist_rad": "FD geometric twist, rad, + = leading edge up (same sign as the wingR.twist channel), "
+                                 "root = 0",
+                    "sweep_qc_rad": "shaped quarter-chord sweep (baseline + wing_sweep_qc_delta_deg), rad",
+                    "ac_shift_x_m": "FD's AC-hold shift of the wing strips (body +x forward, m); included in the "
+                                    "FE wing structure.axis_nodes_body_m (FD r1 node_layout_b1)",
+                    "nodes": "structure.axis_nodes_body_m (FE wingR / wingL) = FD flexbody_b1.node_layout_b1 (B1 r1): "
+                             "elastic axis at x_ea of the SHAPED local chord, shaped quarter-chord sweep, AC-hold shift; "
+                             "twist rotates sections about the EA (EA nodes do not move with twist). Shaped wings also "
+                             "carry per-node chord_m / geometric_twist_rad / le_nodes_body_m / te_nodes_body_m. At the "
+                             "baseline shape = flexbody.node_layout exactly. The 9-node wing*_modal display axes are "
+                             "unchanged (approximate)"}}
 
 
 # ----------------------------------------------------------------------------- prepared roots (read-only checks)
@@ -203,6 +299,8 @@ def model_version(profile_d: Dict, fidelity: str, reduced_gate: Optional[float] 
         root, rv2 = roots(P)
         if fidelity == A1:
             mv = fd_a1_modules()["fa"].model_version(A1, P.aircraft, root, rv2)
+        elif fidelity == B1:
+            mv = fd_b1_modules()["fb1"].model_version(B1, P.aircraft, root, rv2)
         else:
             with _gate(reduced_gate) as fe:
                 mv = fe.model_version(fidelity, P.aircraft, root, rv2)
@@ -251,17 +349,19 @@ def rp_offset_body_ft(fdm) -> list:
             -(fdm["metrics/aero-rp-z-in"] - fdm["inertia/cg-z-in"]) / 12.0]
 
 
-def make_fd_model(profile_d: Dict, struct, fidelity: str):
-    """Public: FD FlexBodyModel (full), FlexBodyModelA1 (full_a1) or projected FlexWing (reduced) for (profile, struct
-    genome). Sim Bridge can hold this and call FlexState.nodes / node_layout without using private `_struct_obj` /
-    `_aircraft_entry`."""
+def make_fd_model(profile_d: Dict, struct, fidelity: str, shape=None):
+    """Public: FD FlexBodyModel (full), FlexBodyModelA1 (full_a1), FlexBodyModelB1 (full_a1_b1, with `shape`) or projected
+    FlexWing (reduced) for (profile, struct genome). Sim Bridge can hold this and call FlexState.nodes / node_layout
+    without using private `_struct_obj` / `_aircraft_entry`."""
     if fidelity not in ("reduced",) + FULL_LIKE:
-        raise ValueError(f"make_fd_model: fidelity must be reduced|full|full_a1, got {fidelity!r}")
+        raise ValueError(f"make_fd_model: fidelity must be reduced|full|full_a1|full_a1_b1, got {fidelity!r}")
+    if shape is not None and fidelity != B1:
+        raise ValueError(f"make_fd_model: a shape genome is only consumed at {B1!r}")
     P = sim.Profile.from_dict(profile_d)
     check_prepared(P, fidelity)
     _root, rv2 = roots(P)
     m = fd_modules()
-    return _struct_obj(m["fe"], m["fb"], struct_from(struct), P.aircraft, fidelity, rv2)
+    return _struct_obj(m["fe"], m["fb"], struct_from(struct), P.aircraft, fidelity, rv2, shape_from(shape))
 
 
 def _wing_surfaces(obj, fidelity):
@@ -299,7 +399,8 @@ def _wing_surfaces(obj, fidelity):
     return out
 
 
-_SOURCE_NAME = {"full": "flexbody v2", "reduced": "flexwing v1 (reduced)", "full_a1": "flexbody_a1 (P3-A1, 64-strip wings)"}
+_SOURCE_NAME = {"full": "flexbody v2", "reduced": "flexwing v1 (reduced)", "full_a1": "flexbody_a1 (P3-A1, 64-strip wings)",
+                "full_a1_b1": "flexbody_b1 (P3-B1 planform on the A1 64-strip wings)"}
 
 
 def structure_geometry(obj, fidelity, fdm) -> Dict:
@@ -356,6 +457,39 @@ def fd_to_structure_channels(eta, geom) -> Dict[str, float]:
     return out
 
 
+def fd_node_layout(obj, fidelity, rp_offset_ft=None):
+    """FD node layout for a flex model: flexbody_b1.node_layout_b1 at full_a1_b1 (FD B1 r1: the wing EA follows the
+    shaped chord / sweep / AC shift; shaped wings add chord_ft, geometric_twist_deg, le/te_nodes_body_ft; baseline
+    shape = flexbody.node_layout exactly), else flexbody.node_layout (unchanged)."""
+    if fidelity == B1:
+        return fd_b1_modules()["fbb1"].node_layout_b1(obj, rp_offset_ft)
+    return fd_modules()["fb"].node_layout(obj, rp_offset_ft)
+
+
+# per-node planform fields that FD's node_layout_b1 adds to the shaped wings, converted to SI / rad (additive)
+_B1_NODE_FIELDS_DOC = ("P3-B1 r1 shaped wing, from FD flexbody_b1.node_layout_b1 (per FE node, same order as "
+                       "axis_nodes_body_m): chord_m = shaped local chord (m); geometric_twist_rad = geometric twist "
+                       "(rad, + = leading edge up, root 0); le_nodes_body_m / te_nodes_body_m = twisted leading / "
+                       "trailing-edge points (m, body FRD, origin CG, same as axis_nodes_body_m). Display geometry; "
+                       "the physics uses FD's strips.")
+
+
+def b1_node_fields(layout) -> Dict[str, Dict]:
+    """{wingR|wingL: {chord_m, geometric_twist_rad, le_nodes_body_m, te_nodes_body_m, planform_nodes_doc}} from an FD
+    node_layout_b1 list (only shaped wings carry the FD fields; baseline -> {})."""
+    ft, out = sim.FT, {}
+    for c in layout or []:
+        if c.get("name") not in ("wingR", "wingL") or "chord_ft" not in c:
+            continue
+        out[c["name"]] = {
+            "chord_m": [round(float(v) * ft, 6) for v in c["chord_ft"]],
+            "geometric_twist_rad": [round(math.radians(float(v)), 9) for v in c["geometric_twist_deg"]],
+            "le_nodes_body_m": [[round(float(v) * ft, 6) for v in p] for p in c["le_nodes_body_ft"]],
+            "te_nodes_body_m": [[round(float(v) * ft, 6) for v in p] for p in c["te_nodes_body_ft"]],
+            "planform_nodes_doc": _B1_NODE_FIELDS_DOC}
+    return out
+
+
 class FlexState:
     """flex_state handed to recorders (schema evolution-flex-state/3), valid during the recorder call.
 
@@ -363,9 +497,11 @@ class FlexState:
       .schema / .structure / .fidelity / .model_version / .eta / .raw
       .fd_model          FD FlexBodyModel (full), FlexBodyModelA1 (full_a1) or FlexWing (reduced); same object the flight uses
       .nodes()           current-frame FE nodal values {body: {field: [float]}}, or None at reduced
-      .node_layout()     FD node_layout list (body FRD ft, origin CG), or None at reduced
+      .node_layout()     FD node_layout list (body FRD ft, origin CG), or None at reduced; full_a1_b1 = FD
+                         node_layout_b1 (shaped EA + per-node chord_ft / geometric_twist_deg / le,te_nodes_body_ft)
       .v2_geometry       sim-bridge v2_map geometry dict (full / full_a1), or None
-      .v2_map_version    "2.0.0" when v2_map is wired (full / full_a1), else None
+      .v2_map_version    "2.0.0" when v2_map is wired (full / full_a1 / full_a1_b1), else None
+      .planform          full_a1_b1: FD's shaped planform (fd-planform/1, see planform_header), else None
       .channels()        SB channels + flex.* raw (see below)
       .as_dict()
 
@@ -374,13 +510,20 @@ class FlexState:
     wingR/wingL only (unchanged names) + flex.*.
     """
     __slots__ = ("structure", "eta", "raw", "_geom", "fidelity", "model_version",
-                 "_fd_model", "_v2_geo", "_rp_offset_ft")
+                 "_fd_model", "_v2_geo", "_rp_offset_ft", "_planform")
     schema = FLEX_STATE_SCHEMA
 
-    def __init__(self, geom, eta, raw, fidelity, model_version, *, fd_model=None, v2_geo=None, rp_offset_ft=None):
+    def __init__(self, geom, eta, raw, fidelity, model_version, *, fd_model=None, v2_geo=None, rp_offset_ft=None,
+                 planform=None):
         self._geom, self.structure = geom, geom["structure"]
         self.eta, self.raw, self.fidelity, self.model_version = eta, raw, fidelity, model_version
         self._fd_model, self._v2_geo, self._rp_offset_ft = fd_model, v2_geo, rp_offset_ft
+        self._planform = planform
+
+    @property
+    def planform(self):
+        """full_a1_b1: FD's shaped planform block (fd-planform/1; same dict as the trajectory header 'planform'), else None."""
+        return self._planform
 
     @property
     def fd_model(self):
@@ -403,10 +546,11 @@ class FlexState:
         return v2_map_mod().nodes_frame(fb.node_values(self._fd_model, self.eta))
 
     def node_layout(self):
-        """FD flexbody.node_layout (body FRD ft, origin CG when rp offset was supplied), or None at reduced."""
+        """FD node layout (body FRD ft, origin CG when rp offset was supplied), or None at reduced: flexbody.node_layout,
+        or flexbody_b1.node_layout_b1 at full_a1_b1 (fd_node_layout)."""
         if self.fidelity not in FULL_LIKE or self._fd_model is None:
             return None
-        return fd_modules()["fb"].node_layout(self._fd_model, self._rp_offset_ft)
+        return fd_node_layout(self._fd_model, self.fidelity, self._rp_offset_ft)
 
     def channels(self) -> Dict[str, float]:
         ch = fd_to_structure_channels(self.eta, self._geom)   # modal (wing*_modal at full; wingR/L at reduced)
@@ -420,7 +564,8 @@ class FlexState:
         return {"schema": self.schema, "fidelity": self.fidelity, "model_version": self.model_version,
                 "v2_map_version": self.v2_map_version, "structure": self.structure, "channels": self.channels(),
                 "modal_eta": np.asarray(self.eta, float).tolist(),
-                **({"nodes": self.nodes()} if self.fidelity in FULL_LIKE else {})}
+                **({"nodes": self.nodes()} if self.fidelity in FULL_LIKE else {}),
+                **({"planform": self._planform} if self._planform is not None else {})}
 
 
 class SBHook:
@@ -434,6 +579,7 @@ class SBHook:
         self._rp_offset_ft = None
         self._probe = None
         self._fdm = None
+        self.planform = planform_header(obj) if fidelity == B1 else None
 
     def attach(self, fdm):
         self.h.attach(fdm)
@@ -459,7 +605,7 @@ class SBHook:
         modal["fns"] = [(nm + "_modal", fn) for nm, fn in modal["fns"]]
         vm, fb = v2_map_mod(), fd_modules()["fb"]
         self._rp_offset_ft = rp_offset_body_ft(self._fdm)
-        layout = fb.node_layout(self.obj, self._rp_offset_ft)
+        layout = fd_node_layout(self.obj, self.fidelity, self._rp_offset_ft)   # B1: node_layout_b1 (shaped EA)
         self._v2_geo = vm.geometry_from_layout(layout, getattr(self.obj, "model", None))
         nodes = vm.nodes_frame(fb.node_values(self.obj, eta))
         status = vm.component_status(self._v2_geo, nodes)
@@ -467,6 +613,11 @@ class SBHook:
                                                 base=modal["structure"],
                                                 extra={"evolution_flex_state": FLEX_STATE_SCHEMA,
                                                        "modal_wings": ["wingR_modal", "wingL_modal"]})
+        if self.fidelity == B1:   # additive per-node planform fields on the shaped FE wings (none at baseline shape)
+            extra = b1_node_fields(layout)
+            for c in modal["structure"]["components"]:
+                c.update(extra.get(c["name"], {}))
+            modal["structure"]["node_layout"] = "FD flexbody_b1.node_layout_b1 (P3-B1 r1)"
         self.geom = modal
 
     def state(self) -> FlexState:
@@ -481,7 +632,7 @@ class SBHook:
             eta, raw = self._probe
         self._ensure_geom(eta)
         return FlexState(self.geom, eta, raw, self.fidelity, self.model_version,
-                         fd_model=self.obj, v2_geo=self._v2_geo, rp_offset_ft=self._rp_offset_ft)
+                         fd_model=self.obj, v2_geo=self._v2_geo, rp_offset_ft=self._rp_offset_ft, planform=self.planform)
 
 
 # ----------------------------------------------------------------------------- evaluation
@@ -495,9 +646,12 @@ def _flex_profile(P: sim.Profile, fidelity: str) -> sim.Profile:
     return sim.Profile.from_dict(dict(P.to_dict(), aircraft_root=root if fidelity == "reduced" else rv2))
 
 
-def _struct_obj(fe, fb, struct, model, fidelity, rv2):
+def _struct_obj(fe, fb, struct, model, fidelity, rv2, shape=None):
     if fidelity == "reduced":
         return fe.reduced_wing(struct, model, rv2)
+    if fidelity == B1:
+        return fd_b1_modules()["fbb1"].FlexBodyModelB1(model, struct, shape_genes=shape, asymmetric=fe._is_asym(struct),
+                                                       root_v2=rv2)
     if fidelity == A1:
         return fd_a1_modules()["fba1"].FlexBodyModelA1(model, struct, asymmetric=fe._is_asym(struct), root_v2=rv2)
     return fb.FlexBodyModel(model, struct, asymmetric=fe._is_asym(struct), root_v2=rv2)
@@ -505,13 +659,17 @@ def _struct_obj(fe, fb, struct, model, fidelity, rv2):
 
 def _fd_evaluate(fidelity: str):
     """FD's evaluate for a flex fidelity: flexeval.evaluate for reduced / full (exactly as before P3-A1), flexeval_a1.evaluate
-    for full_a1."""
+    for full_a1, flexeval_b1.evaluate for full_a1_b1 (the only one that is given shape_genome=)."""
+    if fidelity == B1:
+        return fd_b1_modules()["fb1"].evaluate
     return fd_a1_modules()["fa"].evaluate if fidelity == A1 else fd_modules()["fe"].evaluate
 
 
 def _fd_hook(fe, fidelity: str):
     """FD's hook class: flexeval.FlexHookV2 (reduced / full) or flexeval_a1.FlexHookA1 (full_a1, = FlexHookV2 with the A1
     model; only its node-telemetry gate differs)."""
+    if fidelity == B1:
+        return fd_b1_modules()["fb1"].FlexHookB1
     return fd_a1_modules()["fa"].FlexHookA1 if fidelity == A1 else fe.FlexHookV2
 
 
@@ -552,15 +710,19 @@ def apply_mass_credit_clip(out: Dict, mass: Dict, clip, w_mass: float) -> Dict:
 
 def evaluate_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[Dict[str, float]], scs_d: Sequence[Dict],
                     fidelity: str, reduced_gate: Optional[float] = None, recorder=None, record: bool = False,
-                    sample_hz: float = 30.0, telemetry: str = "sb") -> Dict:
+                    sample_hz: float = 30.0, telemetry: str = "sb", shape: Optional[Dict[str, float]] = None) -> Dict:
     """One genome over its scenarios at one fidelity -> {cost, status, per_scenario[...], terms, terms_available,
     feasible, feasibility_fidelity, fidelity, model_version, margins, margins_fidelity, margin_gate, reduced_gate,
     mass_total_frac, projection?, telemetry_check?, trajectories? (record)}. JSON-able (what the batch caches).
     record + telemetry='fd' (viz): trajectories from FD's own record=True flight (raw flex.* channels only, no extra
     flight); telemetry='sb' (export / recorder): a second flight with FD's FlexHookV2 wrapped by SBHook (Sim Bridge
-    wingR/wingL channels + raw flex.*), whose cost is checked bit for bit against FD's per-scenario sim_cost."""
+    wingR/wingL channels + raw flex.*), whose cost is checked bit for bit against FD's per-scenario sim_cost.
+    shape: P3-B1 shape genes ({name: value} or FD [0,1]^6), consumed only at full_a1_b1 (None = baseline planform). A rigid
+    screen ignores it (rigid physics has no planform); reduced / full / full_a1 refuse a non-baseline shape (FD rule)."""
     if fidelity not in FIDELITIES:
         raise ValueError(f"fidelity must be one of {FIDELITIES}")
+    if shape is not None and fidelity in ("reduced", "full", "full_a1") and not fd_b1_modules()["pb1"].is_baseline_shape(shape):
+        raise ValueError(f"shape genes are only consumed at {B1!r} (got fidelity {fidelity!r}); rigid screens ignore them")
     P = sim.Profile.from_dict(profile_d)
     scs = [sim.Scenario.from_dict(s) for s in scs_d]
     mv = model_version(profile_d, fidelity, reduced_gate)
@@ -576,16 +738,18 @@ def evaluate_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[D
     fe, fb = m["fe"], m["fb"]
     check_prepared(P, fidelity)
     root, rv2 = roots(P)
+    shape = shape_from(shape) if fidelity == B1 else None
+    kw = {"shape_genome": shape} if fidelity == B1 else {}
     with _gate(reduced_gate):
         fd_rec = bool(record and telemetry == "fd" and recorder is None)
         r = _fd_evaluate(fidelity)(gains, struct, scs, P.aircraft, fidelity=fidelity, root=root, root_v2=rv2, profile=P,
-                                   sim=sim, record=fd_rec, blas_threads=1)
+                                   sim=sim, record=fd_rec, blas_threads=1, **kw)
     if r["model_version"] != mv:
         raise RuntimeError(f"FD model_version {r['model_version']} != {mv}")
     fail_cost = float(2 * P.fail_base)
     if r["per_scenario"]:
         per = [{k: e[k] for k in PER_KEYS if k in e} for e in r["per_scenario"]]
-    else:   # margin-gate fail: not flown; one aligned entry per scenario (mean = FD's cost)
+    else:   # margin-gate / geometry-gate fail: not flown; one aligned entry per scenario (mean = FD's cost)
         per = [{"cost": float(r["cost"]), "status": r["status"], "t_end": 0.0, "not_flown": True} for _ in scs]
     for e in per:
         e["fidelity"], e["model_version"] = fidelity, mv
@@ -601,18 +765,25 @@ def evaluate_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[D
         apply_mass_credit_clip(out, r["mass"], P.flex_mass_credit_clip, fb.StructWeightsV2().w_mass)
     if r.get("projection"):
         out["projection"] = {k: v for k, v in r["projection"].items() if not k.startswith("_")}
-    if fidelity == A1:   # FD's A1 extras (absent at reduced / full, whose results are unchanged)
+    if fidelity in A1_LIKE:   # FD's A1 extras (absent at reduced / full, whose results are unchanged)
         out["structural_model"] = r.get("structural_model")
         sz = r.get("sizing") or {}
         out["tip_bm"] = {"method": sz.get("tip_bm_method"),
                          "strip_discrete_term": (sz.get("tip_bm_strip_discrete") or {}).get("term")}
+    if fidelity == B1:   # FD's B1 extras: decoded shape, its cache key, the geometry gate verdict, planform summary
+        out["shape_genes"] = dict(r["shape_genes"])
+        out["shape_cache_key"] = r["shape_cache_key"]
+        out["geometry_gate"] = r.get("geometry_gate")
+        out["geometry_gate_reject"] = str(r["status"]).startswith("geometry_gate:")
+        if r.get("planform") is not None:
+            out["planform"] = r["planform"]
     if fd_rec and r["per_scenario"]:
         out["trajectories"] = [t.get("trajectory") for t in r.get("telemetry") or []]
     elif (recorder is not None or record) and r["per_scenario"]:
         # telemetry flight with FD's own hook (bit-identical physics) wrapped for Sim Bridge flex_state; checked against
         # FD's per-scenario sim_cost
         wts = dataclasses.replace(fb.StructWeightsV2(), fail_cost=fail_cost)
-        obj = _struct_obj(fe, fb, struct, P.aircraft, fidelity, rv2)
+        obj = _struct_obj(fe, fb, struct, P.aircraft, fidelity, rv2, shape)
         Pf = _flex_profile(P, fidelity)
         trajs, match = [], []
         for sc, e in zip(scs, r["per_scenario"]):
@@ -623,6 +794,8 @@ def evaluate_genome(profile_d: Dict, gains: Dict[str, float], struct: Optional[D
             if record:
                 trajs.append(t.get("trajectory"))
         out["telemetry_check"] = {"sim_cost_bit_identical": all(match), "per_scenario": match}
+        if fidelity == B1:
+            out["planform_header"] = planform_header(obj)
         if record:
             out["trajectories"] = trajs
     return out
@@ -665,7 +838,7 @@ TERM_KEYS = ("track", "effort", "comfort", "heading", "hold", "J_flutter_margin"
 
 def evaluate_scenario(profile_d: Dict, gains: Dict[str, float], struct, sc_d: Dict, fidelity: str = "rigid",
                       recorder=None, sample_hz: float = 30.0, record: bool = False,
-                      reduced_gate: Optional[float] = None, telemetry: str = "sb") -> Dict:
+                      reduced_gate: Optional[float] = None, telemetry: str = "sb", shape=None) -> Dict:
     """One genome x one scenario. rigid: exactly sim.simulate's result (+ fidelity / model_version), bit-identical to
     Phase 1. flex: FD's per-scenario entry (scenarios are independent in flexeval, so this equals that scenario's entry
     of the all-scenario call bit for bit) + the genome-level fields; 'trajectory' when record=True."""
@@ -675,10 +848,11 @@ def evaluate_scenario(profile_d: Dict, gains: Dict[str, float], struct, sc_d: Di
         r["fidelity"], r["model_version"] = fidelity, model_version(profile_d, fidelity)
         return r
     g = evaluate_genome(profile_d, gains, struct, [sc_d], fidelity, reduced_gate, recorder=recorder, record=record,
-                        sample_hz=sample_hz, telemetry=telemetry)
+                        sample_hz=sample_hz, telemetry=telemetry, shape=shape)
     out = dict(g["per_scenario"][0])
     for k in ("feasible", "feasibility_fidelity", "margins", "margins_fidelity", "margin_gate", "reduced_gate",
-              "terms", "terms_available", "mass_total_frac", "telemetry_check"):
+              "terms", "terms_available", "mass_total_frac", "telemetry_check",
+              "shape_genes", "geometry_gate", "planform_header"):
         if k in g:
             out["genome_" + k if k in ("terms", "terms_available") else k] = g[k]
     out["genome_status"] = g["status"]
@@ -690,7 +864,7 @@ def evaluate_scenario(profile_d: Dict, gains: Dict[str, float], struct, sc_d: Di
 # ----------------------------------------------------------------------------- the agreed hook (pass-through)
 def evaluate(gains: Dict[str, float], struct_genome, scenarios, model, *, fidelity: str, root: Optional[str] = None,
              dt: Optional[float] = None, record: bool = False, profile_d: Optional[Dict] = None,
-             reduced_gate: Optional[float] = None) -> Dict:
+             reduced_gate: Optional[float] = None, shape_genome=None) -> Dict:
     """evaluate(gains, struct_genome, scenarios, model, *, fidelity, root, dt, record) as agreed with FD (INTERFACE_v2 §7);
     `model` = aircraft name (profile from configs/phase1_hdg.json unless profile_d is given) or a resolved profile dict."""
     if dt is not None and dt != sim.DT:
@@ -709,4 +883,5 @@ def evaluate(gains: Dict[str, float], struct_genome, scenarios, model, *, fideli
     if reduced_gate is None:
         reduced_gate = per_aircraft(name)["reduced_gate"]
     scs_d = [s.to_dict() if hasattr(s, "to_dict") else s for s in scenarios]
-    return evaluate_genome(profile_d, gains, struct_from(struct_genome), scs_d, fidelity, reduced_gate, record=record)
+    return evaluate_genome(profile_d, gains, struct_from(struct_genome), scs_d, fidelity, reduced_gate, record=record,
+                           shape=shape_genome)

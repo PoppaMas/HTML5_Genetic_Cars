@@ -183,8 +183,9 @@ export function parseTrajectory(obj, source = '') {
   const targetAt = rampCh ? (time, i) => (i !== undefined && Number.isFinite(ch[rampCh][i]) ? ch[rampCh][i] : stepAt(time, i)) : stepAt;
   const { data, ...meta } = obj;
   const structure = parseStructure(obj, ch);
+  const planform = parsePlanform(obj);
   return {
-    structure,
+    structure, planform,
     meta, source, n, t, x: ch.x, y: ch.y, z, alt, qENU, hud, ch, frame, originAlt, targetAt, stepAt, schedule,
     hasTarget: !!(rampCh || stepCh || schedule || (tgt && Number.isFinite(tgt.alt_m))),
     hasRamp: !!rampCh, rampChannel: rampCh, stepChannel: stepCh,
@@ -200,6 +201,81 @@ export function parseTrajectory(obj, source = '') {
 export function normSense(v) {
   if (v == null) return null;
   return String(v).trim().toLowerCase().startsWith('max') ? 'max' : 'min';
+}
+
+// P3-B1 planform (FD INTERFACE_v2 section 14), optional header field `planform` (also accepted: `planform_b1`, or
+// either inside `structure`): {schema: "fd-planform/1", source: "P3-B1", genes: {name: value}, synthetic?,
+//   wingR / wingL (or symmetric: true with one of wingR / wingL / wing): {span_frac[], y_m[], chord_m[], le_x_m[],
+//   twist_rad[]}, sweep_qc_rad}. SI, body FRD (x fwd, y right), twist + = LE up. Absent / malformed -> null (ignored).
+const _num = (a) => Array.isArray(a) && a.length >= 2 && a.every((v) => Number.isFinite(v));
+function _pfSide(w) {
+  if (!w || typeof w !== 'object' || !_num(w.chord_m) || w.chord_m.some((c) => !(c > 0))) return null;
+  const n = w.chord_m.length;
+  const ok = (a) => _num(a) && a.length === n;
+  let sf = ok(w.span_frac) ? w.span_frac.slice() : null;
+  const y = ok(w.y_m) ? w.y_m.map(Math.abs) : null;
+  if (!sf && y) { const y0 = y[0], y1 = y[n - 1]; sf = y.map((v) => (y1 > y0 ? (v - y0) / (y1 - y0) : 0)); }
+  if (!sf) sf = w.chord_m.map((_, i) => i / (n - 1));
+  for (let i = 1; i < n; i++) if (!(sf[i] > sf[i - 1]) || (y && !(y[i] > y[i - 1]))) return null;  // must increase outboard
+  return { span_frac: sf, y_m: y, chord_m: w.chord_m.slice(), le_x_m: ok(w.le_x_m) ? w.le_x_m.slice() : null,
+    twist_rad: ok(w.twist_rad) ? w.twist_rad.slice() : null, n };
+}
+// B1 r1: FD node_layout_b1 per-node wing geometry on structure.components[wingR|wingL] (SI, body FRD, CG origin):
+// le_nodes_body_m / te_nodes_body_m [[x,y,z]], chord_m, geometric_twist_rad (+ = LE up), axis_nodes_body_m = elastic
+// axis. -> a planform side with ABSOLUTE body x (absolute: true; ea_x = elastic-axis x, the twist pivot).
+function _nodeSide(c) {
+  if (!c || !Array.isArray(c.le_nodes_body_m) || !Array.isArray(c.te_nodes_body_m)) return null;
+  const le = c.le_nodes_body_m, te = c.te_nodes_body_m, ax = c.axis_nodes_body_m, n = le.length;
+  const pt = (p) => Array.isArray(p) && p.length >= 3 && p.every(Number.isFinite);
+  if (n < 2 || te.length !== n || !le.every(pt) || !te.every(pt)) return null;
+  const chord = _num(c.chord_m) && c.chord_m.length === n ? c.chord_m.slice()
+    : le.map((p, i) => Math.hypot(p[0] - te[i][0], p[2] - te[i][2]));
+  const y = le.map((p) => Math.abs(p[1]));
+  for (let i = 1; i < n; i++) if (!(y[i] > y[i - 1])) return null;
+  if (chord.some((v) => !(v > 0))) return null;
+  const sf = _num(c.node_span_frac) && c.node_span_frac.length === n ? c.node_span_frac.slice()
+    : y.map((v) => (v - y[0]) / (y[n - 1] - y[0]));
+  const tw = _num(c.geometric_twist_rad) && c.geometric_twist_rad.length === n ? c.geometric_twist_rad.slice() : null;
+  const eax = Array.isArray(ax) && ax.length === n && ax.every(pt) ? ax.map((p) => p[0]) : le.map((p, i) => p[0] - 0.25 * chord[i]);
+  return { span_frac: sf, y_m: y, chord_m: chord, le_x_m: le.map((p) => p[0]), twist_rad: tw, ea_x_m: eax, n, absolute: true };
+}
+export function nodePlanform(obj) {
+  const comps = (obj && obj.structure && Array.isArray(obj.structure.components)) ? obj.structure.components : [];
+  const get = (nm) => _nodeSide(comps.find((c) => c && c.name === nm));
+  const R = get('wingR'), L = get('wingL');
+  return R || L ? { wingR: R || L, wingL: L || R } : null;
+}
+const _sameArr = (a, b) => (a === b) || (!!a && !!b && a.length === b.length && a.every((v, i) => Math.abs(v - b[i]) < 1e-9));
+const _sameSide = (a, b) => _sameArr(a.chord_m, b.chord_m) && _sameArr(a.le_x_m, b.le_x_m) && _sameArr(a.twist_rad, b.twist_rad) &&
+  _sameArr(a.span_frac, b.span_frac);
+export function parsePlanform(obj) {
+  if (!obj || typeof obj !== 'object') return null;
+  const st = obj.structure || {};
+  let field = null, raw = null;
+  for (const [k, o] of [['planform', obj], ['planform_b1', obj], ['structure.planform', st], ['structure.planform_b1', st]]) {
+    const v = o[k.replace('structure.', '')];
+    if (v && typeof v === 'object') { field = k; raw = v; break; }
+  }
+  const nodes = nodePlanform(obj);
+  if (!raw && nodes) raw = { source: 'structure nodes' };   // per-node geometry without a planform header
+  if (!raw) return null;
+  if (!field) field = 'structure.nodes';
+  let R = _pfSide(raw.wingR), L = _pfSide(raw.wingL);
+  const W = _pfSide(raw.wing);
+  if (raw.symmetric === true || !R || !L) { R = R || L || W; L = L || R; }
+  // geometry source: FD per-node LE / TE (r1 node_layout_b1) when present, else the planform strips
+  const geom = nodes ? 'nodes' : 'strips';
+  const strips = R ? { wingR: R, wingL: L } : null;
+  if (nodes) { R = nodes.wingR; L = nodes.wingL; }
+  if (!R) return null;
+  const sweep = Number.isFinite(raw.sweep_qc_rad) ? raw.sweep_qc_rad
+    : (Number.isFinite(raw.sweep_qc_deg) ? raw.sweep_qc_deg * Math.PI / 180 : null);
+  const tw = R.twist_rad;
+  return { field, schema: raw.schema || null, source: raw.source || null, genes: raw.genes || null,
+    synthetic: raw.synthetic === true, symmetric: raw.symmetric === true || R === L || _sameSide(R, L), wingR: R, wingL: L,
+    sweep_qc_rad: sweep, taper: (strips ? strips.wingR : R).chord_m[(strips ? strips.wingR : R).n - 1] / (strips ? strips.wingR : R).chord_m[0],
+    twist_tip_rad: tw ? tw[R.n - 1] : null, geom, strips,
+    node_layout: (obj.structure && obj.structure.node_layout) || null };
 }
 
 // soft-body v2: optional `structure` block + channels '<component>.<dof>.<node_idx>' (metres / rad, body FRD),

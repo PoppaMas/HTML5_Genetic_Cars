@@ -128,6 +128,74 @@ def _slim(traj: dict, keep: Optional[Iterable[str]]) -> dict:
             "data": [[r(row[i], d) for i, d in zip(idx, dec)] for row in traj["data"]]}
 
 
+def _slim_structure(traj: dict, opts: Optional[dict]) -> dict:
+    """Display-only reduction of the soft-body block (page size): `node_stride` k keeps every k-th node (+ the last)
+    of components with more than `min_nodes` (default 17) nodes, renumbering their channels; `drop_modal` drops the
+    `*_modal` comparison components when FE wings exist (the viewer never renders them); `drop_zero` drops structure
+    channels that are exactly 0 for the whole flight (e.g. dy of the wings; a missing channel displays as 0).
+    The deformation interpolates linearly between the kept nodes. Never used for comparisons / replay proofs."""
+    st = traj.get("structure")
+    if not opts or not st or not isinstance(st.get("components"), list):
+        return traj
+    k = int(opts.get("node_stride") or 1)
+    min_nodes = int(opts.get("min_nodes") or 17)
+    ch = traj["channels"]
+    names = {c.get("name") for c in st["components"]}
+    drop_modal = bool(opts.get("drop_modal")) and any(n in names for n in ("wingR", "wingL"))
+    comps, rename, dropped = [], {}, set()
+    for c in st["components"]:
+        nm = c.get("name")
+        if drop_modal and str(nm).endswith("_modal"):
+            dropped.add(nm)
+            continue
+        nodes = c.get("axis_nodes_body_m") or []
+        n = len(nodes)
+        if k > 1 and n > min_nodes:
+            keep = list(range(0, n, k))
+            if keep[-1] != n - 1:
+                keep.append(n - 1)
+            # every per-node list (axis_nodes_body_m, node_span_frac, B1 r1 chord_m / geometric_twist_rad /
+            # le_nodes_body_m / te_nodes_body_m, ...) is subsampled with the same nodes
+            per_node = {key: [v[i] for i in keep] for key, v in c.items()
+                        if key != "dof" and isinstance(v, list) and len(v) == n}
+            c = {**c, **per_node, "display_node_stride": k, "display_nodes_from": n}
+            for j, i in enumerate(keep):
+                for d in (c.get("dof") or ["dz", "dy", "dx", "twist"]):
+                    rename[f"{nm}.{d}.{i}"] = f"{nm}.{d}.{j}"
+            for i in range(n):
+                if i not in keep:
+                    for d in (c.get("dof") or ["dz", "dy", "dx", "twist"]):
+                        rename.setdefault(f"{nm}.{d}.{i}", None)
+        comps.append(c)
+    idx, out_ch = [], []
+    zero = bool(opts.get("drop_zero"))
+    data = traj["data"]
+    for i, c in enumerate(ch):
+        comp = c.split(".")[0] if c.count(".") == 2 else None
+        if comp in dropped:
+            continue
+        new = rename.get(c, c)
+        if new is None:
+            continue
+        if zero and comp is not None and all((row[i] == 0 or row[i] is None) for row in data):
+            continue
+        idx.append(i)
+        out_ch.append(new)
+    st2 = {**st, "components": comps,
+           "display_slim": {"node_stride": k, "min_nodes": min_nodes, "dropped_components": sorted(dropped),
+                            "drop_zero_channels": zero,
+                            "note": "display-only reduction (standalone page size); not the recorded data"}}
+    dec = opts.get("decimals")
+    if dec is not None:  # structure channels only (display precision, e.g. 4 = 0.1 mm / 1e-4 rad)
+        st2["display_slim"]["decimals"] = int(dec)
+        isd = [c.count(".") == 2 for c in out_ch]
+        rows = [[(round(row[i], int(dec)) if (s_ and isinstance(row[i], float)) else row[i]) for i, s_ in zip(idx, isd)]
+                for row in data]
+    else:
+        rows = [[row[i] for i in idx] for row in data]
+    return {**traj, "structure": st2, "channels": out_ch, "data": rows}
+
+
 def _pick(entries, gens, sense: str = "min") -> list:
     if gens is None or gens == "improvements":  # per aircraft, at most 8 each (respects fitness_sense)
         res = []
@@ -164,11 +232,14 @@ def _split_spec(spec, default_gens):
 
 def build_standalone_html(index_path, gens: Union[str, Iterable[int], None] = "improvements",
                           hz: Optional[float] = 10.0, params: Optional[dict] = None,
-                          slim: bool = False, title: Optional[str] = None) -> str:
+                          slim: bool = False, title: Optional[str] = None,
+                          struct_slim: Optional[dict] = None) -> str:
     """Return a single self-contained HTML string with viewer + three.js + selected trajectories.
 
     `index_path` is one index.json, or a list of them (several runs, e.g. 3 seeds) -> one combined index whose
     entries carry `run`. Each item may be 'path@gens' (or a (path, gens) tuple) to override `gens` for that run.
+    `struct_slim` (optional, display only): {"node_stride": 2, "drop_modal": True, "drop_zero": True} - see
+    _slim_structure; for multi-seed pages that would otherwise be too large.
     """
     specs = [index_path] if isinstance(index_path, (str, os.PathLike)) else list(index_path)
     files, all_entries, runs, first_index, list_key = {}, [], [], None, None
@@ -192,7 +263,8 @@ def build_standalone_html(index_path, gens: Union[str, Iterable[int], None] = "i
             key = os.path.basename(fn)
             if key in files:
                 raise ValueError(f"duplicate trajectory file name {key} across runs")
-            files[key] = _slim(_decimate(_load(os.path.join(base, fn)), hz), SLIM_EXTRAS if slim else None)
+            files[key] = _slim(_slim_structure(_decimate(_load(os.path.join(base, fn)), hz), struct_slim),
+                               SLIM_EXTRAS if slim else None)
             all_entries.append({**e, "run": e.get("run") or run_id} if len(specs) > 1 else e)
         runs.append({"run_id": run_id, "index": os.path.relpath(path), "gens": g if isinstance(g, str) else list(g or []),
                      "n": len(chosen)})

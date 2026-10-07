@@ -80,7 +80,8 @@ DEFAULTS: Dict = {
     "profiles": {"baseline": {}},   # name -> sim.Profile overrides; {} = original c172x constants
     "aircraft": [{"name": "c172x", "profile": "baseline"}],
     # structural fidelity (evolution/fidelity.py): rigid | reduced (FD flex v1 on the projected v2 genome) | full (FD flex
-    # v2, flexbody) | full_a1 (FD P3-A1, flexbody_a1: 64-strip wings, 4b+3t+2ip; opt-in, separate cache/pins)
+    # v2, flexbody) | full_a1 (FD P3-A1, flexbody_a1: 64-strip wings, 4b+3t+2ip; opt-in, separate cache/pins) |
+    # full_a1_b1 (FD P3-B1: A1 host + 6 planform shape genes, flexeval_b1; opt-in, separate cache/pins)
     "fidelity": "rigid",
     # screen everyone at `screen`, re-score the top_k by screen cost + all elites at `fidelity` (see README)
     "multi_fidelity": {"enabled": False, "screen": "reduced", "top_k": 4, "min_full_frac": None, "mid_k": None},
@@ -98,9 +99,21 @@ DEFAULTS: Dict = {
     # {aircraft: {fidelity: model_version}}: refuse to evaluate / cache / resume unless FD's model_version matches;
     # every reduced/full fidelity an aircraft uses must be pinned once the aircraft appears here
     "pin_model_version": {},
+    # ---- Phase 3 B1 (default-off; omitted from the run identity while None, so old run ids are unchanged)
+    # genome_kind 'phase3_b1': controller (8, v4) | FD's 12 structure genes | FD's 6 planform shape genes (group 'shape');
+    # needs fidelity full_a1_b1 (rigid screens only), struct_genes, init.mode 'baseline'. shape_ops: operator settings
+    # (None -> SHAPE_OPS_DEFAULT, filled in by resolve_config so config.json records them).
+    "genome_kind": None,
+    "shape_ops": None,
 }
 OPTIONAL_DEFAULTS = {"struct_asymmetric": False, "init": {"mode": "uniform", "sigma": 0.10, "blocks": ["struct"]},
-                     "multi_fidelity_per_aircraft": {}, "pin_model_version": {}}
+                     "multi_fidelity_per_aircraft": {}, "pin_model_version": {}, "genome_kind": None, "shape_ops": None}
+GENOME_KINDS = ("phase3_b1",)
+# Genome Architect's B1 operator spec (2026-10-06): sigma = 0.25 x half-range in FD's encoded space (ln x for the chord
+# tapers), gen-0 around the identity planform, whole-block crossover controller | structure | shape
+SHAPE_OPS_DEFAULT = {"init": "identity", "init_sigma_half_range": 0.25, "mutation_sigma_half_range": 0.25,
+                     "mutation_rate": None, "log_genes": ["wing_chord_taper_1", "wing_chord_taper_2", "wing_chord_taper_3"],
+                     "crossover": "blocks"}
 PIN_PLACEHOLDER = "PENDING-FD-NEW-MODEL-VERSION"
 MF_KEYS = {"enabled", "screen", "top_k", "min_full_frac", "mid_k"}
 AIRCRAFT_KEYS = {"name", "profile", "overrides", "seed"}
@@ -122,7 +135,8 @@ def _merge(base: Dict, over: Dict, path: str = "") -> Dict:
         if k not in base and path not in ("profiles",):
             raise ValueError(f"unknown config key {path + k!r}")
         if isinstance(v, dict) and isinstance(base.get(k), dict) and k not in ("profiles", "fidelity_per_aircraft",
-                                                                                 "multi_fidelity_per_aircraft", "pin_model_version"):
+                                                                                 "multi_fidelity_per_aircraft", "pin_model_version",
+                                                                                 "shape_ops"):
             out[k] = _merge(base[k], v, path + k + ".")
         else:
             out[k] = copy.deepcopy(v)
@@ -171,6 +185,8 @@ def resolve_config(user: Dict, stem: str = "batch") -> Dict:
             raise ValueError(f"aircraft {a['name']}: unknown profile {pname!r}")
         prof = sim.Profile.from_dict({**cfg["profiles"][pname], **a.get("overrides", {}), "aircraft": a["name"]})
         genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)  # validate
+        if cfg.get("genome_kind") == "phase3_b1" and not prof.heading_hold:
+            raise ValueError(f"aircraft {a['name']}: genome_kind phase3_b1 = phase2_flex controller (8 genes): needs heading_hold")
         acs.append({"name": a["name"], "profile": pname, "overrides": a.get("overrides", {}),
                     "seed": int(a.get("seed", cfg["seed"])), "resolved_profile": prof.to_dict()})
         if a["name"] in mfa:   # only then (old configs keep their aircraft entries / run ids)
@@ -224,9 +240,77 @@ def _validate_phase2(cfg: Dict) -> None:
             raise ValueError("init.sigma must be in [0.10, 0.15] (normalized units)")
     if cfg["struct_asymmetric"] and not cfg["struct_genes"]:
         raise ValueError("struct_asymmetric needs struct_genes")
+    _validate_p3b1(cfg)
     for ac, pins in (cfg["pin_model_version"] or {}).items():
         if not isinstance(pins, dict) or set(pins) - set(fid_mod.FIDELITIES) or not all(isinstance(v, str) for v in pins.values()):
             raise ValueError(f"pin_model_version.{ac}: {{fidelity: model_version string}}")
+
+
+def _validate_p3b1(cfg: Dict) -> None:
+    """genome_kind 'phase3_b1' (P3-B1): controller | 12 structure genes (P2.5, symmetric) | FD's 6 shape genes."""
+    kind = cfg.get("genome_kind")
+    if kind is None:
+        if cfg.get("shape_ops") is not None:
+            raise ValueError("shape_ops needs genome_kind 'phase3_b1'")
+        return
+    if kind not in GENOME_KINDS:
+        raise ValueError(f"genome_kind must be null or one of {GENOME_KINDS}, got {kind!r}")
+    if not cfg["struct_genes"] or cfg["struct_asymmetric"]:
+        raise ValueError("genome_kind phase3_b1: struct_genes true and struct_asymmetric false (12 P2.5 structure genes)")
+    if cfg["fidelity"] != fid_mod.B1:
+        raise ValueError(f"genome_kind phase3_b1: fidelity must be {fid_mod.B1!r} (the only fidelity that consumes shape genes)")
+    if cfg["init"]["mode"] != "baseline":
+        raise ValueError("genome_kind phase3_b1: init.mode 'baseline' (structure block seeded at FD's baseline)")
+    for where, mf in [("multi_fidelity", cfg["multi_fidelity"])] + [
+            (f"multi_fidelity_per_aircraft.{n}", m) for n, m in (cfg.get("multi_fidelity_per_aircraft") or {}).items()]:
+        if mf.get("enabled", cfg["multi_fidelity"]["enabled"]):
+            scr = mf.get("screen", cfg["multi_fidelity"]["screen"])
+            scr = [scr] if isinstance(scr, str) else list(scr)
+            if any(f != "rigid" for f in scr):
+                raise ValueError(f"{where}.screen: genome_kind phase3_b1 allows only 'rigid' screens below full_a1_b1 "
+                                 "(rigid ignores the shape; reduced / full / full_a1 cannot fly a shaped planform)")
+    ops = dict(SHAPE_OPS_DEFAULT, **(cfg.get("shape_ops") or {}))
+    bad = set(ops) - set(SHAPE_OPS_DEFAULT)
+    if bad:
+        raise ValueError(f"shape_ops: unknown keys {sorted(bad)}")
+    if ops["init"] != "identity" or ops["crossover"] != "blocks":
+        raise ValueError("shape_ops: init 'identity' and crossover 'blocks' (Genome's B1 spec) are the only options")
+    for k in ("init_sigma_half_range", "mutation_sigma_half_range"):
+        if not 0.0 < float(ops[k]) <= 1.0:
+            raise ValueError(f"shape_ops.{k} must be in (0, 1] (fraction of the half-range in encoded space)")
+    if ops["mutation_rate"] is None:
+        ops["mutation_rate"] = cfg["ga"]["mutation_rate"]
+    if not 0.0 <= float(ops["mutation_rate"]) <= 1.0:
+        raise ValueError("shape_ops.mutation_rate must be in [0, 1]")
+    names = set(SHAPE_OPS_DEFAULT["log_genes"]) | {"wing_twist_mid_deg", "wing_twist_tip_deg", "wing_sweep_qc_delta_deg"}
+    if set(ops["log_genes"]) - names:
+        raise ValueError(f"shape_ops.log_genes: unknown shape genes {sorted(set(ops['log_genes']) - names)}")
+    if cfg["ga"]["mutation_mode"] != "gauss":
+        raise ValueError("genome_kind phase3_b1: ga.mutation_mode 'gauss'")
+    cfg["shape_ops"] = ops
+
+
+def shape_spec(schema, groups, shape_ops: Dict) -> "ga.ShapeSpec":
+    """ga.ShapeSpec of the shape block (contiguous tail, FD order) from the run schema and the resolved shape_ops."""
+    idx = [j for j, g in enumerate(groups) if g == "shape"]
+    if idx != list(range(len(groups) - len(idx), len(groups))):
+        raise ValueError("shape genes must be the contiguous tail block of the genome")
+    sch = [schema[j] for j in idx]
+    return ga.ShapeSpec(idx=idx, lo=[g.min for g in sch], hi=[g.max for g in sch],
+                        log=[g.name in shape_ops["log_genes"] for g in sch], default=[g.default for g in sch],
+                        init_sigma_frac=float(shape_ops["init_sigma_half_range"]),
+                        mut_sigma_frac=float(shape_ops["mutation_sigma_half_range"]),
+                        mutation_rate=float(shape_ops["mutation_rate"]))
+
+
+def gene_blocks(groups) -> List[List[int]]:
+    """[controller idx, structure idx, shape idx] (non-empty blocks only, genome order)."""
+    out = []
+    for grp in ("gains", "struct", "shape"):
+        idx = [j for j, g in enumerate(groups) if g == grp]
+        if idx:
+            out.append(idx)
+    return out
 
 
 def check_pins(cfg: Dict, name: str, fids, mv: Dict, profile_d: Optional[Dict] = None) -> Dict[str, str]:
@@ -315,13 +399,17 @@ def _now() -> str:
 
 
 # --------------------------------------------------------------------------- runner
-def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = False):
-    """(schema, groups): controller genes (6, +2 heading) then, with struct_genes, FD's v2 struct genes (12, 14 asym)."""
+def full_schema(prof: "sim.Profile", struct_genes: bool, asymmetric: bool = False, genome_kind: Optional[str] = None):
+    """(schema, groups): controller genes (6, +2 heading) then, with struct_genes, FD's v2 struct genes (12, 14 asym);
+    genome_kind 'phase3_b1' appends FD's 6 P3-B1 shape genes (group 'shape', FD order, FD [0,1] linear storage)."""
     sch = genome.make_schema(prof.gain_bounds, prof.gene_kinds, prof.heading_hold)
     groups = ["gains"] * len(sch)
     if struct_genes:
         st = fid_mod.struct_schema(asymmetric)
         sch, groups = sch + st, groups + ["struct"] * len(st)
+    if genome_kind == "phase3_b1":
+        sh = fid_mod.shape_schema()
+        sch, groups = sch + sh, groups + ["shape"] * len(sh)
     return sch, groups
 
 
@@ -493,11 +581,12 @@ class Batch:
             if not d.get("error") and ac["name"] in (self.cfg.get("pin_model_version") or {}):
                 self.cache.pins[ac["name"]] = check_pins(self.cfg, ac["name"], fids, d["model_version"], ac["resolved_profile"])
             prof = sim.Profile.from_dict(ac["resolved_profile"])
-            sch, groups = full_schema(prof, self.cfg.get("struct_genes", False), self.cfg.get("struct_asymmetric", False))
+            sch, groups = full_schema(prof, self.cfg.get("struct_genes", False), self.cfg.get("struct_asymmetric", False),
+                                      self.cfg.get("genome_kind"))
             self.info[ac["name"]] = {"schema": sch, "groups": groups, "model_files_sha": d["model_files_sha"],
                                      "model_version": d["model_version"].get(self.fidelity),
                                      "mv": d["model_version"], "error": d.get("error")}
-            if "reduced" in fids or "full" in fids or "full_a1" in fids:
+            if any(f in fids for f in ("reduced", "full", "full_a1", "full_a1_b1")):
                 self.info[ac["name"]]["reduced_gate"] = pa[ac["name"]]["reduced_gate"]
             if mfa.get("enabled"):
                 self.info[ac["name"]]["screen_model_version"] = d["model_version"].get(mfa["ladder"][0])
@@ -642,8 +731,13 @@ class Batch:
         schema, groups = st["schema"], st["groups"]
         mv, gate = st["mv"][fid], st["reduced_gate"]
         unit = {"scenarios": scs, "reduced_gate": gate if fid == "reduced" else None, "unit": "genome"}
+        gmap = dict(zip([g.name for g in schema], groups))
+        # full_a1_b1: the decoded shape genes (None = baseline planform) and FD's shape_cache_key go into the key
+        shapes = [eval_mod.shape_values(genome.decode(g, schema), gmap) if fid == fid_mod.B1 else None for g in pop]
         keys = [cache_mod.eval_key(ac["name"], g, prof_d, unit, self.cfg["scenario_seed"], self.jsbsim_version,
-                                   self.code_sha, st["model_sha"], fidelity=fid, model_version=mv) for g in pop]
+                                   self.code_sha, st["model_sha"], fidelity=fid, model_version=mv,
+                                   shape_key=fid_mod.shape_cache_key(sh) if fid == fid_mod.B1 else None)
+                for g, sh in zip(pop, shapes)]
         need: Dict[str, int] = {}
         for i, k in enumerate(keys):
             need.setdefault(k, i)
@@ -657,9 +751,10 @@ class Batch:
         s_idx = self.cfg["trajectories"]["scenario"]
         futs = {}
         for k in miss:
-            gains, struct = eval_mod.split_values(genome.decode(pop[need[k]], schema), dict(zip([g.name for g in schema], groups)))
+            gains, struct = eval_mod.split_values(genome.decode(pop[need[k]], schema), gmap)
+            kw = {"shape": shapes[need[k]]} if fid == fid_mod.B1 else {}
             futs[self.pool.submit(eval_mod.task_genome, prof_d, gains, struct, scs, fid, gate, viz,
-                                  self.cfg["trajectories"]["sample_hz"])] = k
+                                  self.cfg["trajectories"]["sample_hz"], **kw)] = k
         new, cpu = [], 0.0
         for fu in cf.as_completed(futs):
             r = fu.result()
@@ -707,6 +802,11 @@ class Batch:
                    "feasibility_fidelity": agg["feasibility_fidelity"], "terms": agg["terms"],
                    "terms_available": agg["terms_available"], "fidelity": agg["fidelity"],
                    "model_version": agg["model_version"], "session": self.session}
+            shape = eval_mod.shape_values(vals, dict(zip([g.name for g in schema], groups)))
+            if shape is not None:      # phase3_b1 rows only (earlier kinds unchanged)
+                row["shape"] = shape
+            if agg.get("geometry_gate_reject"):
+                row["geometry_gate"] = agg.get("geometry_gate")
             if "margins" in agg:
                 row["margins"], row["margins_fidelity"] = agg["margins"], agg["margins_fidelity"]
             for k in ("mass_total_frac", "mass_lb", "J_mass_fd", "mass_credit_clip", "mass_credit_delta", "task_cpu_s"):
@@ -735,8 +835,10 @@ class Batch:
         vals = genome.decode(best_norm, st["schema"])
         gains, struct = eval_mod.split_values(vals, dict(zip([g.name for g in st["schema"]], st["groups"])))
         if tr is None:   # cache hit: re-fly once with the recorder
+            kw = {"shape": eval_mod.shape_values(vals, dict(zip([g.name for g in st["schema"]], st["groups"])))} \
+                if self.fidelity == fid_mod.B1 else {}
             r = self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s_idx], self.fidelity,
-                                 True, self.cfg["trajectories"]["sample_hz"], st["reduced_gate"], "fd").result()
+                                 True, self.cfg["trajectories"]["sample_hz"], st["reduced_gate"], "fd", **kw).result()
         elif self.fidelity == "rigid":
             r = dict(st["memo"][best_key])
             r["trajectory"] = tr
@@ -790,10 +892,19 @@ class Batch:
             return out
 
         ck = self._load_ck(name)
+        kind = self.cfg.get("genome_kind")
+        sspec = shape_spec(st["schema"], st["groups"], self.cfg["shape_ops"]) if kind == "phase3_b1" else None
+        blocks = gene_blocks(st["groups"]) if kind == "phase3_b1" else None
         if ck is None:
             rng = np.random.default_rng(ac["seed"])
-            pop = ga.generation_zero(rng, self.cfg["ga"]["pop_size"], len(st["schema"]))  # 8 with heading hold, +12/14 struct
-            pop = seed_generation_zero(pop, rng, st["schema"], st["groups"], self.cfg.get("init") or {})
+            if sspec is None:
+                pop = ga.generation_zero(rng, self.cfg["ga"]["pop_size"], len(st["schema"]))  # 8 with heading hold, +12/14 struct
+                pop = seed_generation_zero(pop, rng, st["schema"], st["groups"], self.cfg.get("init") or {})
+            else:   # phase3_b1: controller + structure drawn exactly as phase2 / phase3a1 (same seed -> same 20 genes),
+                n_cs = sspec.idx[0]   # then the shape block around the identity planform (Genome B1 spec)
+                pop = ga.generation_zero(rng, self.cfg["ga"]["pop_size"], n_cs)
+                pop = seed_generation_zero(pop, rng, st["schema"][:n_cs], st["groups"][:n_cs], self.cfg.get("init") or {})
+                pop = np.hstack([pop, ga.shape_generation_zero(rng, self.cfg["ga"]["pop_size"], sspec)])
             ck = {"aircraft": name, "gen_next": 0, "done": False, "pop": pop.tolist(),
                   "rng_state": rng.bit_generator.state, "history": [], "best_per_gen": []}
         else:
@@ -837,6 +948,10 @@ class Batch:
                 "eval_wall_s": wall, "best_genome": [float(x) for x in pop[0]],
                 "best_gains": genome.decode(pop[0], st["schema"]), "session": self.session,
             }
+            if fid == fid_mod.B1:
+                rec["geometry_gate_rejects"] = sum(1 for r in sel if r["agg"].get("geometry_gate_reject"))
+                gr = [r["agg"]["status"] for r in sel if r["agg"].get("geometry_gate_reject")]
+                rec["geometry_gate_reasons"] = {x: gr.count(x) for x in sorted(set(gr))}
             if fid != "rigid" or mf:
                 fs = [r for r in sel if r["agg"]["fidelity"] == fid]
                 rec["n_scored_authoritative"] = len(fs)
@@ -849,7 +964,8 @@ class Batch:
             if fid != "rigid" or mf:
                 best["fidelity"] = sel[0]["agg"]["fidelity"]
             if gen < G - 1:
-                nxt = ga.next_generation(rng, pop, gcfg)
+                nxt = ga.next_generation(rng, pop, gcfg) if sspec is None else \
+                    ga.next_generation_blocks(rng, pop, gcfg, blocks, sspec)
             else:
                 nxt = pop  # final ranked population
             self._append_rows(rows)                      # rows first (truncated back to the checkpoint on resume) ...
@@ -865,6 +981,8 @@ class Batch:
             pop = nxt
             msg = (f"[{name:>9}] gen {gen:3d}  best {costs[0]:10.4f}  median {np.median(costs):10.4f}  "
                    f"invalid {sum(invalid):3d}/{len(pop)}  sims {es['sims_computed']:3d} hits {hits:3d}  {wall:5.2f}s")
+            if rec.get("geometry_gate_rejects"):
+                msg += f"  geometry_gate rejects {rec['geometry_gate_rejects']} {rec['geometry_gate_reasons']}"
             if mf:
                 msg += f"  rescored {extra['n_rescored']} rho " + " ".join(
                     f"{k.split('_vs_')[0]}:{'n/a' if v is None else f'{v:+.3f}'}" for k, v in extra["spearman"].items())
@@ -885,9 +1003,11 @@ class Batch:
         gmap = dict(zip([g.name for g in st["schema"]], st["groups"]))
 
         def submit(norm, s, fidl):
-            gains, struct = eval_mod.split_values(genome.decode(norm, st["schema"]), gmap)
+            vals = genome.decode(norm, st["schema"])
+            gains, struct = eval_mod.split_values(vals, gmap)
+            kw = {"shape": eval_mod.shape_values(vals, gmap)} if fidl == fid_mod.B1 else {}
             return self.pool.submit(eval_mod.task, st["profile_d"], gains, struct, st["scenarios_d"][s], fidl, True,
-                                    tcfg["sample_hz"], st["reduced_gate"], "sb")
+                                    tcfg["sample_hz"], st["reduced_gate"], "sb", **kw)
         jobs = {}
         for g in tcfg["generations_resolved"]:
             jobs[("traj", g)] = submit(bests[g]["genome"], s_idx, bests[g].get("fidelity", self.fidelity))
@@ -1032,7 +1152,8 @@ def main(argv=None):
     ap.add_argument("--fidelity", choices=list(fid_mod.FIDELITIES), help="rigid (default) | reduced (FD flexeval: v1 wing "
                                                                         "on the projected v2 genome) | full (FD flexeval: "
                                                                         "flex v2) | full_a1 (FD flexeval_a1: P3-A1 64-strip "
-                                                                        "model). Part of the run identity")
+                                                                        "model) | full_a1_b1 (FD flexeval_b1: P3-B1 "
+                                                                        "planform on A1). Part of the run identity")
     ap.add_argument("--multi-fidelity", action="store_true", help="screen everyone at --screen, re-score top-k + elites "
                                                                  "at --fidelity")
     ap.add_argument("--screen", help="screen fidelity for --multi-fidelity (default reduced); comma list for a ladder, "

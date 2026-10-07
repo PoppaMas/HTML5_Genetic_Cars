@@ -1,0 +1,82 @@
+{
+  "_comment": "P3-B1 (2026-10-06, opt-in): phase2_flex controller (8) + FD structure_v2 (12, P2.5 ranges, from flexbody.gene_schema()) + FD B1 shape block shape_b1 (6, from planform_b1.shape_schema(), L = R, stored in FD's linear [0,1] encoding) = 26 genes. Fidelity full_a1_b1 = FD flexeval_b1.evaluate, called like Evolution Runner's evaluate_genome (ER resolved profile + ER scenarios from shape_b1.er_profile_config, sim = evolution/sim.py, blas 1 thread). Decode: shape -> FD decode_shape_b1 + geometry_gate (fail = status 'geometry_gate:<reason>', cost = FD fail_cost, not flown, never a credit) -> structure genes on the shaped baseline -> margins + flight. struct_v2_source fd (cost = FD + ER sim cost; weights must equal the ER profile's). Init: controller uniform, structure_v2 baseline + N(0, 0.10), then shape = identity planform + clipped Gaussian (sigma 0.25 x half-range in the operator space: ln x for the 3 chord tapers, x for twist/sweep; storage = FD GENE_ENCODING, linear u). Operators (block_ops.py, = ER evolution/ga.py P3-B1): whole-block crossover controller | structure | shape; controller/structure mutation unchanged (evolve.py --mutation-rate/--mutation-sigma); shape mutation = same clipped Gaussian (sigma 0.25 x half-range, operator space), rate = --mutation-rate unless operators.shape.mutation_rate. model_version check vs model_versions_post_p3b1r1.json (FD B1 r1; warn; 'raise' opt-in; superseded r0 strings warn-only). See PHASE3_B1_SPEC.md.",
+  "name": "phase3_b1",
+  "aircraft": "c172x",
+  "blocks": {
+    "pitch_altitude": true,
+    "structure_v2": true,
+    "shape_b1": true
+  },
+  "fitness": {
+    "mode": "scalar",
+    "aggregate": {
+      "mode": "mean"
+    },
+    "weights": {
+      "track_alt": 1.0,
+      "effort": 2.0,
+      "comfort": 0.05,
+      "track_heading_rms": 0.01,
+      "structural_v2": 1.0
+    },
+    "params": {
+      "struct_v2_source": "fd"
+    },
+    "pareto_objectives": [
+      "track_alt",
+      "effort",
+      "structural_v2"
+    ]
+  },
+  "scenarios": {
+    "set": "legacy",
+    "ramp_fpm": 600.0,
+    "ramp_accel_g": 0.1
+  },
+  "controller": {
+    "alt_ref_ff": true
+  },
+  "backend": "jsbsim_ext",
+  "flex": {
+    "enabled": true,
+    "version": 2,
+    "asymmetric": false,
+    "substeps": 2,
+    "fidelity": "full_a1_b1",
+    "model_version_check": "warn"
+  },
+  "shape_b1": {
+    "er_profile_config": "evolution/configs/phase2_smoke_p25.json"
+  },
+  "init": {
+    "mode": "baseline",
+    "sigma": 0.1,
+    "blocks": [
+      "structure_v2"
+    ],
+    "seed_runs": {}
+  },
+  "operators": {
+    "crossover": "blocks",
+    "shape": {
+      "init": "identity",
+      "log_genes": [
+        "wing_chord_taper_1",
+        "wing_chord_taper_2",
+        "wing_chord_taper_3"
+      ],
+      "init_sigma_half_range": 0.25,
+      "mutation_sigma_half_range": 0.25,
+      "mutation_rate": null
+    }
+  },
+  "shared": "phase1",
+  "heading_hold": true,
+  "hold_quality": false,
+  "disturbance_scenario": false,
+  "gene_overrides": {
+    "ki_alt": {
+      "max": 0.5
+    }
+  }
+}

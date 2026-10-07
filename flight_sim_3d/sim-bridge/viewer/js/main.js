@@ -266,7 +266,8 @@ function populateGenUI() {
   sel.value = String(S.singleIdx);
   const urlGens = params.get('gens');
   if (urlGens) S.compareSet = new Set(urlGens.split(',').map((g) => findEntry(g.trim())).filter((j) => j >= 0));
-  else S.compareSet = new Set(improvementPicks());
+  if (urlGens && !S.compareSet.size) msg(`gens=${urlGens}: no matching entry; showing the default selection`, true);
+  if (!urlGens || !S.compareSet.size) S.compareSet = new Set(improvementPicks());
   if (params.get('run')) { const r = params.get('run'); S.presetRun = runList().find((x) => x === r || runShort(x) === r) ?? null; }
   if (!S.presetRun) S.presetRun = runList()[0];
   if (params.get('preset') && !urlGens) applyPreset(params.get('preset')); // explicit gens= wins over a preset
@@ -291,12 +292,22 @@ function renderPresets() {
   const row = (label, html) => `<div class="prow"><span class="plabel">${label}</span>${html}</div>`;
   let h = '';
   if (runs.length > 1) h += row('run', `<select id="preset-run">${runs.map((r) => `<option value="${r}" ${r === S.presetRun ? 'selected' : ''}>${runShort(r)} = ${r}</option>`).join('')}</select>`);
-  if (acs.length > 1) h += row('all', btn('last', 'latest gen', 'latest generation of every aircraft (selected run)') + btn('first', 'gen 0', 'first generation of every aircraft (selected run)'));
+  if (acs.length > 1) h += row('all', btn('last', 'latest gen', 'latest generation of every aircraft (selected run)') + btn('mid', 'mid gen', 'middle logged generation of every aircraft (selected run)') + btn('first', 'gen 0', 'first generation of every aircraft (selected run)'));
   h += row('gen 0 vs last', acs.map((a) => btn(`pair:${a}`, a, `first vs latest generation of ${a} (selected run)`)).join(''));
+  if (params.get('planpresets') === '1' || S.entries.some((e) => e.planform)) h += row('planform top: gen 0 vs last', acs.map((a) => btn(`plan:${a}`, a, `top view, first vs latest generation of ${a} side by side (wing shape change)`)).join(''));
+  if (S.entries.some((e) => S.entries.filter((x) => x.aircraft === e.aircraft && x.run === e.run).length > 2))
+    h += row('gen 0/mid/last', acs.map((a) => btn(`evo:${a}`, a, `every logged generation of ${a} (selected run)`)).join(''));
   if (sameFam.length > 1) h += row(`seeds ${sameFam.map(runShort).join('/')}`, acs.map((a) => btn(`seeds:${a}`, a, `latest gen of ${a} from ${sameFam.join(', ')}`)).join(''));
   if (fams.length > 1) h += row(fams.join(' vs '), acs.map((a) => btn(`cmp:${a}`, a, `latest gen of ${a}: one run per family (${fams.join(' / ')})`)).join('') + btn('cmp:*', 'all', 'latest gen of every aircraft from each family'));
   el.innerHTML = h;
-  el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { applyPreset(b.dataset.p); renderGenList(); rebuild(true); }));
+  el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+    applyPreset(b.dataset.p); presetCam(b.dataset.p); renderGenList(); rebuild(true);
+    if (b.dataset.p.startsWith('plan:') && S.shown.length) {  // side by side with ~30 % span gap (step 5 m, the slider's)
+      const sp = Math.max(5, Math.ceil(Math.max(...S.shown.map((d) => d.model.span)) * 1.3 / 5) * 5);
+      if (sp !== S.spacing) { S.spacing = sp; $('spacing').value = sp; $('spacing-val').textContent = `${sp} m`; rebuild(); }
+    }
+    snapCam();
+  }));
   const rs = $('preset-run');
   if (rs) rs.addEventListener('change', () => { S.presetRun = rs.value; renderPresets(); applyPreset(S.lastPreset || 'last'); renderGenList(); rebuild(true); });
 }
@@ -312,7 +323,15 @@ function presetSet(p) {
   const byAc = groupBy(inRun, (e) => e.aircraft);
   if (p === 'last') return [...byAc.values()].map(last);
   if (p === 'first') return [...byAc.values()].map(first);
-  if (p.startsWith('pair:')) { const l = byAc.get(p.slice(5)); return l ? [first(l), last(l)] : []; }
+  if (p === 'mid') {  // logged generation closest to the middle of [first, last] (not first / last when there are >2)
+    return [...byAc.values()].map((l) => {
+      const a = gen(first(l)), b = gen(last(l)), m = (a + b) / 2;
+      const inner = l.length > 2 ? l.filter((i) => gen(i) !== a && gen(i) !== b) : l;
+      return inner.reduce((x, y) => (Math.abs(gen(y) - m) < Math.abs(gen(x) - m) ? y : x));
+    });
+  }
+  if (p.startsWith('evo:')) { const l = byAc.get(p.slice(4)); return l ? [...l].sort((x, y) => gen(x) - gen(y)) : []; }
+  if (p.startsWith('pair:') || p.startsWith('plan:')) { const l = byAc.get(p.slice(5)); return l ? [first(l), last(l)] : []; }
   if (p.startsWith('seeds:')) {
     const ac = p.slice(6), fam = runFamily(run);
     return [...groupBy(idxs((e) => e.aircraft === ac && runFamily(e.run) === fam), (e) => e.run).values()].map(last);
@@ -328,6 +347,13 @@ function presetSet(p) {
     return [...g.values()].map(last);
   }
   return null;
+}
+// plan:<ac> = pair:<ac> seen from above (camera 'top'); leaving it restores the chase camera
+function presetCam(p) {
+  const q = p.split('@')[0];
+  if (q.startsWith('plan:')) S.cam = 'top';
+  else if (S.cam === 'top') S.cam = 'chase';
+  $('cam-mode').value = S.cam;
 }
 function applyPreset(p) {
   if (p.includes('@')) { const [q, r] = p.split('@'); const hit = runList().find((x) => x === r || runShort(x) === r); if (hit) S.presetRun = hit; p = q; }
@@ -441,7 +467,7 @@ function buildDisp(tr, entry, color, slot, nSlots, refSpeed, lead, refStep) {
   world.add(d.drop);
   const preset = resolvePreset(tr.aircraft, tr.meta.aircraft_model || S.indexMeta.aircraft_model);
   d.preset = preset;
-  d.model = buildProcedural(preset, color);
+  d.model = buildProcedural(preset, color, tr.planform);
   d.root = d.model.root;
   world.add(d.root);
   d.deformer = tr.structure ? attachStructure(d.model, tr.structure) : null;
@@ -604,7 +630,7 @@ function focusDisp() {
   // distance so the whole formation fits (~80 deg horizontal, ~55 deg vertical FOV, with margin),
   // measured from the rearmost aircraft so nobody ends up beside/behind the camera
   const chaseDist = Math.max(30 * S.mscale, spanMax * 5.0 * S.mscale, rear + Math.max(wl * 1.9, wv * 2.6, 15 * S.mscale));
-  return { state: { pos, q: lead.state.q }, model: { span: spanMax }, chaseDist };
+  return { state: { pos, q: lead.state.q }, model: { span: spanMax }, chaseDist, halfWidth: wl, halfLen: rear };
 }
 function snapCam() {
   chaseInit = false;
@@ -629,8 +655,26 @@ function updateCamera(dtSec) {
   const d = focusDisp();
   if (!d || !d.state) return;
   const p = d.state.pos;
-  controls.enabled = S.cam !== 'chase';
-  if (S.cam === 'chase') {
+  controls.enabled = S.cam !== 'chase' && S.cam !== 'top';
+  if (S.cam === 'top') {  // plan view: straight down onto the focus (formation centroid), nose toward the screen top
+    const fwd = new THREE.Vector3(1, 0, 0).applyQuaternion(d.state.q);
+    const hf = new THREE.Vector3(fwd.x, 0, fwd.z);
+    if (hf.lengthSq() < 1e-6) hf.set(0, 0, -1);
+    hf.normalize();
+    // fit the formation's width into the free middle of the screen (side panel left, HUD / legend right):
+    // ~40 % of the view width, centred at ~44 % from the left
+    const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2), asp = camera.aspect || 1.6;
+    const halfW = d.halfWidth ?? d.model.span * S.mscale / 2;
+    const halfL = Math.max(d.halfLen ?? 0, d.model.span * S.mscale / 2);
+    const H = Math.max(halfW * 1.15 / (0.40 * tanV * asp), halfL * 1.3 / tanV, 8 * S.mscale);
+    const right = new THREE.Vector3().crossVectors(hf, new THREE.Vector3(0, 1, 0)).normalize();
+    const c = p.clone().addScaledVector(right, (0.5 - 0.44) * 2 * H * tanV * asp);
+    camera.position.copy(c).add(new THREE.Vector3(0, H, 0)).addScaledVector(hf, -0.01 * H);
+    camera.up.copy(hf);
+    camera.lookAt(c);
+    controls.target.copy(c);
+    chaseInit = false;
+  } else if (S.cam === 'chase') {
     const fwd = new THREE.Vector3(1, 0, 0).applyQuaternion(d.state.q);
     const hf = new THREE.Vector3(fwd.x, 0, fwd.z);
     if (hf.lengthSq() < 1e-6) hf.set(0, 0, -1);
@@ -698,12 +742,34 @@ function updateHUD() {
     `AIL   ${bar(c('aileron'))} ${fmtS(c('aileron'), 3, 7)}\n` +
     `RUD   ${bar(c('rudder'))} ${fmtS(c('rudder'), 3, 7)}\n` +
     `THR   ${bar(c('throttle'), false)} ${fmtU(c('throttle'), 3, 7)}` +
+    planformHud(tr) +
     flexHud(tr, i, f) +
     (endEv ? `\n<span class="warn">envelope: ${endEv.detail} @ ${endEv.t.toFixed(2)} s</span>` : '') +
     (ev && ev.type !== 'start' ? `\n<span class="warn">» ${ev.type}: ${ev.detail}</span>` : '');
   if (S.mode === 'compare') updateLegendValues();
   const lg = $('legend');
   if (!lg.hidden) lg.style.top = (el.style.display === 'none' ? 8 : el.offsetTop + el.offsetHeight + 8) + 'px';
+}
+
+// P3-B1 planform line (only when the trajectory carries a planform block): quarter-chord sweep, tip/root taper,
+// tip built-in twist; synthetic fixtures say so.
+export function planformText(pf) {
+  if (!pf) return '';
+  const deg = (r) => (Number.isFinite(r) ? (r / D2R).toFixed(1) + '°' : '—');
+  return `PLANFORM ${pf.source || 'B1'} Λqc ${deg(pf.sweep_qc_rad)} taper ${Number.isFinite(pf.taper) ? pf.taper.toFixed(2) : '—'}` +
+    (pf.twist_tip_rad != null ? ` twist tip ${deg(pf.twist_tip_rad)}` : '') + (pf.symmetric ? '' : ' (L≠R)') +
+    (pf.geom === 'nodes' ? ' · FD r1 node geometry' : '');
+}
+function pfTag(tr) {
+  const pf = tr.planform;
+  if (!pf) return '';
+  const sw = Number.isFinite(pf.sweep_qc_rad) ? `Λ${(pf.sweep_qc_rad / D2R).toFixed(0)}° ` : '';
+  return ` <span class="small">${sw}λ${Number.isFinite(pf.taper) ? pf.taper.toFixed(2) : '—'}${pf.synthetic ? ' syn' : ''}</span>`;
+}
+function planformHud(tr) {
+  const pf = tr.planform;
+  if (!pf) return '';
+  return `\n${planformText(pf)}` + (pf.synthetic ? ' <span class="warn">SYNTHETIC planform (test fixture)</span>' : '');
 }
 
 // soft-body readout: tip (last node) values of each component, true scale (not exaggerated)
@@ -756,7 +822,7 @@ function updateLegend() {
   if (el.hidden) return;
   el.innerHTML = '<b>compare</b> (click = camera/HUD focus)\n' +
     `<div data-k="-1" class="${S.focus === -1 ? 'focus' : ''}">◎ formation (camera on all)</div>` + S.shown.map((d, k) =>
-    `<div data-k="${k}" class="${k === S.focus ? 'focus' : ''}"><span style="color:${d.color}">■</span> ${multiAircraft() ? d.tr.aircraft.padEnd(6) + ' ' : ''}${multiRun() ? runShort(d.entry.run).padEnd(3) + ' ' : ''}g${String(d.tr.generation ?? k).padStart(3, '0')}${indTag(d.entry)}  ${senseOf(d.tr) === 'max' ? 'fit' : 'cost'} ${d.tr.fitness != null ? Number(d.tr.fitness).toFixed(4) : '—'}${trimLabel(d.tr)}  <span class="lv"></span></div>`).join('') +
+    `<div data-k="${k}" class="${k === S.focus ? 'focus' : ''}"><span style="color:${d.color}">■</span> ${multiAircraft() ? d.tr.aircraft.padEnd(6) + ' ' : ''}${multiRun() ? runShort(d.entry.run).padEnd(3) + ' ' : ''}g${String(d.tr.generation ?? k).padStart(3, '0')}${indTag(d.entry)}${pfTag(d.tr)}  ${senseOf(d.tr) === 'max' ? 'fit' : 'cost'} ${d.tr.fitness != null ? Number(d.tr.fitness).toFixed(4) : '—'}${trimLabel(d.tr)}  <span class="lv"></span></div>`).join('') +
     ((n) => (n ? `<details${S.notesOpen ? ' open' : ''}><summary class="small">ⓘ layout notes</summary>${n.replace(/^\n/, '')}</details>` : ''))('' +
     (S.layout === 'formation' && S.shown.length > 1 ? `\n<span class="small">formation (locked to own track): straight lanes, distance flown\nscaled per aircraft (${S.shown.map((d) => d.tr.aircraft + ' ×' + d.alongScale.toFixed(2)).join(', ')});\nheading drift removed, climb angles not to scale</span>` : '') +
     (vrefEff() === 'rel' ? `\n<span class="small">3D altitude: relative to each aircraft's own trim altitude</span>` : '') +
@@ -961,7 +1027,7 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'Space') { S.playing = !S.playing; e.preventDefault(); }
   else if (e.code === 'ArrowRight') S.t = Math.min(S.tEnd, S.t + 1);
   else if (e.code === 'ArrowLeft') S.t = Math.max(0, S.t - 1);
-  else if (e.key === 'c') { const m = ['chase', 'orbit', 'free']; S.cam = m[(m.indexOf(S.cam) + 1) % 3]; $('cam-mode').value = S.cam; snapCam(); }
+  else if (e.key === 'c') { const m = ['chase', 'orbit', 'free', 'top']; S.cam = m[(m.indexOf(S.cam) + 1) % 3]; $('cam-mode').value = S.cam; snapCam(); }
 });
 
 // ---------------------------------------------------------------- main loop
@@ -995,11 +1061,18 @@ window.fv = {
 (async function boot() {
   resize();
   animate();
-  S.cam = params.get('cam') || 'chase'; $('cam-mode').value = S.cam;
+  S.cam = params.get('cam') || ((params.get('preset') || '').startsWith('plan:') ? 'top' : 'chase'); $('cam-mode').value = S.cam;
   if (params.get('speed')) { S.speed = +params.get('speed'); $('speed').value = params.get('speed'); }
   if (params.get('exag')) { S.exag = +params.get('exag'); $('exag').value = params.get('exag'); }
   if (params.get('scale')) { S.mscale = +params.get('scale'); $('mscale').value = S.mscale; $('mscale-val').textContent = `${S.mscale}x`; }
   if (params.get('notes') === '1') S.notesOpen = true;
+  if (params.get('note')) {  // embedder caveat banner (e.g. build_b1_page: FD structure nodes vs planform strips)
+    const nb = document.createElement('div');
+    nb.id = 'page-note'; nb.textContent = params.get('note');
+    nb.style.cssText = 'position:fixed;bottom:44px;left:45%;transform:translateX(-50%);max-width:40%;z-index:20;' +
+      'background:rgba(60,40,0,.82);color:#ffd27a;border:1px solid #c90;border-radius:4px;padding:3px 8px;font:12px/1.35 sans-serif;text-align:center;pointer-events:none';
+    document.body.appendChild(nb);
+  }
   if (params.get('dofs')) S.dofs = params.get('dofs').split(',').filter(Boolean);
   if (params.get('defl')) { S.defl = +params.get('defl'); $('defl').value = S.defl; $('defl-val').textContent = `${S.defl}x`; }
   for (const [k, id] of [['layout', 'layout'], ['vref', 'vref'], ['cy', 'cy']]) if (params.get(k)) { S[k] = params.get(k); $(id).value = S[k]; }

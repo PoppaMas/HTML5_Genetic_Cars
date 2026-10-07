@@ -521,3 +521,351 @@ either case (fraction 0.0), but the "before" population was drifting down, with 
   term is exactly 0.
 - New `model_version` strings (reduced + full change; rigid unchanged): see
   `v2_results/model_versions_post_p25.json`.
+
+## 13. P3-A1: denser full structural model (opt-in fidelity `full_a1`)
+
+**Select it.** `import flexeval_a1 as fa; fa.evaluate(gains, struct_genome, scenarios, model, fidelity="full_a1", root=...)`.
+`fa.evaluate` with `rigid` / `reduced` / `full` just calls `flexeval.evaluate` (same code, same outputs, tested), so a
+consumer can switch its import and choose A1 per call. The model on its own: `flexbody_a1.FlexBodyModelA1(model, genome)`.
+Version strings: `fa.model_version("full_a1", model, root)`. The existing `full` is unchanged.
+The Runner's `evolution/fidelity.py` only knows `rigid|reduced|full`. Wiring `full_a1` in is ER's to do; FD did not edit it.
+
+**Why new files.** `flexbody.py`, `flexwing.py`, `flexeval.py` and `coupled_sim.py` are hashed into the pinned `reduced`
+and `full` strings, so none of them was touched (md5 unchanged). A1 lives in `flexbody_a1.py` (model, `sizing_a1`, truncation
+helpers) and `flexeval_a1.py` (fidelity, `model_version`, hook). The studies are in `p3a1_study.py` and the tests in
+`test_flexbody_a1.py` (17 tests).
+
+| | `full` (flexv2) | `full_a1` (flexv2a1) |
+|---|---|---|
+| wing strips = elements per semi-wing | 32 | **64** |
+| wing modes per side | 3 b + 2 t + 1 ip | **4 b + 3 t + 2 ip** |
+| HT / VT / aft fuselage | 12 el; 2b+1t / 2b+1t / 2+2 | identical (same arrays) |
+| modal DOF | 25 | 31 |
+| genes, ranges (P2.5), weights, gate 1.0, substeps 2, TERM_KEYS (24), root `<root>_v2` | | unchanged |
+| `J_wing_tip_bm_limit` (η 0.875, w 1.0) | strip-discrete (`sizing_v2`) | station-exact (`sizing_a1`, below) |
+
+- Wing EI/GJ/EIv calibration (uncoupled f_b1 / f_t1 / f_ip) and the aileron Cl_δa strip calibration are redone on the
+  64-strip mesh with flexbody's own rules. With full's config (32 strips, 3b+2t+1ip), `FlexBodyModelA1` is
+  bit-identical to `FlexBodyModel` (tested).
+- Baseline: every sizing term is exactly 0 (all 4 aircraft) and the mass deltas are 0. The baseline margins are within
+  0.01 of full (flutter) and 0.01 (reversal); e.g. T38 1.161 vs 1.162, 737 reversal 1.266 vs 1.273.
+- **Strip count 64** (`v2_results/p3a1_truncation.json` → `strip_convergence_pct_vs_128`). Measured against 128 strips:
+  - all metrics are within 0.08 % at 64 strips, 0.15 % at 48 and 0.37 % at 32 (the worst metric is the T38 η 0.875
+    moment, error O(h));
+  - the exception is the aileron-reversal margin, which is non-monotone (aileron-edge quantisation): ≤ 0.51 % at 48–96
+    strips and 1.05 % at 32.
+  - Strips only enter the per-genome build and margin screen: 64 strips cost +0.03–0.07 s CPU per genome over 48.
+- **`sizing_a1` (the one numerical change).** `sizing_v2` uses whole strips with centre ≥ 0.875 and the EI multiplier of
+  the nearest strip centre (ties go inboard). That makes `J_wing_tip_bm_limit` jump with the strip count: on c172x with
+  `wing_ei_taper_4` = 0.75 it is 0.0175 / 0.0155 / 0.0096 / 0.0136 / 0.0107 at 32 / 48 / 64 / 96 / 128 strips.
+  `sizing_a1` instead integrates the outboard part of each strip and interpolates the EI multiplier AT η 0.875
+  (PCHIP). It converges (0.01183 → 0.01189 from 32 to 256 strips) and is still exactly 0 at the baseline. Every other
+  check is `sizing_v2`'s, unchanged. The strip-discrete value stays in `sizing['tip_bm_strip_discrete']`.
+
+  Tip-soft genome, `J_wing_tip_bm_limit`:
+
+  | aircraft | A1 | full as flown | full model, station-exact |
+  |---|---|---|---|
+  | c172x | 0.0119 | 0.0175 | 0.0118 |
+  | T38 | 0.0106 | 0.0067 | 0.0106 |
+  | 737 | 0.0114 | 0.0073 | 0.0113 |
+  | f16 | 0.0107 | 0.0068 | 0.0107 |
+
+**Modal truncation** (`p3a1_study.py truncation` → `v2_results/p3a1_truncation.json`). The variants go from N =
+4b+3t+2ip to +1 and +2 per family, +1 in every family, and +1 / +2 next-lowest modes of any type. The metrics are on the
+right wing:
+- root and η 0.875 bending moment, static aeroelastic (0.9 V_D, 1° + 1 g) and 1-cos gust peak;
+- tip deflection;
+- in-plane: 1 g fore-aft tip deflection and 1-cos n_x pulse root moment;
+- flutter speed (to 4 V_D) and the gate's wing-block flutter, divergence and aileron-reversal margins.
+
+Max |Δ| in %, every case below the 2 % threshold. Cells are baseline / tip-soft, max over the +1 and +2 variants and
+over all metrics:
+
+| aircraft | bending +1, +2 | torsion +1, +2 | in-plane +1, +2 | all families +1 | next-lowest +1, +2 | flutter speed / margin | root BM | η 0.875 BM |
+|---|---|---|---|---|---|---|---|---|
+| c172x | 0.01 / 0.01 | 0.10 / 0.12 | 0.16 / 0.17 | 0.16 / 0.17 | 0.10 / 0.12 | 0.001 / 0.002 | 0.003 / 0.005 | 0.10 / 0.12 |
+| T38 | 0.45 / 0.47 | 0.70 / 0.70 | 0.87 / 0.93 | **1.02 / 1.03** | 0.70 / 0.70 | 0.013 / 0.017 | 0.018 / 0.019 | 1.02 / 1.03 |
+| 737 | 0.05 / 0.16 | 0.33 / 0.30 | 0.59 / 0.63 | 0.59 / 0.63 | 0.33 / 0.30 | 0.005 / 0.007 | 0.006 / 0.009 | 0.33 / 0.30 |
+| f16 | 0.28 / 0.30 | 0.72 / 0.79 | 0.69 / 0.74 | 0.69 / 0.74 | 0.72 / 0.79 | 0.008 / 0.010 | 0.018 / 0.019 | 0.72 / 0.79 |
+
+- The in-plane modes only affect the in-plane metrics. The out-of-plane metrics do not see them (0.000 %), and the
+  static in-plane root moment is pure force summation.
+- Compared with full, A1 moves the η 0.875 elastic moment by +1.7 to +5.2 % on T38 and 737 (+0.9 % f16, −0.2 %
+  c172x) and the in-plane tip deflection by −1.9 to −6.2 %. So full's 3b+2t+1ip set is not converged to 2 % on those quantities. The
+  flutter and root moments agree within 0.15 %. None of full's flown cost terms uses the outboard elastic moment.
+
+**CPU** (`p3a1_study.py bench` → `v2_results/p3a1_benchmark.json`). Same method as §8: whole `evaluate()`, baseline
+genome, Phase-1 best gains, 3 × 90 s scenarios, CPU per scenario, min of 5 repeats, BLAS 1 thread, load ≈ 1.
+
+| | c172x | T38 | 737 | f16 |
+|---|---|---|---|---|
+| full, s CPU / scenario | 1.66 | 1.57 | 1.54 | 1.63 |
+| full_a1, s CPU / scenario | 1.77 | 1.68 | 1.68 | 1.76 |
+| A1 / full | 1.07× | 1.07× | 1.09× | 1.08× |
+
+**Version strings** (`v2_results/model_versions_post_p3a1.json`; the rigid / reduced / full entries there equal
+`model_versions_post_p25.json`, which was not modified):
+
+| aircraft | full_a1 |
+|---|---|
+| c172x | `full_a1:flexv2a1:36fb4f5a` |
+| T38 | `full_a1:flexv2a1:f248873e` |
+| 737 | `full_a1:flexv2a1:522189cb` |
+| f16 | `full_a1:flexv2a1:4a9e12bc` |
+
+The hash covers `flexbody.py`, `flexwing.py`, `flexeval.py`, `flexbody_a1.py`, `flexeval_a1.py`, the A1 parameters
+(`a1_params`: v2 parameters with `wing_v2` = the A1 mesh and mode set, `variant: a1`, `a1_fmt`), terms, weights, gene
+schema, substeps, gate and the `<root>_v2` aircraft files. Any edit to the A1 files changes the A1 strings only.
+Editing `flexbody.py`, `flexwing.py` or `flexeval.py` changes both the full and A1 strings.
+
+**Caveats.**
+1. `TERM_KEYS` (24) and the gene schema (12 + 2 asymmetric, P2.5 ranges) are unchanged.
+2. A1 costs differ slightly from full at the same genome because of the denser model. The one systematic difference is
+   `J_wing_tip_bm_limit` (station-exact), so A1 and full costs are not interchangeable in one cache.
+   **`J_mass` (ER smoke FYI):** A1 vs full can differ slightly for the same genome (e.g. 737 ≈ 0.000231655 vs 0.000232237)
+   because the denser 64-strip mesh resolves the PCHIP EI/GJ/NSM distributions (and therefore the min-gauge mass integral)
+   more finely than 32 strips. Expected mesh-density effect; A1 strings were not changed for it.
+3. Higher wing modes reach 150–240 Hz at the 1/240 s Newmark substep. Average-acceleration Newmark stays stable but
+   period-lengthens those modes; they respond quasi-statically. The substeps were kept at 2.
+   - Check: tip-soft genome, 3 s manoeuvre + gust (`_scratch/p3a1/substep_a1.py`, 2 vs 4 substeps). Wing root BM, torque,
+     tip deflection and twist peaks change ≤ 1.2 %. f16 in-plane root moment changes 2.4 %, T38 HT root moment 7.8 %.
+   - That is the same pattern as `full` (0.95 % / 3.0 % / 7.8 %), so it is pre-existing and not caused by A1.
+4. The structural data are still notional (§10.5).
+
+
+## 14. P3-B1: planform shape genes (opt-in fidelity `full_a1_b1`)
+
+**Select it.** `import flexeval_b1 as fb1; fb1.evaluate(gains, struct_genome, scenarios, model, fidelity="full_a1_b1", root=..., shape_genome=...)`.
+`fb1.evaluate` with `rigid` / `reduced` / `full` / `full_a1` delegates to `flexeval_a1` / `flexeval` (same outputs; a non-baseline
+`shape_genome` is rejected at those fidelities). The model on its own: `flexbody_b1.FlexBodyModelB1(model, struct_genome, shape_genes=...)`.
+Version strings: `fb1.model_version("full_a1_b1", model, root)`. The existing `full` / `full_a1` / reduced / rigid are unchanged
+(no hashed A1 / v2 source was edited). Decode / geometry gate live in `planform_b1.py` (Genome / Evolution mirror that module).
+
+**Locked B1 shape gene list (6 genes, L↔R symmetry on).** Separate block from the 12 structure genes (P2.5 ranges). Decode
+order: shape → planform strips + geometry gate → wing rebuild → structure genes on the new baseline → margins + flight.
+
+| # | name | range | scale | default | meaning |
+|---|---|---|---|---|---|
+| 0 | `wing_chord_taper_1` | 0.85 – 1.05 | linear | 1.0 | chord-multiplier ratio CP1/CP0 (η 1/3 / 0); then area-renormalised |
+| 1 | `wing_chord_taper_2` | 0.85 – 1.05 | linear | 1.0 | ratio CP2/CP1 (η 2/3 / 1/3) |
+| 2 | `wing_chord_taper_3` | 0.85 – 1.05 | linear | 1.0 | ratio CP3/CP2 (η 1 / 2/3) |
+| 3 | `wing_twist_mid_deg` | −2 – +1 | linear | 0.0 | geometric twist at η 0.5 relative to the root (deg, nose-up +) |
+| 4 | `wing_twist_tip_deg` | −4 – +1 | linear | 0.0 | geometric twist at the tip relative to the root (deg; negative = washout) |
+| 5 | `wing_sweep_qc_delta_deg` | −5 – +5 | linear | 0.0 | additive delta on the baseline **quarter-chord** sweep (deg), not LE |
+
+- Chord CPs at beam η = 0, 1/3, 2/3, 1 (4 stations → root + 3 ratios, no sawtooth). Interpolation to the 64-strip mesh:
+  monotone PCHIP in log space (`flexbody.pchip`), then **rescaled so the semi-wing planform area = baseline** (S and span
+  stay the JSBSim values: chord genes redistribute area spanwise; they never resize the wing). Root twist is fixed at 0
+  (a uniform incidence is absorbed by trim on fixed tables). Twist(η) = PCHIP through (0, 0), (0.5, mid), (1, tip).
+- Encodings: named dict of physical values (missing → default) or a vector in [0,1]^6 in table order. **The [0,1] map is
+  LINEAR IN VALUE for all 6 genes, chord tapers included: value = lo + u·(hi − lo), encode = (value − lo)/(hi − lo); there
+  is no log mapping** (`planform_b1.GENE_ENCODING`, hashed since r1). "log" in this section only refers to the spanwise
+  PCHIP of the chord multipliers (a planform rule), not to the gene scale. A GA operator may mutate in log space
+  internally, but it must hand FD physical values (dict) or a linear-normalised vector. (Over 0.85–1.05 the two differ by
+  at most 0.006 at u = 0.5: 0.95 linear vs 0.9447 geometric.)
+  `planform_b1.decode_shape_b1` / `encode_shape_b1` / `shape_schema()` / `shape_defaults()` / `is_baseline_shape` /
+  `shape_cache_key`. Raises `ValueError` (never clips): unknown keys, structure-gene names in the shape block, deferred
+  keys at non-baseline values, NaN/inf, out of range, wrong vector length / entries outside [0,1].
+- **Deferred (B2 or later; decode rejects non-baseline values):** `wing_dihedral_delta_deg` (geometric dihedral is not
+  represented by the strip model / `node_layout` / `external_reactions` path — only elastic β·w′ exists),
+  `wing_thickness_scale` / `wing_camber_scale` (section shape → B2 CST), `wing_chord_root` / `wing_span_scale` /
+  `wing_area_scale` / `wing_twist_root_deg` (wing size or root incidence need rescaled JSBSim tables).
+
+**Geometry gate** (`planform_b1.geometry_gate(pw, shape_genes, n_el=64)` → `{ok, reason, details}`). Cheap (~0.1 ms).
+Rejects before the model is built / flown (status `geometry_gate:<reason>`, cost = fail_cost, not a fitness credit):
+negative/tiny chord, LE/TE crossover (self-intersect), tip/root taper outside [0.12, 1.25], |sweep| > 45°, LE kink >
+25°. The whole B1 gene box is feasible by construction on all 4 aircraft (tested). **The gate is a safety net only**: it
+never fires for in-range genes (ER scan: 64 corners + 2000 random shapes per aircraft, closest T38 tip/root taper 0.139 vs
+0.12; FD test `test_b1_planform_area_preserving_and_feasible_by_construction`). It exists for future range widening /
+B2 genes / hand-built shapes; ER's reject path is exercised with an injected stricter limit.
+
+**Physics path (strip / VLM-style increments on fixed JSBSim tables; no CFD).** Host = A1 (64 strips, 4b+3t+2ip).
+1. Planform strips: shaped chord c(y), absolute quarter-chord sweep = baseline + Δ; area and span fixed.
+2. AC hold: wing re-positioned in x so the Schrenk-weighted quarter-chord x equals the baseline (static margin / Cm tables
+   unchanged).
+3. Aero: DATCOM CLa(AR fixed, new sweep), strip lw = c·dy·a, e_c / d34 / x_θ from local c, G = cosΛ θ − sinΛ w′, Schrenk
+   share from the shaped chord, Theodorsen apparent mass on c², aileron Cl_δa strip calibration redone on the shaped chords.
+4. Geometry-derived structural baseline: EI, GJ, EIv = the **baseline** root constants (A1 calibration) × (c / c_root0)^3;
+   mass distribution ~ c^1 with the wing **total** fixed; structure genes then multiply as today. So a tip-light planform
+   is softer at the tip (frequencies move).
+5. Geometric twist (root = 0): the **basic** (zero-net) strip load q κ_w lw (twist − Schrenk-share mean). Loads the
+   structure (static trim shape, root / outboard BM, torque); its elastic response feeds back like any elastic increment
+   (relative to the trim shape). **r1: its rigid pitch moment is NOT fed back** — it is a Cm0 shift absorbed by the trim
+   elevator (r0 fed back (q κ_w − trim)·Σ(−x L_basic), an unphysical q-proportional moment; see r1 addendum). Tables fixed.
+6. Sizing (same 6 `SIZING_TERMS` / weights / `TERM_KEYS` = 24): wing allowables = **baseline-planform** design loads ×
+   structure gene × geometric strength (c/c0)^3 at the check station; demand = current planform design loads (Schrenk +
+   basic twist at q_D, counted only where twist **raises** the demand — no sizing credit for washout relief); outboard
+   check station-exact (`sizing_a1` method). Tail / fuselage checks unchanged.
+7. Flown terms: `flexbody.response_terms_v2` formulas; wing torque / in-plane peak allowables from `sizing_b1`. **r1:** the
+   `J_bm_rms` denominator and the `J_bm_peak` allowable use m_ref = (flown 1-g root BM − trim basic-twist BM) ×
+   `bm_ref_ratio` (baseline-planform / shaped 1-g root BM per g, this genome's masses) [× (c/c0)^3 root strength factor
+   for the allowable], instead of the shape's own 1-g BM.
+
+Baseline shape (all defaults) short-circuits to the A1 constructor / `margin_terms_a1` / `FlexBodyCoupler` arithmetic →
+bit-identical to `full_a1` (see acceptance). Cache key on the shape: `planform_b1.shape_cache_key(shape_genome)` (rebuild
+is ~+0.05–0.09 s CPU per genome; gen-0 screening can key on it).
+
+**API for Evolution.**
+
+```python
+import flexeval_b1 as fb1
+import planform_b1 as pb1
+
+out = fb1.evaluate(
+    gains, struct_genome, scenarios, model,
+    fidelity="full_a1_b1",          # only fidelity that consumes shape_genome
+    root=root,                      # prepared root; B1 uses <root>_v2 like full / full_a1
+    shape_genome=None | {} | {..},  # dict of physical values or [0,1]^6; None/{} = baseline
+)
+# out keys = full_a1 keys + shape_genes, shape_cache_key, geometry_gate, planform
+# geometry_gate fail -> status "geometry_gate:<reason>", cost = fail_cost, no flight
+# decode fails -> ValueError (same policy as the structure genome)
+
+mdl = fb1.build_model(struct_genome, model, shape_genome=..., root_v2=...)
+# or: flexbody_b1.FlexBodyModelB1(model, struct_genome, shape_genes=...)
+gate = pb1.geometry_gate(pw, shape_genome, n_el=64)   # {ok, reason, details}
+```
+
+**model_version scheme** (`v2_results/model_versions_post_p3b1.json`):
+
+| fidelity | string | pin file |
+|---|---|---|
+| `rigid` / `reduced` / `full` | unchanged (= `model_versions_post_p25.json`) | listed for reference |
+| `full_a1` | unchanged (= `model_versions_post_p3a1.json`) | listed for reference |
+| `full_a1_b1` | `full_a1_b1:flexv2b1:<sha8>` | **new** |
+
+Hash covers: `flexbody.py`, `flexwing.py`, `flexeval.py`, `flexbody_a1.py`, `flexeval_a1.py`, `planform_b1.py`,
+`flexbody_b1.py`, `flexeval_b1.py`, A1/B1 params (incl. frozen shape schema / rules), terms, weights, struct + shape gene
+schemas, substeps, gate, `<root>_v2` aircraft files. Per-genome shape / structure values are inputs, not part of the
+version. Editing any of those modules changes the B1 strings; editing `flexbody.py` / `flexwing.py` / `flexeval.py` also
+changes full / reduced / A1; the A1 modules alone change A1 + B1.
+
+Pins (this box, after B1 land):
+
+| aircraft | full_a1_b1 |
+|---|---|
+| c172x | `full_a1_b1:flexv2b1:3e40908a` |
+| T38 | `full_a1_b1:flexv2b1:982bce54` |
+| 737 | `full_a1_b1:flexv2b1:1bc748ac` |
+| f16 | `full_a1_b1:flexv2b1:bfb25718` |
+
+**Acceptance** (`v2_results/p3b1_acceptance.json`). Baseline shape (None / {} / all defaults) + structure = full_a1 bit-intent:
+
+| check | result |
+|---|---|
+| A: whole `evaluate` (4 aircraft × 2 structure genomes × 3 Phase-1 90 s scenarios × 3 baseline-shape encodings), cost / 24 terms / margins / mass / sizing / per-scenario physics / loads / every coupler history channel | **exact** (max \|Δ\| = 0.0, 24 cases) |
+| B: every `FlexBodyModel` matrix of `FlexBodyModelB1(shape={})` vs `FlexBodyModelA1` | **exact** (8 cases) |
+| C: rebuild path at 1e-9 shape perturbation (continuity) | margins ≤ 6.25e-09, terms ≤ 6.73e-10, matrices rel ≤ 1.32e-08, 90 s cost ≤ 6.57e-10 (eps 1e-6) |
+
+Different by design: `model_version` / `fidelity` / `margins_fidelity` strings, `per_scenario[*].wall_s`, and the B1-only keys
+above. Platform note: compare A1 vs B1-baseline in the **same process** (exact); another BLAS / thread count is outside
+the pin.
+
+**CPU** (`v2_results/p3b1_benchmark.json`; process CPU, min of 3, BLAS 1 thread, Phase-1 best gains, one 90 s scenario;
+shaped genome = chord tapers 0.95 / twist mid −0.5 tip −2 / sweep +2°):
+
+| | c172x | T38 | 737 | f16 |
+|---|---|---|---|---|
+| A1 build, s | 0.087 | 0.094 | 0.051 | 0.095 |
+| B1 shaped rebuild, s | 0.172 | 0.181 | 0.098 | 0.180 |
+| rebuild overhead, s | 0.085 | 0.087 | 0.047 | 0.085 |
+| eval 90 s full_a1, s | 1.875 | 1.779 | 1.690 | 1.850 |
+| eval 90 s B1 baseline, s | 1.897 | 1.778 | 1.704 | 1.869 |
+| eval 90 s B1 shaped, s | 1.978 | 1.947 | 1.847 | 1.995 |
+| shaped / A1 | 1.055× | 1.094× | 1.093× | 1.079× |
+
+Shape rebuild is cheap enough for gen-0 screening; key the rebuilt model / margins on `shape_cache_key` if the same shape
+is re-evaluated with different controllers.
+
+**Caveats / open for Genome & ER.**
+1. `TERM_KEYS` (24) and the 12 structure gene ranges (P2.5) are unchanged. No new `J_*` terms.
+2. Wing size (chord_root / area / span) is deferred: would need rescaled JSBSim tables. Chord genes only redistribute.
+3. Geometric dihedral and thickness/camber deferred (see above).
+4. ~~Node telemetry still lays out the baseline planform~~ — r1: `flexbody_b1.node_layout_b1(mdl, rp)` (=
+   `FlexBodyModelB1.node_layout`, `flexeval_b1.node_layout`, used by `FlexHookB1.node_telemetry`) follows the shaped wing;
+   see r1 addendum. `flexbody.node_layout` itself (hashed) still gives the baseline-chord layout.
+5. FDM point masses carry only the gene Δmass (planform area is fixed, so wing mass total is fixed); strip mass
+   redistribution does not move the FDM wing point-mass Y (centroid shift from chord reshape is not modelled — documented
+   under `planform_b1.shape_params_for_hash` rules).
+6. Tests: `test_flexbody_b1.py` (extend, don't break the prior 123). Files: `planform_b1.py`, `flexbody_b1.py`,
+   `flexeval_b1.py`, `p3b1_study.py`, `test_flexbody_b1.py`, `v2_results/model_versions_post_p3b1.json`,
+   `v2_results/p3b1_acceptance.json`, `v2_results/p3b1_benchmark.json`.
+
+### P3-B1 r1 addendum (ER follow-up: T38 mid wash-in, node layout, encoding) — new strings, r0 pins left intact
+
+**Q1 verdict: the T38 drift of `wing_twist_mid_deg` to +1 was a (small) model loophole, not the source of the cost drop.**
+Study `v2_results/p3b1r1_twistmid_study.json` (`_scratch/p3b1/twist_mid_study.py`, checkpoints
+`p3b1r1_twistmid.partial.jsonl`): T38:g4:r0 of `phase3b1-smoke-s1` re-flown (reproduces 0.15620043 bit for bit), twist_mid
+swept −2…+3 (values > 1 via a study-only range bypass).
+- **Where 0.2262 → 0.1562 came from: controller gains.** 0.2262 is the *phase3a1* run's T38 best (other GA run, same
+  scenarios / profile). B1 gains + A1-run structure + baseline shape = 0.1626; B1 best with baseline shape = 0.1571; A1
+  best + B1 shape = 0.2339 (worse). The track gain (s0 0.138 → 0.032, s2 0.156 → 0.102) is kd_pitch 0.165 → 0.0082,
+  kd_alt 0.92 → 0.36, ki_hdg 0.145 → 1e-4.
+- **r0 twist_mid effect on that genome:** cost 0.156798 (0) → 0.156200 (+1) → 0.155127 (+3): −0.0006 / deg (−0.38 %),
+  monotone through the ceiling; s1 track −0.6 % / deg, J_bm_rms −1.6 % / deg; trim α / elevator unchanged
+  (4.6188°, no free trim, no CL0/Cm0 double count at t0). Below 0 sizing penalises it (pre-flight 0.005 → 0.035 at −2).
+- **Kill-switch decomposition:** rigid pitch feedback off → track flat (s1 0.093631 → 0.093615 → 0.093582 for 0/1/3);
+  elastic twist loading (`twist_Q`) off → no change; rigid root loads (`twist_RB`) off → the J_bm_rms part goes. Two
+  mechanisms: (a) `(q κ_w − trim)·twist_pitch` = a pitch moment ∝ Δq — on a trimmed aircraft the basic-twist moment is a
+  Cm0 shift that the trim elevator cancels *at every q* (both ∝ q), so ∂M/∂q|α,δe = 0; r0's constant offset left
+  ∂M/∂q = twist_pitch (pseudo speed-stability term; T38 twist_pitch −1.46 lbf·ft/psf at twist_mid +1, i.e. ΔCm0 ≈
+  −0.0011, rms 3.7 lbf·ft vs ~1.5e5 lbf·ft/rad pitch stiffness — tiny but systematic). (b) `J_bm_rms = rms/m_1g` with
+  m_1g including the wash-in basic-load BM (+337 lbf·ft at +1): the shape inflated its own reference (rms itself rose).
+- **Hand calc** (`_scratch/p3b1/twist_handcalc.py`): Prandtl lifting line on the shaped T38 planform gives a basic-load
+  ΔCm0 of −0.0007 per +1° mid (strip theory −0.0011, ~1.6× LL — strip theory over-concentrates the basic load), and a
+  zero-net load cannot change trim α. An honest effect on tracking is ≈ 0; a 2× track gain is impossible.
+  Aileron effectiveness: unchanged by twist (strip Cl_δa calibration depends on chord only). FDM wing point-mass Y
+  centroid: unaffected by twist (mass ∝ c).
+- **Fix (r1):** (a) rigid basic-twist pitch feedback removed (twist still loads the structure; the elastic response and
+  absolute root loads stay); (b) flown wing-BM reference anchored as rule 7. **After:** twist_mid 0 / +1 / +3 → cost
+  0.157157 / 0.157143 / 0.157115 (−1.4e-5 / deg, 43× smaller, ≈ neutral; residual = physical elastic coupling), s1 track
+  0.093631 / 0.093615 / 0.093582. Same genome at r1: 0.157143 (r0 0.156200). Remaining known gap: mid wash-in has no
+  induced-drag / stall-margin cost (rigid tables own drag; no new J_* allowed), so in [0, +1] it is now ≈ cost-neutral and
+  may drift freely — treat its value as uninformative (or narrow the Genome range) until B2.
+- Regression tests: `test_b1r1_twist_pitch_not_fed_back` (twist_pitch × 1e3 → flight bit-identical) and
+  `test_b1r1_t38_mid_washin_is_near_neutral` (T38 best, ER scenario s1: |Δcost(0 → +1)| < 1e-4; r0 gave 8.8e-4); both
+  fail on the r0 code (checked), pass on r1. `test_b1r1_flown_bm_reference_not_inflated_by_shape`.
+
+**Q2: node layout follows the shaped wing (implemented, cheap, display-only).** `node_layout_b1`: EA node x = −[(y −
+y_mac)·tan Λ_qc,shaped + ac_shift + (x_ea − 0.25)·c_shaped(y)] (same geometry as the strip arms / e_c; c_shaped from the
+same log-PCHIP + area-norm law, at the 65 node stations), y / z unchanged; twist rotates sections about the EA, so the
+axis does not move — it is exported per wing node as `geometric_twist_deg`, with `chord_ft` and the twisted
+`le_nodes_body_ft` / `te_nodes_body_ft` (LE = EA + x_ea·c·(cos θ, 0, −sin θ), TE = EA − (1 − x_ea)·c·(cos θ, 0, −sin θ),
+body FRD, same origin). Extra keys only for shaped wings; other bodies unchanged; baseline shape → `flexbody.node_layout`
+lists exactly (tested). Sim Bridge `geometry_from_layout` reads only `axis_nodes_body_ft` / `node_span_frac`, so the new
+keys are ignored unless used. **ER / SB call-site change needed:** they call `flexbody.node_layout(obj)` directly — switch
+to `flexbody_b1.node_layout_b1(obj, rp)` (or `obj.node_layout(rp)`) for full_a1_b1.
+
+**1.80° vs 1.68°:** pure geometry, not a bug (same in r0 and r1). The exported axis is the elastic axis at x_ea = 0.40
+of a taper-0.2 chord, i.e. aft = y·tan Λ_qc + 0.15·c(y): on the T38 it is swept 18.70°, not 24°. Its angle is
+atan(tan Λ_qc − k), k = 0.15·c_root(1 − λ)/s, so dΛ_ea/dΛ_qc = sec²Λ_qc / (1 + tan²Λ_ea) = 1.198/1.114 = 1.075:
++1.68° quarter-chord → +1.81° EA line (test `test_b1r1_node_ea_slope_vs_quarter_chord_sweep`). The uniform AC-hold shift
+translates the axis and doesn't change its slope.
+
+**Strings (`v2_results/model_versions_post_p3b1r1.json`; `planform_b1.B1_REV = 1`, hashed; tag / fidelity unchanged):**
+
+| aircraft | full_a1_b1 r1 | (r0, `model_versions_post_p3b1.json`, left intact) |
+|---|---|---|
+| c172x | `full_a1_b1:flexv2b1:56ee798e` | `3e40908a` |
+| T38 | `full_a1_b1:flexv2b1:7e871977` | `982bce54` |
+| 737 | `full_a1_b1:flexv2b1:6523753c` | `1bc748ac` |
+| f16 | `full_a1_b1:flexv2b1:617078a9` | `bfb25718` |
+
+rigid / reduced / full / full_a1 strings unchanged (= post_p25 / post_p3a1); no hashed A1 / v2 source edited (MD5s
+checked). r0 cache rows / runs are not comparable with r1 for non-baseline shapes; baseline-shape results are
+identical (acceptance below).
+
+**r1 acceptance** (`v2_results/p3b1r1_acceptance.json`): re-run on the r1 code, all pass —
+A whole-`evaluate` baseline ≡ full_a1 **exact** (24 cases, max |Δ| = 0.0); B matrices **exact** (8); C continuity at 1e-9
+(margins ≤ 6.25e-09, terms ≤ 7.4e-10, matrices rel ≤ 1.32e-08, 90 s cost ≤ 6.6e-10). Log `p3b1r1_acceptance_run.log`.
+CPU: r1 removes one multiply-add per step from the shaped coupler; `p3b1_benchmark.json` (r0) stands.
+
+**Tests:** `test_flexbody_b1.py` 44 cases (r0 36 + 8 r1: old-pin-intact, encoding, twist-pitch regression, T38 wash-in
+regression, BM reference, node layout × 2, EA slope). Full suite (`test_flexwing.py test_flexbody.py test_flexbody_a1.py
+test_flexbody_b1.py`) **167 passed** (`v2_results/pytest_p3b1r1.log`).
+
+r1 files: `planform_b1.py` (B1_REV, GENE_ENCODING), `flexbody_b1.py` (coupler, `bm_ref_ratio`, `wing_bm_reference_b1`,
+`node_layout_b1`), `flexeval_b1.py` (FlexHookB1 qk_ref / node telemetry, `node_layout`), `p3b1_study.py` (rev-aware outputs;
+refuses to overwrite the r0 pin file), `test_flexbody_b1.py`, `v2_results/model_versions_post_p3b1r1.json`,
+`p3b1r1_acceptance.json`, `p3b1r1_twistmid_study.json`. r0 copies: `_scratch/p3b1/*.r0.py`.

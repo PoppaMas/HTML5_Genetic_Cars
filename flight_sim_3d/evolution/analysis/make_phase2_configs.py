@@ -1,5 +1,5 @@
 """Regenerate evolution/configs/phase2_*.json from configs/phase1_hdg.json (v4 controller).
-Run from the team root:  $PY evolution/analysis/make_phase2_configs.py [--placeholder] [--clip] [--p25 | --p3a1] [--seed N]
+Run from the team root:  $PY evolution/analysis/make_phase2_configs.py [--placeholder] [--clip] [--p25 | --p3a1 | --p3b1 [--r0]] [--seed N]
 --clip: also set Genome's interim tail/fuselage mass-credit clip (flex_mass_credit_clip [ht, vt, fus]). Default OFF,
 as Genome's phase2_flex since 08:15 PT (FD's section 12 fix replaced it; Genome keeps it for A/B only).
 Pins: default flight-dynamics/v2_results/model_versions_post_mass.json (EVOLUTION_FD_DIR honoured).
@@ -8,7 +8,14 @@ Pins: default flight-dynamics/v2_results/model_versions_post_mass.json (EVOLUTIO
 --p3a1: FD's P3-A1 fidelity full_a1 (INTERFACE_v2 section 13). Writes ONLY phase3a1_smoke.json (= phase2_smoke_p25.json
 with fidelity full_a1: 16 x 5, c172x/T38/737, seeded sigma 0.10, asymmetric off) and phase3a1_pilot.json (64 x 60,
 rigid->full_a1, seeds as the P2.5 pilot). Pins: full_a1 from model_versions_post_p3a1.json, rigid from
-model_versions_post_p25.json (the smoke has no rigid rung, so it pins full_a1 only). Nothing else is overwritten."""
+model_versions_post_p25.json (the smoke has no rigid rung, so it pins full_a1 only). Nothing else is overwritten.
+--p3b1: FD's P3-B1 fidelity full_a1_b1 (INTERFACE_v2 section 14) with genome_kind phase3_b1 (controller | 12 structure
+genes | FD's 6 shape genes). Writes ONLY phase3b1_smoke.json (= phase3a1_smoke.json with fidelity full_a1_b1 + kind
+phase3_b1: 16 x 5, c172x/T38/737, same seeds / scenarios / sigma 0.10) and phase3b1_pilot.json (64 x 60, rigid->full_a1_b1,
+seeds as phase3a1_pilot). Pins: full_a1_b1 from model_versions_post_p3b1r1.json (FD B1 r1, frozen 18:47 PT; = the
+default since r1), rigid from model_versions_post_p25.json.
+--p3b1 --r0: the superseded r0 pins (model_versions_post_p3b1.json) -> phase3b1_smoke_r0.json / phase3b1_pilot_r0.json
+(kept for the record / replay of phase3b1-smoke-s1; do not pilot on them)."""
 import copy
 import json
 import os
@@ -37,10 +44,15 @@ def profiles(hdg):
 _FD_ROOT = os.environ.get("EVOLUTION_FD_DIR") or os.path.join(HERE, "..", "..", "flight-dynamics")
 P25 = "--p25" in sys.argv[1:]
 P3A1 = "--p3a1" in sys.argv[1:]
-if P25 and P3A1:
-    sys.exit("--p25 and --p3a1 are exclusive")
-PIN_NAME = "model_versions_post_p25.json" if (P25 or P3A1) else "model_versions_post_mass.json"
+P3B1 = "--p3b1" in sys.argv[1:]
+if P25 + P3A1 + P3B1 > 1:
+    sys.exit("--p25, --p3a1 and --p3b1 are exclusive")
+PIN_NAME = "model_versions_post_p25.json" if (P25 or P3A1 or P3B1) else "model_versions_post_mass.json"
 A1_PIN_NAME = "model_versions_post_p3a1.json"
+B1_R0 = P3B1 and "--r0" in sys.argv[1:]
+B1_PIN_NAME = "model_versions_post_p3b1.json" if B1_R0 else "model_versions_post_p3b1r1.json"
+B1_REV = "r0 (SUPERSEDED by r1)" if B1_R0 else "r1"
+B1_SUFFIX = "_r0" if B1_R0 else ""
 PIN_FILE = os.path.join(_FD_ROOT, "v2_results", PIN_NAME)
 PIN_SOURCE = f"flight-dynamics/v2_results/{PIN_NAME}"
 FD_PINS = {}
@@ -105,6 +117,9 @@ def main():
     if P3A1:
         write_p3a1(smoke, pilot)
         return
+    if P3B1:
+        write_p3b1(smoke, pilot)
+        return
     if P25:
         # NEW configs only — do not overwrite post-mass phase2_pilot / smoke / bench.
         common["_pin_source"] = (PIN_SOURCE + " (Flight Dynamics P2.5, 2026-10-06: wing_nsm floor 1.0–1.25, "
@@ -140,6 +155,42 @@ def main():
         d["_comment"] = (f"Phase 2 PILOT seed {n}: same as phase2_pilot.json but GA seeds c172x={n}, T38={n+1}, 737={n+2}, "
                          f"scenario_seed={n}. Ladder rigid->full on all three (no c172x reduced screen).")
         fn = f"phase2_pilot_s{n}"
+        with open(os.path.join(CFG, fn + ".json"), "w") as f:
+            json.dump(d, f, indent=1)
+            f.write("\n")
+        print("wrote", fn)
+
+
+def write_p3b1(smoke, pilot):
+    """phase3b1_smoke.json / phase3b1_pilot.json: the A1 smoke / pilot (= P2.5 smoke / pilot) with fidelity full_a1_b1
+    and genome_kind phase3_b1 (FD P3-B1 shape block; Genome's operator spec in batch.SHAPE_OPS_DEFAULT). Only fidelity,
+    genome_kind, pins and comments differ from what --p3a1 writes (checked in tests/test_p3b1.py)."""
+    b1 = {} if "--placeholder" in sys.argv[1:] else json.load(open(os.path.join(_FD_ROOT, "v2_results", B1_PIN_NAME)))
+    names = [n for n, _ in ACS]
+    src = (f"full_a1_b1: flight-dynamics/v2_results/{B1_PIN_NAME} (Flight Dynamics P3-B1 {B1_REV}, 2026-10-06); rigid: "
+           f"{PIN_SOURCE} (P2.5; byte-identical in post_p3b1 / post_p3b1r1)"
+           + ("" if B1_R0 else "; frozen FD copy for exact replay: evolution/_fd_pin_p3b1r1 (EVOLUTION_FD_DIR)"))
+    smoke = copy.deepcopy(smoke)
+    smoke["_comment"] = (f"Phase 3 B1 {B1_REV} SMOKE: = phase3a1_smoke.json (16 x 5 single-fidelity, c172x/T38/737, seeded sigma 0.10, "
+                         "asymmetric off, same seeds / scenarios) with fidelity full_a1_b1 (FD P3-B1: A1 host + 6 planform "
+                         "shape genes) and genome_kind phase3_b1 (controller 8 | structure 12 | shape 6 = 26 genes; shape gen-0 "
+                         "around the identity planform, sigma 0.25 x half-range in FD's encoded space, log for the chord "
+                         "tapers; whole-block crossover). Separate cache key space from full_a1.")
+    smoke["_pin_source"] = src
+    smoke["fidelity"] = "full_a1_b1"
+    smoke["genome_kind"] = "phase3_b1"
+    smoke["pin_model_version"] = {n: {"full_a1_b1": b1.get(n, {}).get("full_a1_b1", PH)} for n in names}
+    pilot = copy.deepcopy(pilot)
+    pilot["_comment"] = (f"Phase 3 B1 {B1_REV} PILOT: 64 x 60 rigid->full_a1_b1 on c172x/T38/737 (>= 25 % + elites re-scored at "
+                         "full_a1_b1; the rigid screen ignores the shape genes), genome_kind phase3_b1, seeds as "
+                         "phase3a1_pilot (GA c172x=1, T38=2, 737=3, scenario_seed 1). DO NOT LAUNCH without Corleone's "
+                         "approval (gate: B1 smoke reviewed).")
+    pilot["_pin_source"] = src
+    pilot["fidelity"] = "full_a1_b1"
+    pilot["genome_kind"] = "phase3_b1"
+    pilot["pin_model_version"] = {n: {"rigid": FD_PINS.get(n, {}).get("rigid", PH),
+                                      "full_a1_b1": b1.get(n, {}).get("full_a1_b1", PH)} for n in names}
+    for fn, d in (("phase3b1_smoke" + B1_SUFFIX, smoke), ("phase3b1_pilot" + B1_SUFFIX, pilot)):
         with open(os.path.join(CFG, fn + ".json"), "w") as f:
             json.dump(d, f, indent=1)
             f.write("\n")

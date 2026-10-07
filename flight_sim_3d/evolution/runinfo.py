@@ -12,6 +12,9 @@ The batch writes both for new runs. Completed older runs can be backfilled (best
 A replay of a row is evolution.eval.evaluate(row["genome"], row["aircraft"], <scenario>, run.json,
 fidelity=row["fidelity"]) and must give row["per_scenario_cost"] (and row["cost"] = float(np.mean(...)) of them)
 exactly while model_version is unchanged.
+
+``fd_dir`` records the resolved Flight Dynamics tree used for the run (``$EVOLUTION_FD_DIR`` or the default
+``flight-dynamics/``, team-relative). Older runs may instead carry a sidecar ``fd_pin.json``.
 """
 from __future__ import annotations
 
@@ -130,16 +133,20 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
                 e[k] = info[k]
         acs.append(e)
     labels = {"rigid": "rigid", "reduced": "reduced(flexv1 on projected v2 genome)", "full": "full(flexv2)",
-              "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)"}
+              "full_a1": "full_a1(flexv2a1: P3-A1, 64-strip 4b+3t+2ip wings)",
+              "full_a1_b1": "full_a1_b1(flexv2b1: P3-B1, A1 host + 6 planform shape genes)"}
     ladders = [list(m.get("ladder") or []) for m in [mf] + [a.get("multi_fidelity") or {} for a in cfg["aircraft"]]
                if m.get("enabled")]
     uses_a1 = fid == "full_a1" or any("full_a1" in ld for ld in ladders)
+    uses_b1 = fid == "full_a1_b1" or any("full_a1_b1" in ld for ld in ladders)
     return {
         "schema": RUN_SCHEMA, "run_id": cfg["run_id"], "created": created,
         "git_sha": prov.get("git_sha"),
         "git": dict(prov["git"], repo=team_rel(prov["git"].get("repo"))) if isinstance(prov.get("git"), dict) else prov.get("git"),
         "paths_relative_to": "team root: the directory holding evolution/ and flight-dynamics/ (flight_sim_3d/ in the repo); "
-                             "resolve with evolution.sim.abs_root", "jsbsim_version": prov.get("jsbsim_version"),
+                             "resolve with evolution.sim.abs_root",
+        "fd_dir": team_rel(sim.fd_dir()),  # resolved FD tree actually used ($EVOLUTION_FD_DIR or flight-dynamics/)
+        "jsbsim_version": prov.get("jsbsim_version"),
         "code_sha": prov.get("code_sha"), "seed": cfg["seed"], "eval_seed": cfg["scenario_seed"],
         "scenario_seed": cfg["scenario_seed"], "fitness_sense": "min", "sim_dt_s": sim.DT,
         "fidelity": fid, "fidelity_label": labels.get(fid, fid),
@@ -148,6 +155,7 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
         **({"struct_asymmetric": True} if cfg.get("struct_asymmetric") else {}),
         **({"init": cfg["init"]} if (cfg.get("init") or {}).get("mode", "uniform") != "uniform" else {}),
         **({"pin_model_version": cfg["pin_model_version"]} if cfg.get("pin_model_version") else {}),
+        **({"genome_kind": cfg["genome_kind"], "shape_ops": cfg.get("shape_ops")} if cfg.get("genome_kind") else {}),
         "model_version": {a["name"]: a["model_version"] for a in acs},
         "aircraft": acs, "scenarios": scen, "target_semantics": TARGET_SEMANTICS,
         "fitness_cfg": {"sense": "min", "aggregate": "cost = float(numpy.mean(per_scenario_cost)) over the aircraft's "
@@ -163,6 +171,16 @@ def build_run_json(cfg: Dict, prov: Dict, per_ac: Dict[str, Dict], created: str)
                                        "J_wing_tip_bm_limit is station-exact at eta 0.875, so full_a1 costs are not "
                                        "comparable with full costs and never share a cache entry with them"}
                            if uses_a1 else {}),
+                        **({"flex_b1": "full_a1_b1 = Flight Dynamics flexeval_b1.evaluate (INTERFACE_v2.md section 14): "
+                                       "the full_a1 contract on flexbody_b1.FlexBodyModelB1 with FD's 6 planform shape "
+                                       "genes (aircraft[].genes group 'shape'; chord tapers 1..3, twist mid / tip, "
+                                       "quarter-chord sweep delta; L = R). Decode order shape -> geometry gate -> "
+                                       "rebuild -> structure genes -> margins + flight. A geometry-gate reject is NOT "
+                                       "flown: status 'geometry_gate:<reason>', cost = fail_cost (2 * fail_base), never a "
+                                       "credit. Baseline shape = full_a1 bit for bit; costs share no cache entry with "
+                                       "full_a1 (key carries fidelity, model_version and FD's shape_cache_key). Rigid "
+                                       "screens ignore the shape genes"}
+                           if uses_b1 else {}),
                         "per_aircraft": "aircraft[].fitness_cfg"},
         "ga": cfg.get("ga"), "generations": cfg["ga"]["generations"], "pop_size": cfg["ga"]["pop_size"],
         "trajectories": cfg.get("trajectories"),

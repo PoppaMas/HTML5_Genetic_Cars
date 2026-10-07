@@ -713,7 +713,12 @@ def main(argv=None) -> int:
                     "rediscretised_note": "components whose node layout differs from the reference (e.g. FD nodal wings "
                                           "vs ER's 9-node modal wings) are not compared by channel name; values at "
                                           "coincident span fractions are reported here (informational, not pass/fail)"}
-                   if v.get("remapped") else {})}
+                   if v.get("remapped") else {}),
+                **({"wingR_modal_twist_sign": {**v["wingR_modal_twist_sign"],
+                    "note": "+1 = wingR_modal.twist follows FE wingR.twist (post-fix ER), -1 = mirrored (pre-fix ER "
+                            "fd_to_structure_channels `name == \"wingR\"` bug); detected from the data (no header marker); "
+                            "when replay and reference differ the reference sign is undone before comparing"}}
+                   if (v.get("wingR_modal_twist_sign") or {}).get("b") is not None else {})}
         traj_check = {"reference_dir": os.path.relpath(os.path.abspath(ref_dir), TEAM_ROOT), "n_files": len(files),
                       "tolerance": "half a unit of each channel's written decimal (ER trajectory.py rounding)",
                       "summary": {vv: sum(1 for f in files.values() if f["verdict"] == vv) for vv in sorted({f["verdict"] for f in files.values()})},
@@ -782,6 +787,9 @@ def main(argv=None) -> int:
         for k, f in traj_check["files"].items():
             print(f"    {k:18s} rows {f['rows_compared']}/{f['rows_replay']}/{f['rows_reference']}  {f['bit_identical_channels']}/{f['n_channels']} channels "
                   f"bit-identical  worst {max(f['max_abs'].items(), key=lambda kv: kv[1])}  {f['verdict']}")
+            ms = f.get("wingR_modal_twist_sign")
+            if ms and ms.get("compared_sign_corrected"):
+                print(f"      wingR_modal.twist: reference sign {ms['b']:+d} (pre-fix ER), replay {ms['a']:+d}; compared sign-corrected")
             for comp, r in (f.get("rediscretised_components") or {}).items():
                 print(f"      {comp}: {r['a_nodes']} nodes vs reference {r['b_nodes']} (not compared by name); at "
                       f"{r['n_pairs']} coincident nodes max |diff| {r['max_abs_at_coincident_nodes']}")

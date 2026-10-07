@@ -1,0 +1,1253 @@
+{
+  "fd_dir": "evolution/_fd_pin_p3b1r1",
+  "model_version_expected": "full_a1_b1:flexv2b1:56ee798e",
+  "method": "evolution.fidelity.evaluate_genome(phase2_smoke_p25 c172x profile, 3 scenarios, scenario_seed 1)",
+  "created": "2026-10-06 19:02 MST",
+  "loadavg_start": [
+    5.08984375,
+    9.373046875,
+    8.76220703125
+  ],
+  "a_reproduce_a1": {
+    "baseline": {
+      "expected": {
+        "cost": 0.2419400885448951,
+        "J_wing_tip_bm_limit": 0.0
+      },
+      "full_a1_inprocess": {
+        "cost": 0.2419400885448951,
+        "model_version": "full_a1:flexv2a1:36fb4f5a"
+      },
+      "None": {
+        "cost": 0.2419400885448951,
+        "J_wing_tip_bm_limit": 0.0,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "match": {
+          "model_version_r1_pin": true,
+          "cost": true,
+          "per_scenario": true,
+          "tip": true,
+          "inprocess_a1_24_terms": true,
+          "inprocess_a1_margins_mass": true
+        },
+        "bit_identical": true,
+        "cpu_s_per_scenario": 1.8616880003333334
+      },
+      "identity_vector": {
+        "cost": 0.2419400885448951,
+        "J_wing_tip_bm_limit": 0.0,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "match": {
+          "model_version_r1_pin": true,
+          "cost": true,
+          "per_scenario": true,
+          "tip": true,
+          "inprocess_a1_24_terms": true,
+          "inprocess_a1_margins_mass": true
+        },
+        "bit_identical": true,
+        "cpu_s_per_scenario": 1.8846258413333334
+      }
+    },
+    "soft_tip_taper4_0.75": {
+      "expected": {
+        "cost": 0.25879473336084763,
+        "J_wing_tip_bm_limit": 0.011874078070487388
+      },
+      "full_a1_inprocess": {
+        "cost": 0.25879473336084763,
+        "model_version": "full_a1:flexv2a1:36fb4f5a"
+      },
+      "None": {
+        "cost": 0.25879473336084763,
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "match": {
+          "model_version_r1_pin": true,
+          "cost": true,
+          "per_scenario": true,
+          "tip": true,
+          "inprocess_a1_24_terms": true,
+          "inprocess_a1_margins_mass": true
+        },
+        "bit_identical": true,
+        "cpu_s_per_scenario": 1.8941380589999994
+      },
+      "identity_vector": {
+        "cost": 0.25879473336084763,
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "match": {
+          "model_version_r1_pin": true,
+          "cost": true,
+          "per_scenario": true,
+          "tip": true,
+          "inprocess_a1_24_terms": true,
+          "inprocess_a1_margins_mass": true
+        },
+        "bit_identical": true,
+        "cpu_s_per_scenario": 1.9614806403333336
+      }
+    }
+  },
+  "b_shaped_r1_vs_r0": {
+    "er:baseline_shape": {
+      "shape": null,
+      "r1": {
+        "status": "ok",
+        "cost": 0.2419400885448951,
+        "fd_struct_sum": 0.030838880087861866,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.058937696203525715,
+          "effort": 0.030942581234986666,
+          "comfort": 1.766798775478463,
+          "heading": 0.1938411009610985,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030838880087861866,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.2419400885448951,
+        "fd_struct_sum": 0.030838880087861866,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.058937696203525715,
+          "effort": 0.030942581234986666,
+          "comfort": 1.766798775478463,
+          "heading": 0.1938411009610985,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030838880087861866,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "delta_r1_minus_r0": {
+        "cost": 0.0,
+        "fd_struct_sum": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {},
+      "r0_equals_r1_bitwise": true
+    },
+    "er:tip_taper_0.85": {
+      "shape": {
+        "wing_chord_taper_3": 0.85
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.25621291487481784,
+        "fd_struct_sum": 0.04135739775404572,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.010754603840887837,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.1381580633512276,
+          0.4157203789284391,
+          0.21476030234478674
+        ],
+        "flutter_margin": 1.2804282486109628,
+        "div_margin": 1.7341671539829249,
+        "reversal_margin": 1.5325651259280246,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.061608340301100344,
+          "effort": 0.03164130229206472,
+          "comfort": 1.7604909399945807,
+          "heading": 0.19400252358132478,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030602793913157882,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.010754603840887837,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.25646956880787164,
+        "fd_struct_sum": 0.04161405168709953,
+        "J_wing_tip_bm_limit": 0.010754603840887837,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.061608340301100344,
+          "effort": 0.03164130229206472,
+          "comfort": 1.7604909399945807,
+          "heading": 0.19400252358132478,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030859447846211696,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.010754603840887837,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2804282486109628,
+        "div_margin": 1.7341671539829249,
+        "reversal_margin": 1.5325651259280246
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.00025665393305379647,
+        "fd_struct_sum": -0.00025665393305381035,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "J_bm_rms": -0.0002566539330538138
+      },
+      "r0_equals_r1_bitwise": false
+    },
+    "er:tip_twist_-3deg": {
+      "shape": {
+        "wing_twist_tip_deg": -3.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.2436369103515783,
+        "fd_struct_sum": 0.030957091437614763,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.12776780200999213,
+          0.40249147090328613,
+          0.20065145814145663
+        ],
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06001103144580084,
+          "effort": 0.03124391907616428,
+          "comfort": 1.7648545446937527,
+          "heading": 0.1938222081146503,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030936692244982456,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 2.039919263230711e-05,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.24714010277442136,
+        "fd_struct_sum": 0.034460283860457845,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06001103144580084,
+          "effort": 0.03124391907616428,
+          "comfort": 1.7648545446937527,
+          "heading": 0.1938222081146503,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.034439884667825535,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 2.039919263230711e-05,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.0035031924228430544,
+        "fd_struct_sum": -0.003503192422843082,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "J_bm_rms": -0.0035031924228430787
+      },
+      "r0_equals_r1_bitwise": false
+    },
+    "er:sweep_+5deg": {
+      "shape": {
+        "wing_sweep_qc_delta_deg": 5.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.25050749400799605,
+        "fd_struct_sum": 0.040474460118808356,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.13643272134406798,
+          0.4018620968602781,
+          0.21322766381964198
+        ],
+        "flutter_margin": 1.1800339485637616,
+        "div_margin": 1.918320386289614,
+        "reversal_margin": 1.4679801750295691,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06147365060452495,
+          "effort": 0.029366817549702995,
+          "comfort": 1.7577651295478922,
+          "heading": 0.19374917078620754,
+          "hold": 0.0,
+          "J_flutter_margin": 0.009966080248862851,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030508379869945507,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.25050749400799605,
+        "fd_struct_sum": 0.040474460118808356,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06147365060452495,
+          "effort": 0.029366817549702995,
+          "comfort": 1.7577651295478922,
+          "heading": 0.19374917078620754,
+          "hold": 0.0,
+          "J_flutter_margin": 0.009966080248862851,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030508379869945507,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.1800339485637616,
+        "div_margin": 1.918320386289614,
+        "reversal_margin": 1.4679801750295691
+      },
+      "delta_r1_minus_r0": {
+        "cost": 0.0,
+        "fd_struct_sum": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {},
+      "r0_equals_r1_bitwise": true
+    },
+    "er:sweep_-5deg": {
+      "shape": {
+        "wing_sweep_qc_delta_deg": -5.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.25861054939260436,
+        "fd_struct_sum": 0.03140410731442161,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.1299263415419127,
+          0.4290999719718648,
+          0.21680533466403562
+        ],
+        "flutter_margin": 1.3278991880775584,
+        "div_margin": 1.5089686945042826,
+        "reversal_margin": 1.4890907976469363,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06451086350330248,
+          "effort": 0.035033394320564015,
+          "comfort": 1.8137844161526957,
+          "heading": 0.19395691261174566,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03140410731442161,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.25861054939260436,
+        "fd_struct_sum": 0.03140410731442161,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06451086350330248,
+          "effort": 0.035033394320564015,
+          "comfort": 1.8137844161526957,
+          "heading": 0.19395691261174566,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03140410731442161,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.3278991880775584,
+        "div_margin": 1.5089686945042826,
+        "reversal_margin": 1.4890907976469363
+      },
+      "delta_r1_minus_r0": {
+        "cost": 0.0,
+        "fd_struct_sum": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {},
+      "r0_equals_r1_bitwise": true
+    },
+    "er:fd_bench_shape": {
+      "shape": {
+        "wing_chord_taper_1": 0.95,
+        "wing_chord_taper_2": 0.95,
+        "wing_chord_taper_3": 0.95,
+        "wing_twist_mid_deg": -0.5,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 2.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.26347717007287635,
+        "fd_struct_sum": 0.05018952954604982,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.14663879693005666,
+          0.41886964218423484,
+          0.22492307110433765
+        ],
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06226156435777061,
+          "effort": 0.030375352059676664,
+          "comfort": 1.7667143645733339,
+          "heading": 0.19396538210359152,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030256014273488337,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.019933515272561483,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.26468755677972555,
+        "fd_struct_sum": 0.05344495941502542,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06132995450707773,
+          "effort": 0.030105544359661212,
+          "comfort": 1.7552288307297026,
+          "heading": 0.19401126018148415,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03351144414246393,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.019933515272561483,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.001210386706849198,
+        "fd_struct_sum": -0.003255429868975597,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "track": 0.0009316098506928772,
+        "effort": 0.00026980770001545223,
+        "comfort": 0.011485533843631268,
+        "heading": -4.587807789263598e-05,
+        "J_bm_rms": -0.0032554298689755935
+      },
+      "r0_equals_r1_bitwise": false
+    },
+    "genome:c_washout_tip_m2": {
+      "shape": {
+        "wing_twist_tip_deg": -2.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.24368540375238332,
+        "fd_struct_sum": 0.030923233316621643,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.12774490178586798,
+          0.4025317349250113,
+          0.20077957454627063
+        ],
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06003653413850473,
+          "effort": 0.03128323570902404,
+          "comfort": 1.7644155496816143,
+          "heading": 0.19383873951281413,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030914167008785062,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 9.066307836580797e-06,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.24593427925148523,
+        "fd_struct_sum": 0.03317210881572356,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06003653413850473,
+          "effort": 0.03128323570902404,
+          "comfort": 1.7644155496816143,
+          "heading": 0.19383873951281413,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03316304250788698,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 9.066307836580797e-06,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.00224887549910191,
+        "fd_struct_sum": -0.0022488754991019134,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "J_bm_rms": -0.002248875499101917
+      },
+      "genome_r1_cost": 0.24368540375238332,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": false
+    },
+    "genome:c_chord_taper3_0.9": {
+      "shape": {
+        "wing_chord_taper_3": 0.9
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.24733718272264985,
+        "fd_struct_sum": 0.03490748695742898,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.004255877892055006,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.13176548103499652,
+          0.4059487997622261,
+          0.20429726737072695
+        ],
+        "flutter_margin": 1.2627166424299663,
+        "div_margin": 1.711980185814802,
+        "reversal_margin": 1.5123926413639521,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06085508255232522,
+          "effort": 0.030887172238470095,
+          "comfort": 1.7571986171864091,
+          "heading": 0.19403378766350246,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03065160906537397,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.004255877892055006,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.24750550578643518,
+        "fd_struct_sum": 0.03507581002121429,
+        "J_wing_tip_bm_limit": 0.004255877892055006,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06085508255232522,
+          "effort": 0.030887172238470095,
+          "comfort": 1.7571986171864091,
+          "heading": 0.19403378766350246,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03081993212915929,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.004255877892055006,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2627166424299663,
+        "div_margin": 1.711980185814802,
+        "reversal_margin": 1.5123926413639521
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.00016832306378533612,
+        "fd_struct_sum": -0.0001683230637853153,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "J_bm_rms": -0.00016832306378531878
+      },
+      "genome_r1_cost": 0.24733718272264985,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": false
+    },
+    "genome:c_sweep_p3": {
+      "shape": {
+        "wing_sweep_qc_delta_deg": 3.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.24342259340914543,
+        "fd_struct_sum": 0.031092517892524634,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.12727229361965461,
+          0.3992066441640371,
+          0.20378884244374462
+        ],
+        "flutter_margin": 1.1959729324677295,
+        "div_margin": 1.8032884331435128,
+        "reversal_margin": 1.469053723129142,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06122529702378823,
+          "effort": 0.030454657365735865,
+          "comfort": 1.765144637376596,
+          "heading": 0.19382318925310568,
+          "hold": 0.0,
+          "J_flutter_margin": 0.00040543182273666947,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030687086069787966,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.24342259340914543,
+        "fd_struct_sum": 0.031092517892524634,
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06122529702378823,
+          "effort": 0.030454657365735865,
+          "comfort": 1.765144637376596,
+          "heading": 0.19382318925310568,
+          "hold": 0.0,
+          "J_flutter_margin": 0.00040543182273666947,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030687086069787966,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.1959729324677295,
+        "div_margin": 1.8032884331435128,
+        "reversal_margin": 1.469053723129142
+      },
+      "delta_r1_minus_r0": {
+        "cost": 0.0,
+        "fd_struct_sum": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {},
+      "genome_r1_cost": 0.24342259340914543,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": true
+    },
+    "genome:c_combo_fd_bench": {
+      "shape": {
+        "wing_chord_taper_1": 0.95,
+        "wing_chord_taper_2": 0.95,
+        "wing_chord_taper_3": 0.95,
+        "wing_twist_mid_deg": -0.5,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 2.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.26347717007287635,
+        "fd_struct_sum": 0.05018952954604982,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.14663879693005666,
+          0.41886964218423484,
+          0.22492307110433765
+        ],
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06226156435777061,
+          "effort": 0.030375352059676664,
+          "comfort": 1.7667143645733339,
+          "heading": 0.19396538210359152,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030256014273488337,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.019933515272561483,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": 0.26468755677972555,
+        "fd_struct_sum": 0.05344495941502542,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "status": "ok",
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "terms": {
+          "track": 0.06132995450707773,
+          "effort": 0.030105544359661212,
+          "comfort": 1.7552288307297026,
+          "heading": 0.19401126018148415,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.03351144414246393,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.019933515272561483,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982
+      },
+      "delta_r1_minus_r0": {
+        "cost": -0.001210386706849198,
+        "fd_struct_sum": -0.003255429868975597,
+        "J_wing_tip_bm_limit": 0.0,
+        "flutter_margin": 0.0,
+        "div_margin": 0.0,
+        "reversal_margin": 0.0
+      },
+      "terms_changed_r1_minus_r0": {
+        "track": 0.0009316098506928772,
+        "effort": 0.00026980770001545223,
+        "comfort": 0.011485533843631268,
+        "heading": -4.587807789263598e-05,
+        "J_bm_rms": -0.0032554298689755935
+      },
+      "genome_r1_cost": 0.26347717007287635,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": false
+    },
+    "genome:c_twist_mid_m2": {
+      "shape": {
+        "wing_twist_mid_deg": -2.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.34548545795950564,
+        "fd_struct_sum": 0.1324660650236712,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.10157397223827903,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.22928842160419594,
+          0.5047842678042379,
+          0.3023836844700829
+        ],
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06020708703646461,
+          "effort": 0.031340198655845836,
+          "comfort": 1.7638672526793142,
+          "heading": 0.19385459537123717,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030890971599710226,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 1.1211856819515655e-06,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.10157397223827903,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": null,
+        "fd_struct_sum": null,
+        "J_wing_tip_bm_limit": null,
+        "status": null,
+        "model_version": null,
+        "terms": null,
+        "flutter_margin": null,
+        "div_margin": null,
+        "reversal_margin": null
+      },
+      "delta_r1_minus_r0": {
+        "cost": null,
+        "fd_struct_sum": null,
+        "J_wing_tip_bm_limit": null,
+        "flutter_margin": null,
+        "div_margin": null,
+        "reversal_margin": null
+      },
+      "terms_changed_r1_minus_r0": {},
+      "genome_r1_cost": 0.34548545795950564,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": null
+    },
+    "genome:c_twist_mid_p1": {
+      "shape": {
+        "wing_twist_mid_deg": 1.0
+      },
+      "r1": {
+        "status": "ok",
+        "cost": 0.2412728501294835,
+        "fd_struct_sum": 0.031099142021763827,
+        "J_mass": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "mass_total_frac": 0.0,
+        "per_scenario_cost": [
+          0.12812065291126704,
+          0.394260175400837,
+          0.2014377220763464
+        ],
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004,
+        "model_version": "full_a1_b1:flexv2b1:56ee798e",
+        "terms": {
+          "track": 0.06059872170258157,
+          "effort": 0.029970687289628522,
+          "comfort": 1.7539005774719632,
+          "heading": 0.19385829522828826,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030714539036876085,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.00034963907717067524,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 3.4963907717067524e-05,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        }
+      },
+      "r0": {
+        "cost": null,
+        "fd_struct_sum": null,
+        "J_wing_tip_bm_limit": null,
+        "status": null,
+        "model_version": null,
+        "terms": null,
+        "flutter_margin": null,
+        "div_margin": null,
+        "reversal_margin": null
+      },
+      "delta_r1_minus_r0": {
+        "cost": null,
+        "fd_struct_sum": null,
+        "J_wing_tip_bm_limit": null,
+        "flutter_margin": null,
+        "div_margin": null,
+        "reversal_margin": null
+      },
+      "terms_changed_r1_minus_r0": {},
+      "genome_r1_cost": 0.2412728501294835,
+      "equals_genome_r1_bitwise": true,
+      "r0_equals_r1_bitwise": null
+    }
+  },
+  "c_geometry_gate": {
+    "c172x": {
+      "n_points": 2064,
+      "n_fail": 0,
+      "taper_tip_root_min_max": [
+        0.47799382801776186,
+        0.8921372491888161
+      ]
+    },
+    "T38": {
+      "n_points": 2064,
+      "n_fail": 0,
+      "taper_tip_root_min_max": [
+        0.13916077439562105,
+        0.2597324550803226
+      ]
+    },
+    "737": {
+      "n_points": 2064,
+      "n_fail": 0,
+      "taper_tip_root_min_max": [
+        0.19113184952626036,
+        0.3567323100715694
+      ]
+    },
+    "f16": {
+      "n_points": 2064,
+      "n_fail": 0,
+      "taper_tip_root_min_max": [
+        0.16828778484267942,
+        0.3140956904490584
+      ]
+    }
+  },
+  "a_all_bit_identical": true,
+  "loadavg_end": [
+    3.28662109375,
+    7.49755859375,
+    8.15087890625
+  ]
+}

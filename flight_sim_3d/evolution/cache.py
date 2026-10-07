@@ -17,6 +17,11 @@ key carries "fidelity" ('full' / 'full_a1') AND FD's model_version ('full:flexv2
 key spaces are disjoint, and eval_key refuses a model_version whose prefix is not "<fidelity>:" (a full string can never
 be filed under full_a1 or vice versa). The payload itself is unchanged, so rigid / reduced / full keys are as before.
 
+full_a1 vs full_a1_b1 (P3-B1): same mechanism ('full_a1_b1:' prefix, its own model_version), and a full_a1_b1 key also
+carries FD's planform_b1.shape_cache_key of the decoded shape ("shape_key"), so two shapes never share an entry even if
+the rest of the genome bytes were equal. The "shape_key" field is added ONLY when given, so rigid / reduced / full /
+full_a1 payloads (and keys) are byte-identical to before.
+
 The GA seed is deliberately NOT in the key: it only decides *which* genomes get
 evaluated, not what a given genome scores, so different GA seeds can share
 results. Anything that does change a result (scenario seed, profile, code,
@@ -57,9 +62,13 @@ def jsbsim_version() -> str:
 
 def eval_key(aircraft: str, genome: np.ndarray, profile_d: Dict, scenario_d: Dict, scenario_seed: int,
              jsbsim_ver: str, code: str, model_sha: str = "", fidelity: Optional[str] = None,
-             model_version: Optional[str] = None) -> str:
+             model_version: Optional[str] = None, shape_key: Optional[str] = None) -> str:
     if fidelity is not None and model_version is not None and not str(model_version).startswith(f"{fidelity}:"):
         raise ValueError(f"cache key: model_version {model_version!r} does not belong to fidelity {fidelity!r}")
+    if shape_key is not None and fidelity != "full_a1_b1":
+        raise ValueError(f"cache key: shape_key is only part of full_a1_b1 keys (fidelity {fidelity!r})")
+    if fidelity == "full_a1_b1" and not shape_key:
+        raise ValueError("cache key: a full_a1_b1 key needs FD's shape_cache_key (planform_b1.shape_cache_key)")
     payload = {
         "fidelity": fidelity,            # the fidelity + model_version the worker returned (checked by the batch)
         "model_version": model_version,
@@ -72,6 +81,8 @@ def eval_key(aircraft: str, genome: np.ndarray, profile_d: Dict, scenario_d: Dic
         "jsbsim": jsbsim_ver,
         "code_sha": code,
     }
+    if shape_key is not None:        # full_a1_b1 only (keeps every other payload byte-identical)
+        payload["shape_key"] = str(shape_key)
     s = json.dumps(payload, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(s.encode()).hexdigest()
 

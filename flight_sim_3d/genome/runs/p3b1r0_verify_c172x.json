@@ -1,0 +1,1367 @@
+{
+  "method": "shape_b1.evaluate_b1 -> evolution.fidelity.evaluate_genome(..., 'full_a1_b1', shape=...) (= FD flexeval_b1.evaluate; direct FD path cross-checked); ER phase2_smoke_p25 c172x profile, 3 scenarios, scenario_seed 1; gains/struct from genome/runs/p25_tip_verify_c172x.json",
+  "model_version_pins": {
+    "full_a1_b1": "full_a1_b1:flexv2b1:3e40908a",
+    "full_a1": "full_a1:flexv2a1:36fb4f5a",
+    "genome_recorded_full_a1_b1": "full_a1_b1:flexv2b1:3e40908a"
+  },
+  "fd_schema_live": [
+    [
+      "wing_chord_taper_1",
+      0.85,
+      1.05,
+      "linear",
+      1.0
+    ],
+    [
+      "wing_chord_taper_2",
+      0.85,
+      1.05,
+      "linear",
+      1.0
+    ],
+    [
+      "wing_chord_taper_3",
+      0.85,
+      1.05,
+      "linear",
+      1.0
+    ],
+    [
+      "wing_twist_mid_deg",
+      -2.0,
+      1.0,
+      "linear",
+      0.0
+    ],
+    [
+      "wing_twist_tip_deg",
+      -4.0,
+      1.0,
+      "linear",
+      0.0
+    ],
+    [
+      "wing_sweep_qc_delta_deg",
+      -5.0,
+      5.0,
+      "linear",
+      0.0
+    ]
+  ],
+  "cases": {
+    "a_baseline": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 1.0,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape": "baseline (FD defaults)",
+      "evaluator": "evolution.fidelity.evaluate_genome(full_a1_b1)",
+      "cost": 0.2419400885448951,
+      "per_scenario_cost": [
+        0.12772764189700128,
+        0.39710530396908106,
+        0.2009873197686029
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.0,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030838880087861866,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.030838880087861866,
+      "controller_terms": {
+        "track": 0.058937696203525715,
+        "effort": 0.030942581234986666,
+        "comfort": 1.766798775478463,
+        "heading": 0.1938411009610985,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.058937696203525715,
+        "effort": 0.030942581234986666,
+        "comfort": 1.766798775478463,
+        "heading": 0.1938411009610985,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030838880087861866,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "mass_total_frac": 0.0,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 1.0813572259849025e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": true,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 5.548385890999999,
+      "cpu_s_per_scenario": 1.8494619636666663,
+      "match": {
+        "vs_er_a1": {
+          "bit_identical_total": true,
+          "bit_identical_per_scenario": true,
+          "bit_identical_tip": true,
+          "bit_identical": true
+        },
+        "vs_same_process_a1": {
+          "bit_identical_total": true,
+          "bit_identical_per_scenario": true,
+          "all_24_terms_identical": true,
+          "term_diffs": {},
+          "margins_identical": true,
+          "bit_identical": true
+        }
+      },
+      "direct_fd_path_identical": true,
+      "a1_same_process": {
+        "cost": 0.2419400885448951,
+        "J_wing_tip_bm_limit": 0.0,
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "cpu_s": 5.493468543,
+        "cpu_s_per_scenario": 1.8311561809999999
+      }
+    },
+    "b_soft_tip_taper4_0.75": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 0.75,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape": "baseline (FD defaults)",
+      "evaluator": "evolution.fidelity.evaluate_genome(full_a1_b1)",
+      "cost": 0.25879473336084763,
+      "per_scenario_cost": [
+        0.14271980987754557,
+        0.4179016740566261,
+        0.21576271614837125
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.011874078070487388,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": -0.0009510572171161819,
+        "J_bm_rms": 0.030744893468328458,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.004138048740507586,
+        "J_wing_bm_limit": 4.245459084310182e-06,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 4.2454590843101823e-07,
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.04581063306719999,
+      "controller_terms": {
+        "track": 0.060674639858860645,
+        "effort": 0.030982918098905507,
+        "comfort": 1.7681036891948239,
+        "heading": 0.19384397772348105,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.060674639858860645,
+        "effort": 0.030982918098905507,
+        "comfort": 1.7681036891948239,
+        "heading": 0.19384397772348105,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": -0.0009510572171161819,
+        "J_bm_rms": 0.030744893468328458,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.004138048740507586,
+        "J_wing_bm_limit": 4.245459084310182e-06,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 4.2454590843101823e-07,
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.2239895713509354,
+        "div_margin": 1.6680626322715622,
+        "reversal_margin": 1.4727769737420542
+      },
+      "mass_total_frac": -0.0031701907237206063,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 1.0813572259849025e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": true,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          7.0696830125220655,
+          17.696940042692145,
+          22.384415607508185,
+          39.41548993534075,
+          58.95164164105756,
+          93.16611792297337,
+          99.1282233513988,
+          109.77291529404839,
+          211.93891205910492
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 6.894626138,
+      "cpu_s_per_scenario": 2.2982087126666664,
+      "match": {
+        "vs_er_a1": {
+          "bit_identical_total": true,
+          "bit_identical_per_scenario": true,
+          "bit_identical_tip": true,
+          "bit_identical": true
+        },
+        "vs_same_process_a1": {
+          "bit_identical_total": true,
+          "bit_identical_per_scenario": true,
+          "all_24_terms_identical": true,
+          "term_diffs": {},
+          "margins_identical": true,
+          "bit_identical": true
+        }
+      },
+      "direct_fd_path_identical": true,
+      "a1_same_process": {
+        "cost": 0.25879473336084763,
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "cpu_s": 5.773886796999999,
+        "cpu_s_per_scenario": 1.9246289323333332
+      }
+    },
+    "a2_baseline_via_task": {
+      "n_genes": 26,
+      "scenarios_equal_er": true,
+      "physical_values": {
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "status": "ok",
+        "J_wing_tip_bm_limit": 0.0,
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "objectives": {
+          "track_alt": 0.058937696203525715,
+          "effort": 0.030942581234986666,
+          "comfort": 1.766798775478463,
+          "track_heading_rms": 0.1938411009610985,
+          "structural_v2": 0.030838880087861866
+        },
+        "match": {
+          "vs_er_a1": {
+            "bit_identical_total": true,
+            "bit_identical_per_scenario": true,
+            "bit_identical_tip": true,
+            "bit_identical": true
+          }
+        }
+      },
+      "u_vector_roundtrip": {
+        "genes_moved": {
+          "ki_alt": {
+            "in": 0.05,
+            "roundtrip": 0.050000000000000024,
+            "delta": 2.0816681711721685e-17
+          },
+          "kd_pitch": {
+            "in": 0.014608444547277827,
+            "roundtrip": 0.014608444547277813,
+            "delta": -1.3877787807814457e-17
+          },
+          "kp_hdg": {
+            "in": 2.242870209249964,
+            "roundtrip": 2.2428702092499626,
+            "delta": -1.3322676295501878e-15
+          },
+          "struct_damping_ratio": {
+            "in": 0.02,
+            "roundtrip": 0.019999999999999997,
+            "delta": -3.469446951953614e-18
+          }
+        },
+        "shape_moved": {},
+        "shape_after_snap": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "cost": 0.24194008854488902,
+        "per_scenario_cost": [
+          0.12772764189700306,
+          0.39710530396906946,
+          0.2009873197685945
+        ],
+        "status": "ok",
+        "J_wing_tip_bm_limit": 0.0,
+        "delta_cost_vs_er_a1": -6.078471059822732e-15,
+        "note": "controller/structure genes move by ~1 ulp in log/linear encode->decode; that perturbs the cost at ~1e-16. Identity shape decodes exactly (snap guard unused)."
+      }
+    },
+    "c_washout_tip_m2": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 1.0,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape_input": {
+        "wing_twist_tip_deg": -2.0
+      },
+      "cost": 0.24593427925148523,
+      "per_scenario_cost": [
+        0.12918516739048147,
+        0.40601387577098536,
+        0.20260379459298883
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.0,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03316304250788698,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 9.066307836580797e-06,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.03317210881572356,
+      "controller_terms": {
+        "track": 0.06003653413850473,
+        "effort": 0.03128323570902404,
+        "comfort": 1.7644155496816143,
+        "heading": 0.19383873951281413,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.06003653413850473,
+        "effort": 0.03128323570902404,
+        "comfort": 1.7644155496816143,
+        "heading": 0.19383873951281413,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03316304250788698,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 9.066307836580797e-06,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "mass_total_frac": 0.0,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 1.0813572259849025e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": -0.00036430358886718625,
+        "twist_tip_deg": -1.9531288146972665,
+        "planform_baseline": false,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": -2.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 5.737624122999996,
+      "cpu_s_per_scenario": 1.9125413743333322,
+      "delta_vs_a1_baseline": {
+        "cost": 0.003994190706590128,
+        "J_wing_tip_bm_limit": 0.0
+      }
+    },
+    "c_chord_taper3_0.9": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 1.0,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape_input": {
+        "wing_chord_taper_3": 0.9
+      },
+      "cost": 0.24750550578643518,
+      "per_scenario_cost": [
+        0.1318737473757711,
+        0.40620873851089573,
+        0.2044340314726387
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.004255877892055006,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03081993212915929,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.004255877892055006,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.03507581002121429,
+      "controller_terms": {
+        "track": 0.06085508255232522,
+        "effort": 0.030887172238470095,
+        "comfort": 1.7571986171864091,
+        "heading": 0.19403378766350246,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.06085508255232522,
+        "effort": 0.030887172238470095,
+        "comfort": 1.7571986171864091,
+        "heading": 0.19403378766350246,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03081993212915929,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.004255877892055006,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.2627166424299663,
+        "div_margin": 1.711980185814802,
+        "reversal_margin": 1.5123926413639521
+      },
+      "mass_total_frac": 0.0,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 0.9,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=0.9|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 3.7943473824066247,
+          "taper_tip_root": 0.6977629421973267,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 0.16946153882434545
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.437874603168001,
+        "c_tip_ft": 3.7943473824066247,
+        "taper_tip_root": 0.6977629421973267,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0115085728245403,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": false,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 0.9,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=0.9|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          7.213985818369792,
+          18.05741721552703,
+          22.945950541919448,
+          40.02196381988919,
+          60.13849348275,
+          94.50305920832768,
+          100.55172675585499,
+          110.62436930919621,
+          213.73610799740544
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 5.378816551,
+      "cpu_s_per_scenario": 1.7929388503333332,
+      "delta_vs_a1_baseline": {
+        "cost": 0.005565417241540083,
+        "J_wing_tip_bm_limit": 0.004255877892055006
+      }
+    },
+    "c_sweep_p3": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 1.0,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape_input": {
+        "wing_sweep_qc_delta_deg": 3.0
+      },
+      "cost": 0.24342259340914543,
+      "per_scenario_cost": [
+        0.12727229361965461,
+        0.3992066441640371,
+        0.20378884244374462
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.0,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.00040543182273666947,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030687086069787966,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.031092517892524634,
+      "controller_terms": {
+        "track": 0.06122529702378823,
+        "effort": 0.030454657365735865,
+        "comfort": 1.765144637376596,
+        "heading": 0.19382318925310568,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.06122529702378823,
+        "effort": 0.030454657365735865,
+        "comfort": 1.765144637376596,
+        "heading": 0.19382318925310568,
+        "hold": 0.0,
+        "J_flutter_margin": 0.00040543182273666947,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030687086069787966,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.1959729324677295,
+        "div_margin": 1.8032884331435128,
+        "reversal_margin": 1.469053723129142
+      },
+      "mass_total_frac": 0.0,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 3.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=3.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 3.0,
+          "le_kink_max_deg": 1.0391687510491465e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 3.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": false,
+        "ac_shift_ft": -0.02713607477388332,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 3.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=3.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 5.550032615999996,
+      "cpu_s_per_scenario": 1.8500108719999986,
+      "delta_vs_a1_baseline": {
+        "cost": 0.0014825048642503336,
+        "J_wing_tip_bm_limit": 0.0
+      }
+    },
+    "c_combo_fd_bench": {
+      "gains": {
+        "kp_alt": 0.2397326688652956,
+        "ki_alt": 0.05,
+        "kd_alt": 0.38523085001510937,
+        "kp_pitch": 0.07049452717617341,
+        "ki_pitch": 1.9653025820764143e-05,
+        "kd_pitch": 0.014608444547277827,
+        "kp_hdg": 2.242870209249964,
+        "ki_hdg": 0.0003706638173012445
+      },
+      "struct": {
+        "wing_ei_root": 1.0,
+        "wing_ei_taper_1": 1.0,
+        "wing_ei_taper_2": 1.0,
+        "wing_ei_taper_3": 1.0,
+        "wing_ei_taper_4": 1.0,
+        "wing_gj_ratio_root": 1.0,
+        "wing_gj_ratio_tip": 1.0,
+        "wing_nsm_root": 1.0,
+        "wing_nsm_tip": 1.0,
+        "tail_stiffness_scale": 1.0,
+        "fuselage_stiffness_scale": 1.0,
+        "struct_damping_ratio": 0.02
+      },
+      "shape_input": {
+        "wing_chord_taper_1": 0.95,
+        "wing_chord_taper_2": 0.95,
+        "wing_chord_taper_3": 0.95,
+        "wing_twist_mid_deg": -0.5,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 2.0
+      },
+      "cost": 0.26468755677972555,
+      "per_scenario_cost": [
+        0.14888507370003884,
+        0.4208098953102901,
+        0.22436770132884767
+      ],
+      "status": "ok",
+      "per_scenario_status": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "J_wing_tip_bm_limit": 0.019933515272561483,
+      "fd_struct_terms": {
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03351144414246393,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.05344495941502542,
+      "controller_terms": {
+        "track": 0.06132995450707773,
+        "effort": 0.030105544359661212,
+        "comfort": 1.7552288307297026,
+        "heading": 0.19401126018148415,
+        "hold": 0.0
+      },
+      "terms": {
+        "track": 0.06132995450707773,
+        "effort": 0.030105544359661212,
+        "comfort": 1.7552288307297026,
+        "heading": 0.19401126018148415,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03351144414246393,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "margins": {
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982
+      },
+      "mass_total_frac": 0.0,
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "shape_genes": {
+        "wing_chord_taper_1": 0.95,
+        "wing_chord_taper_2": 0.95,
+        "wing_chord_taper_3": 0.95,
+        "wing_twist_mid_deg": -0.5,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 2.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=0.95|wing_chord_taper_2=0.95|wing_chord_taper_3=0.95|wing_twist_mid_deg=-0.5|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=2.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 3.833066901469228,
+          "taper_tip_root": 0.6638531889135876,
+          "sweep_qc_deg": 2.0,
+          "le_kink_max_deg": 0.007503738041334529
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.773967746908226,
+        "c_tip_ft": 3.833066901469228,
+        "taper_tip_root": 0.6638531889135876,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0753178026517969,
+        "sweep_qc_deg": 2.0,
+        "twist_mid_deg": -0.5001220703125001,
+        "twist_tip_deg": -1.9688119888305669,
+        "planform_baseline": false,
+        "ac_shift_ft": -0.014455633254585477,
+        "shape_genes": {
+          "wing_chord_taper_1": 0.95,
+          "wing_chord_taper_2": 0.95,
+          "wing_chord_taper_3": 0.95,
+          "wing_twist_mid_deg": -0.5,
+          "wing_twist_tip_deg": -2.0,
+          "wing_sweep_qc_delta_deg": 2.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=0.95|wing_chord_taper_2=0.95|wing_chord_taper_3=0.95|wing_twist_mid_deg=-0.5|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=2.0",
+        "f_wing_hz": [
+          7.607564055914303,
+          19.042792574911118,
+          24.199501711114998,
+          40.05265268583589,
+          59.616609847341266,
+          94.1343510117455,
+          100.6618559929949,
+          109.72568735018268,
+          212.82506997519448
+        ]
+      },
+      "not_flown": false,
+      "cpu_s": 5.588443451000003,
+      "cpu_s_per_scenario": 1.8628144836666678,
+      "delta_vs_a1_baseline": {
+        "cost": 0.022747468234830454,
+        "J_wing_tip_bm_limit": 0.019933515272561483
+      }
+    },
+    "d_reject": {
+      "out_of_range_chord_taper3_0.5": {
+        "raised": true,
+        "error": "ValueError: shape gene wing_chord_taper_3=0.5 outside its range [0.85, 1.05]",
+        "flown": false
+      },
+      "deferred_dihedral_2deg": {
+        "raised": true,
+        "error": "ValueError: shape gene 'wing_dihedral_delta_deg' is deferred past B1 (INTERFACE_v2 \u00a714); only 0.0 allowed",
+        "flown": false
+      },
+      "structure_gene_in_shape_block": {
+        "raised": true,
+        "error": "ValueError: unknown B1 shape gene 'wing_ei_root' (have ['wing_chord_taper_1', 'wing_chord_taper_2', 'wing_chord_taper_3', 'wing_twist_mid_deg', 'wing_twist_tip_deg', 'wing_sweep_qc_delta_deg'])",
+        "flown": false
+      },
+      "in_range_corners_gate": {
+        "n": 64,
+        "n_rejected": 0,
+        "rejected": []
+      },
+      "injected_gate_reject": {
+        "how": "planform_b1.GATE_MAX_TAPER = 0.5 in memory only (FD file untouched), restored",
+        "shape_input": {
+          "wing_chord_taper_3": 0.9
+        },
+        "cost": 2000.0,
+        "per_scenario_cost": [
+          2000.0,
+          2000.0,
+          2000.0
+        ],
+        "status": "geometry_gate:extreme_taper",
+        "per_scenario_status": [
+          "geometry_gate:extreme_taper",
+          "geometry_gate:extreme_taper",
+          "geometry_gate:extreme_taper"
+        ],
+        "not_flown": true,
+        "geometry_gate": {
+          "ok": false,
+          "reason": "extreme_taper",
+          "details": {
+            "c_min_ft": 3.7943473824066247,
+            "taper_tip_root": 0.6977629421973267,
+            "sweep_qc_deg": 0.0,
+            "le_kink_max_deg": 0.16946153882434545
+          }
+        },
+        "model_version": "full_a1_b1:flexv2b1:31083750",
+        "cpu_s": 0.0021070439999988366,
+        "fail_cost": 2000.0,
+        "is_geometry_reject": true,
+        "note": "model_version differs here because FD hashes the gate constants; run on the direct FD path (ER's evaluate_genome would refuse the changed model_version, by design)"
+      }
+    },
+    "e_er_b1_verify_genomes": {
+      "baseline_shape": {
+        "shape": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "er_recorded": {
+          "cost": 0.2419400885448951,
+          "per_scenario_cost": [
+            0.12772764189700128,
+            0.39710530396908106,
+            0.2009873197686029
+          ],
+          "J_wing_tip_bm_limit": 0.0
+        },
+        "genome_cost": 0.2419400885448951,
+        "genome_J_wing_tip_bm_limit": 0.0,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      },
+      "tip_taper_0.85": {
+        "shape": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 0.85,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "er_recorded": {
+          "cost": 0.25646956880787164,
+          "per_scenario_cost": [
+            0.13832322638922503,
+            0.41611698225402843,
+            0.21496849778036142
+          ],
+          "J_wing_tip_bm_limit": 0.010754603840887837
+        },
+        "genome_cost": 0.25646956880787164,
+        "genome_J_wing_tip_bm_limit": 0.010754603840887837,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      },
+      "tip_twist_-3deg": {
+        "shape": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": -3.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "er_recorded": {
+          "cost": 0.24714010277442136,
+          "per_scenario_cost": [
+            0.1300128670773692,
+            0.40791438174831735,
+            0.20349305949757754
+          ],
+          "J_wing_tip_bm_limit": 0.0
+        },
+        "genome_cost": 0.24714010277442136,
+        "genome_J_wing_tip_bm_limit": 0.0,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      },
+      "sweep_+5deg": {
+        "shape": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 5.0
+        },
+        "er_recorded": {
+          "cost": 0.25050749400799605,
+          "per_scenario_cost": [
+            0.13643272134406798,
+            0.4018620968602781,
+            0.21322766381964198
+          ],
+          "J_wing_tip_bm_limit": 0.0
+        },
+        "genome_cost": 0.25050749400799605,
+        "genome_J_wing_tip_bm_limit": 0.0,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      },
+      "sweep_-5deg": {
+        "shape": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": -5.0
+        },
+        "er_recorded": {
+          "cost": 0.25861054939260436,
+          "per_scenario_cost": [
+            0.1299263415419127,
+            0.4290999719718648,
+            0.21680533466403562
+          ],
+          "J_wing_tip_bm_limit": 0.0
+        },
+        "genome_cost": 0.25861054939260436,
+        "genome_J_wing_tip_bm_limit": 0.0,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      },
+      "fd_bench_shape": {
+        "shape": {
+          "wing_chord_taper_1": 0.95,
+          "wing_chord_taper_2": 0.95,
+          "wing_chord_taper_3": 0.95,
+          "wing_twist_mid_deg": -0.5,
+          "wing_twist_tip_deg": -2.0,
+          "wing_sweep_qc_delta_deg": 2.0
+        },
+        "er_recorded": {
+          "cost": 0.26468755677972555,
+          "per_scenario_cost": [
+            0.14888507370003884,
+            0.4208098953102901,
+            0.22436770132884767
+          ],
+          "J_wing_tip_bm_limit": 0.019933515272561483
+        },
+        "genome_cost": 0.26468755677972555,
+        "genome_J_wing_tip_bm_limit": 0.019933515272561483,
+        "bit_identical_vs_er_recorded": true,
+        "er_path_equals_fd_path": true
+      }
+    }
+  },
+  "summary": {
+    "a_bit_identical_vs_er_a1": true,
+    "a_bit_identical_vs_same_process_a1_all_terms": true,
+    "a2_task_path_physical_bit_identical_vs_er_a1": true,
+    "a2_task_u_roundtrip_delta_cost": -6.078471059822732e-15,
+    "b_bit_identical_vs_er_a1": true,
+    "b_bit_identical_vs_same_process_a1_all_terms": true,
+    "b1_model_version": "full_a1_b1:flexv2b1:3e40908a",
+    "b1_model_version_matches_pin": true,
+    "c_all_ok": true,
+    "evaluator": "evolution.fidelity.evaluate_genome(full_a1_b1)",
+    "ab_direct_fd_path_identical": true,
+    "e_er_genomes_bit_identical": true,
+    "e_er_path_equals_fd_path": true,
+    "cpu_s_per_scenario": {
+      "a1_baseline": 1.8311561809999999,
+      "b1_baseline": 1.8494619636666663,
+      "b1_washout_tip_m2": 1.9125413743333322,
+      "b1_chord_taper3_0.9": 1.7929388503333332,
+      "b1_sweep_p3": 1.8500108719999986,
+      "b1_combo_fd_bench": 1.8628144836666678
+    }
+  }
+}

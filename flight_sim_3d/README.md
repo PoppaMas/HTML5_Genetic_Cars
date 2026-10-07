@@ -1,4 +1,4 @@
-# flight_sim_3d: multi-aircraft 3D flight-sim GA, Phases 1 and 2
+# flight_sim_3d: multi-aircraft 3D flight-sim GA, Phases 1, 2 and 3
 
 This folder takes the single-aircraft JSBSim altitude-hold prototype in `../flight_sim/` and scales it to
 several aircraft. Four teams built it, and each folder has its own README and design notes:
@@ -7,7 +7,7 @@ several aircraft. Four teams built it, and each folder has its own README and de
 |---|---|---|
 | `genome/` | Genome Architect | Genome schema, task presets (`phase1_v4` = the default, `phase1_v5` = opt-in), per-aircraft profiles (`aircraft_profiles/phase1_shared.json`), `sim_ext.py` (extended sim and heading hold), fitness, NSGA-II, an adapter that runs the original `evolve.py` |
 | `evolution/` | Evolution Runner | Multi-aircraft batch GA runner (`python -m evolution.batch`): process pool, sqlite result cache, checkpoints with exact resume, run logs, trajectory export. Configs include `phase1.json` and `phase1_hdg.json` |
-| `flight-dynamics/` | Flight Dynamics | Modal flex-wing soft-body model v1 (`flexwing.py`, `coupled_sim.py`) and the Phase 2 flex-body model v2 (`flexbody.py`, `flexeval.py`, `INTERFACE_v2.md`). Also `jsbsim_root/` and `jsbsim_root_v2/` (patched copies of the c172x, T38, 737 and f16 aircraft XML) and FM-quality checks |
+| `flight-dynamics/` | Flight Dynamics | Modal flex-wing soft-body model v1 (`flexwing.py`, `coupled_sim.py`) the Phase 2 flex-body model v2 (`flexbody.py`, `flexeval.py`, `INTERFACE_v2.md`) and the Phase 3 opt-in models A1 (`flexbody_a1.py`, `flexeval_a1.py`) and B1 (`planform_b1.py`, `flexbody_b1.py`, `flexeval_b1.py`). Also `jsbsim_root/` and `jsbsim_root_v2/` (patched copies of the c172x, T38, 737 and f16 aircraft XML) and FM-quality checks |
 | `sim-bridge/` | Sim Bridge | three.js 3D replay viewer (`viewer/`, three.js r169 vendored), `replay.py` (re-flies genomes with trajectory logging), `colab_viewer.py` |
 
 ## What Phase 1 is
@@ -231,18 +231,8 @@ EVOLUTION_FD_DIR=evolution/_fd_pin_post_mass python -m evolution.batch --config 
   quasi-steady estimate. The T38 and 737 are not corrected for compressibility.
 * **`reduced`** is the v1 wing on the projected v2 genome. Its ranking agreement with `full` is only middling on
   the jets (Spearman 0.36 / 0.42 in the ladder bench), so prefer rigid→full.
-* **Phase 3 is not included.** That covers P3-A1 (denser 64-strip FE mesh, `full_a1` model version, FD's
-  `flexbody_a1.py` / `flexeval_a1.py`) and P3-B (wing-shape/planform genes, `planform_b1.py`, `flexbody_b1.py`,
-  `flexeval_b1.py`). Their studies, tests, configs, notes and results are left out.
-  * Evolution's fidelity code already knows `full_a1`, which is entangled with the Phase 2 code paths. That
-    wiring is **strictly opt-in and inert here**. `fidelity.fd_a1_modules()` imports FD's A1 modules lazily
-    and raises `FidelityUnavailable` because they are not in this tree.
-  * `rigid` / `reduced` / `full` are unchanged. A re-run of `phase2_smoke_p25.json` reproduces the pre-P3
-    stored `phase2-smoke-p25-s1` result.
-  * `evolution/README.md` still documents `full_a1` and `make_phase2_configs.py --p3a1`. Those need the P3-A1
-    FD files.
-  * Sim Bridge is the team's 18:00 MST state. Its later edits (the P3-B planform viewer `sim_bridge/planform.py`,
-    `test_planform.py`, planform fixtures and the viewer/bundle changes made alongside them) are not included.
+* **(Phase 2 snapshot only.)** The Phase 2 commit left out P3-A1 and P3-B1, and its `full_a1` wiring was inert.
+  Phase 3 now ships them; see the Phase 3 section below.
 * **`flight-dynamics/coupled_sim.py` keeps one absolute default.** It is shipped byte-identical to FD's file, because
   its bytes are part of FD's `reduced` model_version hash. With the Phase 1 path fix, every `reduced` version would
   differ from FD's published `model_versions_post_p25.json`. Its `REPO_FLIGHT_SIM` default
@@ -284,3 +274,224 @@ numpy 2.5.3 on 2026-10-06 (MST). The same export also passed these checks:
 * With `EVOLUTION_FD_DIR=evolution/_fd_pin_post_mass`, every pin in `phase2_pilot{,_s2,_s3}.json` and
   `phase2_smoke.json` matches. Under that copy, a re-run of `phase2_smoke.json` matched the stored post-mass
   `phase2-smoke-s1` exactly: c172x 0.39455837284417933, T38 0.22428507351607493, 737 0.27524389750858025.
+
+---
+
+# Phase 3: denser wing mesh (P3-A1) and wing-shape genes (P3-B1)
+
+## What's new
+
+Both Phase 3 models are **opt-in** fidelities. `rigid`, `reduced` and `full`, the Phase 2 pins and every Phase 1/2
+result above are unchanged (see the reproduction checks under "Phase 3 tests").
+
+* **P3-A1, fidelity `full_a1`: a denser structural mesh.** FD's files are `flight-dynamics/flexbody_a1.py`,
+  `flexeval_a1.py` and `INTERFACE_v2.md` §13.
+  * Each semi-wing has 64 strips (was 32) and keeps 4 bending + 3 torsion + 2 in-plane modes per side (was 3 + 2 + 1).
+    The HT, VT and fuselage are unchanged.
+  * The outboard tip-bending-moment sizing check is now station-exact (`sizing_a1`), so it no longer jumps with the
+    strip count.
+  * Genes, ranges, weights and the 24 `TERM_KEYS` are unchanged. It costs about 1.07–1.09× the CPU of `full`.
+  * Studies: `p3a1_study.py`, `v2_results/p3a1_truncation.json` and `p3a1_benchmark.json`. Pins are in
+    `v2_results/model_versions_post_p3a1.json`. Tests: `test_flexbody_a1.py`.
+* **P3-B1, fidelity `full_a1_b1`: 6 wing-shape genes on the A1 host.** FD's files are `planform_b1.py`,
+  `flexbody_b1.py`, `flexeval_b1.py` and `INTERFACE_v2.md` §14. Left and right wings stay symmetric.
+
+  | gene | range | meaning |
+  |---|---|---|
+  | `wing_chord_taper_1` / `_2` / `_3` | 0.85 – 1.05 | chord ratios between the control points at η 0, 1/3, 2/3 and 1 |
+  | `wing_twist_mid_deg` | −2 – +1 | geometric twist at η 0.5, relative to the root (nose-up +) |
+  | `wing_twist_tip_deg` | −4 – +1 | geometric twist at the tip, relative to the root (negative = washout) |
+  | `wing_sweep_qc_delta_deg` | −5 – +5 | change to the baseline quarter-chord sweep |
+
+  * Span and planform area stay at the JSBSim values, so the chord genes only move area along the span. The wing is
+    re-placed so the aerodynamic centre does not move.
+  * The structural baseline follows the shaped chord (EI/GJ ∝ c³, mass ∝ c). The 12 structure genes then apply as before.
+  * A geometry gate rejects impossible shapes (status `geometry_gate:<reason>`, cost 2000). Every in-range shape
+    passes it, so the gate is only a safety net.
+  * The baseline shape is bit-identical to `full_a1` (`v2_results/p3b1_acceptance.json`, `p3b1r1_acceptance.json`).
+* **The B1 r1 fix.** In the first B1 version (r0), the T38's `wing_twist_mid_deg` piled at its +1° ceiling.
+  * FD traced this to a small model loophole (`v2_results/p3b1r1_twistmid_study.json`, §14 "r1 addendum"):
+    * The rigid pitch moment of the basic twist load was fed back as a moment proportional to Δq.
+    * The flown wing-bending reference included the shape's own twist load.
+  * r1 changes two things:
+    * The twist moment is now a Cm0 shift that the trim elevator absorbs.
+    * The wing-bending reference is anchored to the baseline planform.
+  * The twist effect fell from −6e-4 to −1.4e-5 per degree, which is effectively neutral.
+  * r1 also lays out the FE nodes on the shaped wing and states the linear gene encoding.
+  * The r1 pins are in `v2_results/model_versions_post_p3b1r1.json` (c172x `full_a1_b1:flexv2b1:56ee798e`, T38
+    `7e871977`, 737 `6523753c`, f16 `617078a9`). The r0 pins (`model_versions_post_p3b1.json`) are superseded and kept
+    only as a record.
+* **Genome.**
+  * Preset `presets/phase3_b1.json`: 26 genes = 8 controller (`phase2_flex`) + 12 structure (P2.5) + 6 shape. The
+    code is `shape_b1.py` and `block_ops.py`.
+  * Spec: `PHASE3_B1_SPEC.md`. Cross-checks: `CROSSCHECK_p3a1.md`, `CROSSCHECK_p3b1.md`, and the P3-A1 section in
+    `CROSSCHECK_phase2.md`.
+  * Verify sets: `runs/p3b1_verify_c172x.json` (r1) and `runs/p3b1r0_verify_c172x.json` (r0), plus
+    `runs/p3a1_tip_verify_c172x.json`.
+  * The sketch for later phases is `PHASE3_CHROMOSOME_SKETCH.md`. Tests: `tests/test_phase3_b1.py`.
+* **Evolution.**
+  * New fidelities `full_a1` and `full_a1_b1`, with ladders `rigid→full_a1` and `rigid→full_a1_b1`.
+  * Genome kind `phase3_b1`:
+    * Shape mutation is a clipped Gaussian with σ = 0.25 × half-range. The 3 chord tapers mutate in log space.
+    * Crossover swaps whole blocks (controller | structure | shape).
+  * `model_version` pins for both fidelities. The cache key gets a shape key only for `full_a1_b1`.
+  * Configs `configs/phase3a1_{smoke,pilot}.json` and `phase3b1_{smoke,pilot}.json` (r1 pins). The `phase3b1_*_r0.json`
+    files are kept only as a record.
+  * The frozen FD copy `evolution/_fd_pin_p3b1r1/` (see its README).
+  * Notes: `analysis/STATUS_P3.md` and `analysis/PHASE3_PLAN.md`. The elitism audit is `analysis/ELITISM_AUDIT.md`
+    (below). Tests: `tests/test_p3a1.py`, `test_p3b1.py` and `test_elitism.py`.
+* **Sim Bridge.**
+  * Planform support: `sim_bridge/planform.py` and the viewer's planform reshaping. The viewer draws the r1 shaped-wing
+    node geometry, and the HUD has a planform line and a top-view camera.
+  * `tests/test_planform.py` with synthetic fixtures in `tests/fixtures/planform_synthetic/`.
+  * The one-command replay page builder `tools/build_b1_page.sh` / `.py` and a rebuilt `viewer/dist/fv.bundle.js`.
+
+## Run `full_a1_b1`
+
+Run these from `flight_sim_3d/`, after the install steps above. `link_jsbsim_data.py` now also links the engines into
+both frozen FD copies.
+
+```bash
+cd flight_sim_3d
+python flight-dynamics/link_jsbsim_data.py
+python -m evolution.batch --config evolution/configs/phase3b1_smoke.json --model-versions      # read-only pin check
+# smoke: 16 x 5 on c172x/T38/737, single fidelity full_a1_b1, genome kind phase3_b1 (~5 min on 8 cores)
+python -m evolution.batch --config evolution/configs/phase3b1_smoke.json --run-id p3b1-smoke-s1
+# exact replay of the shipped r1 smoke through the frozen FD copy (also writes its trajectories/)
+EVOLUTION_FD_DIR=evolution/_fd_pin_p3b1r1 python -m evolution.batch --config evolution/configs/phase3b1_smoke.json --run-id p3b1r1-smoke-repro-s1
+# A1 only (no shape genes)
+python -m evolution.batch --config evolution/configs/phase3a1_smoke.json --run-id p3a1-smoke-s1
+# the 64 x 60 B1 pilot (rigid -> full_a1_b1, r1 pins); configured but NOT run yet (deferred, see below)
+python -m evolution.batch --config evolution/configs/phase3b1_pilot.json --run-id p3b1-pilot-s1
+# genome side: the P3-B1 verify set (full_a1_b1 vs A1, c172x)
+(cd genome && python p3b1_verify.py)
+```
+
+The live `flight-dynamics/` is byte-identical to the frozen r1 copy, so the shipped configs pass the pin check with or
+without `EVOLUTION_FD_DIR`. Use the frozen copy for exact replays once FD's live files move on.
+
+## Results: B1 r1 smoke (`evolution/runs/phase3b1r1-smoke-s1`)
+
+The smoke ran 16 × 5 per aircraft, seed 1, with the same scenarios as the A1 smoke. The values are the best of
+generation 4, from `analysis/phase3b1r1_smoke_s1_check.json`.
+
+| | c172x | T38 | 737 |
+|---|---|---|---|
+| best cost, B1 r1 | **0.38300** (0.38300301361568806) | **0.15714** (0.15714319108695818) | **0.27211** (0.27211181306747817) |
+| best cost, A1 smoke (`phase3a1-smoke-s1`) | 0.32340 | 0.22623 | 0.25648 |
+| flutter margin (≥ 1.0 required) | **1.392** | **1.234** | **1.184** |
+| wing+structure mass Δ vs FD baseline | +4.12 % | +1.19 % | +0.99 % |
+| stiffness genes at their floor | none | none | none |
+| geometry-gate rejects | 0 | 0 | 0 |
+
+* **16 × 5 is only a smoke test.** Every aircraft starts from the same generation 0 as the A1 smoke. B1 is worse than A1
+  on the c172x and 737 at this budget, and that is not evidence either way. The 64 × 60 pilot is deferred.
+* **The T38 twist finding: the shape is neutral, and the gain comes from the controller and structure.** The T38 B1
+  best (0.1571 vs A1's 0.2262) still has `wing_twist_mid_deg` at the +1° ceiling (69 % of the final population).
+  * With its shape reset to the baseline, the same genome scores 0.1571354 vs 0.1571432 with its own shape, so the
+    shape is worth +7.8e-6 (slightly worse).
+  * FD's study traces the drop to controller gains (kd_pitch, kd_alt and ki_hdg) and structure, not to the wing shape.
+  * Since r1, mid-span wash-in in [0, +1] is close to cost-neutral and can drift freely. Treat its value as
+    uninformative until B2.
+* **Exact replay.** The T38 generation-4 best, re-flown in a fresh process through `evolution/_fd_pin_p3b1r1` on
+  scenario T38:s0, costs 0.08165462998244637, bit for bit (`analysis/phase3b1r1_replay_check.json`).
+
+## Elitism, selection and persistence audit (`evolution/analysis/ELITISM_AUDIT.md`)
+
+ER audited the three Phase 2 pilots and the three Phase 3 smokes (18 run/aircraft series). It found nothing missing,
+so no GA code or config changed. `tests/test_elitism.py` (17 tests) locks the behaviour in.
+
+* **Elitism:** every config resolves to **2 elites**, copied unchanged into the next generation. They are not crossed
+  over or mutated again, and their costs come back bit-identical, so re-evaluation noise is 0.
+* **Selection:** geometric **rank selection with p = 0.2** (`flat_rank_select`), so it does not depend on the scale of
+  the cost. Failed genomes are not removed; they sort to the bottom by their 333–2000 cost.
+* **Persistence:** **every genome of every generation is saved** in `runs/<id>/genomes.jsonl` (one row per individual).
+  Any generation can be re-flown bit for bit from its row.
+* **Best-so-far is monotone** in all 18 series, with a maximum regression of 0.0.
+* `analysis/elitism_audit.py` / `elitism_reload_check.py` reproduce the audit. The pilot series need the pilots'
+  `genomes.jsonl` (~42 MB each), which is not shipped. The shipped smoke records have theirs.
+
+## Build the B1 replay page
+
+Re-run the smoke first, because the shipped run records don't include trajectories:
+
+```bash
+cd flight_sim_3d
+EVOLUTION_FD_DIR=evolution/_fd_pin_p3b1r1 python -m evolution.batch --config evolution/configs/phase3b1_smoke.json --run-id p3b1r1-smoke-repro-s1
+cd sim-bridge
+tools/build_b1_page.sh p3b1r1-smoke-repro-s1 --replay-proof --no-shots   # -> data/p3b1r1-smoke-repro-s1_standalone.html (~19 MB)
+```
+
+* `--replay-proof` re-flies the exported generations through the frozen FD copy and requires bit-identical costs.
+* Screenshots (drop `--no-shots`) need Playwright/Chromium, which is not in `requirements.txt`.
+* Several seeds can go on one page: `tools/build_b1_page.sh <run1>,<run2>,<run3>`.
+* See `sim-bridge/README.md` ("Phase 3-B1 page in one command").
+
+## Phase 3 caveats
+
+* **The 737 wing drawn aft of the fuselage is only cosmetic.** The viewer draws FD's r1 wing geometry on a procedural
+  fuselage, so the 737's FD wing root LE (2.87 m) sits aft of the procedural one (1.67 m). The physics does not use the
+  procedural fuselage.
+* **Resume works only from the latest checkpoint.** The checkpoint is overwritten every generation and keeps only the
+  latest RNG state. Older generations are in `genomes.jsonl`, but a run cannot restart bit-exactly from them.
+* **The structural data are still notional.**
+  * The aero is quasi-steady strip theory on fixed JSBSim tables.
+  * B1 has no induced-drag or stall-margin cost for twist.
+  * Wing size, dihedral, thickness and camber are not genes (see deferred items).
+* **Superseded r0 runs.** `phase3b1-smoke-s1` ran on the superseded r0 pins and is kept as a record. Current code
+  cannot replay it exactly, and the repo has no r0 FD copy.
+* **The frozen copies are byte-identical to the team's files.** `evolution/_fd_pin_p3b1r1/` ships only what Evolution
+  needs, byte-identical to the team's frozen copy, because `model_version` hashes those bytes. Its `coupled_sim.py`
+  keeps the same team-machine default as `flight-dynamics/coupled_sim.py` (see the Phase 2 caveats).
+* **Not shipped:**
+  * the Phase 3 smoke trajectories (~142 MB per run)
+  * ER's sqlite cache and logs
+  * FD's `*.partial.jsonl` study checkpoints and logs
+  * Sim Bridge's generated pages and screenshots
+
+  `evolution/tests/test_p3a1.py::test_full_unchanged_vs_p25_cache_entry` reads ER's cache and skips when
+  `evolution/cache/evals.sqlite` is missing. Run the tests before your first batch run: a fresh local cache exists but
+  lacks that P2.5 entry, so the test then fails. The Phase 2 smoke re-run below covers the same check.
+
+## Phase 3 tests
+
+```bash
+cd flight_sim_3d
+python flight-dynamics/link_jsbsim_data.py
+(cd flight-dynamics && python -m pytest -q test_flexwing.py test_flexbody.py test_flexbody_a1.py test_flexbody_b1.py)   # 167 passed, ~50 s
+(cd genome && python -m pytest -q)                                                   # 179 passed, ~45 s
+(cd sim-bridge && PYTHONDONTWRITEBYTECODE=1 python -m pytest -q tests)               # 55 passed, 18 skipped (ER trajectory dumps / node+esbuild not present)
+python -m pytest -q evolution/tests                                                  # 152 passed, 1 skipped (ER's sqlite cache), ~2 min
+```
+
+These counts come from a clean `git archive` export of this branch, run with Python 3.13.5, jsbsim 1.3.1 and
+numpy 2.5.3 on 2026-10-06 (MST). Sim Bridge's skips need data the repo doesn't ship. With the team's trajectory
+dumps, the phase1v5 `genomes.jsonl` and `tools/build/node_modules` (esbuild) copied in, all 73 Sim Bridge tests pass.
+The same export also passed these checks:
+
+* **B1 r1 smoke.** `EVOLUTION_FD_DIR=evolution/_fd_pin_p3b1r1` with `phase3b1_smoke.json` (run id
+  `p3b1r1-smoke-repro-s1`) matched the stored `phase3b1r1-smoke-s1` exactly:
+  * The best cost, gains and genome agree bit for bit on all three aircraft: c172x 0.38300301361568806,
+    T38 0.15714319108695818, 737 0.27211181306747817.
+  * All 240 `genomes.jsonl` rows are identical (cost, per-scenario cost, genome, status, terms, model_version).
+  * It used the same 648 sims and 72 cache hits. The run took 208 s on 8 cores.
+* **Fresh-process re-flight.** `evolution/analysis/elitism_reload_check.py` re-flew `T38:g4:r0` on scenario T38:s0
+  through the frozen copy: 0.08165462998244637, bit-identical to `genomes.jsonl` and to the checkpoint genome.
+* **Replay page.** `tools/build_b1_page.sh p3b1r1-smoke-repro-s1 --replay-proof --no-shots` built a 19.4 MB page
+  (1.6 MB gzip). The proof was EXACT: 9 generations re-flown with relative error 0.0, and 681/681 channels
+  bit-identical in all 9 files.
+* **Phase 2 default smoke.** A re-run of `phase2_smoke_p25.json` (run id `phase2-smoke-p25-repro-s1`) still matched
+  the stored `phase2-smoke-p25-s1` exactly: c172x 0.3300231645456844, T38 0.22570865752040178, 737 0.25647872558108936.
+  All 240 rows are identical, with the same 648 sims and 72 cache hits. So the Phase 3 code leaves the default `full`
+  unchanged.
+* **Pin check.** `--model-versions` matches for `phase3b1_smoke` / `phase3b1_pilot` (live FD and the frozen r1 copy),
+  `phase3a1_smoke` and `phase2_smoke_p25`.
+
+## Deferred
+
+* **The 64 × 60 B1 pilot** (`configs/phase3b1_pilot.json`, r1 pins, rigid→full_a1_b1) is configured but has not been
+  run. The 64 × 60 A1 pilot (`phase3a1_pilot.json`) is also on hold.
+* **B2 genes:** dihedral, thickness, camber and wing size (chord root / span / area). They need a geometric-dihedral
+  path and rescaled JSBSim tables, and FD's decode rejects them for now.
+* **Uniform crossover inside the shape block.** Crossover currently swaps whole blocks.
+* **Raising the elites from 2 to 3–4.**

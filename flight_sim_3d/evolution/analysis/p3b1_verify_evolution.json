@@ -1,0 +1,1014 @@
+{
+  "method": "evolution.fidelity.evaluate_genome(phase2_smoke_p25 c172x profile, 3 scenarios, scenario_seed 1), genomes from genome/runs/p3a1_tip_verify_c172x.json (cases baseline / soft_tip_taper4_0.75)",
+  "model_version_expected": {
+    "full_a1": "full_a1:flexv2a1:36fb4f5a",
+    "full_a1_b1": "full_a1_b1:flexv2b1:3e40908a"
+  },
+  "created": "2026-10-06 18:11 MST",
+  "loadavg_start": [
+    11.82373046875,
+    8.197265625,
+    4.07177734375
+  ],
+  "a_reproduce_a1": {
+    "baseline": {
+      "full_a1_inprocess": {
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "cpu_s_per_scenario": 1.8389593366666668
+      },
+      "None": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8316235099999998,
+        "bit_identical": true
+      },
+      "empty_dict": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8455815593333327,
+        "bit_identical": true
+      },
+      "fd_defaults": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8370415633333341,
+        "bit_identical": true
+      },
+      "identity_vector": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8575232423333337,
+        "bit_identical": true
+      },
+      "expected": {
+        "cost": 0.2419400885448951,
+        "J_wing_tip_bm_limit": 0.0
+      }
+    },
+    "soft_tip_taper4_0.75": {
+      "full_a1_inprocess": {
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "cpu_s_per_scenario": 1.7720118926666675
+      },
+      "None": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8057877320000013,
+        "bit_identical": true
+      },
+      "empty_dict": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.8479777896666671,
+        "bit_identical": true
+      },
+      "fd_defaults": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.862634692666667,
+        "bit_identical": true
+      },
+      "identity_vector": {
+        "model_version": "full_a1_b1:flexv2b1:3e40908a",
+        "model_version_ok": true,
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "status": "ok",
+        "match_genome_ref_cost": true,
+        "match_genome_ref_per_scenario": true,
+        "match_genome_ref_tip": true,
+        "match_er_a1_json_cost": true,
+        "match_inprocess_a1_all_24_terms": true,
+        "match_inprocess_a1_margins_mass": true,
+        "cpu_s_per_scenario": 1.823308659333333,
+        "bit_identical": true
+      },
+      "expected": {
+        "cost": 0.25879473336084763,
+        "J_wing_tip_bm_limit": 0.011874078070487388
+      }
+    }
+  },
+  "b_shaped": {
+    "baseline_shape": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.2419400885448951,
+      "per_scenario_cost": [
+        0.12772764189700128,
+        0.39710530396908106,
+        0.2009873197686029
+      ],
+      "terms": {
+        "track": 0.058937696203525715,
+        "effort": 0.030942581234986666,
+        "comfort": 1.766798775478463,
+        "heading": 0.1938411009610985,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030838880087861866,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.030838880087861866,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "margins": {
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 5.960905636999996,
+      "wall_s": 8.217067829042207,
+      "cpu_s_per_scenario": 1.9869685456666655,
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 1.0813572259849025e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": true,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "geometry_gate_reject": false
+    },
+    "tip_taper_0.85": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.25646956880787164,
+      "per_scenario_cost": [
+        0.13832322638922503,
+        0.41611698225402843,
+        0.21496849778036142
+      ],
+      "terms": {
+        "track": 0.061608340301100344,
+        "effort": 0.03164130229206472,
+        "comfort": 1.7604909399945807,
+        "heading": 0.19400252358132478,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030859447846211696,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.010754603840887837,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.04161405168709953,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.010754603840887837,
+      "margins": {
+        "flutter_margin": 1.2804282486109628,
+        "div_margin": 1.7341671539829249,
+        "reversal_margin": 1.5325651259280246
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 5.669636398999998,
+      "wall_s": 7.7846677509951405,
+      "cpu_s_per_scenario": 1.889878799666666,
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 0.85,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=0.85|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 3.612203960053255,
+          "taper_tip_root": 0.6603236637390398,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 0.26281028146952723
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.470353643846996,
+        "c_tip_ft": 3.612203960053255,
+        "taper_tip_root": 0.6603236637390398,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.01755005602917,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": false,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 0.85,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=0.85|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          7.334016759788306,
+          18.357682209269502,
+          23.28339398671943,
+          40.49129172126299,
+          60.869120705002494,
+          95.13725652248452,
+          101.6845326511973,
+          111.1824306003717,
+          214.2610608373112
+        ]
+      },
+      "geometry_gate_reject": false,
+      "delta_vs_baseline_shape": {
+        "cost": 0.01452948026297654,
+        "fd_struct_sum": 0.010775171599237663,
+        "flutter_margin": 0.05263726126342361
+      }
+    },
+    "tip_twist_-3deg": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.24714010277442136,
+      "per_scenario_cost": [
+        0.1300128670773692,
+        0.40791438174831735,
+        0.20349305949757754
+      ],
+      "terms": {
+        "track": 0.06001103144580084,
+        "effort": 0.03124391907616428,
+        "comfort": 1.7648545446937527,
+        "heading": 0.1938222081146503,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.034439884667825535,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 2.039919263230711e-05,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.034460283860457845,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "margins": {
+        "flutter_margin": 1.2277909873475392,
+        "div_margin": 1.6690068507818694,
+        "reversal_margin": 1.4735862141823004
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 5.677749702,
+      "wall_s": 7.801018500991631,
+      "cpu_s_per_scenario": 1.892583234,
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": -3.0,
+        "wing_sweep_qc_delta_deg": 0.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=-3.0|wing_sweep_qc_delta_deg=0.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 1.0813572259849025e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 0.0,
+        "twist_mid_deg": -0.0005464553833007793,
+        "twist_tip_deg": -2.9296932220458993,
+        "planform_baseline": false,
+        "ac_shift_ft": 0.0,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": -3.0,
+          "wing_sweep_qc_delta_deg": 0.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=-3.0|wing_sweep_qc_delta_deg=0.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "geometry_gate_reject": false,
+      "delta_vs_baseline_shape": {
+        "cost": 0.005200014229526262,
+        "fd_struct_sum": 0.003621403772595979,
+        "flutter_margin": 0.0
+      }
+    },
+    "sweep_+5deg": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.25050749400799605,
+      "per_scenario_cost": [
+        0.13643272134406798,
+        0.4018620968602781,
+        0.21322766381964198
+      ],
+      "terms": {
+        "track": 0.06147365060452495,
+        "effort": 0.029366817549702995,
+        "comfort": 1.7577651295478922,
+        "heading": 0.19374917078620754,
+        "hold": 0.0,
+        "J_flutter_margin": 0.009966080248862851,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.030508379869945507,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.040474460118808356,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "margins": {
+        "flutter_margin": 1.1800339485637616,
+        "div_margin": 1.918320386289614,
+        "reversal_margin": 1.4679801750295691
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 5.515609112000007,
+      "wall_s": 6.334086037997622,
+      "cpu_s_per_scenario": 1.838536370666669,
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": 5.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=5.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": 5.0,
+          "le_kink_max_deg": 1.163513729807164e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": 5.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": false,
+        "ac_shift_ft": -0.04530050591315237,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": 5.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=5.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "geometry_gate_reject": false,
+      "delta_vs_baseline_shape": {
+        "cost": 0.008567405463100947,
+        "fd_struct_sum": 0.00963558003094649,
+        "flutter_margin": -0.04775703878377757
+      }
+    },
+    "sweep_-5deg": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.25861054939260436,
+      "per_scenario_cost": [
+        0.1299263415419127,
+        0.4290999719718648,
+        0.21680533466403562
+      ],
+      "terms": {
+        "track": 0.06451086350330248,
+        "effort": 0.035033394320564015,
+        "comfort": 1.8137844161526957,
+        "heading": 0.19395691261174566,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03140410731442161,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.0,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.03140410731442161,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.0,
+      "margins": {
+        "flutter_margin": 1.3278991880775584,
+        "div_margin": 1.5089686945042826,
+        "reversal_margin": 1.4890907976469363
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 5.535231107000001,
+      "wall_s": 7.4200665159733035,
+      "cpu_s_per_scenario": 1.845077035666667,
+      "shape_genes": {
+        "wing_chord_taper_1": 1.0,
+        "wing_chord_taper_2": 1.0,
+        "wing_chord_taper_3": 1.0,
+        "wing_twist_mid_deg": 0.0,
+        "wing_twist_tip_deg": 0.0,
+        "wing_sweep_qc_delta_deg": -5.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=-5.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 4.152566964285714,
+          "taper_tip_root": 0.7724262492474411,
+          "sweep_qc_deg": -5.0,
+          "le_kink_max_deg": 2.0028423364237824e-13
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.376004464285715,
+        "c_tip_ft": 4.152566964285714,
+        "taper_tip_root": 0.7724262492474411,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0,
+        "sweep_qc_deg": -5.0,
+        "twist_mid_deg": 0.0,
+        "twist_tip_deg": 0.0,
+        "planform_baseline": false,
+        "ac_shift_ft": 0.04530050591315237,
+        "shape_genes": {
+          "wing_chord_taper_1": 1.0,
+          "wing_chord_taper_2": 1.0,
+          "wing_chord_taper_3": 1.0,
+          "wing_twist_mid_deg": 0.0,
+          "wing_twist_tip_deg": 0.0,
+          "wing_sweep_qc_delta_deg": -5.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=1.0|wing_chord_taper_2=1.0|wing_chord_taper_3=1.0|wing_twist_mid_deg=0.0|wing_twist_tip_deg=0.0|wing_sweep_qc_delta_deg=-5.0",
+        "f_wing_hz": [
+          6.991123324412958,
+          17.500000054349204,
+          22.263666681053277,
+          39.15544605249398,
+          58.79579862252838,
+          93.44648354004029,
+          98.45677111492348,
+          109.54792569469579,
+          212.6222685565193
+        ]
+      },
+      "geometry_gate_reject": false,
+      "delta_vs_baseline_shape": {
+        "cost": 0.016670460847709262,
+        "fd_struct_sum": 0.0005652272265597412,
+        "flutter_margin": 0.10010820073001914
+      }
+    },
+    "fd_bench_shape": {
+      "model_version": "full_a1_b1:flexv2b1:3e40908a",
+      "status": "ok",
+      "cost": 0.26468755677972555,
+      "per_scenario_cost": [
+        0.14888507370003884,
+        0.4208098953102901,
+        0.22436770132884767
+      ],
+      "terms": {
+        "track": 0.06132995450707773,
+        "effort": 0.030105544359661212,
+        "comfort": 1.7552288307297026,
+        "heading": 0.19401126018148415,
+        "hold": 0.0,
+        "J_flutter_margin": 0.0,
+        "J_div_margin": 0.0,
+        "J_mass": 0.0,
+        "J_bm_rms": 0.03351144414246393,
+        "J_bm_peak": 0.0,
+        "J_tip": 0.0,
+        "J_twist": 0.0,
+        "J_reversal_margin": 0.0,
+        "J_tail_bm_peak": 0.0,
+        "J_fus_bm_peak": 0.0,
+        "J_smooth": 0.0,
+        "J_wing_bm_limit": 0.0,
+        "J_wing_torque_limit": 0.0,
+        "J_wing_ip_limit": 0.0,
+        "J_wing_tip_bm_limit": 0.019933515272561483,
+        "J_tail_bm_limit": 0.0,
+        "J_fus_bm_limit": 0.0,
+        "J_wing_torque_peak": 0.0,
+        "J_wing_ip_peak": 0.0
+      },
+      "fd_struct_sum": 0.05344495941502542,
+      "J_mass": 0.0,
+      "J_wing_tip_bm_limit": 0.019933515272561483,
+      "margins": {
+        "flutter_margin": 1.2859074939815567,
+        "div_margin": 1.8647836411768395,
+        "reversal_margin": 1.5653628326533982
+      },
+      "mass_total_frac": 0.0,
+      "mass_lb": {
+        "wingR_lb": 0.0,
+        "wingL_lb": 0.0,
+        "ht_lb": 0.0,
+        "vt_lb": 0.0,
+        "fus_lb": 0.0,
+        "total_lb": 0.0,
+        "baseline_flexible_lb": 342.0,
+        "total_frac": 0.0
+      },
+      "cpu_s": 6.367453640000008,
+      "wall_s": 8.67882039299002,
+      "cpu_s_per_scenario": 2.1224845466666693,
+      "shape_genes": {
+        "wing_chord_taper_1": 0.95,
+        "wing_chord_taper_2": 0.95,
+        "wing_chord_taper_3": 0.95,
+        "wing_twist_mid_deg": -0.5,
+        "wing_twist_tip_deg": -2.0,
+        "wing_sweep_qc_delta_deg": 2.0
+      },
+      "shape_cache_key": "b1|wing_chord_taper_1=0.95|wing_chord_taper_2=0.95|wing_chord_taper_3=0.95|wing_twist_mid_deg=-0.5|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=2.0",
+      "geometry_gate": {
+        "ok": true,
+        "reason": null,
+        "details": {
+          "c_min_ft": 3.833066901469228,
+          "taper_tip_root": 0.6638531889135876,
+          "sweep_qc_deg": 2.0,
+          "le_kink_max_deg": 0.007503738041334529
+        }
+      },
+      "planform": {
+        "c_root_ft": 5.773967746908226,
+        "c_tip_ft": 3.833066901469228,
+        "taper_tip_root": 0.6638531889135876,
+        "c_root_baseline_ft": 5.376004464285715,
+        "c_tip_baseline_ft": 4.152566964285714,
+        "area_norm": 1.0753178026517969,
+        "sweep_qc_deg": 2.0,
+        "twist_mid_deg": -0.5001220703125001,
+        "twist_tip_deg": -1.9688119888305669,
+        "planform_baseline": false,
+        "ac_shift_ft": -0.014455633254585477,
+        "shape_genes": {
+          "wing_chord_taper_1": 0.95,
+          "wing_chord_taper_2": 0.95,
+          "wing_chord_taper_3": 0.95,
+          "wing_twist_mid_deg": -0.5,
+          "wing_twist_tip_deg": -2.0,
+          "wing_sweep_qc_delta_deg": 2.0
+        },
+        "shape_cache_key": "b1|wing_chord_taper_1=0.95|wing_chord_taper_2=0.95|wing_chord_taper_3=0.95|wing_twist_mid_deg=-0.5|wing_twist_tip_deg=-2.0|wing_sweep_qc_delta_deg=2.0",
+        "f_wing_hz": [
+          7.607564055914303,
+          19.042792574911118,
+          24.199501711114998,
+          40.05265268583589,
+          59.616609847341266,
+          94.1343510117455,
+          100.6618559929949,
+          109.72568735018268,
+          212.82506997519448
+        ]
+      },
+      "geometry_gate_reject": false,
+      "delta_vs_baseline_shape": {
+        "cost": 0.022747468234830454,
+        "fd_struct_sum": 0.02260607932716355,
+        "flutter_margin": 0.05811650663401746
+      }
+    }
+  },
+  "c_geometry_gate": {
+    "in_range_scan": {
+      "c172x": {
+        "n_points": 2064,
+        "n_fail": 0,
+        "taper_tip_root_min_max": [
+          0.47799382801776186,
+          0.8921372491888161
+        ],
+        "gate_taper_limits": [
+          0.12,
+          1.25
+        ],
+        "le_kink_max_deg": 0.5659932752599515,
+        "gate_le_kink_max_deg": 25.0,
+        "c_min_ft": 3.200718259347657,
+        "gate_min_chord_ft": 0.05,
+        "abs_sweep_max_deg": 5.0,
+        "gate_max_abs_sweep_deg": 45.0
+      },
+      "T38": {
+        "n_points": 2064,
+        "n_fail": 0,
+        "taper_tip_root_min_max": [
+          0.13916077439562105,
+          0.2597324550803226
+        ],
+        "gate_taper_limits": [
+          0.12,
+          1.25
+        ],
+        "le_kink_max_deg": 0.8884103609747847,
+        "gate_le_kink_max_deg": 25.0,
+        "c_min_ft": 1.7083583591319802,
+        "gate_min_chord_ft": 0.05,
+        "abs_sweep_max_deg": 29.0,
+        "gate_max_abs_sweep_deg": 45.0
+      },
+      "737": {
+        "n_points": 2064,
+        "n_fail": 0,
+        "taper_tip_root_min_max": [
+          0.19113184952626036,
+          0.3567323100715694
+        ],
+        "gate_taper_limits": [
+          0.12,
+          1.25
+        ],
+        "le_kink_max_deg": 0.4700156755398126,
+        "gate_le_kink_max_deg": 25.0,
+        "c_min_ft": 4.1115337580822064,
+        "gate_min_chord_ft": 0.05,
+        "abs_sweep_max_deg": 30.0,
+        "gate_max_abs_sweep_deg": 45.0
+      },
+      "f16": {
+        "n_points": 2064,
+        "n_fail": 0,
+        "taper_tip_root_min_max": [
+          0.16828778484267942,
+          0.3140956904490584
+        ],
+        "gate_taper_limits": [
+          0.12,
+          1.25
+        ],
+        "le_kink_max_deg": 0.9456150639574759,
+        "gate_le_kink_max_deg": 25.0,
+        "c_min_ft": 2.8425089224933635,
+        "gate_min_chord_ft": 0.05,
+        "abs_sweep_max_deg": 37.0,
+        "gate_max_abs_sweep_deg": 45.0
+      }
+    },
+    "in_range_failures_exist": false,
+    "injected_reject_demo": {
+      "note": "INJECTED: no in-range shape fails FD's gate, so the taper limit was raised in-process to 0.6 (c172x baseline 0.75) to exercise the reject path; FD's real limit is [0.12, 1.25]",
+      "shape": {
+        "wing_chord_taper_1": 0.85,
+        "wing_chord_taper_2": 0.85,
+        "wing_chord_taper_3": 0.85
+      },
+      "status": "geometry_gate:extreme_taper",
+      "cost": 2000.0,
+      "per_scenario_cost": [
+        2000.0,
+        2000.0,
+        2000.0
+      ],
+      "geometry_gate": {
+        "ok": false,
+        "reason": "extreme_taper",
+        "details": {
+          "c_min_ft": 3.200718259347657,
+          "taper_tip_root": 0.47799382801776186,
+          "sweep_qc_deg": 0.0,
+          "le_kink_max_deg": 0.04221396079841977
+        }
+      },
+      "jsbsim_flights": 0,
+      "cpu_s": 0.002266309999995997,
+      "terms_all_zero": true
+    },
+    "out_of_range_decode": "ValueError (FD never clips): shape gene wing_chord_taper_3=0.8 outside its range [0.85, 1.05]"
+  },
+  "a_all_bit_identical": true,
+  "loadavg_end": [
+    11.0478515625,
+    8.89453125,
+    4.7744140625
+  ]
+}

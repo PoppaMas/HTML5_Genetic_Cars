@@ -33,6 +33,9 @@ evolution/runs/*
 !evolution/runs/phase2-c172x-full-s1/
 !evolution/runs/phase2-bench-rf-s1/
 !evolution/runs/phase2-bench-rrf-s1/
+!evolution/runs/phase3a1-smoke-s1/
+!evolution/runs/phase3b1-smoke-s1/
+!evolution/runs/phase3b1r1-smoke-s1/
 evolution/runs/*/trajectories/
 evolution/runs/*/trajectories_traj1/
 evolution/runs/*/live/
@@ -60,6 +63,10 @@ evolution/_fd_pin_post_mass/jsbsim_root/engine
 evolution/_fd_pin_post_mass/jsbsim_root/systems
 evolution/_fd_pin_post_mass/jsbsim_root_v2/engine
 evolution/_fd_pin_post_mass/jsbsim_root_v2/systems
+evolution/_fd_pin_p3b1r1/jsbsim_root/engine
+evolution/_fd_pin_p3b1r1/jsbsim_root/systems
+evolution/_fd_pin_p3b1r1/jsbsim_root_v2/engine
+evolution/_fd_pin_p3b1r1/jsbsim_root_v2/systems
 
 # the repo-root .gitignore ignores every "main.js"; the viewer's entry point must stay tracked
 !sim-bridge/viewer/js/main.js

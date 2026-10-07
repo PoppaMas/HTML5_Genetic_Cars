@@ -22,7 +22,8 @@ need_fd = pytest.mark.skipif(not os.path.isdir(FD_ROOT), reason="flight-dynamics
 PY = sys.executable
 SHORT = {"duration_s": 12.0, "steps_rel_ft": [[0.0, 0.0], [2.0, 100.0]]}
 MV_RE = {"rigid": r"^rigid:jsbsim\d+\.\d+\.\d+:[0-9a-f]{8}$", "reduced": r"^reduced:flexv1:[0-9a-f]{8}$",
-         "full": r"^full:flexv2:[0-9a-f]{8}$", "full_a1": r"^full_a1:flexv2a1:[0-9a-f]{8}$"}
+         "full": r"^full:flexv2:[0-9a-f]{8}$", "full_a1": r"^full_a1:flexv2a1:[0-9a-f]{8}$",
+         "full_a1_b1": r"^full_a1_b1:flexv2b1:[0-9a-f]{8}$"}
 
 
 def cfg_file(name):
@@ -149,8 +150,6 @@ def test_model_version_formats_and_uniform_terms():
     assert tuple(fe.TERM_KEYS) == F.TERM_KEYS
     out = {}
     for fid in F.FIDELITIES:
-        if fid == "full_a1" and not os.path.exists(os.path.join(F.FD_DIR, "flexeval_a1.py")):
-            continue   # P3-A1 is opt-in: an FD tree without flexeval_a1/flexbody_a1 serves rigid / reduced / full
         a = F.evaluate_genome(pd, G8, None, sc, fid, 0.9)
         assert re.match(MV_RE[fid], a["model_version"]), a["model_version"]
         assert set(a["terms"]) == set(F.TERM_KEYS) and all(math.isfinite(v) for v in a["terms"].values())

@@ -253,6 +253,16 @@ def test_real_newest_run_relative_roots_and_header_scenario_id():
     hdr = json.load(open(sorted(glob.glob(os.path.join(d, "trajectories", f"traj_*_g{g}.json")))[0]))
     assert hdr["fitness_sense"] == "min" and hdr["scenario_id"] == f"{hdr['aircraft']}:s{hdr['scenario_index']}"
     p, man = _replay(["--run", run, "--gens", str(g)])
+    if p.returncode == 3 and "pin mismatch" in (p.stdout + p.stderr):
+        # FD moved on since the run (e.g. P3-B1 r0 -> r1): replay against a frozen FD copy matching the pins
+        # (tools/build_b1_page.py discovery: run.json key, evolution/_fd_pin_*, $SIMBRIDGE_FD_DIRS), else skip
+        sys.path.insert(0, os.path.join(SB, "tools"))
+        import build_b1_page as B
+        R = {"id": run, "dir": d, "run": cfg}
+        fd, src, tried = B.pick_fd_dir(R, None, False)
+        if not fd:
+            _skip(f"{run}: live FD no longer matches the pins and no frozen FD copy does ({[t['dir'] for t in tried]})")
+        p, man = _replay(["--run", run, "--gens", str(g)], {"EVOLUTION_FD_DIR": fd, "FLIGHT_DYNAMICS_DIR": fd})
     if p.returncode == 3 and "FidelityUnavailable" in p.stderr:
         _skip("FD's v2 model root is not prepared here")
     _assert_exact(p, man, min_files=1)
@@ -275,7 +285,8 @@ def test_real_multi_fidelity_ladder_model_version():
     """ER multi-fidelity rows (screen rigid -> full, phase2-pilot-*): replay the same individual at rigid and at full;
     each is compared with ladder_cost[fid] and its logged model_version comes from ladder_model_version[fid]."""
     _need_real_eval()
-    pick = None
+    from sim_bridge import paths
+    cands = []
     for gj in sorted(glob.glob(os.path.join(RUNS, "*", "genomes.jsonl")), key=os.path.getmtime, reverse=True):
         if not os.path.exists(os.path.join(os.path.dirname(gj), "run.json")):
             continue
@@ -287,16 +298,28 @@ def test_real_multi_fidelity_ladder_model_version():
                     continue
                 lmv = r.get("ladder_model_version") or {}
                 if isinstance(lmv, dict) and {"rigid", "full"} <= set(lmv) and (r.get("ladder_status") or {}).get("full") == "ok":
-                    pick = (os.path.basename(os.path.dirname(gj)), r)
+                    cands.append((os.path.basename(os.path.dirname(gj)), r))
                     break
-        if pick:
-            break
-    if not pick:
+    if not cands:
         _skip("no run with ladder_model_version {rigid, full} yet")
-    run, row = pick
+    # prefer a run flown with FD's live full model; else (FD moved on, e.g. P2.5 after the phase-2 pilot) fly the
+    # pinned run against ER's frozen copy of the FD sources it was pinned to (evolution/_fd_pin_post_mass), read-only
+    cur = paths.fd_model_versions()
+    live = [c for c in cands if (cur.get(c[1]["aircraft"]) or {}).get("full") == c[1]["ladder_model_version"]["full"]]
+    env = None
+    if live:
+        run, row = live[0]
+    else:
+        run, row = cands[0]
+        frozen = os.path.join(paths.EVOLUTION_ROOT, "_fd_pin_post_mass")
+        fz = os.path.join(frozen, "v2_results", "model_versions_post_mass.json")
+        if not (os.path.exists(fz) and (json.load(open(fz)).get(row["aircraft"]) or {}).get("full")
+                == row["ladder_model_version"]["full"]):
+            _skip("no ladder run matches FD's live full model_version and no matching frozen FD copy")
+        env = {"EVOLUTION_FD_DIR": frozen, "FLIGHT_DYNAMICS_DIR": frozen}
     for fid in ("rigid", "full"):
         p, man = _replay(["--run", run, "--ids", row["individual_id"], "--scenario", "0", "--fidelity", fid,
-                          "--compare-traj", "none"])
+                          "--compare-traj", "none"], env_extra=env)
         assert p.returncode == 0, p.stdout[-3000:] + p.stderr[-3000:]
         g = man["genomes"][0]
         assert g["verdict"] == "match", g

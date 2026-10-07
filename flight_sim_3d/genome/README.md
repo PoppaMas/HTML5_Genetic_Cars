@@ -14,7 +14,7 @@ legacy preset doesn't need it.
 ```bash
 PY=python   # any Python with flight_sim_3d/requirements.txt installed
 cd flight_sim_3d/genome
-# Outside the repo layout (e.g. the team working copy /workspace/flight-sim-team/genome) there is no ../../flight_sim:
+# Outside the repo layout (e.g. the team working copy <team>/genome) there is no ../../flight_sim:
 # export FLIGHT_SIM_DIR=<path to flight_sim> for run_evolve.py & co (importing flightsim_path raises a clear error
 # otherwise). The test suite sets it itself (conftest.py, test-only: the local sandbox clone, only if the variable is
 # unset, the repo default is absent and the clone exists). flight-dynamics/ and evolution/ resolve as siblings.
@@ -46,6 +46,7 @@ $PY crosscheck_phase2.py --aircraft c172x   # Phase 2 vs ER's evaluator (tmp cop
 # Phase 2: phase1_v4 controller + FD flex v2 structure (12 genes from flexbody.gene_schema(); 20 total), seeded gen 0
 $PY run_evolve.py --task phase2_flex [--aircraft t38|b737] -- --pop-size 64 --generations 60 --seed 1 --out runs/p2_c172x_s1
 $PY run_evolve.py --task experiments/phase2_flex_asym.json -- ...      # + FD's 2 asymmetric genes (22)
+$PY p3b1_verify.py                                              # P3-B1 verify set (full_a1_b1 vs A1)
 $PY evolve_pareto.py --task phase2_flex --pop-size 64 --generations 60 --out runs/p2_pareto_c172x   # track/effort/structural_v2
 $PY phase2_gate_study.py              # gen-0 flutter-gate failures, uniform vs seeded -> runs/phase2_gate_study.json
 $PY ki_alt_scan.py                    # v5 ki_alt bound study -> runs/ki_alt_scan.json
@@ -71,6 +72,7 @@ Evolution Runner (ALIGNMENT.md); keys in the preset override it.
 | `phase1_no_comfort` | 8 | the same without the comfort term |
 | `phase1_flex` | 12 | opt-in: `phase1_default` + FD's 4 structure genes (stiffness_scale, torsion_bend_ratio, damping, non-structural mass) on FD's two-way flex wing. Chord axes and tip mass are fixed by FD. Margins < 1.0 fail, < 1.2 penalised; structural objective (weight 1) includes a wing-mass term |
 | `phase2_flex` | 20 | **Phase 2** (aligned with ER's `phase2_pilot`, cross-checked bit for bit: CROSSCHECK_phase2.md): the phase1_v4 task and controller genes (same scenarios and weights; ki_alt ≤ 0.5 phase2-only, v4 keeps 0.05) + FD flex v2 block `structure_v2` (12 genes built from FD's `flexbody.gene_schema()`; `flex.asymmetric: true` → 14, see `experiments/phase2_flex_asym.json`). Objective adds `structural_v2` = FD flexeval's structural cost (`struct_v2_source: "fd"`: FD's J_* terms at FD's weights incl. P2.5 `J_wing_tip_bm_limit`, 24 TERM_KEYS; our peak/RMS formula is the `"genome"` A/B option). NSM floors 1.0–1.25 from FD `gene_schema()`. Full fidelity; model_version = post_p25 (warns on previous post-mass pins, raises only on unknown). Gen 0 seeded at the structural baseline (σ 0.10). The interim mass-credit clip is off (superseded by FD §12; flag kept for A/B). Asymmetric genes off until lateral/roll scenarios exist. DESIGN.md §3c |
+| `phase3_b1` | 26 | **P3-B1, opt-in** (2026-10-06): `phase2_flex` controller (8) + FD `structure_v2` (12, P2.5) + FD B1 shape block `shape_b1` (6 genes built from FD `planform_b1.shape_schema()`, L = R; literal pin + drift test). Fidelity `full_a1_b1` = FD `flexeval_b1.evaluate` (ER resolved profile + scenarios from `evolution/configs/phase2_smoke_p25.json`, read-only): shape → FD decode + geometry gate (reject = `geometry_gate:<reason>`, cost = fail_cost, not flown) → structure on the shaped baseline → margins + flight. Baseline shape ≡ `full_a1` bit for bit. Gen 0: structure baseline σ 0.10, shape = identity + clipped Gaussian σ 0.25 × half-range in the operator space (ln x for the 3 chord tapers, x otherwise; storage stays FD's linear u); whole-block crossover (controller \| structure \| shape) + same shape mutation (`block_ops.py`, bit-identical to ER `evolution/ga.py`). Evaluator = ER `evaluate_genome(full_a1_b1)` (direct FD path as cross-checked fallback). **FD B1 r1**: shape genes stored exactly as FD `GENE_ENCODING` (linear in value, all 6; encoding pin + drift test), model_version vs `model_versions_post_p3b1r1.json` (warn; raise opt-in; superseded r0 strings warn-only, never raise). Verify: `p3b1_verify.py` → `runs/p3b1_verify_c172x.json` (r0: `runs/p3b1r0_verify_c172x.json`). PHASE3_B1_SPEC.md, CROSSCHECK_p3b1.md |
 | `altitude_hold_legacy` | 6 | original task: instant step, original ranges, `track + 2*effort`, mean over `sim.make_scenarios`, clamp 12°. Bit-identical to the original code; ignores the shared set |
 | `altitude_hold_v2` | 6 | widened/log0 ranges + comfort + structural proxy, robust scenarios, mean/CVaR |
 | `altitude_hold_pareto` | 6 | Pareto objectives track_alt, effort, comfort (use `evolve_pareto.py`) |

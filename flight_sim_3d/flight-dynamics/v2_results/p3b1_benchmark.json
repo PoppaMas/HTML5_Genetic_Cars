@@ -1,0 +1,86 @@
+{
+ "doc": "P3-B1 CPU (p3b1_study.py bench): process CPU seconds, min over repeats, BLAS 1 thread, Phase-1 best gains, ONE Phase-1 90 s scenario per evaluate() (whole call: build + preflight + trim + flight + terms). Shaped genome = {\"wing_chord_taper_1\": 0.95, \"wing_chord_taper_3\": 0.95, \"wing_twist_mid_deg\": -0.5, \"wing_twist_tip_deg\": -2.0, \"wing_sweep_qc_delta_deg\": 2.0}. Warm process (calibration / baseline-design caches filled once).",
+ "reps": 3,
+ "aircraft": {
+  "c172x": {
+   "build_a1_s": 0.08691686000000054,
+   "build_b1_shaped_s": 0.17162204599999953,
+   "preflight_a1_s": 0.06245511299999862,
+   "preflight_b1_shaped_s": 0.0629342270000004,
+   "eval90_full_a1_s": 1.8751772899999999,
+   "eval90_b1_baseline_s": 1.8967914640000014,
+   "eval90_b1_shaped_s": 1.9780098590000001,
+   "duration_s": 90.0,
+   "rebuild_overhead_s": 0.08470518599999899,
+   "preflight_overhead_s": 0.00047911400000177906,
+   "eval90_ratio_b1_shaped_vs_a1": 1.0548388515306732,
+   "eval90_ratio_b1_baseline_vs_a1": 1.011526469585178,
+   "status": {
+    "eval90_full_a1_status": "ok",
+    "eval90_b1_baseline_status": "ok",
+    "eval90_b1_shaped_status": "ok"
+   },
+   "load1_max": 1.36572265625
+  },
+  "T38": {
+   "build_a1_s": 0.09387122999999775,
+   "build_b1_shaped_s": 0.18054030199999715,
+   "preflight_a1_s": 0.053128251000003957,
+   "preflight_b1_shaped_s": 0.05259934799999755,
+   "eval90_full_a1_s": 1.7792837169999984,
+   "eval90_b1_baseline_s": 1.7779018740000012,
+   "eval90_b1_shaped_s": 1.946717298999996,
+   "duration_s": 90.0,
+   "rebuild_overhead_s": 0.0866690719999994,
+   "preflight_overhead_s": -0.0005289030000064088,
+   "eval90_ratio_b1_shaped_vs_a1": 1.0941016772087941,
+   "eval90_ratio_b1_baseline_vs_a1": 0.9992233711876333,
+   "status": {
+    "eval90_full_a1_status": "ok",
+    "eval90_b1_baseline_status": "ok",
+    "eval90_b1_shaped_status": "ok"
+   },
+   "load1_max": 1.421875
+  },
+  "737": {
+   "build_a1_s": 0.051467710000004274,
+   "build_b1_shaped_s": 0.09823928600000187,
+   "preflight_a1_s": 0.05258732700000479,
+   "preflight_b1_shaped_s": 0.05251552400000037,
+   "eval90_full_a1_s": 1.6898044410000068,
+   "eval90_b1_baseline_s": 1.7040061109999982,
+   "eval90_b1_shaped_s": 1.8474092479999982,
+   "duration_s": 90.0,
+   "rebuild_overhead_s": 0.046771575999997594,
+   "preflight_overhead_s": -7.18030000044223e-05,
+   "eval90_ratio_b1_shaped_vs_a1": 1.093268074799663,
+   "eval90_ratio_b1_baseline_vs_a1": 1.0084043275395744,
+   "status": {
+    "eval90_full_a1_status": "ok",
+    "eval90_b1_baseline_status": "ok",
+    "eval90_b1_shaped_status": "ok"
+   },
+   "load1_max": 1.3564453125
+  },
+  "f16": {
+   "build_a1_s": 0.09493298399999617,
+   "build_b1_shaped_s": 0.18000087099999718,
+   "preflight_a1_s": 0.06754447100000505,
+   "preflight_b1_shaped_s": 0.0673193920000017,
+   "eval90_full_a1_s": 1.8496396720000092,
+   "eval90_b1_baseline_s": 1.8689194109999931,
+   "eval90_b1_shaped_s": 1.9952854419999966,
+   "duration_s": 90.0,
+   "rebuild_overhead_s": 0.08506788700000101,
+   "preflight_overhead_s": -0.00022507900000334757,
+   "eval90_ratio_b1_shaped_vs_a1": 1.0787427801234934,
+   "eval90_ratio_b1_baseline_vs_a1": 1.0104235107474402,
+   "status": {
+    "eval90_full_a1_status": "ok",
+    "eval90_b1_baseline_status": "ok",
+    "eval90_b1_shaped_status": "ok"
+   },
+   "load1_max": 1.6552734375
+  }
+ }
+}

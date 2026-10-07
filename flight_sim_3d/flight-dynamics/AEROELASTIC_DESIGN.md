@@ -206,3 +206,56 @@ Coupled RTF is about 20 in the demo (4 substeps, plot-history recording). Rigid 
 4. Make the structural sim optionally run every 2nd frame (with substeps) for about 2× speed. Precompute per-genome matrices once per individual (already done for margins).
 5. Real data: replace notional frequencies with public GVT values where available (e.g. NASA/FAA reports for light aircraft).
 6. If AR/sweep genes are wanted: hold EI/GJ fixed under geometry change, and add the CLα/CDi/cosΛ increments through the existing external_reactions channel.
+
+---------------------------------------------------------------------------------------------------------------------
+## 10. Flex v2 (Phase 2, added 2026-10-06; sections 1–9 above describe v1 and are unchanged)
+
+v2 lives in `flexbody.py` (model, coupler, margins), `flexeval.py` (multi-fidelity `evaluate()` reference wrapper) and
+`jsbsim_root_v2/` (v1 preparation + 3 zero-weight point masses `flexbody_ht`, `flexbody_vt`, `flexbody_fus`). The v1 files
+(`flexwing.py`, `coupled_sim.py`, `jsbsim_root/`) are byte-identical to before v2, and the v1 numerical path is pinned by
+`v1_legacy_fingerprint.json` (sha256 of margins and coupled trajectories, 4 aircraft). Interface, gene list, outputs and the
+fidelity contract: **INTERFACE_v2.md**.
+
+**Structure.** One beam FE per body, clamped at the root, Hermite-cubic bending (w, w′), linear torsion θ, in-plane bending
+(v, v′) for the wings. The consistent mass includes the −m·x_θ bending–torsion inertia coupling (closed-form element
+matrices, checked against Gauss quadrature in the tests).
+
+| body | elements | modes kept (lowest by class) | driven by | couples to |
+|---|---|---|---|---|
+| wingR, wingL | 32 strips | 3 bending + 2 torsion + 1 in-plane | Schrenk share of FDM lift, roll-rate damping, aileron strips, inertia (Nz, ṗ, Nx), drag (in-plane) | lift, roll, pitch via elastic Δα; elastic dihedral (β·w′) |
+| htR, htL | 12 | 2 bending + 1 torsion | tail Δα (α−α_trim)(1−dε/dα) + q·l_h/V, elevator strips (or all-moving incidence), inertia | lift, roll, pitch |
+| vt | 12 | 2 bending + 1 torsion | fin Δβ, r·l_v/V, p·z_v/V, rudder strips, inertia (Ny, ṗ, ṙ) | side force, roll, yaw |
+| fusV / fusL | 12 (uniform, tail mass lumped at the tip) | 2 vertical / 2 lateral bending | tail / fin loads + own inertia (Nz, q̇ / Ny, ṙ) | tail incidence −w′_tip and plunge (HT), fin sideslip and lateral plunge (VT): this is how fuselage bending changes tail effectiveness and pitch/yaw damping |
+
+25 modal DOF in total (mass-normalised per body; bodies couple through the aero, the tail strips ride on the fuselage tip).
+Stiffness levels are calibrated like v1: the baseline uncoupled first bending/torsion FE frequency equals the profile value
+(wing values are v1's, empennage/fuselage values notional, in `V2_PROFILES`). Modal-truncation check (`truncation_check`): wing
+root BM and tip deflection (static aeroelastic at 0.9 V_D, 1-cos gust) and flutter speed change ≤ 0.75 % from N = 6 to N+1/N+2
+on all four aircraft (test tolerance 2 %).
+
+**Distributed genes.** 5 control points per wing (η = 0, .25, .5, .75, 1 of the beam). EI: root multiplier × 4 cumulative
+taper ratios, each in [0.75, 1.05], so outboard growth is bounded by construction (≤ 5 % per quarter span, no sawtooth).
+GJ = EI × ratio (linear root→tip). NSM log-linear root→tip. Interpolation to the 32 strips: monotone PCHIP in log space
+(positive, no overshoot inside a segment, C¹). Plus J_smooth = 0.05·Σ(Δ ln taper)² as a soft curvature penalty.
+
+**Aero and coupling.** Strip theory as v1 (DATCOM CLα with κ(M) per surface group wing/HT/VT, quasi-steady 3/4-chord +
+Theodorsen apparent mass). Newmark average acceleration, 2 substeps per 1/120 s frame, implicit in the aero stiffness and
+damping, relative to the 1-g trim shape (zero feedback at t0). All six components are fed back through the existing
+`external_reactions` `flexwing_F` (x, y, z) and `flexwing_M` (l, m, n) at AERORP. Mass changes of all bodies go into JSBSim
+point masses before trim (weight, CG and inertia change; tested).
+
+**Margins** (`margins_v2`, ×V_D EAS, cap 3.0 with flags, conservative min over blocks; ~0.1 s per genome): per block
+(wingR [+ wingL if asymmetric], empennage_pitch = HT + fusV, empennage_yaw = VT + fusL): QS p-method flutter, damped
+coalescence (a pair only counts once its steady growth exceeds ζ·|Re s|; the undamped v1 criterion is reported as a
+diagnostic), divergence (κ fixed point), control reversal (aileron, elevator, rudder: first zero of the elastic/rigid
+effectiveness before divergence) and effectiveness at V_D for the controls and for HT/fin lift.
+
+**Validation** (`v2_validate.py` → `v2_validation.json`): uniform cantilever bending/torsion frequency, strip-theory
+divergence and aileron reversal q, tip deflection: all within 0.05 % of the closed forms; OpenAeroStruct 2.12 (VLM + tube)
+cross-check on an AR-10 wing: CL ≤ 0.3 %, tip twist 1.4–2.6 %, tip deflection +15–17 % (strip theory loads the tip more),
+q_D within −1.4 … +7.2 % depending on the OAS extrapolation window. Details and the reduced-vs-full comparison: INTERFACE_v2.md §9.
+
+**v2 limitations (in addition to §8).** Empennage/fuselage structural data are notional; the HT is mounted on the fuselage
+centreline (T-tail/fin-mounted HT not modelled); the trim tail load is not known to the coupler (tail loads are perturbations
+from trim); fuselage bending is a uniform beam aft of the wing only (no forward fuselage, no torsion); no engine/pylon or store
+masses; quasi-steady aero (no C(k) lag) everywhere; the downwash lag at the tail is ignored.

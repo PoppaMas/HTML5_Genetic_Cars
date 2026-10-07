@@ -1,0 +1,1014 @@
+{
+ "doc": "P3-B1 acceptance: baseline shape (None / {} / all defaults) + structure genes at fidelity full_a1_b1 vs full_a1 (p3b1_study.py acceptance). JSBSim 1.3.1, BLAS 1 thread, Phase-1 best gains, 3 Phase-1 90 s scenarios, record=True.",
+ "criteria": {
+  "exact_required": [
+   "cost",
+   "all 24 TERM_KEYS",
+   "status",
+   "margins (all blocks)",
+   "mass summary",
+   "sizing (terms, ratios, allowables, demands)",
+   "per-scenario physics entries",
+   "loads",
+   "every coupler history channel, every frame",
+   "all FlexBodyModel matrices",
+   "rigid / reduced / full / full_a1 model_version strings"
+  ],
+  "exact_definition": "Python == on floats (max |delta| = 0.0), no tolerance",
+  "different_by_design": [
+   "model_version string (full_a1_b1:flexv2b1:<sha8> vs full_a1:flexv2a1:<sha8>)",
+   "fidelity / margins_fidelity = 'full_a1_b1' (vs 'full_a1')",
+   "per_scenario[*].wall_s (wall-clock of the run; not physics)",
+   "extra output keys: shape_genes, shape_cache_key, geometry_gate, planform, telemetry[i].planform"
+  ],
+  "continuity_eps (rebuild path at 1e-9 shape perturbation)": {
+   "margins_abs": 1e-06,
+   "preflight_terms_abs": 1e-06,
+   "matrices_rel": 1e-06,
+   "flight_90s_cost_abs": 1e-06
+  },
+  "fallback_if_platform_nondeterminism": "none needed (exact achieved); a consumer on another BLAS / thread count should compare full_a1 vs full_a1_b1 in the SAME process, where it is exact"
+ },
+ "results": {
+  "A_evaluate_exact": {
+   "cases": 24,
+   "max_abs_diff": 0.0,
+   "non_numeric_mismatches": 0,
+   "pass": true
+  },
+  "B_matrices_exact": {
+   "cases": 8,
+   "pass": true
+  },
+  "C_continuity": {
+   "worst": {
+    "margins_abs_maxdiff": 6.2465861372373865e-09,
+    "preflight_terms_abs_maxdiff": 6.729845847264215e-10,
+    "flight_90s_cost_abs_diff": 6.58981591517005e-10,
+    "flight_90s_terms_abs_maxdiff": 7.434766136071858e-10
+   },
+   "worst_matrix_rel": 1.3161772383620693e-08,
+   "pass": true
+  }
+ },
+ "per_case": {
+  "A": [
+   {
+    "key": "A|c172x|baseline",
+    "model": "c172x",
+    "struct_genome": "baseline",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.27173128965524934,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.07108698510042612,
+     "effort": 0.034386931118042585,
+     "comfort": 1.9746611998235517,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.0,
+     "J_bm_rms": 0.033137382327560444,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.0,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:36fb4f5a",
+    "a1_cpu_s": 6.6855850939999995,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.27173128965524934,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.27173128965524934,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.27173128965524934,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|c172x|STRUCT",
+    "model": "c172x",
+    "struct_genome": "STRUCT",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.3057947686426435,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.07319176206504546,
+     "effort": 0.033002233208961305,
+     "comfort": 1.9710309080458235,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.02069309256294493,
+     "J_bm_rms": 0.03251857095743773,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.002489652224655867,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.01234567901234569,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:36fb4f5a",
+    "a1_cpu_s": 6.636740862999996,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.3057947686426435,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.3057947686426435,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.3057947686426435,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:56ee798e"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|T38|baseline",
+    "model": "T38",
+    "struct_genome": "baseline",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.1461588283202511,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.028328757716288806,
+     "effort": 0.006166007673808475,
+     "comfort": 1.0657741830702385,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.03780129195944739,
+     "J_div_margin": 0.0,
+     "J_mass": 0.0,
+     "J_bm_rms": 0.014408054143386029,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.0,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:f248873e",
+    "a1_cpu_s": 6.577540775000003,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.1461588283202511,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.1461588283202511,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.1461588283202511,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|T38|STRUCT",
+    "model": "T38",
+    "struct_genome": "STRUCT",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.14091466143696674,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.028331496385272048,
+     "effort": 0.0062549723308155634,
+     "comfort": 1.0671335997981968,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.01738409317799953,
+     "J_bm_rms": 0.014497115985152622,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.002489652224655867,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.01234567901234569,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:f248873e",
+    "a1_cpu_s": 6.720279863999991,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.14091466143696674,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.14091466143696674,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.14091466143696674,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:7e871977"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|737|baseline",
+    "model": "737",
+    "struct_genome": "baseline",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.15375270741215152,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.04072673504645266,
+     "effort": 0.015916932284542547,
+     "comfort": 1.0568390434399568,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.013645143549087217,
+     "J_div_margin": 0.0,
+     "J_mass": 0.0,
+     "J_bm_rms": 0.014705012075528712,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.0,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:522189cb",
+    "a1_cpu_s": 6.544412869000013,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.15375270741215152,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.15375270741215152,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.15375270741215152,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|737|STRUCT",
+    "model": "737",
+    "struct_genome": "STRUCT",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.17041387405264366,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.04073154472298884,
+     "effort": 0.015878337562181627,
+     "comfort": 1.05512751801071,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.015524653718841656,
+     "J_bm_rms": 0.014809293348912844,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.002489652224655867,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.01234567901234569,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:522189cb",
+    "a1_cpu_s": 7.084060042000004,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.17041387405264366,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.17041387405264366,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.17041387405264366,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:6523753c"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|f16|baseline",
+    "model": "f16",
+    "struct_genome": "baseline",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.10671519332379482,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.01873242217507754,
+     "effort": 0.007351794164499211,
+     "comfort": 1.1667541802226513,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.0,
+     "J_bm_rms": 0.014941473808586294,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.0,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.0,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:4a9e12bc",
+    "a1_cpu_s": 7.131883396999996,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.10671519332379482,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.10671519332379482,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.10671519332379482,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   },
+   {
+    "key": "A|f16|STRUCT",
+    "model": "f16",
+    "struct_genome": "STRUCT",
+    "scenarios": [
+     "0",
+     "1",
+     "2"
+    ],
+    "duration_s": [
+     90.0,
+     90.0,
+     90.0
+    ],
+    "a1_cost": 0.13854730827564685,
+    "a1_status": "ok",
+    "a1_terms": {
+     "track": 0.01872302580599493,
+     "effort": 0.007381589419406641,
+     "comfort": 1.1698658723787507,
+     "heading": 0.0,
+     "hold": 0.0,
+     "J_flutter_margin": 0.0,
+     "J_div_margin": 0.0,
+     "J_mass": 0.016548629737638456,
+     "J_bm_rms": 0.015183849037261096,
+     "J_bm_peak": 0.0,
+     "J_tip": 0.0,
+     "J_twist": 0.0,
+     "J_reversal_margin": 0.0,
+     "J_tail_bm_peak": 0.0,
+     "J_fus_bm_peak": 0.0,
+     "J_smooth": 0.002489652224655867,
+     "J_wing_bm_limit": 0.0,
+     "J_wing_torque_limit": 0.0,
+     "J_wing_ip_limit": 0.0,
+     "J_wing_tip_bm_limit": 0.0,
+     "J_tail_bm_limit": 0.01234567901234569,
+     "J_fus_bm_limit": 0.0,
+     "J_wing_torque_peak": 0.0,
+     "J_wing_ip_peak": 0.0
+    },
+    "a1_model_version": "full_a1:flexv2a1:4a9e12bc",
+    "a1_cpu_s": 7.399807973000009,
+    "b1": {
+     "None": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.13854730827564685,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     },
+     "empty": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.13854730827564685,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     },
+     "defaults": {
+      "max_abs_diff": 0.0,
+      "non_numeric_mismatch": [],
+      "cost": 0.13854730827564685,
+      "status": "ok",
+      "model_version": "full_a1_b1:flexv2b1:617078a9"
+     }
+    },
+    "n_history_channels": 32,
+    "n_frames": 10800
+   }
+  ],
+  "B": [
+   {
+    "key": "B|c172x",
+    "model": "c172x",
+    "genomes": {
+     "baseline": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     },
+     "STRUCT": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     }
+    }
+   },
+   {
+    "key": "B|T38",
+    "model": "T38",
+    "genomes": {
+     "baseline": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     },
+     "STRUCT": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     }
+    }
+   },
+   {
+    "key": "B|737",
+    "model": "737",
+    "genomes": {
+     "baseline": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     },
+     "STRUCT": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     }
+    }
+   },
+   {
+    "key": "B|f16",
+    "model": "f16",
+    "genomes": {
+     "baseline": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     },
+     "STRUCT": {
+      "all_equal": true,
+      "checks": {
+       "K": true,
+       "C": true,
+       "M": true,
+       "Qbasis": true,
+       "RB": true,
+       "RE": true,
+       "RD": true,
+       "RA": true,
+       "R_de": true,
+       "R_d": true,
+       "R_beta": true,
+       "A_beta": true,
+       "A_C_nc": true,
+       "TIP": true,
+       "TIP_TEL": true,
+       "W": true,
+       "G": true,
+       "H": true,
+       "A_K.w": true,
+       "A_K.h": true,
+       "A_K.v": true,
+       "A_C.w": true,
+       "A_C.h": true,
+       "A_C.v": true,
+       "mass_summary": true,
+       "preflight_terms": true,
+       "margins": true
+      }
+     }
+    }
+   }
+  ],
+  "C": [
+   {
+    "key": "C|c172x",
+    "model": "c172x",
+    "shape_genome": {
+     "wing_chord_taper_1": 0.999999999,
+     "wing_twist_tip_deg": -1e-09,
+     "wing_sweep_qc_delta_deg": 1e-09
+    },
+    "matrix_rel_maxdiff": {
+     "K": 1.0691388775711422e-10,
+     "Qbasis": 1.3161772383620693e-08,
+     "RB": 1.3005084777006515e-10,
+     "RE": 1.036007845416466e-08,
+     "R_de": 1.1986232013235806e-08,
+     "W": 5.475438362120793e-09,
+     "G": 2.0924049540083876e-09
+    },
+    "margins_abs_maxdiff": 6.2465861372373865e-09,
+    "preflight_terms_abs_maxdiff": 6.898182168636911e-20,
+    "flight_90s_cost_abs_diff": 3.958744443366413e-11,
+    "flight_90s_terms_abs_maxdiff": 6.598882551500651e-10,
+    "a1_cost": 0.17943166911372277,
+    "b1_near_cost": 0.17943166907413532,
+    "status": [
+     "ok",
+     "ok"
+    ]
+   },
+   {
+    "key": "C|T38",
+    "model": "T38",
+    "shape_genome": {
+     "wing_chord_taper_1": 0.999999999,
+     "wing_twist_tip_deg": -1e-09,
+     "wing_sweep_qc_delta_deg": 1e-09
+    },
+    "matrix_rel_maxdiff": {
+     "K": 2.84213807509818e-10,
+     "Qbasis": 3.251034312074677e-09,
+     "RB": 1.8064962437742538e-10,
+     "RE": 3.124194172458984e-09,
+     "R_de": 3.696779756519882e-09,
+     "W": 3.5789779175427366e-09,
+     "G": 1.1116911019253082e-09
+    },
+    "margins_abs_maxdiff": 3.461400055471131e-10,
+    "preflight_terms_abs_maxdiff": 6.729845847264215e-10,
+    "flight_90s_cost_abs_diff": 6.58981591517005e-10,
+    "flight_90s_terms_abs_maxdiff": 6.729845847264215e-10,
+    "a1_cost": 0.11384889184081523,
+    "b1_near_cost": 0.11384889118183364,
+    "status": [
+     "ok",
+     "ok"
+    ]
+   },
+   {
+    "key": "C|737",
+    "model": "737",
+    "shape_genome": {
+     "wing_chord_taper_1": 0.999999999,
+     "wing_twist_tip_deg": -1e-09,
+     "wing_sweep_qc_delta_deg": 1e-09
+    },
+    "matrix_rel_maxdiff": {
+     "K": 3.577751428589924e-10,
+     "Qbasis": 1.194278368126598e-08,
+     "RB": 1.7327509307308076e-10,
+     "RE": 1.0714792787353067e-08,
+     "R_de": 1.2555923247993494e-08,
+     "W": 9.714283562941833e-09,
+     "G": 6.02633008958352e-09
+    },
+    "margins_abs_maxdiff": 1.2173941854598525e-09,
+    "preflight_terms_abs_maxdiff": 3.0055729606515147e-10,
+    "flight_90s_cost_abs_diff": 3.550284510822621e-10,
+    "flight_90s_terms_abs_maxdiff": 7.434766136071858e-10,
+    "a1_cost": 0.12544106475130254,
+    "b1_near_cost": 0.125441065106331,
+    "status": [
+     "ok",
+     "ok"
+    ]
+   },
+   {
+    "key": "C|f16",
+    "model": "f16",
+    "shape_genome": {
+     "wing_chord_taper_1": 0.999999999,
+     "wing_twist_tip_deg": -1e-09,
+     "wing_sweep_qc_delta_deg": 1e-09
+    },
+    "matrix_rel_maxdiff": {
+     "K": 1.4410647542293724e-10,
+     "Qbasis": 1.1328215215609027e-08,
+     "RB": 1.0539930799711503e-10,
+     "RE": 5.164481498672238e-09,
+     "R_de": 6.4658918276722265e-09,
+     "W": 7.240760648934256e-09,
+     "G": 2.9728875400487415e-09
+    },
+    "margins_abs_maxdiff": 4.2006043088349543e-10,
+    "preflight_terms_abs_maxdiff": 1.143818842810134e-19,
+    "flight_90s_cost_abs_diff": 2.7994273565923322e-12,
+    "flight_90s_terms_abs_maxdiff": 1.4706058593105809e-10,
+    "a1_cost": 0.06634581646207019,
+    "b1_near_cost": 0.06634581645927076,
+    "status": [
+     "ok",
+     "ok"
+    ]
+   }
+  ]
+ }
+}

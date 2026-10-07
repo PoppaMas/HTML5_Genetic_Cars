@@ -1,0 +1,36 @@
+{
+ "schema": "ga-flightsim-traj-index/1",
+ "traj_schema": "ga-flightsim-traj/2",
+ "run_id": "planform-synthetic",
+ "fitness_sense": "min",
+ "synthetic": true,
+ "trajectories": [
+  {
+   "file": "traj_737_planform-synthetic_shaped.json",
+   "aircraft": "737",
+   "generation": 59,
+   "fitness": 0.12593868258480057,
+   "individual_id": "shaped",
+   "is_best": false,
+   "scenario": 0
+  },
+  {
+   "file": "traj_737_planform-synthetic_baseline.json",
+   "aircraft": "737",
+   "generation": 59,
+   "fitness": 0.12593868258480057,
+   "individual_id": "baseline",
+   "is_best": false,
+   "scenario": 0
+  },
+  {
+   "file": "traj_c172x_planform-synthetic_shaped.json",
+   "aircraft": "c172x",
+   "generation": 59,
+   "fitness": 0.22869443504675724,
+   "individual_id": "shaped",
+   "is_best": false,
+   "scenario": 0
+  }
+ ]
+}

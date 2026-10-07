@@ -71,3 +71,9 @@ FD's P2.5 raised NSM floors to 1.0–1.25 and added `J_wing_tip_bm_limit`. Pre-P
 `model_version` pins; genome records post_p25 and warns (does not raise) if FD still reports the previous set.
 Re-score for a joint smoke needs P2.5-valid genomes (nsm ≥ 1.0). Reference: `runs/p25_tip_verify_c172x.json`
 (baseline tip=0, soft taper4=0.75 tip≈0.017509318343313852; `struct_v2_source=fd`).
+
+## P3-A1 tip-verify (2026-10-06 ~17:45 PT)
+FD published `full_a1` (`flexeval_a1` / FlexBodyModelA1; c172x pin `full_a1:flexv2a1:36fb4f5a`). Genome re-flew the
+same tip-verify pair via `evolution.fidelity.evaluate_genome` — A1 totals/tip match ER bit-for-bit; full still matches
+this file's P2.5 reference. Details: `CROSSCHECK_p3a1.md`, `runs/p3a1_tip_verify_c172x.json`, script
+`p3a1_tip_verify.py`.

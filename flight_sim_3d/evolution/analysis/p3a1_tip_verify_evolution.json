@@ -1,0 +1,279 @@
+{
+  "method": "evolution.fidelity.evaluate_genome(phase2_smoke_p25 c172x profile, 3 scenarios, scenario_seed 1); genomes from genome/runs/p25_tip_verify_c172x.json",
+  "model_version_expected": {
+    "full": "full:flexv2:e11b8214",
+    "full_a1": "full_a1:flexv2a1:36fb4f5a"
+  },
+  "cases": {
+    "baseline": {
+      "full": {
+        "model_version": "full:flexv2:e11b8214",
+        "model_version_ok": true,
+        "status": "ok",
+        "cost": 0.24220696133846464,
+        "per_scenario_cost": [
+          0.127721836186873,
+          0.3978995504616569,
+          0.20099949736686393
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "J_mass": 0.0,
+        "J_smooth": 0.0,
+        "fd_struct_sum": 0.030819138741545574,
+        "margins": {
+          "flutter_margin": 1.2279006175548508,
+          "div_margin": 1.6691692082752472,
+          "reversal_margin": 1.4734228795384454
+        },
+        "mass_total_frac": 0.0,
+        "cpu_s": 5.667741020999999,
+        "wall_s": 5.301691693952307,
+        "cpu_s_per_scenario": 1.8892470069999998,
+        "terms": {
+          "track": 0.059189059564721404,
+          "effort": 0.030981148258085293,
+          "comfort": 1.765959894028243,
+          "heading": 0.1938471814614878,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030819138741545574,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "ref_total": 0.24220696133846464,
+        "ref_per": [
+          0.127721836186873,
+          0.3978995504616569,
+          0.20099949736686393
+        ],
+        "ref_tip": 0.0,
+        "match_total": true,
+        "match_per": true,
+        "match_tip": true,
+        "genome_total_match": true,
+        "bit_identical": true
+      },
+      "full_a1": {
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "model_version_ok": true,
+        "status": "ok",
+        "cost": 0.2419400885448951,
+        "per_scenario_cost": [
+          0.12772764189700128,
+          0.39710530396908106,
+          0.2009873197686029
+        ],
+        "J_wing_tip_bm_limit": 0.0,
+        "J_mass": 0.0,
+        "J_smooth": 0.0,
+        "fd_struct_sum": 0.030838880087861866,
+        "margins": {
+          "flutter_margin": 1.2277909873475392,
+          "div_margin": 1.6690068507818694,
+          "reversal_margin": 1.4735862141823004
+        },
+        "mass_total_frac": 0.0,
+        "cpu_s": 5.6877535560000005,
+        "wall_s": 5.688121286977548,
+        "cpu_s_per_scenario": 1.8959178520000002,
+        "terms": {
+          "track": 0.058937696203525715,
+          "effort": 0.030942581234986666,
+          "comfort": 1.766798775478463,
+          "heading": 0.1938411009610985,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": 0.0,
+          "J_bm_rms": 0.030838880087861866,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.0,
+          "J_wing_bm_limit": 0.0,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 0.0,
+          "J_wing_tip_bm_limit": 0.0,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "structural_model": {
+          "variant": "a1",
+          "wing": {
+            "n_el": 64,
+            "n_b": 4,
+            "n_t": 3,
+            "n_ip": 2,
+            "f_ip_ratio": 2.5
+          },
+          "modal_dof": 31
+        },
+        "tip_bm": {
+          "method": "station_exact",
+          "strip_discrete_term": 0.0
+        }
+      },
+      "delta_a1_minus_full": {
+        "cost": -0.00026687279356954474,
+        "J_wing_tip_bm_limit": 0.0,
+        "fd_struct_sum": 1.974134631629182e-05
+      }
+    },
+    "soft_tip_taper4_0.75": {
+      "full": {
+        "model_version": "full:flexv2:e11b8214",
+        "model_version_ok": true,
+        "status": "ok",
+        "cost": 0.2657981420373094,
+        "per_scenario_cost": [
+          0.14835085230565445,
+          0.4276350388755169,
+          0.2214085349307567
+        ],
+        "J_wing_tip_bm_limit": 0.017509318343313852,
+        "J_mass": -0.0009496534483707982,
+        "J_smooth": 0.004138048740507586,
+        "fd_struct_sum": 0.05151297028380243,
+        "margins": {
+          "flutter_margin": 1.2241068459086124,
+          "div_margin": 1.6682016213762894,
+          "reversal_margin": 1.472471225058221
+        },
+        "mass_total_frac": -0.0031655114945693275,
+        "cpu_s": 5.121807508,
+        "wall_s": 5.12295168597484,
+        "cpu_s_per_scenario": 1.7072691693333333,
+        "terms": {
+          "track": 0.0615073613944051,
+          "effort": 0.03114024488249093,
+          "comfort": 1.771177686343995,
+          "heading": 0.1938436276920212,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": -0.0009496534483707982,
+          "J_bm_rms": 0.030810609683956342,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.004138048740507586,
+          "J_wing_bm_limit": 4.224513086771585e-06,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 4.2245130867715854e-07,
+          "J_wing_tip_bm_limit": 0.017509318343313852,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "ref_total": 0.2657981420373094,
+        "ref_per": [
+          0.14835085230565445,
+          0.4276350388755169,
+          0.2214085349307567
+        ],
+        "ref_tip": 0.017509318343313852,
+        "match_total": true,
+        "match_per": true,
+        "match_tip": true,
+        "genome_total_match": true,
+        "bit_identical": true
+      },
+      "full_a1": {
+        "model_version": "full_a1:flexv2a1:36fb4f5a",
+        "model_version_ok": true,
+        "status": "ok",
+        "cost": 0.25879473336084763,
+        "per_scenario_cost": [
+          0.14271980987754557,
+          0.4179016740566261,
+          0.21576271614837125
+        ],
+        "J_wing_tip_bm_limit": 0.011874078070487388,
+        "J_mass": -0.0009510572171161819,
+        "J_smooth": 0.004138048740507586,
+        "fd_struct_sum": 0.04581063306719999,
+        "margins": {
+          "flutter_margin": 1.2239895713509354,
+          "div_margin": 1.6680626322715622,
+          "reversal_margin": 1.4727769737420542
+        },
+        "mass_total_frac": -0.0031701907237206063,
+        "cpu_s": 5.419194060999999,
+        "wall_s": 5.41971080400981,
+        "cpu_s_per_scenario": 1.806398020333333,
+        "terms": {
+          "track": 0.060674639858860645,
+          "effort": 0.030982918098905507,
+          "comfort": 1.7681036891948239,
+          "heading": 0.19384397772348105,
+          "hold": 0.0,
+          "J_flutter_margin": 0.0,
+          "J_div_margin": 0.0,
+          "J_mass": -0.0009510572171161819,
+          "J_bm_rms": 0.030744893468328458,
+          "J_bm_peak": 0.0,
+          "J_tip": 0.0,
+          "J_twist": 0.0,
+          "J_reversal_margin": 0.0,
+          "J_tail_bm_peak": 0.0,
+          "J_fus_bm_peak": 0.0,
+          "J_smooth": 0.004138048740507586,
+          "J_wing_bm_limit": 4.245459084310182e-06,
+          "J_wing_torque_limit": 0.0,
+          "J_wing_ip_limit": 4.2454590843101823e-07,
+          "J_wing_tip_bm_limit": 0.011874078070487388,
+          "J_tail_bm_limit": 0.0,
+          "J_fus_bm_limit": 0.0,
+          "J_wing_torque_peak": 0.0,
+          "J_wing_ip_peak": 0.0
+        },
+        "structural_model": {
+          "variant": "a1",
+          "wing": {
+            "n_el": 64,
+            "n_b": 4,
+            "n_t": 3,
+            "n_ip": 2,
+            "f_ip_ratio": 2.5
+          },
+          "modal_dof": 31
+        },
+        "tip_bm": {
+          "method": "station_exact",
+          "strip_discrete_term": 0.009612825948837417
+        }
+      },
+      "delta_a1_minus_full": {
+        "cost": -0.007003408676461764,
+        "J_wing_tip_bm_limit": -0.005635240272826464,
+        "fd_struct_sum": -0.005702337216602439
+      }
+    }
+  },
+  "full_all_bit_identical": true,
+  "full_a1_model_version_ok": true
+}

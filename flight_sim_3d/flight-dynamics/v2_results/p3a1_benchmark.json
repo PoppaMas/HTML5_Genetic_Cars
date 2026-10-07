@@ -1,0 +1,284 @@
+{
+ "units": "seconds per 90 s Phase-1 scenario (whole fe.evaluate incl. model build + margin screen, mean of the 3 Phase-1 scenarios; min over repeats); cpu = process CPU time, wall = elapsed; ratio uses cpu",
+ "method": "same as v2_compare.py bench (best Phase-1 gains, baseline struct genome, dt 1/120, BLAS 1 thread); full and full_a1 interleaved per repeat in one process",
+ "reps": 5,
+ "models": {
+  "c172x": {
+   "full": {
+    "cpu_per_scen_s": 1.6550776063333335,
+    "wall_per_scen_s": 1.655241367329533,
+    "all_cpu_per_scen_s": [
+     1.92321996,
+     1.8254748466666673,
+     1.6964292306666664,
+     1.6679014093333346,
+     1.6550776063333335
+    ],
+    "cost": 0.26895122134456134,
+    "status": "ok",
+    "model_version": "full:flexv2:e11b8214",
+    "loadavg_1min": [
+     0.62548828125,
+     0.68359375,
+     0.732421875,
+     0.79248046875,
+     0.9052734375
+    ]
+   },
+   "full_a1": {
+    "cpu_per_scen_s": 1.771678222333333,
+    "wall_per_scen_s": 1.7718227713485248,
+    "all_cpu_per_scen_s": [
+     2.1959927306666667,
+     1.8064350096666668,
+     1.771678222333333,
+     1.796806062333334,
+     1.8508498039999992
+    ],
+    "cost": 0.27173128965524934,
+    "status": "ok",
+    "model_version": "full_a1:flexv2a1:36fb4f5a",
+    "loadavg_1min": [
+     0.65576171875,
+     0.708984375,
+     0.77392578125,
+     0.8095703125,
+     0.9130859375
+    ]
+   },
+   "ratio_a1_over_full_cpu": 1.07045024085506,
+   "v2_benchmarks_json_reference": {
+    "rigid": 0.21860740000000037,
+    "reduced": 1.2418559826666666,
+    "full": 1.7609340890000003,
+    "v1_flex_nbend2": 1.2017185150000003
+   }
+  },
+  "T38": {
+   "full": {
+    "cpu_per_scen_s": 1.5678846816666645,
+    "wall_per_scen_s": 1.5680041250113088,
+    "all_cpu_per_scen_s": [
+     1.6224908450000015,
+     1.5678846816666645,
+     1.583540836000002,
+     1.6430266143333323,
+     1.5803904890000002
+    ],
+    "cost": 0.14443617974761805,
+    "status": "ok",
+    "model_version": "full:flexv2:8bf7a250",
+    "loadavg_1min": [
+     0.92041015625,
+     0.93310546875,
+     0.94384765625,
+     0.953125,
+     0.9609375
+    ]
+   },
+   "full_a1": {
+    "cpu_per_scen_s": 1.6826092799999988,
+    "wall_per_scen_s": 1.6827132070126634,
+    "all_cpu_per_scen_s": [
+     1.7368487086666657,
+     1.6826092799999988,
+     1.7855899600000005,
+     1.7836857649999966,
+     1.7201899156666656
+    ],
+    "cost": 0.1461588283202511,
+    "status": "ok",
+    "model_version": "full_a1:flexv2a1:f248873e",
+    "loadavg_1min": [
+     0.92724609375,
+     0.9384765625,
+     0.94873046875,
+     0.95703125,
+     0.96435546875
+    ]
+   },
+   "ratio_a1_over_full_cpu": 1.0731715793098902,
+   "v2_benchmarks_json_reference": {
+    "rigid": 0.1841931206666665,
+    "reduced": 1.2057410500000014,
+    "full": 1.6950478256666675,
+    "v1_flex_nbend2": 1.1227742553333329
+   }
+  },
+  "737": {
+   "full": {
+    "cpu_per_scen_s": 1.540026263333336,
+    "wall_per_scen_s": 1.540133200333609,
+    "all_cpu_per_scen_s": [
+     1.540026263333336,
+     1.5606853106666658,
+     1.5433327033333342,
+     2.0552498660000063,
+     1.639038266999999
+    ],
+    "cost": 0.15327600858459042,
+    "status": "ok",
+    "model_version": "full:flexv2:eeb82fb9",
+    "loadavg_1min": [
+     0.96728515625,
+     1.0458984375,
+     1.03857421875,
+     1.0322265625,
+     1.02685546875
+    ]
+   },
+   "full_a1": {
+    "cpu_per_scen_s": 1.6847438620000001,
+    "wall_per_scen_s": 1.6848731506809902,
+    "all_cpu_per_scen_s": [
+     1.6847438620000001,
+     1.694533303999999,
+     1.732281702333334,
+     1.736029252999998,
+     1.845066936666664
+    ],
+    "cost": 0.15375270741215152,
+    "status": "ok",
+    "model_version": "full_a1:flexv2a1:522189cb",
+    "loadavg_1min": [
+     1.05029296875,
+     1.0419921875,
+     1.03515625,
+     1.029296875,
+     1.0244140625
+    ]
+   },
+   "ratio_a1_over_full_cpu": 1.093970864076972,
+   "v2_benchmarks_json_reference": {
+    "rigid": 0.1813322013333334,
+    "reduced": 1.1960892716666673,
+    "full": 1.664530852333333,
+    "v1_flex_nbend2": 1.1328845436666672
+   }
+  },
+  "f16": {
+   "full": {
+    "cpu_per_scen_s": 1.6343883166666633,
+    "wall_per_scen_s": 1.6344659979998444,
+    "all_cpu_per_scen_s": [
+     1.7011258803333362,
+     1.7260588299999995,
+     1.6343883166666633,
+     1.6521822426666688,
+     1.707486546000003
+    ],
+    "cost": 0.10671867575736384,
+    "status": "ok",
+    "model_version": "full:flexv2:8baca00c",
+    "loadavg_1min": [
+     1.02197265625,
+     1.01806640625,
+     1.01513671875,
+     1.08642578125,
+     1.07275390625
+    ]
+   },
+   "full_a1": {
+    "cpu_per_scen_s": 1.7639341096666687,
+    "wall_per_scen_s": 1.7640095279978898,
+    "all_cpu_per_scen_s": [
+     1.8694644789999966,
+     1.7639341096666687,
+     1.7703723699999994,
+     1.803186328999999,
+     1.8196045126666718
+    ],
+    "cost": 0.10671519332379482,
+    "status": "ok",
+    "model_version": "full_a1:flexv2a1:4a9e12bc",
+    "loadavg_1min": [
+     1.02001953125,
+     1.0166015625,
+     1.09423828125,
+     1.0791015625,
+     1.06689453125
+    ]
+   },
+   "ratio_a1_over_full_cpu": 1.0792625544853467,
+   "v2_benchmarks_json_reference": {
+    "rigid": 0.23541240900000085,
+    "reduced": 1.2508108433333358,
+    "full": 1.7549453596666638,
+    "v1_flex_nbend2": 1.4174237833333336
+   }
+  }
+ },
+ "preflight_cpu_s": {
+  "doc": "per genome, once per evaluate() call (included in the per-scenario numbers above, divided by 3); min over 5 reps",
+  "models": {
+   "c172x": {
+    "full": {
+     "build_cpu_s": 0.01668427699999997,
+     "margins_sizing_cpu_s": 0.05934696099999992,
+     "total_cpu_s": 0.07603123799999989
+    },
+    "full_a1_48strips": {
+     "build_cpu_s": 0.03115242000000018,
+     "margins_sizing_cpu_s": 0.06435660200000015,
+     "total_cpu_s": 0.09550902200000033
+    },
+    "full_a1_64strips": {
+     "build_cpu_s": 0.0878566860000003,
+     "margins_sizing_cpu_s": 0.06423303399999991,
+     "total_cpu_s": 0.1520897200000002
+    }
+   },
+   "T38": {
+    "full": {
+     "build_cpu_s": 0.015995931000000407,
+     "margins_sizing_cpu_s": 0.048786494000000236,
+     "total_cpu_s": 0.06478242500000064
+    },
+    "full_a1_48strips": {
+     "build_cpu_s": 0.03159977600000019,
+     "margins_sizing_cpu_s": 0.052482458999999704,
+     "total_cpu_s": 0.0840822349999999
+    },
+    "full_a1_64strips": {
+     "build_cpu_s": 0.09496794399999997,
+     "margins_sizing_cpu_s": 0.051928718000000096,
+     "total_cpu_s": 0.14689666200000007
+    }
+   },
+   "737": {
+    "full": {
+     "build_cpu_s": 0.015880820000000462,
+     "margins_sizing_cpu_s": 0.04773507500000029,
+     "total_cpu_s": 0.06361589500000076
+    },
+    "full_a1_48strips": {
+     "build_cpu_s": 0.026100285000000056,
+     "margins_sizing_cpu_s": 0.0513077019999999,
+     "total_cpu_s": 0.07740798699999996
+    },
+    "full_a1_64strips": {
+     "build_cpu_s": 0.05350694399999956,
+     "margins_sizing_cpu_s": 0.05064657700000019,
+     "total_cpu_s": 0.10415352099999975
+    }
+   },
+   "f16": {
+    "full": {
+     "build_cpu_s": 0.015619248999999336,
+     "margins_sizing_cpu_s": 0.06215098300000044,
+     "total_cpu_s": 0.07777023199999977
+    },
+    "full_a1_48strips": {
+     "build_cpu_s": 0.032447496999999714,
+     "margins_sizing_cpu_s": 0.06397304600000009,
+     "total_cpu_s": 0.0964205429999998
+    },
+    "full_a1_64strips": {
+     "build_cpu_s": 0.09652066399999981,
+     "margins_sizing_cpu_s": 0.06753729800000041,
+     "total_cpu_s": 0.16405796200000022
+    }
+   }
+  }
+ }
+}

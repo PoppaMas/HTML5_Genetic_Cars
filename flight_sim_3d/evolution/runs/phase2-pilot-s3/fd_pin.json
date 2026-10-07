@@ -1,0 +1,5 @@
+{
+ "fd_dir": "evolution/_fd_pin_post_mass",
+ "pins": "model_versions_post_mass.json",
+ "note": "Phase 2 post-mass pin. Live flight-dynamics/ moved on (P2.5+); this run was resumed with EVOLUTION_FD_DIR=evolution/_fd_pin_post_mass so model_version hashes stay 11df8fe4 / e9535bc7 / 2c73464b. Do not rewrite run.json."
+}

@@ -1,4 +1,7 @@
-"""Best-trajectory export (format ``ga-flightsim-traj/2``; /1 still accepted by validate_traj) and altitude-hold metrics."""
+"""Best-trajectory export (format ``ga-flightsim-traj/2``; /1 still accepted by validate_traj) and altitude-hold metrics.
+
+Newly exported files with a ``structure`` block set ``structure.modal_twist_sign_fixed: true`` (additive; no schema bump).
+"""
 from __future__ import annotations
 
 import json
@@ -89,6 +92,18 @@ def traj_filename(aircraft: str, run_id: str, gen: int) -> str:
     return f"traj_{aircraft}_{run_id}_g{gen}.json"
 
 
+def _structure_for_export(st: Dict) -> Dict:
+    """Copy the FlexState structure header and mark the wingR_modal.twist sign as post-fix.
+
+    Additive field on evolution-flex-state/*; schema stays ga-flightsim-traj/2. Older traj files omit it;
+    validate_traj accepts both. True means fd_to_structure_channels used name.startswith("wingR") so
+    wingR_modal.twist is + for nose-up (same as FE wingR.twist).
+    """
+    out = dict(st)
+    out["modal_twist_sign_fixed"] = True
+    return out
+
+
 def build_doc(*, run_id: str, aircraft: str, jsbsim_version: str, git_sha: str, seed: int, generation: int,
               fitness: float, gains: Dict[str, float], scenario: Dict, scenario_index: int, sim_result: Dict,
               profile: Dict, extra: Optional[Dict] = None) -> Dict:
@@ -156,7 +171,10 @@ def build_doc(*, run_id: str, aircraft: str, jsbsim_version: str, git_sha: str, 
         "controls_timing": tr.get("controls_timing", CONTROLS_TIMING),
         "controls_timing_doc": CONTROLS_TIMING_DOC,
         "channel_doc": channel_doc(chans),
-        **({"structure": tr["structure"]} if tr.get("structure") is not None else {}),
+        **({"structure": _structure_for_export(tr["structure"])} if tr.get("structure") is not None else {}),
+        # P3-B1 (full_a1_b1 only): FD's shaped planform, once per file (Sim Bridge spec fd-planform/1; additive field,
+        # the file stays ga-flightsim-traj/2)
+        **({"planform": sim_result["planform_header"]} if sim_result.get("planform_header") is not None else {}),
         **(extra or {}),
         "channels": chans,
         "data": data,

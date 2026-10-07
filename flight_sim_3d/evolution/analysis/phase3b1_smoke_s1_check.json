@@ -1,0 +1,1163 @@
+{
+ "B1_full_a1_b1": {
+  "run_id": "phase3b1-smoke-s1",
+  "wall_s": 356.5623638620018,
+  "workers": 8,
+  "loadavg_start": [
+   8.7138671875,
+   8.65771484375,
+   4.8935546875
+  ],
+  "aircraft": {
+   "T38": {
+    "best_id": "T38:g4:r0",
+    "best_cost": 0.15620042908602197,
+    "best_status": "ok",
+    "model_version": "full_a1_b1:flexv2b1:982bce54",
+    "structural_sum": 0.01753430787190529,
+    "J_mass": 0.003568762765232159,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_mass": 0.003568762765232159,
+     "J_bm_rms": 0.012507892883063254,
+     "J_smooth": 6.623768475488984e-05,
+     "J_tail_bm_limit": 0.0008047380396196,
+     "J_fus_bm_limit": 0.0005866764992353861
+    },
+    "mass_delta_pct": 1.1895875884107197,
+    "mass_lb": {
+     "wingR_lb": 16.292413678072794,
+     "wingL_lb": 16.292413678072794,
+     "ht_lb": -1.1378963496143868,
+     "vt_lb": -0.9103170796915094,
+     "fus_lb": -5.912150846737796,
+     "total_lb": 24.624463080101897,
+     "baseline_flexible_lb": 2070.0,
+     "total_frac": 0.011895875884107197
+    },
+    "margins": {
+     "flutter_margin": 1.2341952690296387,
+     "div_margin": 3.0,
+     "reversal_margin": 2.090903752951423
+    },
+    "flutter_margin": 1.2341952690296387,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "kp_hdg": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.164,
+      "bounds": [
+       0.164,
+       16.4
+      ]
+     },
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0022877818044930672,
+      "value": 1.0005106340857062,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     },
+     "wing_twist_mid_deg": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 1.0,
+      "bounds": [
+       -2.0,
+       1.0
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.3125,
+     "wing_nsm_tip": 0.9375
+    },
+    "best_struct": {
+     "wing_ei_root": 1.0698833683711366,
+     "wing_ei_taper_1": 1.040720742248903,
+     "wing_ei_taper_2": 1.0320304765594823,
+     "wing_ei_taper_3": 1.0023642361077911,
+     "wing_ei_taper_4": 1.0227087599404778,
+     "wing_gj_ratio_root": 1.025022739159911,
+     "wing_gj_ratio_tip": 1.00826624987313,
+     "wing_nsm_root": 1.012577491178753,
+     "wing_nsm_tip": 1.0005106340857062,
+     "tail_stiffness_scale": 0.972414633948742,
+     "fuselage_stiffness_scale": 0.9763513966130488,
+     "struct_damping_ratio": 0.02067525744440856
+    },
+    "rejected_rows_all_gens": 1,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "flutter": 1
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.24114149794307482,
+     0.1761889323959911,
+     0.1637824551860834,
+     0.15660755462851028,
+     0.15620042908602197
+    ],
+    "evolve_wall_s": 271.123850367032,
+    "eval_wall_s": 271.03630208800314,
+    "eval_cpu_s": 416.00702948300005,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.925958469828704,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_T38_phase3b1-smoke-s1_g0.json",
+     "traj_T38_phase3b1-smoke-s1_g2.json",
+     "traj_T38_phase3b1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "737": {
+    "best_id": "737:g4:r0",
+    "best_cost": 0.2705880291575841,
+    "best_status": "ok",
+    "model_version": "full_a1_b1:flexv2b1:1bc748ac",
+    "structural_sum": 0.023593637795810363,
+    "J_mass": 0.0029582897696410443,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.006671418712430784,
+     "J_mass": 0.0029582897696410443,
+     "J_bm_rms": 0.013919734004864369,
+     "J_smooth": 3.058692682319618e-05,
+     "J_tail_bm_limit": 1.3608382050970071e-05
+    },
+    "mass_delta_pct": 0.9860965898803481,
+    "mass_lb": {
+     "wingR_lb": 61.659788047315985,
+     "wingL_lb": 61.659788047315985,
+     "ht_lb": -2.425761157610306,
+     "vt_lb": -1.8193208682077302,
+     "fus_lb": 144.213295429239,
+     "total_lb": 263.2877894980529,
+     "baseline_flexible_lb": 26700.0,
+     "total_frac": 0.00986096589880348
+    },
+    "margins": {
+     "flutter_margin": 1.1836642493745395,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2663901182874147
+    },
+    "flutter_margin": 1.1836642493745395,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "kp_hdg": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 0.137,
+      "bounds": [
+       0.137,
+       13.7
+      ]
+     },
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.75,
+     "wing_nsm_tip": 0.5625
+    },
+    "best_struct": {
+     "wing_ei_root": 1.023149995713425,
+     "wing_ei_taper_1": 0.994384749848154,
+     "wing_ei_taper_2": 1.0143386811538369,
+     "wing_ei_taper_3": 1.0281763931103496,
+     "wing_ei_taper_4": 1.0341361112273657,
+     "wing_gj_ratio_root": 0.9839602213089496,
+     "wing_gj_ratio_tip": 1.0165759850219085,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.014325201342613,
+     "tail_stiffness_scale": 0.9963246043066512,
+     "fuselage_stiffness_scale": 1.060088873095516,
+     "struct_damping_ratio": 0.028911166100695867
+    },
+    "rejected_rows_all_gens": 1,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 1
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.38296210353874177,
+     0.3116464620321731,
+     0.2941169499379262,
+     0.2749295518819064,
+     0.2705880291575841
+    ],
+    "evolve_wall_s": 296.32795503898524,
+    "eval_wall_s": 296.2664534858777,
+    "eval_cpu_s": 412.70367886299994,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.910665179921296,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_737_phase3b1-smoke-s1_g0.json",
+     "traj_737_phase3b1-smoke-s1_g2.json",
+     "traj_737_phase3b1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "c172x": {
+    "best_id": "c172x:g4:r0",
+    "best_cost": 0.38607496666202296,
+    "best_status": "ok",
+    "model_version": "full_a1_b1:flexv2b1:3e40908a",
+    "structural_sum": 0.0442852136569099,
+    "J_mass": 0.012363380679428314,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_mass": 0.012363380679428314,
+     "J_bm_rms": 0.03176406653282144,
+     "J_smooth": 0.00015776644466014588
+    },
+    "mass_delta_pct": 4.121126893142772,
+    "mass_lb": {
+     "wingR_lb": 6.266184935297045,
+     "wingL_lb": 6.266184935297045,
+     "ht_lb": 0.14106821008707773,
+     "vt_lb": 0.08681120620743243,
+     "fus_lb": 1.3340046876596787,
+     "total_lb": 14.094253974548279,
+     "baseline_flexible_lb": 342.0,
+     "total_frac": 0.041211268931427715
+    },
+    "margins": {
+     "flutter_margin": 1.388149540557849,
+     "div_margin": 1.7852509076236178,
+     "reversal_margin": 1.6327003161297904
+    },
+    "flutter_margin": 1.388149540557849,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     },
+     "wing_nsm_tip": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.9375,
+     "wing_nsm_tip": 0.9375
+    },
+    "best_struct": {
+     "wing_ei_root": 1.199505502841009,
+     "wing_ei_taper_1": 1.0118476420403577,
+     "wing_ei_taper_2": 1.0368578413546068,
+     "wing_ei_taper_3": 0.9972591828344539,
+     "wing_ei_taper_4": 1.0299898128806455,
+     "wing_gj_ratio_root": 1.044335468738753,
+     "wing_gj_ratio_tip": 0.9953180553780377,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.0,
+     "tail_stiffness_scale": 1.0197298195925983,
+     "fuselage_stiffness_scale": 1.0370556857683246,
+     "struct_damping_ratio": 0.021291038023359174
+    },
+    "rejected_rows_all_gens": 7,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 7
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.5265480399285868,
+     0.4481842178171161,
+     0.44767253841082905,
+     0.3937258152857828,
+     0.38607496666202296
+    ],
+    "evolve_wall_s": 323.7340640670154,
+    "eval_wall_s": 323.6865544540924,
+    "eval_cpu_s": 418.737028203,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.9385973527916667,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_c172x_phase3b1-smoke-s1_g0.json",
+     "traj_c172x_phase3b1-smoke-s1_g2.json",
+     "traj_c172x_phase3b1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   }
+  }
+ },
+ "A1_full_a1": {
+  "run_id": "phase3a1-smoke-s1",
+  "wall_s": 168.3103377239895,
+  "workers": 8,
+  "loadavg_start": [
+   0.912109375,
+   0.998046875,
+   1.26953125
+  ],
+  "aircraft": {
+   "737": {
+    "best_id": "737:g4:r0",
+    "best_cost": 0.2564816976616621,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:522189cb",
+    "structural_sum": 0.09073030964489702,
+    "J_mass": 0.00023165468106529726,
+    "J_wing_tip_bm_limit": 5.380545694518335e-06,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.025979307420031468,
+     "J_mass": 0.00023165468106529726,
+     "J_bm_rms": 0.013703663041943754,
+     "J_smooth": 8.51721367948561e-05,
+     "J_wing_bm_limit": 5.728344486386931e-05,
+     "J_wing_torque_limit": 0.0004637439889288513,
+     "J_wing_ip_limit": 5.728344486386595e-06,
+     "J_wing_tip_bm_limit": 5.380545694518335e-06,
+     "J_tail_bm_limit": 0.05019837604108802
+    },
+    "mass_delta_pct": 0.07721822702176576,
+    "mass_lb": {
+     "wingR_lb": 96.30222712509877,
+     "wingL_lb": 96.30222712509877,
+     "ht_lb": -120.8063136001672,
+     "vt_lb": -90.6047352001254,
+     "fus_lb": 39.423861164906526,
+     "total_lb": 20.617266614811456,
+     "baseline_flexible_lb": 26700.0,
+     "total_frac": 0.0007721822702176575
+    },
+    "margins": {
+     "flutter_margin": 1.1677638045544878,
+     "div_margin": 3.0,
+     "reversal_margin": 1.2620871031491712
+    },
+    "flutter_margin": 1.1677638045544878,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {},
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.5625,
+     "wing_nsm_tip": 0.5625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.0074681375757426,
+     "wing_ei_taper_3": 0.977807959972517,
+     "wing_ei_taper_4": 0.9668917220221664,
+     "wing_gj_ratio_root": 0.9475951226367275,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.018054275982108,
+     "wing_nsm_tip": 1.078062142140171,
+     "tail_stiffness_scale": 0.8169601309088373,
+     "fuselage_stiffness_scale": 1.0164266088187108,
+     "struct_damping_ratio": 0.021717852772058822
+    },
+    "rejected_rows_all_gens": 2,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 1,
+     "flutter": 1
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.3814927422539509,
+     0.3814927422539509,
+     0.3620923228970249,
+     0.29202421655360844,
+     0.2564816976616621
+    ],
+    "evolve_wall_s": 128.19283257302595,
+    "eval_wall_s": 128.12439747096505,
+    "eval_cpu_s": 389.9985855,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.8055490069444444,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_737_phase3a1-smoke-s1_g0.json",
+     "traj_737_phase3a1-smoke-s1_g2.json",
+     "traj_737_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "T38": {
+    "best_id": "T38:g4:r0",
+    "best_cost": 0.22622908042719758,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:f248873e",
+    "structural_sum": 0.02620645610300666,
+    "J_mass": 0.004907958396920098,
+    "J_wing_tip_bm_limit": 0.0,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_flutter_margin": 0.0029884339684715412,
+     "J_mass": 0.004907958396920098,
+     "J_bm_rms": 0.015223959731032561,
+     "J_smooth": 0.000360591020780588,
+     "J_wing_bm_limit": 8.728016957378795e-05,
+     "J_wing_torque_limit": 1.2845350901701437e-06,
+     "J_wing_ip_limit": 8.728016957378795e-06,
+     "J_tail_bm_limit": 0.0026282202641805365
+    },
+    "mass_delta_pct": 1.6359861323066993,
+    "mass_lb": {
+     "wingR_lb": 4.963452570062304,
+     "wingL_lb": 4.963452570062304,
+     "ht_lb": -2.0116023920371036,
+     "vt_lb": -1.6092819136296832,
+     "fus_lb": 27.558892104290855,
+     "total_lb": 33.864912938748674,
+     "baseline_flexible_lb": 2070.0,
+     "total_frac": 0.016359861323066993
+    },
+    "margins": {
+     "flutter_margin": 1.1890666858300485,
+     "div_margin": 3.0,
+     "reversal_margin": 2.012631872744168
+    },
+    "flutter_margin": 1.1890666858300485,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_ei_taper_2": {
+      "side": "ceiling",
+      "u": 1.0,
+      "value": 1.05,
+      "bounds": [
+       0.75,
+       1.05
+      ]
+     },
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.625
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9884245636553649,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 1.05,
+     "wing_ei_taper_3": 0.977447406061193,
+     "wing_ei_taper_4": 1.0204590329103982,
+     "wing_gj_ratio_root": 1.008265028237439,
+     "wing_gj_ratio_tip": 0.9953180553780377,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.0119561069172247,
+     "tail_stiffness_scale": 0.951233881405161,
+     "fuselage_stiffness_scale": 1.1102355684171636,
+     "struct_damping_ratio": 0.021109978383205906
+    },
+    "rejected_rows_all_gens": 3,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "structural_ultimate_empennage": 1,
+     "diverged": 2
+    },
+    "rejected_last_gen": 0,
+    "best_per_gen": [
+     0.2346000230390707,
+     0.2346000230390707,
+     0.2346000230390707,
+     0.22622908042719758,
+     0.22622908042719758
+    ],
+    "evolve_wall_s": 137.73734161100583,
+    "eval_wall_s": 137.68225528189214,
+    "eval_cpu_s": 397.91977143400004,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.8422211640462964,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_T38_phase3a1-smoke-s1_g0.json",
+     "traj_T38_phase3a1-smoke-s1_g2.json",
+     "traj_T38_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   },
+   "c172x": {
+    "best_id": "c172x:g4:r0",
+    "best_cost": 0.3233991029179333,
+    "best_status": "ok",
+    "model_version": "full_a1:flexv2a1:36fb4f5a",
+    "structural_sum": 0.036695079772802154,
+    "J_mass": 0.0010770200022265977,
+    "J_wing_tip_bm_limit": 0.0005379846808834132,
+    "negative_terms": {},
+    "nonzero_struct_terms": {
+     "J_mass": 0.0010770200022265977,
+     "J_bm_rms": 0.034213313519592684,
+     "J_smooth": 0.0003757913404737628,
+     "J_wing_bm_limit": 0.0004463365723869967,
+     "J_wing_ip_limit": 4.463365723869874e-05,
+     "J_wing_tip_bm_limit": 0.0005379846808834132
+    },
+    "mass_delta_pct": 0.35900666740886594,
+    "mass_lb": {
+     "wingR_lb": 0.11524189265842458,
+     "wingL_lb": 0.11524189265842458,
+     "ht_lb": 0.10516630515269743,
+     "vt_lb": 0.06471772624781381,
+     "fus_lb": 0.8274349858209611,
+     "total_lb": 1.2278028025383214,
+     "baseline_flexible_lb": 342.0,
+     "total_frac": 0.0035900666740886593
+    },
+    "margins": {
+     "flutter_margin": 1.235009343063703,
+     "div_margin": 1.6765540128277312,
+     "reversal_margin": 1.479835900651365
+    },
+    "flutter_margin": 1.235009343063703,
+    "stiffness_floor_fraction": {
+     "wing_ei_root": 0.0,
+     "wing_ei_taper_1": 0.0,
+     "wing_ei_taper_2": 0.0,
+     "wing_ei_taper_3": 0.0,
+     "wing_ei_taper_4": 0.0,
+     "wing_gj_ratio_root": 0.0,
+     "wing_gj_ratio_tip": 0.0,
+     "tail_stiffness_scale": 0.0,
+     "fuselage_stiffness_scale": 0.0
+    },
+    "stiffness_genes_piled_ge_25pct": [],
+    "stiffness_any_in_final_pop_at_floor": {},
+    "best_genes_at_bounds": {
+     "wing_nsm_root": {
+      "side": "floor",
+      "u": 0.0,
+      "value": 1.0,
+      "bounds": [
+       1.0,
+       1.25
+      ]
+     }
+    },
+    "nsm_floor_fraction": {
+     "wing_nsm_root": 0.8125,
+     "wing_nsm_tip": 0.5
+    },
+    "best_struct": {
+     "wing_ei_root": 0.9793105736466257,
+     "wing_ei_taper_1": 1.0341732384245568,
+     "wing_ei_taper_2": 0.9641251550598673,
+     "wing_ei_taper_3": 0.9902080037036219,
+     "wing_ei_taper_4": 1.0341361112273657,
+     "wing_gj_ratio_root": 1.0269720946749665,
+     "wing_gj_ratio_tip": 0.9960923997188194,
+     "wing_nsm_root": 1.0,
+     "wing_nsm_tip": 1.014325201342613,
+     "tail_stiffness_scale": 1.0147085741472308,
+     "fuselage_stiffness_scale": 1.0229843051616934,
+     "struct_damping_ratio": 0.021109978383205906
+    },
+    "rejected_rows_all_gens": 17,
+    "rows_all_gens": 80,
+    "rejected_by_status": {
+     "overload": 17
+    },
+    "rejected_last_gen": 1,
+    "best_per_gen": [
+     0.513410368411371,
+     0.513410368411371,
+     0.3233991029179333,
+     0.3233991029179333,
+     0.3233991029179333
+    ],
+    "evolve_wall_s": 148.16497878701193,
+    "eval_wall_s": 148.1268759960658,
+    "eval_cpu_s": 350.84673887199995,
+    "sims_computed": 216,
+    "cpu_s_per_scenario": 1.6242904577407404,
+    "resim_mismatches": [],
+    "trajectories": [
+     "traj_c172x_phase3a1-smoke-s1_g0.json",
+     "traj_c172x_phase3a1-smoke-s1_g2.json",
+     "traj_c172x_phase3a1-smoke-s1_g4.json"
+    ],
+    "flags_phase2_check": []
+   }
+  }
+ },
+ "B1_shape": {
+  "c172x": {
+   "final_generation": 4,
+   "best_id": "c172x:g4:r0",
+   "best_shape": {
+    "wing_chord_taper_1": 0.9748037782466775,
+    "wing_chord_taper_2": 1.0200350891016143,
+    "wing_chord_taper_3": 0.997698105376601,
+    "wing_twist_mid_deg": 0.4240896367047937,
+    "wing_twist_tip_deg": 0.2912565945361667,
+    "wing_sweep_qc_delta_deg": -1.3623497321404403
+   },
+   "shape_genes": {
+    "wing_chord_taper_1": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.9748037782466775,
+     "best_u": 0.6240188912333875,
+     "final_mean": 0.9786030442621265,
+     "final_std": 0.006951258735547868,
+     "final_mean_abs_delta_from_baseline": 0.02139695573787353,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.9748037782466775,
+      0.9748037782466775,
+      0.9748037782466775,
+      0.9748037782466775,
+      0.9748037782466775
+     ]
+    },
+    "wing_chord_taper_2": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 1.0200350891016143,
+     "best_u": 0.8501754455080714,
+     "final_mean": 1.0094642500125175,
+     "final_std": 0.0224439801952781,
+     "final_mean_abs_delta_from_baseline": 0.021750125385012906,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0625,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      1.0200350891016143,
+      1.0200350891016143,
+      0.983187527670422,
+      0.983187527670422,
+      1.0200350891016143
+     ]
+    },
+    "wing_chord_taper_3": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.997698105376601,
+     "best_u": 0.7384905268830048,
+     "final_mean": 0.994775934785382,
+     "final_std": 0.0063675296267256005,
+     "final_mean_abs_delta_from_baseline": 0.005818779256888923,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.997698105376601,
+      0.997698105376601,
+      0.997698105376601,
+      0.997698105376601,
+      0.997698105376601
+     ]
+    },
+    "wing_twist_mid_deg": {
+     "bounds": [
+      -2.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 0.4240896367047937,
+     "best_u": 0.8080298789015979,
+     "final_mean": 0.40535457877607045,
+     "final_std": 0.3228069712514253,
+     "final_mean_abs_delta_from_baseline": 0.4935766519290578,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0625,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.4240896367047937,
+      0.4240896367047937,
+      0.4240896367047937,
+      0.4240896367047937,
+      0.4240896367047937
+     ]
+    },
+    "wing_twist_tip_deg": {
+     "bounds": [
+      -4.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 0.2912565945361667,
+     "best_u": 0.8582513189072334,
+     "final_mean": 0.46745560647476037,
+     "final_std": 0.25665550380120916,
+     "final_mean_abs_delta_from_baseline": 0.46745560647476037,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.125,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.2912565945361667,
+      0.2912565945361667,
+      0.2912565945361667,
+      0.9638671133109113,
+      0.2912565945361667
+     ]
+    },
+    "wing_sweep_qc_delta_deg": {
+     "bounds": [
+      -5.0,
+      5.0
+     ],
+     "baseline": 0.0,
+     "best": -1.3623497321404403,
+     "best_u": 0.36376502678595596,
+     "final_mean": -1.2664028316723182,
+     "final_std": 0.9987401287595603,
+     "final_mean_abs_delta_from_baseline": 1.5605069330896597,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      -1.3623497321404403,
+      -1.3623497321404403,
+      -1.3623497321404403,
+      -1.3623497321404403,
+      -1.3623497321404403
+     ]
+    }
+   },
+   "bound_pile_flags": [],
+   "geometry_gate_rejects_rows": 0,
+   "geometry_gate_rejects_history": 0,
+   "geometry_gate_reasons_history": {},
+   "best_model_version": "full_a1_b1:flexv2b1:3e40908a"
+  },
+  "T38": {
+   "final_generation": 4,
+   "best_id": "T38:g4:r0",
+   "best_shape": {
+    "wing_chord_taper_1": 0.9837583686328314,
+    "wing_chord_taper_2": 1.0200350891016143,
+    "wing_chord_taper_3": 0.997698105376601,
+    "wing_twist_mid_deg": 1.0,
+    "wing_twist_tip_deg": 0.2912565945361667,
+    "wing_sweep_qc_delta_deg": -0.42188558627786144
+   },
+   "shape_genes": {
+    "wing_chord_taper_1": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.9837583686328314,
+     "best_u": 0.6687918431641569,
+     "final_mean": 0.990307598973873,
+     "final_std": 0.0346710786567588,
+     "final_mean_abs_delta_from_baseline": 0.03228445564625738,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.9748037782466775,
+      0.9748037782466775,
+      1.0451841092402607,
+      0.9380930143131081,
+      0.9837583686328314
+     ]
+    },
+    "wing_chord_taper_2": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 1.0200350891016143,
+     "best_u": 0.8501754455080714,
+     "final_mean": 1.008468857544434,
+     "final_std": 0.03876449703301089,
+     "final_mean_abs_delta_from_baseline": 0.036947968753739464,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      1.0200350891016143,
+      0.983187527670422,
+      0.9664811172377689,
+      1.0200350891016143,
+      1.0200350891016143
+     ]
+    },
+    "wing_chord_taper_3": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.997698105376601,
+     "best_u": 0.7384905268830048,
+     "final_mean": 0.9917843305634236,
+     "final_std": 0.008773494674820232,
+     "final_mean_abs_delta_from_baseline": 0.008215669436576332,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.997698105376601,
+      0.997698105376601,
+      0.9782724862167737,
+      0.997698105376601,
+      0.997698105376601
+     ]
+    },
+    "wing_twist_mid_deg": {
+     "bounds": [
+      -2.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 1.0,
+     "best_u": 1.0,
+     "final_mean": 0.7414283661093104,
+     "final_std": 0.41694606051292105,
+     "final_mean_abs_delta_from_baseline": 0.7642442833753011,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.6875,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.4240896367047937,
+      0.4240896367047937,
+      -0.060842446042641996,
+      1.0,
+      1.0
+     ]
+    },
+    "wing_twist_tip_deg": {
+     "bounds": [
+      -4.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 0.2912565945361667,
+     "best_u": 0.8582513189072334,
+     "final_mean": 0.419755492374893,
+     "final_std": 0.22386355234315114,
+     "final_mean_abs_delta_from_baseline": 0.419755492374893,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0625,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.2912565945361667,
+      0.2912565945361667,
+      0.5056187950233575,
+      0.17615525361864837,
+      0.2912565945361667
+     ]
+    },
+    "wing_sweep_qc_delta_deg": {
+     "bounds": [
+      -5.0,
+      5.0
+     ],
+     "baseline": 0.0,
+     "best": -0.42188558627786144,
+     "best_u": 0.45781144137221386,
+     "final_mean": -0.5535837955073633,
+     "final_std": 0.6047287539358952,
+     "final_mean_abs_delta_from_baseline": 0.6715396661033955,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      -1.3623497321404403,
+      -1.3623497321404403,
+      0.3145489882560861,
+      -1.388092268255872,
+      -0.42188558627786144
+     ]
+    }
+   },
+   "bound_pile_flags": [
+    "shape gene piled at a bound (possible exploit): wing_twist_mid_deg floor 0% ceiling 69%"
+   ],
+   "geometry_gate_rejects_rows": 0,
+   "geometry_gate_rejects_history": 0,
+   "geometry_gate_reasons_history": {},
+   "best_model_version": "full_a1_b1:flexv2b1:982bce54"
+  },
+  "737": {
+   "final_generation": 4,
+   "best_id": "737:g4:r0",
+   "best_shape": {
+    "wing_chord_taper_1": 0.9380930143131081,
+    "wing_chord_taper_2": 1.0200350891016143,
+    "wing_chord_taper_3": 0.997698105376601,
+    "wing_twist_mid_deg": 0.4240896367047937,
+    "wing_twist_tip_deg": 0.17615525361864837,
+    "wing_sweep_qc_delta_deg": -2.3285564141184514
+   },
+   "shape_genes": {
+    "wing_chord_taper_1": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.9380930143131081,
+     "best_u": 0.44046507156554043,
+     "final_mean": 0.9361475459290033,
+     "final_std": 0.020046394729448407,
+     "final_mean_abs_delta_from_baseline": 0.06385245407099671,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.9748037782466775,
+      1.018262743380063,
+      0.9218629632757371,
+      0.9748037782466775,
+      0.9380930143131081
+     ]
+    },
+    "wing_chord_taper_2": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 1.0200350891016143,
+     "best_u": 0.8501754455080714,
+     "final_mean": 0.994242144031364,
+     "final_std": 0.013710107761676108,
+     "final_mean_abs_delta_from_baseline": 0.013077152307860433,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      1.0200350891016143,
+      1.0235021815253955,
+      0.990611039527322,
+      1.0078847036795868,
+      1.0200350891016143
+     ]
+    },
+    "wing_chord_taper_3": {
+     "bounds": [
+      0.85,
+      1.05
+     ],
+     "baseline": 1.0,
+     "best": 0.997698105376601,
+     "best_u": 0.7384905268830048,
+     "final_mean": 0.9867926585933006,
+     "final_std": 0.010148902693461302,
+     "final_mean_abs_delta_from_baseline": 0.0132073414066994,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.997698105376601,
+      1.0009529629827467,
+      0.9912666451526069,
+      0.9650132705264034,
+      0.997698105376601
+     ]
+    },
+    "wing_twist_mid_deg": {
+     "bounds": [
+      -2.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 0.4240896367047937,
+     "best_u": 0.8080298789015979,
+     "final_mean": -0.28669065022550067,
+     "final_std": 0.49142221421294996,
+     "final_mean_abs_delta_from_baseline": 0.5171370956843052,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.4240896367047937,
+      -0.7392710573194436,
+      -0.5349209883634798,
+      0.4240896367047937,
+      0.4240896367047937
+     ]
+    },
+    "wing_twist_tip_deg": {
+     "bounds": [
+      -4.0,
+      1.0
+     ],
+     "baseline": 0.0,
+     "best": 0.17615525361864837,
+     "best_u": 0.8352310507237297,
+     "final_mean": -0.5180378462494039,
+     "final_std": 0.4814558183710088,
+     "final_mean_abs_delta_from_baseline": 0.6492784759027974,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      0.2912565945361667,
+      -1.587010390724107,
+      -0.9265646653736299,
+      0.2912565945361667,
+      0.17615525361864837
+     ]
+    },
+    "wing_sweep_qc_delta_deg": {
+     "bounds": [
+      -5.0,
+      5.0
+     ],
+     "baseline": 0.0,
+     "best": -2.3285564141184514,
+     "best_u": 0.2671443585881549,
+     "final_mean": -0.9521812316031044,
+     "final_std": 0.5691502051026177,
+     "final_mean_abs_delta_from_baseline": 0.9521812316031044,
+     "final_frac_at_floor": 0.0,
+     "final_frac_at_ceiling": 0.0,
+     "final_frac_exactly_baseline": 0.0,
+     "best_per_gen": [
+      -1.3623497321404403,
+      -1.5574347184198558,
+      -0.5780774351240945,
+      -1.3623497321404403,
+      -2.3285564141184514
+     ]
+    }
+   },
+   "bound_pile_flags": [],
+   "geometry_gate_rejects_rows": 0,
+   "geometry_gate_rejects_history": 0,
+   "geometry_gate_reasons_history": {},
+   "best_model_version": "full_a1_b1:flexv2b1:1bc748ac"
+  }
+ },
+ "delta_B1_minus_A1": {
+  "T38": {
+   "best_cost": -0.07002865134117561,
+   "structural_sum": -0.008672148231101372,
+   "J_mass": -0.001339195631687939,
+   "J_wing_tip_bm_limit": 0.0,
+   "mass_delta_pct": -0.44639854389597966,
+   "flutter_margin": 0.04512858319959023,
+   "cpu_s_per_scenario": 0.08373730578240757
+  },
+  "737": {
+   "best_cost": 0.014106331495921998,
+   "structural_sum": -0.06713667184908666,
+   "J_mass": 0.002726635088575747,
+   "J_wing_tip_bm_limit": -5.380545694518335e-06,
+   "mass_delta_pct": 0.9088783628585824,
+   "flutter_margin": 0.015900444820051707,
+   "cpu_s_per_scenario": 0.1051161729768515
+  },
+  "c172x": {
+   "best_cost": 0.06267586374408968,
+   "structural_sum": 0.007590133884107744,
+   "J_mass": 0.011286360677201717,
+   "J_wing_tip_bm_limit": -0.0005379846808834132,
+   "mass_delta_pct": 3.7621202257339057,
+   "flutter_margin": 0.15314019749414598,
+   "cpu_s_per_scenario": 0.31430689505092624
+  }
+ },
+ "wall_ratio_B1_over_A1": 2.1184816612199127,
+ "note": "CPU/wall comparisons are confounded by box load: see loadavg_start of each run."
+}

@@ -90,6 +90,57 @@ def structure_remap(a, b):
     return out
 
 
+# ER's fd_to_structure_channels once chose the +twist sign with `name == "wingR"`; after the FlexState /3 rename the
+# modal right wing is called wingR_modal, so ER files written before the fix (`name.startswith("wingR")`) carry
+# wingR_modal.twist with the WRONG (wingL) sign. Nothing in the header tells pre-fix from post-fix files (same
+# traj/flex-state schema, v2_map version, git_sha and twist_doc; only phase2-pilot-s1 has `reexported`), so the
+# convention is decided from the data: the modal tip twist must track the FE tip twist (same span fraction 1.0).
+MODAL_SIGN_MIN_RAD = 1e-4   # need at least this much tip twist to decide
+MODAL_SIGN_MIN_CORR = 0.9
+
+
+def modal_twist_sign(channels, data, side="R"):
+    """+1 if wing<side>_modal.twist agrees in sign with the FE wing<side>.twist at the tip (post-fix / correct),
+    -1 if it is mirrored (pre-fix ER wingR_modal bug), None if undecidable (no modal or FE channels, too little
+    twist, or neither correlated nor anti-correlated). `channels` = list of names, `data` = rows (or 2-D array)."""
+    mod, fe = f"wing{side}_modal", f"wing{side}"
+    nm = sum(1 for c in channels if c.startswith(mod + ".twist."))
+    nf = sum(1 for c in channels if c.startswith(fe + ".twist."))
+    if nm < 2 or nf < 2:
+        return None
+    try:
+        ia, ib = channels.index(f"{mod}.twist.{nm - 1}"), channels.index(f"{fe}.twist.{nf - 1}")
+    except ValueError:
+        return None
+    D = np.asarray(data, dtype=float)
+    if D.ndim != 2 or not len(D):
+        return None
+    a, b = D[:, ia], D[:, ib]
+    ok = np.isfinite(a) & np.isfinite(b)
+    a, b = a[ok], b[ok]
+    if not len(a) or max(np.max(np.abs(a)), np.max(np.abs(b))) < MODAL_SIGN_MIN_RAD:
+        return None
+    r = float(np.sum(a * b) / np.sqrt(np.sum(a * a) * np.sum(b * b)))
+    return 1 if r >= MODAL_SIGN_MIN_CORR else (-1 if r <= -MODAL_SIGN_MIN_CORR else None)
+
+
+def declared_modal_sign(doc):
+    """+1 when ER declares the post-fix sign (structure.modal_twist_sign_fixed: true, ER trajectory.py since the
+    wingR_modal fix / B1 r1); None when not declared (older files: detect from the data)."""
+    st = doc.get("structure") if isinstance(doc, dict) else None
+    return 1 if isinstance(st, dict) and st.get("modal_twist_sign_fixed") is True else None
+
+
+def modal_twist_convention(doc):
+    """{'wingR_modal': +1/-1/None, 'wingL_modal': ..., 'pre_fix': bool|None, 'source': 'header'|'data'}.
+    A declared `structure.modal_twist_sign_fixed: true` is trusted (no correlation detection)."""
+    if declared_modal_sign(doc) == 1:
+        return {"wingR_modal": 1, "wingL_modal": 1, "pre_fix": False, "source": "header"}
+    r = modal_twist_sign(doc["channels"], doc["data"], "R")
+    l = modal_twist_sign(doc["channels"], doc["data"], "L")
+    return {"wingR_modal": r, "wingL_modal": l, "pre_fix": None if r is None else (r < 0), "source": "data"}
+
+
 def diff(a, b, tol_scale=1.0):
     ca, cb = a["channels"], b["channels"]
     remap = structure_remap(a, b)
@@ -107,12 +158,19 @@ def diff(a, b, tol_scale=1.0):
         qb = B[ib][:, [cb.index(q) for q in qn]]
         qflip = np.sum(qa * qb, axis=1) < 0
         res["quat_sign_flipped_rows"] = int(qflip.sum())
+    # pre-fix vs post-fix wingR_modal.twist (see modal_twist_sign): compare with the reference's sign undone
+    sa_ = declared_modal_sign(a) or modal_twist_sign(ca, A, "R")   # header flag trusted, else detected
+    sb_ = declared_modal_sign(b) or modal_twist_sign(cb, B, "R")
+    mflip = sa_ is not None and sb_ is not None and sa_ != sb_
+    res["wingR_modal_twist_sign"] = {"a": sa_, "b": sb_, "compared_sign_corrected": bool(mflip)}
     for c in ca:
         if c not in cb or (rprefix and c.startswith(rprefix)):
             continue
         vb = B[ib, cb.index(c)]
         if qflip is not None and c in qn:
             vb = np.where(qflip, -vb, vb)
+        if mflip and c.startswith("wingR_modal.twist."):
+            vb = -vb
         d = np.abs(A[ia, ca.index(c)] - vb)
         m = float(np.nanmax(d)) if len(d) else 0.0
         tol = tol_scale * (0.5 * 10 ** -DEC.get(c, 6) + 1e-9)

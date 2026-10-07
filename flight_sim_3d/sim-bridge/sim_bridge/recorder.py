@@ -95,6 +95,7 @@ class TrajRecorder:
         self._status_seen: Dict[str, set] = {}
         self.v2_stats = {"node_frames": 0, "estimated_frames": 0, "node_errors": [], "tip_check_max_abs": 0.0,
                          "wing_modal_vs_nodal": {}, "flex_api": None}
+        self._modal_acc = {}
         self.timing = timing
         self._pending = None  # (k, row) awaiting its commands (post timing)
         self._last_call = None  # (t, k, fdm, flex_state) for finish()
@@ -345,14 +346,30 @@ class TrajRecorder:
                     a, b = er_ch.get(f"{mod}.{dof}.{j}"), er_ch.get(f"{fe}.{dof}.{i}")
                     if a is None or b is None:
                         continue
-                    # ER fd_to_structure_channels uses `name == "wingR"` for the +twist sign; after the /3 rename
-                    # to wingR_modal that check fails and wingR_modal.twist is written with the wingL sign. Undo
-                    # that for the comparison metric (channels themselves are passed through unchanged).
-                    if dof == "twist" and side == "R" and mod.endswith("_modal"):
-                        a = -a
-                        st["wingR_modal_twist_sign_flipped"] = True
+                    if dof == "twist":
+                        # Pre-fix ER (`name == "wingR"` in fd_to_structure_channels) wrote wingR_modal.twist with
+                        # the wingL sign; ER fixed it (startswith). No header marker distinguishes the two, so the
+                        # convention is detected from the data (correlation of modal vs FE twist, like
+                        # trajdiff.modal_twist_sign) and the metric undoes a mirrored sign only when detected.
+                        acc = self._modal_acc.setdefault(fe, {"ab": 0.0, "aa": 0.0, "bb": 0.0, "asis": 0.0, "flip": 0.0})
+                        acc["ab"] += a * b
+                        acc["aa"] += a * a
+                        acc["bb"] += b * b
+                        acc["asis"] = max(acc["asis"], abs(a - b))
+                        acc["flip"] = max(acc["flip"], abs(-a - b))
+                        st[km] = max(st[km], abs(b))
+                        continue
                     st[kd] = max(st[kd], abs(a - b))
                     st[km] = max(st[km], abs(b))
+            acc = self._modal_acc.get(fe)
+            if acc:
+                den = (acc["aa"] * acc["bb"]) ** 0.5
+                corr = acc["ab"] / den if den > 0 else None
+                big = st["twist_max_abs_rad"] >= 1e-4  # = trajdiff.MODAL_SIGN_MIN_RAD
+                sign = None if (corr is None or not big) else (1 if corr >= 0.9 else (-1 if corr <= -0.9 else None))
+                st["modal_twist_sign"] = sign  # +1 consistent (post-fix ER), -1 mirrored (pre-fix ER), None undecided
+                st["modal_twist_sign_corrected"] = sign == -1
+                st["twist_max_abs_diff_rad"] = acc["flip"] if sign == -1 else acc["asis"]
             st["dx_max_abs_m"] = max(st["dx_max_abs_m"],
                                      max((abs(v) for k, v in er_ch.items() if k.startswith(fe + ".dx.")), default=0.0))
 
