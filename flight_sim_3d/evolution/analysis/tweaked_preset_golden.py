@@ -50,8 +50,14 @@ def rng_h(rng) -> str:
     return hashlib.sha256(json.dumps(rng.bit_generator.state, sort_keys=True).encode()).hexdigest()
 
 
+def _is_phase4(path):   # Phase 4 configs ({"phase": "phase4_rings"}) never go through batch.resolve_config (phase4_loop)
+    with open(path) as f:
+        return json.load(f).get("phase") == "phase4_rings"
+
+
 def config_files():
-    return sorted(glob.glob(os.path.join(PKG, "configs", "*.json"))) + sorted(glob.glob(os.path.join(PKG, "configs", "seeds", "*.json")))
+    fs = sorted(glob.glob(os.path.join(PKG, "configs", "*.json"))) + sorted(glob.glob(os.path.join(PKG, "configs", "seeds", "*.json")))
+    return [f for f in fs if not _is_phase4(f)]
 
 
 def gcfg_of(cfg) -> "ga.GAConfig":

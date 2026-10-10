@@ -1,0 +1,8 @@
+# P4 control-surface files (md5sum -c v2_results/FROZEN_P4cs.md5 from flight-dynamics/); NOT chmod'ed yet (pending sign-off)
+8d73aa25666f8b1889e61cb2af947316  ctrlsurf_p4.py
+8c1f9f893f8de6655ca35c892a0f812e  flexeval_p4.py
+83b6ae142c2f267ba67b7c78fb2705b0  p4_limits.py
+4e99c119cc1cef90dcf0c73760a26fdb  test_ctrlsurf_p4.py
+7a6217b0c22a3a216526a37350b17d6b  PHASE4_FD_CONTROL_SURFACES.md
+5994c56ae35bc2b2aa417e4bcab9e7e6  v2_results/p4_aircraft_limits.json
+16eaf6b38baac8692fb65dfd0fa4f82d  v2_results/model_versions_post_p4cs.json

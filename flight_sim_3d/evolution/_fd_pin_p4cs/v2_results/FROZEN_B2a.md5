@@ -1,0 +1,10 @@
+# P3-B2a frozen files (md5sum -c v2_results/FROZEN_B2a.md5 from flight-dynamics/); chmod a-w; written by FD at sign-off
+1468de0d0de4b9fcc1715d3a405a852a  planform_b2.py
+8ed0685d769bf90515c1057a21ff49a9  flexbody_b2.py
+2b8ddb85e32b607080e11bc3fd744c3b  flexeval_b2.py
+4eca322f6efe3a573b570c397fcff738  v2_results/model_versions_post_p3b2a.json
+43e6cf557af5de686ff0af12b06e8fb0  v2_results/p3b2a_energy_ref.json
+a6beb49be0455508f6d438ad15aea2e5  jsbsim_root_v2b2/aircraft/c172x/c172x.xml
+6341a6ba1a449acfa1aa4d6b0765d97f  jsbsim_root_v2b2/aircraft/T38/T38.xml
+f52a6ed8a935080e39daf7c9f9d13919  jsbsim_root_v2b2/aircraft/737/737.xml
+c69eca97a349dd396815579d7b074df3  jsbsim_root_v2b2/aircraft/f16/f16.xml

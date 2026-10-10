@@ -100,7 +100,8 @@ def _decimate(traj: dict, hz: Optional[float]) -> dict:
 
 REQUIRED = ["t", "x", "y", "z", "qw", "qx", "qy", "qz", "vx", "vy", "vz", "alt_msl_m",
             "phi", "theta", "psi", "throttle", "elevator", "aileron", "rudder"]
-SLIM_EXTRAS = ["target_alt_m", "alt_target_m", "target_cmd_alt_m", "kcas", "vc_kts", "ktas", "vtrue_kts", "nz", "alt_agl_m"]
+SLIM_EXTRAS = ["target_alt_m", "alt_target_m", "target_cmd_alt_m", "kcas", "vc_kts", "ktas", "vtrue_kts", "nz", "alt_agl_m",
+               "elev_deg", "ail_deg", "rud_deg", "ail_L_deg", "ail_R_deg"]   # Phase 4 FD surface positions
 
 
 SLIM_DECIMALS = {"t": 3, "x": 2, "y": 2, "z": 2, "alt_msl_m": 2, "alt_agl_m": 1, "vx": 2, "vy": 2, "vz": 2,

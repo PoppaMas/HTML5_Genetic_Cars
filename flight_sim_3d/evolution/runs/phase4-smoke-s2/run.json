@@ -1,0 +1,31 @@
+{
+ "run_id": "phase4-smoke-s2",
+ "seed_scheme": "run_seed_v2",
+ "run_seed": 1333430692384693154,
+ "run_seed_source": "os.urandom(8)",
+ "seed_source": "sim_bridge.ring_course.course_seed",
+ "course_generator": "ring_course/1.2",
+ "fd_dir": "../flight-sim-team/evolution/_fd_pin_p4cs",
+ "model_versions": {
+  "c172x": "full_a1_b2a_cs:p4cs0:active:39665330",
+  "T38": "full_a1_b2a_cs:p4cs0:active:e7da0a5a",
+  "737": "full_a1_b2a_cs:p4cs0:active:57edf9bd",
+  "f16": "full_a1_b2a_cs:p4cs0:active:430793a6"
+ },
+ "curriculum": {
+  "stages": [
+   "easy",
+   "medium",
+   "hard"
+  ],
+  "floor": "generation_thirds",
+  "promote_pass_rate": 0.8,
+  "promote_streak": 2,
+  "mode": "pass_rate_gate",
+  "late_fallback": {
+   "enabled": false,
+   "rule": "generation_thirds"
+  }
+ },
+ "elite_rescore": "every member incl. elites is re-flown on the generation's fresh K courses"
+}

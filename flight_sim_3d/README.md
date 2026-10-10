@@ -592,3 +592,35 @@ evolution 178 passed / 1 skipped (unshipped sqlite cache). B1 r1 smoke (`phase3b
 * **The 64 × 60 B2a pilot** (baseline operators): waiting for approval.
 * **A/B seed 3** (`phase3b1_pilot_tweaked_s3.json` / `phase3b1_pilot_s3.json` configured, not run).
 * **Range widening** for the genes at their bounds.
+
+# Phase 4: ring course (control surfaces + ring-flight scoring)
+
+Planes steer through a course of rings with moving control surfaces. Spec: `PHASE4_RINGS_SPEC.md` (v0.6).
+
+* **Course** (`sim-bridge/sim_bridge/ring_course.py`, `ring_course/1.2`): M=15 rings generated with varying X / Y / Z, shown
+  5 at a time (sliding window), strict order, time limit 1.5x nominal, per-ring timeout. Plane-to-plane collisions are off.
+* **Rings change every run**: `seed_scheme=run_seed_v2`. Course seeds are sha256 of (run_seed, generation, k, aircraft);
+  the curriculum stage only sets difficulty. K=4 fresh train courses per generation (elites re-flown on them) plus 8
+  hold-out courses that depend on the run seed. Trajectories carry the course seed, so replay rebuilds the rings.
+* **FD** (`flight-dynamics/ctrlsurf_p4.py`, `flexeval_p4.py`, `p4_limits.py`, `PHASE4_FD_CONTROL_SURFACES.md`): surface model
+  `full_a1_b2a_cs`; frozen pin `evolution/_fd_pin_p4cs` (minimal, same pattern as `_fd_pin_p3b2a`).
+  `python flight-dynamics/link_jsbsim_data.py` also links the new pin.
+* **Genome** (`genome/phase4_rings.py`, `p4_guidance.py`, `presets/phase4_rings.json`, `PHASE4_RINGS_GENOME.md`): 29 genes
+  (guidance 12, inner loop 11, mixing 6).
+* **Evolution** (`evolution/phase4_loop.py`, `phase4_eval.py`, `phase4_ga.py`, `phase4_guidance.py`, `rings.py`, configs
+  `phase4_smoke*.json`): scoring in `analysis/PHASE4_SCORING_PROPOSAL.md`; curriculum easy / medium / hard, promotion by
+  pass rate (>= 80% for 2 generations). Run: `EVOLUTION_FD_DIR=evolution/_fd_pin_p4cs python -m evolution.batch --config evolution/configs/phase4_smoke.json`.
+* **Runs shipped**: `phase4-smoke-s1` (generation-schedule curriculum) and `phase4-smoke-s2` (`run_seed_v2`, pass-rate
+  promotion), without `cache.jsonl` and the per-flight trajectories. Replays / exports: `evolution/analysis/phase4_smoke_s*_replay.json`,
+  `_export.json`. `STATUS_P4.md` / `STATUS_P4_s2.md` are the team status notes as written (s2 note: complete).
+* **Viewer**: `sim-bridge/viewer/js/rings.js` draws the rings and gates in the replay page.
+
+## Phase 4 results (hold-out courses, run s2)
+
+c172x 100% of rings on hard; 737 about 74% on hard; T-38 about 3% and F-16 0% on medium (the pass-rate gate holds them
+there). Jet steering through medium rings is the open problem (control tuning, not the course).
+
+## Deferred (Phase 4)
+
+* T-38 / F-16 steering fix (FD + Genome) and the 3D replay page for s2.
+* The sim-bridge `data/` replay bundles and screenshots are not shipped (large; gitignored).

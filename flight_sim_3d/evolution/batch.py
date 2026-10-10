@@ -1243,6 +1243,15 @@ def main(argv=None):
     ap.add_argument("--struct-genes", action="store_true", help="add FD's structural genes to the genome")
     ap.add_argument("--model-versions", action="store_true", help="print each aircraft's model_version per fidelity of its "
                     "ladder next to the config's pin_model_version, then exit (read-only: no run dir, no cache, no flight)")
+    if argv is None:
+        argv = sys.argv[1:]
+    if "--config" in argv:                     # Phase 4 opt-in hook: only {"phase": "phase4_rings"} configs leave here
+        _cp = argv[argv.index("--config") + 1]
+        with open(_cp) as f:
+            _u = json.load(f)
+        if isinstance(_u, dict) and _u.get("phase") == "phase4_rings":
+            from . import phase4_loop
+            return phase4_loop.main(argv, user=_u, name=os.path.splitext(os.path.basename(_cp))[0])
     a = ap.parse_args(argv)
     ident = a.seed is not None or a.aircraft or a.profile_for or a.fidelity or a.multi_fidelity or a.screen or \
         a.top_k is not None or a.struct_genes

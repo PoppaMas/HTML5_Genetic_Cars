@@ -1,0 +1,15 @@
+{
+  "_comment": "Phase 4 ring course (Corleone 2026-10-07 02:15 PT). Genome-owned chromosome: guidance (12) | inner_loop (11) | mixing (6) = 29 genes, all stored as u in [0,1] via genome_schema.GeneSpec. Carry-over 'none' (recommended): structure_v2 at FD baseline and planform at B1 r1 identity, NOT in the vector. Operators = B1 A/B baseline (ER STATUS_P3B1_ab.md): whole-block crossover rng.random(n_blocks) < 0.5 -> parent A, elite 2, flat rank p 0.2, gauss mutation rate 0.15 sigma 0.08. Loaded by phase4_rings.py (NOT adapter.load_task; existing presets untouched). Evaluator is a stub until Sim Bridge's course + ER's ring scoring exist. See PHASE4_RINGS_GENOME.md.",
+  "name": "phase4_rings",
+  "aircraft": "c172x",
+  "aircraft_set": ["c172x", "T38", "737", "f16"],
+  "genome": "phase4_rings",
+  "carry_over": "none",
+  "blocks": ["guidance", "inner_loop", "mixing"],
+  "init": {"mode": "uniform_controller", "_note": "gen-0 = rng.random((pop, n)) exactly as phase3_b1's controller block; 'identity' seeds row 0 only if init.seed_identity"},
+  "operators": {"crossover": "blocks", "mutation_mode": "gauss", "mutation_rate": 0.15, "mutation_sigma": 0.08},
+  "ga": {"elite": 2, "selection": "flat_rank", "selection_p": 0.2},
+  "flex": {"enabled": true, "version": 2, "fidelity": "full_a1_b2a_cs", "cs_mode": "active", "pins": "flight-dynamics/v2_results/model_versions_post_p4cs.json", "model_version_check": "warn"},
+  "fitness": {"owner": "evolution_runner", "status": "ER evolution/phase4_eval.score_course + aggregate_courses (blend 0.7 mean + 0.3 CVaR25, K=4)", "params": {"struct_v2_source": "fd"}},
+  "course": {"owner": "sim_bridge", "status": "sim_bridge.ring_course v0.3 (make_course, guidance_inputs)", "rings_per_set": 5}
+}

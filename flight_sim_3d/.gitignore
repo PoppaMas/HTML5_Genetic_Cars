@@ -42,6 +42,8 @@ evolution/runs/*
 !evolution/runs/phase3b1r1-pilot-tweaked-s2/
 !evolution/runs/phase3b2a-smoke-s1/
 !evolution/runs/phase3b2a-smoke-detfix-s1/
+!evolution/runs/phase4-smoke-s1/
+!evolution/runs/phase4-smoke-s2/
 evolution/runs/*/trajectories/
 evolution/runs/*/trajectories_traj1/
 evolution/runs/*/live/
@@ -90,3 +92,9 @@ evolution/_fd_pin_p3b2a/jsbsim_root_v2b2/systems
 # the repo-root .gitignore also ignores every "build/" and "dist/" directory; keep the viewer bundle and its build script
 !sim-bridge/tools/build/
 !sim-bridge/viewer/dist/
+evolution/_fd_pin_p4cs/jsbsim_root/engine
+evolution/_fd_pin_p4cs/jsbsim_root/systems
+evolution/_fd_pin_p4cs/jsbsim_root_v2/engine
+evolution/_fd_pin_p4cs/jsbsim_root_v2/systems
+evolution/_fd_pin_p4cs/jsbsim_root_v2b2/engine
+evolution/_fd_pin_p4cs/jsbsim_root_v2b2/systems

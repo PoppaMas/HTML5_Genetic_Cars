@@ -5,6 +5,7 @@ import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { fetchJSON, decodeBuffer, isIndex, parseIndex, parseTrajectory, locate, normSense, lerpCh, lerpAngleDeg, quatAt, B2A_NOTE, b2HudText, sectionSvg, setCgCentre } from 'fv/traj.js';
+import { courseOf, buildRings, updateRings, ringsHudText } from 'fv/rings.js';
 import { resolvePreset, buildProcedural, buildGltf, applyControls, attachStructure, applyStructure } from 'fv/aircraft.js';
 
 const $ = (id) => document.getElementById(id);
@@ -233,7 +234,7 @@ const indTag = (e) => {
   if (scenKey(e) != null && multiScenario()) t += ' sc' + scenKey(e);
   return t;
 };
-const genLabel = (e, i) => `${multiAircraft() && e.aircraft ? e.aircraft + ' ' : ''}${runTag(e.run)}${e.generation != null ? 'g' + String(e.generation).padStart(3, '0') : '#' + i}${indTag(e)}  ${e.fitness != null ? Number(e.fitness).toFixed(6) : '?'}${e.status && e.status !== 'ok' ? '  ✗ ' + e.status : ''}${e.verdict && e.verdict !== 'match' ? '  [' + e.verdict + ']' : ''}`;
+const genLabel = (e, i) => `${multiAircraft() && e.aircraft ? e.aircraft + ' ' : ''}${runTag(e.run)}${e.label ? e.label + ' · ER ' : ''}${e.generation != null ? 'g' + String(e.generation).padStart(3, '0') : '#' + i}${indTag(e)}  ${e.fitness != null ? Number(e.fitness).toFixed(6) : '?'}${e.status && e.status !== 'ok' ? '  ✗ ' + e.status : ''}${e.verdict && e.verdict !== 'match' ? '  [' + e.verdict + ']' : ''}`;
 
 function improvementPicks(max = 6) {
   const out = [];
@@ -273,7 +274,8 @@ function findEntry(tok) {
             : w === 'r0' ? e.isBest !== false : String(e.individual) === w)));
   }
   const [ac, g] = tok.includes(':') ? tok.split(':') : [null, tok];
-  const runOk = (e) => !run || e.run === run || runShort(e.run) === run || (!multiRun() && true);
+  const labOk = (e) => e.label && e.label.split(/[\s·]+/)[0] === run;   // 'T38:5@train' / '@hold-out' (labelled entries)
+  const runOk = (e) => !run || e.run === run || runShort(e.run) === run || labOk(e) || (!multiRun() && !S.entries.some((x) => x.label));
   const pref = (e) => run || !multiRun() || e.run === S.presetRun;
   let j = S.entries.findIndex((e) => String(e.generation) === g && (!ac || e.aircraft === ac) && runOk(e) && pref(e));
   if (j < 0) j = S.entries.findIndex((e) => String(e.generation) === g && (!ac || e.aircraft === ac) && runOk(e));
@@ -446,7 +448,7 @@ function makeLine(points, color, width, opacity = 1, dashed = false) {
 }
 
 function disposeDisp(d) {
-  for (const o of [d.ghost, d.prog, d.tline, d.drop, d.root]) {
+  for (const o of [d.ghost, d.prog, d.tline, d.drop, d.root, d.rings && d.rings.group]) {
     if (!o) continue;
     world.remove(o);
     o.traverse?.((c) => { c.geometry?.dispose?.(); if (c.material) { lineMats.delete(c.material); c.material.dispose?.(); } });
@@ -520,6 +522,13 @@ function buildDisp(tr, entry, color, slot, nSlots, refSpeed, lead, refStep) {
     if (tr.hasTarget && i % 3 === 0) tpts.push(E, (tr.targetAt(tr.t[i], i) - tr.originAlt + ou) * vscale * S.exag, -N);
   }
   const d = { tr, entry, color, pts, slot, ou, vscale, yaw, alongScale: k };
+  const course = courseOf(tr);   // Phase 4 rings: drawn with the trail's transform (not in formation layout: lanes are re-mapped)
+  if (course && !formation && params.get('rings') !== '0') {
+    d.course = course; d.gates = tr.meta.gates || [];
+    d.rings = buildRings(course, (e, nn, u) => new THREE.Vector3(e + oe + ti.r[0] * lat, (u + ou) * vscale * S.exag, -(nn + on + ti.r[1] * lat)),
+      params.get('rings') === 'all');
+    world.add(d.rings.group);
+  }
   d.ghost = makeLine(pts, color, 1.5, 0.35);
   d.prog = makeLine(pts, color, 3.5, 1.0);
   world.add(d.ghost, d.prog);
@@ -673,6 +682,7 @@ function update(dtSec) {
     const a = d.drop.geometry.attributes.position;
     a.setXYZ(0, s.pos.x, s.pos.y, s.pos.z); a.setXYZ(1, s.pos.x, S.groundY ?? s.pos.y, s.pos.z); a.needsUpdate = true;
     d.drop.geometry.computeBoundingSphere();
+    if (d.rings) updateRings(d.rings, d.course, d.gates, S.t);
   }
   const fd = hudDisp();
   if (fd && fd.state && fd.tr.hasTarget && $('show-target').checked) {
@@ -806,7 +816,7 @@ function updateHUD() {
   const status = d.state.ended ? `<span class="warn">ENDED at ${tr.t1.toFixed(2)} s</span>` : 'flying';
   const endEv = tr.events.find((e) => e.type === 'envelope_violation' || e.type === 'terminated');
   el.innerHTML =
-    `<span class="big">${tr.aircraft} · ${multiRun() && d.entry && d.entry.run ? runShort(d.entry.run) + ' · ' : ''}${tr.generation != null ? 'gen ' + tr.generation : tr.source}</span>${S.mode === 'compare' ? `  <span style="color:${d.color}">■</span>` : ''}\n` +
+    `<span class="big">${tr.aircraft} · ${multiRun() && d.entry && d.entry.run ? runShort(d.entry.run) + ' · ' : ''}${d.entry && d.entry.label ? d.entry.label + ' · ER ' : ''}${tr.generation != null ? 'gen ' + tr.generation : tr.source}</span>${S.mode === 'compare' ? `  <span style="color:${d.color}">■</span>` : ''}\n` +
     `${metricName(tr).padEnd(5)} ${tr.fitness != null ? Number(tr.fitness).toFixed(6) : '—'} <span class="small">(${senseOf(tr) === 'max' ? 'higher' : 'lower'}=better${tr.scenarioIndex != null && tr.replay ? `; scenario ${tr.scenarioIndex}: ${Number(tr.meta.scenario_cost).toFixed(6)}` : ''})</span>\n` +
     (tr.replay ? `<span class="small">replay ${tr.replay.replay_id} · ${tr.replay.fidelity} · ${tr.replay.model_version ?? ''}</span>\n` : '') +
     (trimLabel(tr) ? `trim  ${trimLabel(tr).trim()}\n` : '') +
@@ -824,7 +834,9 @@ function updateHUD() {
     `AIL   ${bar(c('aileron'))} ${fmtS(c('aileron'), 3, 7)}\n` +
     `RUD   ${bar(c('rudder'))} ${fmtS(c('rudder'), 3, 7)}\n` +
     `THR   ${bar(c('throttle'), false)} ${fmtU(c('throttle'), 3, 7)}` +
+    (Number.isFinite(c('elev_deg')) ? `\nSURF  elev ${fmtS(c('elev_deg'), 1, 6)}°  ail ${fmtS(c('ail_deg'), 1, 6)}°  rud ${fmtS(c('rud_deg'), 1, 6)}° <span class="small">(FD pos, ail + = right roll)</span>` : '') +
     planformHud(tr) +
+    (d.course ? '\n' + ringsHudText(d.course, d.gates, S.t) : '') +
     flexHud(tr, i, f) +
     (endEv ? `\n<span class="warn">envelope: ${endEv.detail} @ ${endEv.t.toFixed(2)} s</span>` : '') +
     (ev && ev.type !== 'start' ? `\n<span class="warn">» ${ev.type}: ${ev.detail}</span>` : '');
@@ -928,7 +940,7 @@ function updateLegend() {
   if (el.hidden) return;
   el.innerHTML = '<b>compare</b> (click = camera/HUD focus)\n' +
     `<div data-k="-1" class="${S.focus === -1 ? 'focus' : ''}">◎ formation (camera on all)</div>` + S.shown.map((d, k) =>
-    `<div data-k="${k}" class="${k === S.focus ? 'focus' : ''}"><span style="color:${d.color}">■</span> ${multiAircraft() ? d.tr.aircraft.padEnd(6) + ' ' : ''}${multiRun() ? runShort(d.entry.run).padEnd(3) + ' ' : ''}g${String(d.tr.generation ?? k).padStart(3, '0')}${indTag(d.entry)}${pfTag(d.tr)}  ${senseOf(d.tr) === 'max' ? 'fit' : 'cost'} ${d.tr.fitness != null ? Number(d.tr.fitness).toFixed(4) : '—'}${trimLabel(d.tr)}  <span class="lv"></span></div>`).join('') +
+    `<div data-k="${k}" class="${k === S.focus ? 'focus' : ''}"><span style="color:${d.color}">■</span> ${multiAircraft() ? d.tr.aircraft.padEnd(6) + ' ' : ''}${multiRun() ? runShort(d.entry.run).padEnd(3) + ' ' : ''}${d.entry && d.entry.label ? d.entry.label + ' · ER ' : ''}g${String(d.tr.generation ?? k).padStart(3, '0')}${indTag(d.entry)}${pfTag(d.tr)}  ${senseOf(d.tr) === 'max' ? 'fit' : 'cost'} ${d.tr.fitness != null ? Number(d.tr.fitness).toFixed(4) : '—'}${trimLabel(d.tr)}  <span class="lv"></span></div>`).join('') +
     ((n) => (n ? `<details${S.notesOpen ? ' open' : ''}><summary class="small">ⓘ layout notes</summary>${n.replace(/^\n/, '')}</details>` : ''))('' +
     (S.layout === 'formation' && S.shown.length > 1 ? `\n<span class="small">formation (locked to own track): straight lanes, distance flown\nscaled per aircraft (${S.shown.map((d) => d.tr.aircraft + ' ×' + d.alongScale.toFixed(2)).join(', ')});\nheading drift removed, climb angles not to scale</span>` : '') +
     (vrefEff() === 'rel' ? `\n<span class="small">3D altitude: relative to each aircraft's own trim altitude</span>` : '') +

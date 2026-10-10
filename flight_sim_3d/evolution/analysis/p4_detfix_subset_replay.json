@@ -1,0 +1,639 @@
+{
+ "fd_dir": "evolution/_fd_pin_p3b2a",
+ "rows": 30,
+ "replays": 90,
+ "mismatches": 0,
+ "all_exact": true,
+ "results": [
+  {
+   "id": "c172x:g0:r10",
+   "scenario": "c172x:s0",
+   "logged": 16.02962365963003,
+   "replayed": 16.02962365963003,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r10",
+   "scenario": "c172x:s1",
+   "logged": 1518.3481954599956,
+   "replayed": 1518.3481954599956,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r10",
+   "scenario": "c172x:s2",
+   "logged": 1394.9222695340698,
+   "replayed": 1394.9222695340698,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r9",
+   "scenario": "c172x:s0",
+   "logged": 3.560088358927666,
+   "replayed": 3.560088358927666,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r9",
+   "scenario": "c172x:s1",
+   "logged": 1537.9027247712838,
+   "replayed": 1537.9027247712838,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r9",
+   "scenario": "c172x:s2",
+   "logged": 3.698967848192427,
+   "replayed": 3.698967848192427,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r15",
+   "scenario": "c172x:s0",
+   "logged": 2.630347830218789,
+   "replayed": 2.630347830218789,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r15",
+   "scenario": "c172x:s1",
+   "logged": 1788.5704955205708,
+   "replayed": 1788.5704955205708,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r15",
+   "scenario": "c172x:s2",
+   "logged": 2.7338794985876946,
+   "replayed": 2.7338794985876946,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r13",
+   "scenario": "c172x:s0",
+   "logged": 1840.2987075022327,
+   "replayed": 1840.2987075022327,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r13",
+   "scenario": "c172x:s1",
+   "logged": 1899.4653741688992,
+   "replayed": 1899.4653741688992,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r13",
+   "scenario": "c172x:s2",
+   "logged": 1924.743151946677,
+   "replayed": 1924.743151946677,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r3",
+   "scenario": "c172x:s0",
+   "logged": 0.8305580332256327,
+   "replayed": 0.8305580332256327,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r3",
+   "scenario": "c172x:s1",
+   "logged": 1.300074894516092,
+   "replayed": 1.300074894516092,
+   "exact": true
+  },
+  {
+   "id": "c172x:g0:r3",
+   "scenario": "c172x:s2",
+   "logged": 0.9691487501177728,
+   "replayed": 0.9691487501177728,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r12",
+   "scenario": "T38:s0",
+   "logged": 9.228805460210216,
+   "replayed": 9.228805460210216,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r12",
+   "scenario": "T38:s1",
+   "logged": 9.753587977926928,
+   "replayed": 9.753587977926928,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r12",
+   "scenario": "T38:s2",
+   "logged": 9.190935989142659,
+   "replayed": 9.190935989142659,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r3",
+   "scenario": "T38:s0",
+   "logged": 1.7105665578443712,
+   "replayed": 1.7105665578443712,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r3",
+   "scenario": "T38:s1",
+   "logged": 1.7556343298675259,
+   "replayed": 1.7556343298675259,
+   "exact": true
+  },
+  {
+   "id": "T38:g0:r3",
+   "scenario": "T38:s2",
+   "logged": 1.7287285882236767,
+   "replayed": 1.7287285882236767,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r12",
+   "scenario": "737:s0",
+   "logged": 5.769878354571249,
+   "replayed": 5.769878354571249,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r12",
+   "scenario": "737:s1",
+   "logged": 5.8406733396678066,
+   "replayed": 5.8406733396678066,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r12",
+   "scenario": "737:s2",
+   "logged": 6.222864745307043,
+   "replayed": 6.222864745307043,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r5",
+   "scenario": "737:s0",
+   "logged": 1.5253863645388321,
+   "replayed": 1.5253863645388321,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r5",
+   "scenario": "737:s1",
+   "logged": 1.6784010301927932,
+   "replayed": 1.6784010301927932,
+   "exact": true
+  },
+  {
+   "id": "737:g0:r5",
+   "scenario": "737:s2",
+   "logged": 1.4761662162396016,
+   "replayed": 1.4761662162396016,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r0",
+   "scenario": "c172x:s0",
+   "logged": 0.45665005929257374,
+   "replayed": 0.45665005929257374,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r0",
+   "scenario": "c172x:s1",
+   "logged": 0.6005504026580384,
+   "replayed": 0.6005504026580384,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r0",
+   "scenario": "c172x:s2",
+   "logged": 0.49757966111136015,
+   "replayed": 0.49757966111136015,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r2",
+   "scenario": "c172x:s0",
+   "logged": 0.4557338693052729,
+   "replayed": 0.4557338693052729,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r2",
+   "scenario": "c172x:s1",
+   "logged": 0.6506278495197497,
+   "replayed": 0.6506278495197497,
+   "exact": true
+  },
+  {
+   "id": "c172x:g1:r2",
+   "scenario": "c172x:s2",
+   "logged": 0.4929595126669422,
+   "replayed": 0.4929595126669422,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r1",
+   "scenario": "T38:s0",
+   "logged": 0.16617743669319043,
+   "replayed": 0.16617743669319043,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r1",
+   "scenario": "T38:s1",
+   "logged": 0.28117764117979,
+   "replayed": 0.28117764117979,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r1",
+   "scenario": "T38:s2",
+   "logged": 0.2637113454792083,
+   "replayed": 0.2637113454792083,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r4",
+   "scenario": "T38:s0",
+   "logged": 0.17566801694215034,
+   "replayed": 0.17566801694215034,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r4",
+   "scenario": "T38:s1",
+   "logged": 0.3035197756698563,
+   "replayed": 0.3035197756698563,
+   "exact": true
+  },
+  {
+   "id": "T38:g1:r4",
+   "scenario": "T38:s2",
+   "logged": 0.27988919107433474,
+   "replayed": 0.27988919107433474,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r3",
+   "scenario": "737:s0",
+   "logged": 0.2858704004285551,
+   "replayed": 0.2858704004285551,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r3",
+   "scenario": "737:s1",
+   "logged": 0.33597482690076585,
+   "replayed": 0.33597482690076585,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r3",
+   "scenario": "737:s2",
+   "logged": 0.5299810902197128,
+   "replayed": 0.5299810902197128,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r1",
+   "scenario": "737:s0",
+   "logged": 0.27370547562950176,
+   "replayed": 0.27370547562950176,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r1",
+   "scenario": "737:s1",
+   "logged": 0.33667613340690034,
+   "replayed": 0.33667613340690034,
+   "exact": true
+  },
+  {
+   "id": "737:g1:r1",
+   "scenario": "737:s2",
+   "logged": 0.5223012188191869,
+   "replayed": 0.5223012188191869,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r8",
+   "scenario": "c172x:s0",
+   "logged": 0.4482021130472246,
+   "replayed": 0.4482021130472246,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r8",
+   "scenario": "c172x:s1",
+   "logged": 0.66944313657447,
+   "replayed": 0.66944313657447,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r8",
+   "scenario": "c172x:s2",
+   "logged": 0.5011978944053613,
+   "replayed": 0.5011978944053613,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r3",
+   "scenario": "c172x:s0",
+   "logged": 0.4756130488254781,
+   "replayed": 0.4756130488254781,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r3",
+   "scenario": "c172x:s1",
+   "logged": 0.5316309958625896,
+   "replayed": 0.5316309958625896,
+   "exact": true
+  },
+  {
+   "id": "c172x:g2:r3",
+   "scenario": "c172x:s2",
+   "logged": 0.4963816269547307,
+   "replayed": 0.4963816269547307,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r8",
+   "scenario": "T38:s0",
+   "logged": 0.2985107684002915,
+   "replayed": 0.2985107684002915,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r8",
+   "scenario": "T38:s1",
+   "logged": 0.4233638615392239,
+   "replayed": 0.4233638615392239,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r8",
+   "scenario": "T38:s2",
+   "logged": 0.3308224410761161,
+   "replayed": 0.3308224410761161,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r7",
+   "scenario": "T38:s0",
+   "logged": 0.2594124162662898,
+   "replayed": 0.2594124162662898,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r7",
+   "scenario": "T38:s1",
+   "logged": 0.3588900924634291,
+   "replayed": 0.3588900924634291,
+   "exact": true
+  },
+  {
+   "id": "T38:g2:r7",
+   "scenario": "T38:s2",
+   "logged": 0.30287527233650646,
+   "replayed": 0.30287527233650646,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r8",
+   "scenario": "737:s0",
+   "logged": 0.48736528382309857,
+   "replayed": 0.48736528382309857,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r8",
+   "scenario": "737:s1",
+   "logged": 0.48428314632266467,
+   "replayed": 0.48428314632266467,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r8",
+   "scenario": "737:s2",
+   "logged": 0.529473809474557,
+   "replayed": 0.529473809474557,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r6",
+   "scenario": "737:s0",
+   "logged": 0.35394677275334957,
+   "replayed": 0.35394677275334957,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r6",
+   "scenario": "737:s1",
+   "logged": 0.39983228254456465,
+   "replayed": 0.39983228254456465,
+   "exact": true
+  },
+  {
+   "id": "737:g2:r6",
+   "scenario": "737:s2",
+   "logged": 0.38113570141589304,
+   "replayed": 0.38113570141589304,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r10",
+   "scenario": "c172x:s0",
+   "logged": 0.4371543269631305,
+   "replayed": 0.4371543269631305,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r10",
+   "scenario": "c172x:s1",
+   "logged": 0.6164038054817359,
+   "replayed": 0.6164038054817359,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r10",
+   "scenario": "c172x:s2",
+   "logged": 0.5328121163483298,
+   "replayed": 0.5328121163483298,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r11",
+   "scenario": "c172x:s0",
+   "logged": 0.5411984775837526,
+   "replayed": 0.5411984775837526,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r11",
+   "scenario": "c172x:s1",
+   "logged": 0.5659528075349131,
+   "replayed": 0.5659528075349131,
+   "exact": true
+  },
+  {
+   "id": "c172x:g3:r11",
+   "scenario": "c172x:s2",
+   "logged": 0.5660542935490529,
+   "replayed": 0.5660542935490529,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r5",
+   "scenario": "T38:s0",
+   "logged": 0.15022957146472773,
+   "replayed": 0.15022957146472773,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r5",
+   "scenario": "T38:s1",
+   "logged": 0.36157198668983825,
+   "replayed": 0.36157198668983825,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r5",
+   "scenario": "T38:s2",
+   "logged": 0.2120115930785365,
+   "replayed": 0.2120115930785365,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r11",
+   "scenario": "T38:s0",
+   "logged": 0.41281076347131546,
+   "replayed": 0.41281076347131546,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r11",
+   "scenario": "T38:s1",
+   "logged": 0.5138515485413878,
+   "replayed": 0.5138515485413878,
+   "exact": true
+  },
+  {
+   "id": "T38:g3:r11",
+   "scenario": "T38:s2",
+   "logged": 0.45594787306094775,
+   "replayed": 0.45594787306094775,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r10",
+   "scenario": "737:s0",
+   "logged": 0.36178710366800954,
+   "replayed": 0.36178710366800954,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r10",
+   "scenario": "737:s1",
+   "logged": 0.4636838636585195,
+   "replayed": 0.4636838636585195,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r10",
+   "scenario": "737:s2",
+   "logged": 0.5147818488762183,
+   "replayed": 0.5147818488762183,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r11",
+   "scenario": "737:s0",
+   "logged": 0.42737181499276833,
+   "replayed": 0.42737181499276833,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r11",
+   "scenario": "737:s1",
+   "logged": 0.4580563582234024,
+   "replayed": 0.4580563582234024,
+   "exact": true
+  },
+  {
+   "id": "737:g3:r11",
+   "scenario": "737:s2",
+   "logged": 0.4738293841389551,
+   "replayed": 0.4738293841389551,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r12",
+   "scenario": "c172x:s0",
+   "logged": 0.4307104923791375,
+   "replayed": 0.4307104923791375,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r12",
+   "scenario": "c172x:s1",
+   "logged": 0.5960507403508208,
+   "replayed": 0.5960507403508208,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r12",
+   "scenario": "c172x:s2",
+   "logged": 0.5190767437312279,
+   "replayed": 0.5190767437312279,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r4",
+   "scenario": "c172x:s0",
+   "logged": 0.32995307666887497,
+   "replayed": 0.32995307666887497,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r4",
+   "scenario": "c172x:s1",
+   "logged": 0.5621422763271895,
+   "replayed": 0.5621422763271895,
+   "exact": true
+  },
+  {
+   "id": "c172x:g4:r4",
+   "scenario": "c172x:s2",
+   "logged": 0.3818619112216946,
+   "replayed": 0.3818619112216946,
+   "exact": true
+  },
+  {
+   "id": "T38:g4:r14",
+   "scenario": "T38:s0",
+   "logged": 0.26587663520651894,
+   "replayed": 0.26587663520651894,
+   "exact": true
+  },
+  {
+   "id": "T38:g4:r14",
+   "scenario": "T38:s1",
+   "logged": 1.1640672808477452,
+   "replayed": 1.1640672808477452,
+   "exact": true
+  },
+  {
+   "id": "T38:g4:r14",
+   "scenario": "T38:s2",
+   "logged": 0.45809118110000446,
+   "replayed": 0.45809118110000446,
+   "exact": true
+  }
+ ]
+}

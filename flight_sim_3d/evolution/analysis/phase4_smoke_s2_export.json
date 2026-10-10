@@ -1,0 +1,108 @@
+{
+ "entries": [
+  {
+   "aircraft": "c172x",
+   "file": "c172x_phase4-smoke-s2_g5_train_9142526239581194698.json",
+   "label": "train",
+   "stage": "hard",
+   "seed": 9142526239581194698,
+   "cost": 0.09319877156268604,
+   "logged_cost": 0.09319877156268604,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 15,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "c172x",
+   "file": "c172x_phase4-smoke-s2_g5_holdout_7286636019407989577.json",
+   "label": "holdout",
+   "stage": "hard",
+   "seed": 7286636019407989577,
+   "cost": 0.10735548027429093,
+   "logged_cost": 0.10735548027429093,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 15,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "T38",
+   "file": "T38_phase4-smoke-s2_g5_train_16196068089984732804.json",
+   "label": "train",
+   "stage": "medium",
+   "seed": 16196068089984732804,
+   "cost": 1.5426867663586714,
+   "logged_cost": 1.5426867663586714,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 0,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "T38",
+   "file": "T38_phase4-smoke-s2_g5_holdout_12160044683718057565.json",
+   "label": "holdout",
+   "stage": "medium",
+   "seed": 12160044683718057565,
+   "cost": 1.457678083082341,
+   "logged_cost": 1.457678083082341,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 1,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "737",
+   "file": "737_phase4-smoke-s2_g5_train_11135674988838343855.json",
+   "label": "train",
+   "stage": "hard",
+   "seed": 11135674988838343855,
+   "cost": 0.5813360339701354,
+   "logged_cost": 0.5813360339701354,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 14,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "737",
+   "file": "737_phase4-smoke-s2_g5_holdout_9504071846952657848.json",
+   "label": "holdout",
+   "stage": "hard",
+   "seed": 9504071846952657848,
+   "cost": 1.1962130433991511,
+   "logged_cost": 1.1962130433991511,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 11,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "f16",
+   "file": "f16_phase4-smoke-s2_g5_train_5758955389126635659.json",
+   "label": "train",
+   "stage": "medium",
+   "seed": 5758955389126635659,
+   "cost": 1.6157319200963591,
+   "logged_cost": 1.6157319200963591,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 0,
+   "rings_in_file": 15
+  },
+  {
+   "aircraft": "f16",
+   "file": "f16_phase4-smoke-s2_g5_holdout_18410906596492785004.json",
+   "label": "holdout",
+   "stage": "medium",
+   "seed": 18410906596492785004,
+   "cost": 1.5521123181870162,
+   "logged_cost": 1.5521123181870162,
+   "bit_identical_vs_log": true,
+   "validate_errors": [],
+   "passes": 0,
+   "rings_in_file": 15
+  }
+ ]
+}

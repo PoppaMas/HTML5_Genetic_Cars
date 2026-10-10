@@ -1,0 +1,25 @@
+{
+ "doc": "P4 fidelity full_a1_b2a_cs (flexeval_p4.model_version, also used by fly_course; alias full_a1_b2a_p4). b2a = underlying B2a pin (= model_versions_post_p3b2a.json)",
+ "full_a1_b2a_cs": {
+  "c172x": {
+   "active": "full_a1_b2a_cs:p4cs0:active:39665330",
+   "passthrough": "full_a1_b2a_cs:p4cs0:passthrough:982cfc41",
+   "b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "T38": {
+   "active": "full_a1_b2a_cs:p4cs0:active:e7da0a5a",
+   "passthrough": "full_a1_b2a_cs:p4cs0:passthrough:a7438863",
+   "b2a": "full_a1_b2a:flexv2b2a:b635a51d"
+  },
+  "737": {
+   "active": "full_a1_b2a_cs:p4cs0:active:57edf9bd",
+   "passthrough": "full_a1_b2a_cs:p4cs0:passthrough:f472a333",
+   "b2a": "full_a1_b2a:flexv2b2a:5d5a8f17"
+  },
+  "f16": {
+   "active": "full_a1_b2a_cs:p4cs0:active:430793a6",
+   "passthrough": "full_a1_b2a_cs:p4cs0:passthrough:43245063",
+   "b2a": "full_a1_b2a:flexv2b2a:07b08913"
+  }
+ }
+}

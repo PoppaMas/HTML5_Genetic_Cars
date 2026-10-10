@@ -1,0 +1,59 @@
+{
+ "trace": "genome/runs/p4_operator_trace.json",
+ "generations_detail": [
+  {
+   "gen0_unranked_sha256": "66649872477986e9477c339e87c25c7400aead38c46f76bfed96dd5b60895387"
+  },
+  {
+   "gen": 0,
+   "pop_sha256": "34e339e95a19df8ae17154f60a911100f2698d7d506c29d70d83778a0d6c34ab",
+   "cost_sha256": "8dbdb990bf83bc2c413847b77e6a17be1c2ad53800ae8c5b948c77c69180fc2f",
+   "best_cost": 4.305148832708649,
+   "mean_cost": 7.143275472785875
+  },
+  {
+   "gen": 1,
+   "pop_sha256": "82e31a50920d90fa6ad43fab0e99a336c4ddd87c018849421397d170938a6e42",
+   "cost_sha256": "e97ff85081ffc88169ff0b670673bcabc290853e42ac8d6df67e235e223b88b7",
+   "best_cost": 3.410011923827214,
+   "mean_cost": 5.111968092408876
+  },
+  {
+   "gen": 2,
+   "pop_sha256": "2baaed93840f53fd012654b80b74e4ec6503b707a3918182a6c338028ef2664a",
+   "cost_sha256": "0f5092607fade6d7c9fb415ad4b020ad7827852704f93b7aa6eb980e3c1d7889",
+   "best_cost": 3.042149183665203,
+   "mean_cost": 3.9372458947089655
+  },
+  {
+   "gen": 3,
+   "pop_sha256": "ac7a1303598ae56b08c5bf20e873edaf5986db14f3fa5401c164dcfc59f5279b",
+   "cost_sha256": "e98101a8cfea305c026a9669f618a45438f6bc6302efb32e4edc4613487a4251",
+   "best_cost": 2.883714396551446,
+   "mean_cost": 3.4152403681229395
+  },
+  {
+   "gen": 4,
+   "pop_sha256": "7e5c38baf2dac5f02200b2767e6294b07fc43fcab86011e887978e462bcb5974",
+   "cost_sha256": "78c01f8246034e6a8b71e55af1a1f4a6a18c95ab3f1d425573a70822b26acf70",
+   "best_cost": 2.512295505259651,
+   "mean_cost": 3.0504448482178836
+  }
+ ],
+ "per_gen_match": [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true
+ ],
+ "arrays_match": {
+  "gen0_ranked": true,
+  "gen1_ranked": true
+ },
+ "gene_names_match": true,
+ "all_match": true,
+ "final_pop_sha256": "7e5c38baf2dac5f02200b2767e6294b07fc43fcab86011e887978e462bcb5974",
+ "final_cost_sha256": "78c01f8246034e6a8b71e55af1a1f4a6a18c95ab3f1d425573a70822b26acf70"
+}

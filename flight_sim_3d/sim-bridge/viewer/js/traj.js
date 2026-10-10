@@ -59,7 +59,7 @@ export function parseIndex(obj, baseUrl) {
       run, file, url, status: e.status, key: `${url}`, order: i,
       scenario: e.scenario_id ?? e.scenario ?? null, scenarioIndex, individual: e.individual_id ?? null,
       rank: Number.isInteger(e.rank) ? e.rank : null, isBest: typeof e.is_best === 'boolean' ? e.is_best : null,
-      verdict: e.verdict ?? null };
+      verdict: e.verdict ?? null, label: typeof e.label === 'string' ? e.label : null };   // label: display name (e.g. 'train · hard · 14/15')
   }).filter((e) => e.file);
   const runOrder = new Map();
   entries.forEach((e) => { if (!runOrder.has(e.run)) runOrder.set(e.run, runOrder.size); });

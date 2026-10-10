@@ -66,6 +66,11 @@ def test_default_options_resolve_exactly_as_before():
         if not fn.endswith(".json") or "tweaked" in fn:
             continue
         u = cfg_file(fn)
+        if u.get("phase") == "phase4_rings":    # Phase 4: own resolver (strict), never batch.resolve_config
+            from evolution import phase4_loop
+            c4 = phase4_loop.resolve_config(copy.deepcopy(u), "t")
+            assert c4["ga"] == u["ga"] and "elite" not in u["ga"], fn
+            continue
         assert "shape_crossover" not in u.get("ga", {}) and "elite" not in u.get("ga", {}), fn
         c = batch.resolve_config(copy.deepcopy(u), "t")
         assert "shape_crossover" not in c["ga"] and c["ga"]["elite"] == 2, fn

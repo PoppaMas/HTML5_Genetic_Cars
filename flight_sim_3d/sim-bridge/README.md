@@ -1090,3 +1090,14 @@ The HUD says when it is active. Test: `tests/test_cg_centre.py`.
   `SIMBRIDGE_EVOLUTION_ROOT=/workspace/er_smoke_code_b2a_detfix/evolution`.
 * Multi-seed A/B: `tools/build_b1_page.sh <base-s1>,<tweaked-s1>,<base-s2>,<tweaked-s2> --replay-proof --reuse-proof`
   builds one page with labels base-sN / tweaked-sN (viewer params `labels=`, `abseeds=1`) and a per-seed cost table.
+
+### Phase 4 ring course (2026-10-07, SB draft)
+
+* Spec: `/workspace/flight-sim-team/flight_sim_3d/PHASE4_RINGS_SPEC.md` (skeleton; FD/Genome/ER sections marked).
+* `sim_bridge/rings.py`: seeded course generator (per-aircraft scaling, flyability check + resample, 4 unscored
+  run-out rings so 5 are always active), `gate_check` / `scan_gates` (pure, numpy only), `guidance_view`
+  (LOS/range to rings n, n+1 in ENU = canonical, body FRD, NED), `seed_stream` (train/holdout).
+* Viewer: `viewer/js/rings.js` draws rings (target/active amber, passed green, missed red, rim orange) from the
+  trajectory's `course` + `gates` keys in true-position layout (not in formation layout); `rings=0|all`.
+* SYNTHETIC demo: `$PY tools/make_phase4_demo.py` -> `data/phase4_demo_standalone.html`, `screenshots/phase4_*.png`.
+* Tests: `tests/test_rings.py` (12).

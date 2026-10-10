@@ -1,0 +1,15 @@
+{
+ "trajectory": "T38_phase4-smoke-s1_g5_holdout_1985065222.json",
+ "individual_id": "T38:g5:r0",
+ "course_seed": 1985065222,
+ "stage": "hard",
+ "logged_cost": 1.4662091848164185,
+ "file_cost": 1.4662091848164185,
+ "replayed_cost": 1.4662091848164185,
+ "bit_identical": true,
+ "gates_identical": true,
+ "model_version": "full_a1_b2a_cs:p4cs0:active:e7da0a5a",
+ "pin": "full_a1_b2a_cs:p4cs0:active:e7da0a5a",
+ "fd_dir": "/workspace/flight-sim-team/evolution/_fd_pin_p4cs",
+ "check_value": "1.4662091848164185"
+}

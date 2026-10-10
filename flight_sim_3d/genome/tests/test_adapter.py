@@ -38,6 +38,8 @@ def test_all_presets_load():
     except Exception:
         have_v2 = False
     for f in files:
+        if json.load(open(f)).get("genome") == "phase4_rings":
+            continue  # standalone loader phase4_rings.load_preset (tests/test_phase4_rings.py), not adapter.load_task
         if not have_v2 and int(json.load(open(f)).get("flex", {}).get("version", 1)) == 2:
             continue
         t = adapter.load_task(f)

@@ -43,7 +43,8 @@ def _newest_fd_model_versions(fd_dir):
     """FD publishes one file per model change (model_versions_post_mass / _post_p25 / _post_p3a1 / _post_p3b1 ...);
     the newest (mtime, then name) is FD's current set. Falls back to the post-mass name if none exist."""
     import glob
-    c = glob.glob(os.path.join(fd_dir, "v2_results", "model_versions_post_*.json"))
+    c = [p for p in glob.glob(os.path.join(fd_dir, "v2_results", "model_versions_post_*.json"))
+         if "_p4cs" not in os.path.basename(p)]   # the P4 control-surface file has its own schema (nested by fidelity)
     if not c:
         return os.path.join(fd_dir, "v2_results", "model_versions_post_mass.json")
     return max(c, key=lambda p: (os.path.getmtime(p), os.path.basename(p)))

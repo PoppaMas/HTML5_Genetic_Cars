@@ -1,0 +1,54 @@
+{
+ "_comment": "OPT-IN speed-scaled variant of phase4_rings (same 29 genes, same operators, same u): k_lat and k_lat_rate are decoded x (V_tas/V_tas_c172x)^1.5 per aircraft (p4_guidance.decode_physical_qs). Default phase4_rings is unchanged. See PHASE4_RINGS_GENOME.md 'jet scaling'.",
+ "name": "phase4_rings_qs",
+ "aircraft": "c172x",
+ "aircraft_set": [
+  "c172x",
+  "T38",
+  "737",
+  "f16"
+ ],
+ "genome": "phase4_rings",
+ "carry_over": "none",
+ "blocks": [
+  "guidance",
+  "inner_loop",
+  "mixing"
+ ],
+ "init": {
+  "mode": "uniform_controller",
+  "_note": "gen-0 = rng.random((pop, n)) exactly as phase3_b1's controller block; 'identity' seeds row 0 only if init.seed_identity"
+ },
+ "operators": {
+  "crossover": "blocks",
+  "mutation_mode": "gauss",
+  "mutation_rate": 0.15,
+  "mutation_sigma": 0.08
+ },
+ "ga": {
+  "elite": 2,
+  "selection": "flat_rank",
+  "selection_p": 0.2
+ },
+ "flex": {
+  "enabled": true,
+  "version": 2,
+  "fidelity": "full_a1_b2a_cs",
+  "cs_mode": "active",
+  "pins": "flight-dynamics/v2_results/model_versions_post_p4cs.json",
+  "model_version_check": "warn"
+ },
+ "fitness": {
+  "owner": "evolution_runner",
+  "status": "ER evolution/phase4_eval.score_course + aggregate_courses (blend 0.7 mean + 0.3 CVaR25, K=4)",
+  "params": {
+   "struct_v2_source": "fd"
+  }
+ },
+ "course": {
+  "owner": "sim_bridge",
+  "status": "sim_bridge.ring_course v0.3 (make_course, guidance_inputs)",
+  "rings_per_set": 5
+ },
+ "variant": "qs"
+}
