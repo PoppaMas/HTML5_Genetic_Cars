@@ -1,0 +1,38 @@
+[
+ {
+  "model": "737",
+  "genes": "identity",
+  "combo": "default@cs",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.06666666666666667,
+  "chatter": 0.0
+ },
+ {
+  "model": "737",
+  "genes": "c172x_best",
+  "combo": "default@cs",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.5555555555555555,
+  "chatter": 0.45523039478374666
+ },
+ {
+  "model": "737",
+  "genes": "rand0",
+  "combo": "default@cs",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.044444444444444446,
+  "chatter": 0.0
+ },
+ {
+  "model": "737",
+  "genes": "rand1",
+  "combo": "default@cs",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.0,
+  "chatter": 0.0
+ }
+]

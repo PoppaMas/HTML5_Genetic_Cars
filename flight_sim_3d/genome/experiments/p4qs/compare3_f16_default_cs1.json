@@ -1,0 +1,38 @@
+[
+ {
+  "model": "f16",
+  "genes": "identity",
+  "combo": "default@cs1",
+  "n": 3,
+  "hard": 1,
+  "pass_rate": 0.044444444444444446,
+  "chatter": 0.03364327136250086
+ },
+ {
+  "model": "f16",
+  "genes": "c172x_best",
+  "combo": "default@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.3333333333333333,
+  "chatter": 0.07711290774855546
+ },
+ {
+  "model": "f16",
+  "genes": "rand0",
+  "combo": "default@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.044444444444444446,
+  "chatter": 0.30120520208339957
+ },
+ {
+  "model": "f16",
+  "genes": "rand1",
+  "combo": "default@cs1",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.022222222222222223,
+  "chatter": 0.0
+ }
+]

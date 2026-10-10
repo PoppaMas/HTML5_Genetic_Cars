@@ -1,0 +1,7 @@
+# P4 r1 files (md5sum -c v2_results/FROZEN_P4r1.md5 from flight-dynamics/); chmod read-only 2026-10-10; spec docs stay editable
+96b9a0c734151a8b48ad1e63842018e8  ctrlsurf_p4r1.py
+0d063cb8592209f20c95f143619025e5  flexeval_p4r1.py
+2dadfdd78ac165648dbfdaab3e387405  p4r1_scaling.py
+051b42c5f7796de354c13882365bd429  test_ctrlsurf_p4r1.py
+e76caf3d49bb7d766b3b37734da0a472  v2_results/p4r1_gain_scaling.json
+6a43385f0b7e6708ef1c4b1258349a3a  v2_results/model_versions_post_p4r1.json

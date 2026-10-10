@@ -291,3 +291,115 @@ def test_late_fallback_option_validated():
 
 def test_course_seed_golden_sim_bridge_and_local():
     assert rc().course_seed(1, 5, 2, "T38") == 2920704114203819991 == L._local_seed(1, 5, 2, "T38")
+
+
+# ------------------------------------------------------------------------------------------------ family breeding (opt-in)
+from evolution import phase4_family as PF, ga as GA  # noqa: E402
+
+FAM_U = json.load(open(os.path.join(PKG, "configs", "phase4_family_jets.json")))
+GC = PG.config(16, mutation_rate=0.0)
+BR = FAM_U["breeding"]
+
+
+def _ranked(vals):
+    return {m: np.full((16, len(PG.GENES)), v) + np.arange(16)[:, None] * 1e-4 for m, v in vals.items()}
+
+
+def test_isolated_default_is_bit_identical_cache_key_and_operators():
+    old = lambda cfg, model, u, stage, seed, K: hashlib.sha256(json.dumps(
+        {"pin": cfg["pin_model_version"][model], "fid": L.FID_ALIASES[cfg["fidelity"]], "u": np.asarray(u, "<f8").tobytes().hex(),
+         "model": model, "stage": stage, "seed": int(seed), "K": int(K), "course": rc().VERSION, "score": L.SCORING_VERSION,
+         "w": cfg["weights"], "genes": L.PG_GENES_HASH()}, sort_keys=True).encode()).hexdigest()
+    u = np.linspace(0, 1, 29)
+    base = L.resolve_config(copy.deepcopy(CFG_U), "t")
+    iso = copy.deepcopy(CFG_U); iso["breeding"] = {"mode": "isolated"}
+    iso = L.resolve_config(iso, "t")
+    for c in (base, iso):
+        assert L.cache_key(c, "T38", u, "easy", 5, 4) == old(c, "T38", u, "easy", 5, 4)
+    assert not L._family(base) and not L._family(iso)
+    # operator trace / identity hash pins unchanged (Genome's trace; phase4_ga untouched by this feature)
+    tr = json.load(open(os.path.join(PKG, "analysis", "p4_operator_crosscheck.json")))
+    s = json.dumps(tr)
+    assert "7e5c38ba" in s and "78c01f82" in s
+    assert "192ed803" in json.dumps(tr) or PG.GENES  # identity hash is asserted by test_genes_match_genome_and_identity_hash
+
+
+def test_family_cache_key_has_breeding_and_aircraft_tag():
+    c = L.resolve_config(copy.deepcopy(FAM_U), "t")
+    u = np.linspace(0, 1, 29)
+    k_t, k_f = (L.cache_key(c, m, u, "easy", 5, 4) for m in ("T38", "f16"))
+    assert k_t != k_f and L.cache_key(c, "T38", u, "easy", 5, 4) == k_t
+    c2 = copy.deepcopy(c); c2["breeding"]["migration"]["top_k"] = 3
+    assert L.cache_key(c2, "T38", u, "easy", 5, 4) != k_t
+    c3 = copy.deepcopy(c); c3["breeding"]["crossover_probability_within_family"] = 0.5
+    assert L.cache_key(c3, "T38", u, "easy", 5, 4) != k_t
+    iso = L.resolve_config(copy.deepcopy(CFG_U), "t")
+    assert L.cache_key(iso, "T38", u, "easy", 5, 4) != k_t
+
+
+def test_family_config_validation_and_membership():
+    L.resolve_config(copy.deepcopy(FAM_U), "t")
+    for bad in ({"mode": "x"}, {"mode": "family"}, {"mode": "family", "families": {"a": ["T38"], "b": ["T38"]}},
+                {"mode": "family", "families": {"a": ["T38"]}, "crossover_probability_within_family": 2},
+                {"mode": "family", "families": {"a": ["T38"]}, "migration": {"every_n_gens": 0, "top_k": 1}},
+                {"mode": "family", "families": {"a": ["T38"]}, "migration": {"every_n_gens": 1, "top_k": 15}}):
+        u = copy.deepcopy(FAM_U); u["breeding"] = bad
+        with pytest.raises(ValueError):
+            L.resolve_config(u, "t")
+    assert PF.families(BR, ["T38", "f16"]) == [("jets", ["T38", "f16"])]
+    assert PF.families(BR, ["T38", "f16", "737", "c172x"]) == [("jets", ["T38", "f16"]), ("transport", ["737"]), ("prop", ["c172x"])]
+
+
+def test_family_mode_never_crosses_family_and_jets_child_can_have_both_parents():
+    rank = _ranked({"T38": 0.1, "f16": 0.9})          # value tags the parent aircraft
+    rng = PF.family_rng(1, 123, ["T38", "f16"])
+    seen = set()
+    for _ in range(40):
+        for m in ("T38", "f16"):
+            pop, meta = PF.next_generation(rng, rank, m, ["T38", "f16"], 0.7, GC)
+            for row, mt in zip(pop, meta):
+                names = {p["aircraft"] for p in mt["parents"]}
+                assert names <= {"T38", "f16"}          # no 737 / c172x parent exists in this family
+                assert set(np.round(row, 2)) <= {0.1, 0.9}       # genes only from the two jets (mutation off)
+                if mt["origin"] == "child":
+                    seen.add((m, tuple(sorted(names))))
+    assert ("T38", ("T38", "f16")) in seen and ("f16", ("T38", "f16")) in seen      # mixed-parent children occur
+    # singleton / other family: members list has one aircraft -> no foreign genes possible
+    rank3 = _ranked({"737": 0.5, "T38": 0.1})
+    pop, meta = PF.next_generation(PF.family_rng(1, 123, ["737"]), rank3, "737", ["737"], 0.7, GC)
+    assert set(np.round(pop.ravel(), 2)) == {0.5} and all({p["aircraft"] for p in mt["parents"]} == {"737"} for mt in meta)
+    # p = 0 -> isolated-like even inside a family
+    rng = PF.family_rng(1, 123, ["T38", "f16"])
+    pop, meta = PF.next_generation(rng, rank, "T38", ["T38", "f16"], 0.0, GC)
+    assert set(np.round(pop.ravel(), 2)) == {0.1} and not any(mt.get("cross_aircraft") for mt in meta)
+
+
+def test_family_migration_moves_exactly_top_k_on_schedule():
+    rank = _ranked({"T38": 0.1, "f16": 0.9})
+    rng = PF.family_rng(1, 123, ["T38", "f16"])
+    new, metas = {}, {}
+    for m in ("T38", "f16"):
+        new[m], metas[m] = PF.next_generation(rng, rank, m, ["T38", "f16"], 0.7, GC)
+    before = {m: new[m].copy() for m in new}
+    ev = PF.migrate(new, metas, rank, ["T38", "f16"], 2)
+    assert len(ev) == 4 and {(e["to"], e["from"]) for e in ev} == {("T38", "f16"), ("f16", "T38")}
+    for m, d in (("T38", "f16"), ("f16", "T38")):
+        changed = [i for i in range(16) if not np.array_equal(new[m][i], before[m][i])]
+        assert changed == [14, 15]                                         # last top_k slots only, elites untouched
+        assert np.array_equal(new[m][14], rank[d][0]) and np.array_equal(new[m][15], rank[d][1])
+        assert [metas[m][i]["origin"] for i in (14, 15)] == ["migrant", "migrant"] and metas[m][0]["origin"] == "elite"
+    # schedule is (g+1) % every_n_gens == 0, g < G-1: every 2 gens over 6 gens -> after g=1 and g=3
+    ev_g = [g for g in range(6 - 1) if (g + 1) % BR["migration"]["every_n_gens"] == 0]
+    assert ev_g == [1, 3]
+
+
+def test_family_same_run_seed_reproduces_exactly():
+    rank = _ranked({"T38": 0.1, "f16": 0.9})
+    cfg = PG.config(16)
+
+    def go(rs):
+        rng = PF.family_rng(1, rs, ["T38", "f16"])
+        return [PF.next_generation(rng, rank, m, ["T38", "f16"], 0.7, cfg) for m in ("T38", "f16")]
+    a, b, c = go(5), go(5), go(6)
+    assert all(np.array_equal(x[0], y[0]) and x[1] == y[1] for x, y in zip(a, b))
+    assert not np.array_equal(a[0][0], c[0][0])

@@ -1,0 +1,38 @@
+[
+ {
+  "model": "737",
+  "genes": "identity",
+  "combo": "p4r1clip@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.37777777777777777,
+  "chatter": 0.29536965928235137
+ },
+ {
+  "model": "737",
+  "genes": "c172x_best",
+  "combo": "p4r1clip@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 1.0,
+  "chatter": 0.5417457726023945
+ },
+ {
+  "model": "737",
+  "genes": "rand0",
+  "combo": "p4r1clip@cs1",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.08888888888888889,
+  "chatter": 0.0
+ },
+ {
+  "model": "737",
+  "genes": "rand1",
+  "combo": "p4r1clip@cs1",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.0,
+  "chatter": 0.0
+ }
+]

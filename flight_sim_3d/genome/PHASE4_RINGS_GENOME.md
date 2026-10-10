@@ -1,7 +1,7 @@
 # Phase 4 ring course: Genome section (Genome Architect, 2026-10-07 ~02:40 PT)
 
 Meant for the Genome section of Sim Bridge's `flight_sim_3d/PHASE4_RINGS_SPEC.md`. That file and `flight_sim_3d/`
-did not exist anywhere under /workspace/flight-sim-team at 02:20 PT, so this section lives here and gets pasted in once SB publishes the skeleton.
+did not exist anywhere under flight_sim_3d at 02:20 PT, so this section lives here and gets pasted in once SB publishes the skeleton.
 
 ## 1. Chromosome: 29 genes = guidance 12 | inner_loop 11 | mixing 6
 All genes are stored as u in [0,1] and decoded by `genome_schema.GeneSpec` (log: min·(max/min)^u, linear, log0 = exact 0 for u ≤ 0.05).
@@ -99,3 +99,48 @@ phase4 preset in test_all_presets_load). adapter.py, block_ops.py and every exis
   c172x/T38/737 bit-identical (T38 K4 re-run byte-identical). Identity effect on the f16: cost 0.4306 -> 0.4315 (no change in passes).
 * SB v0.5: geometry = TAS at h0. `leg_t` (timeout) uses `params.v_tas_ms` (same value as SB's `v_ref_mps` alias). The speed
   command stays `v_cmd_scale x V_ref(KCAS)` vs `vc_kts`. Preview uses range / actual TAS (vt_fps). ER traj `v` is still KCAS.
+
+## Leg-time timeout (SB ring_course/1.2, spec v0.6)  [default path]
+`p4_guidance.make_guidance` now sequences rings like `RC.score_course`: timeout = `ring_timeout_factor x RC.leg_time(course, n)`
+(true 3-D centre-to-centre distance / v_tas_ms; falls back to spacing/TAS on ring_course <= 1.1), and the clock restarts at the
+interpolated crossing time `t_prev + frac*(t - t_prev)`. Past the last ring the target keeps sliding (FD flies to the time limit;
+a frozen target behind the aircraft turned it round into a structural failure - caught in testing). Operator trace and hashes are
+unchanged (identity 192ed803, pop 7e5c38ba, cost 78c01f82); identity K=4 easy costs are bit-identical before/after
+(c172x 0.027942, T38 0.309766, 737 0.105840, f16 0.512280): the timeout almost never fires on easy.
+
+## Jet scaling diagnosis and `phase4_rings_qs` PROPOSAL (opt-in, 29 genes, default decode untouched)
+Finding (T38/f16/737 medium, 3 seeds, identity genes): the failing jets are not too aggressive in the inner loop; the lateral outer
+loop is too weak. SB geometry offsets scale with R_turn ~ V_tas^2 while `k_lat` is a fixed deg-bank/deg-bearing, and the 14 s leg is the
+same for all aircraft. Identity decode, 100 m lateral error seen at one spacing range (14 s):
+
+| aircraft | V_tas m/s | spacing m | preview m (3 s) | bank per 100 m err | a_lat per 100 m | needed (2d/T^2) | tau_cmd/leg | pitch scale | roll scale | kd_roll norm/dps | kd_pitch norm/dps |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| c172x | 54.6 | 764 | 164 | 7.5 deg | 1.29 m/s2 | 1.02 | 0.7 % | 1.00 | 1.00 | 0.020 | 0.020 |
+| 737 | 148.5 | 2079 | 446 | 2.8 deg | 0.47 | 1.02 | 0.7 % | 4.64 | 2.30 | 0.046 | 0.093 |
+| T38 | 177.7 | 2487 | 533 | 2.3 deg | 0.39 | 1.02 | 0.7 % | 2.61 | 0.55 | 0.011 | 0.052 |
+| f16 | 206.6 | 2892 | 620 | 2.0 deg | 0.34 | 1.02 | 0.7 % | 2.85 (FBW) | 0.45 (FBW) | 0.009 | 0.057 |
+
+So the jets turn 3-4x too slowly (J_time maxed, ~100 m miss). Medium course demand (median / p90 bank to spread each turn over one leg):
+c172x 1.3/2.1, 737 8.3/14, T38 11.6/19, f16 15/26 deg (hard: T38 35/44, f16 42/50). Short-period / roll mode from small-signal steps
+(`experiments/p4qs/sysid_*.json`, identity guidance): roll tau 0.2 s (c172x), 0.46 (T38), 0.6 (737), 0.18 (f16); pitch t63 0.4-0.6 s;
+tau_cmd 0.1 s and preview 3 s are short vs the 14 s leg, so neither limits tracking. Hypotheses tested: lower pitch gain (x0.6, x0.3, x0.1)
+made T38 worse (pass 20 %, 4 %); higher (x1.5-2.5) helped slightly (38-42 %); k_vert x2 broke it; longer preview alone did not help; the
+lateral gain did: T38 k_lat 3.25 -> 31 %, 5.0 -> 96 % (8.0 -> 73 %, chatter up); f16 3.78 -> 91 %, 5.5/8 -> 100 %; 737 2.7 -> 93 %, 4 -> 100 %.
+Elevator chatter on T38/f16 (J_chatter ~0.3 / 0.06 at identity) is the FBW/actuator-rate stacking FD is investigating; not touched here.
+
+qs design (`presets/phase4_rings_qs.json`, `p4_guidance.decode_physical_qs`): same genes/operators/u; `k_lat` and `k_lat_rate` are decoded
+x (V_tas/V_tas_c172x)^1.5 (737 x4.49, T38 x5.88, f16 x7.37, c172x x1.0). Exponent 1.5 is empirical (geometry says between 1 and 2). Not
+changed: inner-loop gains, preview, tau_cmd, bank/nz fractions (evidence did not support it). `variant="qs"` in `fly_one`/`evaluate` path.
+
+Comparison, medium stage, 3 course seeds (`experiments/p4qs/compare_*.json`; hard = structural failure / ground impact):
+
+| aircraft | genes | default pass / hard | qs pass / hard | default chatter | qs chatter |
+|---|---|---|---|---|---|
+| T38 | identity | 4 % / 3 of 3 | 93 % / 0 | - | 0.36 |
+| f16 | identity | 4 % / 0 | 100 % / 0 | 0.063 | 0.056 |
+| 737 | identity | 7 % / 3 of 3 | 100 % / 0 | - | 0.081 |
+| T38 | rand0, rand1, rand2 | 2 %, 0 %, 0 % | 11 %, 0 %, 0 % | | |
+| f16 | rand0, rand1, rand2 | 2 %, 2 %, 0 % (rand2 hard 3) | 7 %, 13 %, 0 % (no hard) | | |
+| 737 | rand0, rand1, rand2 | 4 %, 0 %, 2 % | 16 %, 4 %, 2 % | | |
+Random 29-gene vectors do not fly in either variant (expected for gen-0); qs is never worse. Not done: GA run with qs, exponent
+refinement, hard stage. Miss metres are not reported (SB `score_course` does not export a mean miss in `sb_diag`).

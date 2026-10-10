@@ -38,7 +38,17 @@ TEAM = os.path.dirname(HERE)
 FD_DIR = os.path.abspath(os.environ.get("EVOLUTION_FD_DIR", os.path.join(HERE, "_fd_pin_p4cs")))
 SB_DIR = os.path.join(TEAM, "sim-bridge")
 P4_FID = "full_a1_b2a_cs"
-FID_ALIASES = {"full_a1_b2a_p4": P4_FID, P4_FID: P4_FID}
+P4_FID_R1 = "full_a1_b2a_cs1"       # FD p4r1 (2026-10-10): only the f16 plant changed (FBW passthrough); opt-in via config fidelity
+FID_ALIASES = {"full_a1_b2a_p4": P4_FID, P4_FID: P4_FID, "full_a1_b2a_p4r1": P4_FID_R1, P4_FID_R1: P4_FID_R1}
+_PLANT = {"fid": P4_FID}
+
+
+def set_plant(cfg: Dict) -> None:
+    """Select the FD plant module for this process from cfg['fidelity'] (default r0 = flexeval_p4). Call before mods()."""
+    f = FID_ALIASES[cfg["fidelity"]]
+    if _M and _PLANT["fid"] != f:
+        raise RuntimeError("FD plant already loaded for another fidelity in this process")
+    _PLANT["fid"] = f
 SCORING_VERSION = "er-p4-score/2"   # /2: + Mach overspeed, single-source FD limits
 TRAJ_SCHEMA = "ga-flightsim-traj/2"
 RINGS_PROFILE = {"c172x": "phase2_c172x", "T38": "phase2_T38", "737": "phase2_737"}
@@ -60,12 +70,16 @@ def mods():
             fe.default_profile.__defaults__ = (None, fe.PHASE1_CONFIG)
             fe.load_sim.__defaults__ = (os.path.join(HERE, "sim.py"),)
             sim = fe.load_sim()
-            import flexeval_p4 as fp4
+            if _PLANT["fid"] == P4_FID_R1:
+                import flexeval_p4r1 as fp4
+            else:
+                import flexeval_p4 as fp4
             from sim_bridge import ring_course as rc
         finally:
             sys.dont_write_bytecode = prev
         lim = json.load(open(os.path.join(FD_DIR, "v2_results", "p4_aircraft_limits.json")))["aircraft"]
-        pins = json.load(open(os.path.join(FD_DIR, "v2_results", "model_versions_post_p4cs.json")))[P4_FID]
+        pf = "model_versions_post_p4r1.json" if _PLANT["fid"] == P4_FID_R1 else "model_versions_post_p4cs.json"
+        pins = json.load(open(os.path.join(FD_DIR, "v2_results", pf)))[_PLANT["fid"]]
         _M.update(fe=fe, sim=sim, fp4=fp4, rc=rc, limits=lim, pins=pins)
     return _M
 
@@ -204,6 +218,35 @@ def genome_guidance():
     return _M["gg"]
 
 
+def _gen0(cfg, PG, rng, N, gcfg):
+    """Default: ga.generation_zero (unchanged). Opt-in init {seed_u_file, seeded_fraction, mutate}: a fraction of gen 0 = the seed
+    genome (row 0 exact) + gaussian-mutated copies (ga.mutate, same operator/rate as the GA); the rest stays random. Draw order:
+    random block first (so rng use is deterministic), then mutations."""
+    pop = PG.generation_zero(rng, N)
+    ini = cfg.get("init")
+    if not ini:
+        return pop
+    from . import ga as GA
+    d = json.load(open(ini["seed_u_file"] if os.path.isabs(ini["seed_u_file"]) else os.path.join(TEAM, ini["seed_u_file"])))
+    if d.get("genes_hash") and d["genes_hash"] != PG_GENES_HASH():
+        raise RuntimeError(f"seed genome genes_hash {d['genes_hash']} != ours {PG_GENES_HASH()}")
+    u = np.asarray(d["u"], float)
+    n = max(1, int(round(float(ini.get("seeded_fraction", 0.5)) * N)))
+    pop[0] = u
+    for i in range(1, n):
+        pop[i] = GA.mutate(rng, u.copy(), gcfg) if ini.get("mutate", True) else u
+    return pop
+
+
+def genome_genes():
+    """Genome's GeneSpec list (genome/phase4_rings preset), needed by its p4r1/qs decodes."""
+    if "gs" not in _M:
+        genome_guidance()
+        import phase4_rings as R
+        _M["gs"] = R.load_preset()["genes"]
+    return _M["gs"]
+
+
 def fly_one(cfg: Dict, model: str, u, stage: str, seed: int, record: bool = False, M: int = None) -> Dict:
     from . import phase4_ga as PG, phase4_guidance as GD
     m = mods()
@@ -213,7 +256,19 @@ def fly_one(cfg: Dict, model: str, u, stage: str, seed: int, record: bool = Fals
     lim = course_limits(model, pd, course["start"]["kcas"])
     genes = PG.decode(np.asarray(u, float), model)
     log = [] if record else None
-    if cfg.get("guidance", "genome") == "genome":       # Genome-owned law (genome/p4_guidance.make_guidance), default
+    dv = (cfg.get("decode") or {}).get("variant", "default")
+    if dv != "default":                                # opt-in Genome decodes (same 29 genes / u): 'qs' or 'p4r1' (FD recipe + caps)
+        gg = genome_guidance()
+        gs = genome_genes()
+        if dv == "qs":
+            genes, sc_over = gg.decode_physical_qs(np.asarray(u, float), gs, model, course), None
+        elif dv == "p4r1":
+            genes = gg.decode_physical_p4r1(np.asarray(u, float), gs, model, course, (cfg["decode"].get("caps", "range")))
+            sc_over = gg.p4r1_sc_over(model)
+        else:
+            raise ValueError(f"decode.variant {dv!r}")
+        gd = gg.make_guidance(genes, model, course, None, sc_over=sc_over)
+    elif cfg.get("guidance", "genome") == "genome":       # Genome-owned law (genome/p4_guidance.make_guidance), default
         gd = genome_guidance().make_guidance(genes, model, course)
     else:                                              # "er_interim": evolution/phase4_guidance (tests / fallback only)
         gd = GD.make_guidance(genes, model, {**m["limits"][model], "bank_course_deg": lim["bank_course_deg"]}, rc, course)
@@ -241,10 +296,19 @@ def fly_one(cfg: Dict, model: str, u, stage: str, seed: int, record: bool = Fals
 def cache_key(cfg: Dict, model: str, u, stage: str, seed: int, K: int) -> str:
     rc = mods()["rc"]
     pin = cfg["pin_model_version"][model]
-    blob = json.dumps({"pin": pin, "fid": FID_ALIASES[cfg["fidelity"]], "u": np.asarray(u, "<f8").tobytes().hex(),
-                       "model": model, "stage": stage, "seed": int(seed), "K": int(K), "course": rc.VERSION,
-                       "score": SCORING_VERSION, "w": cfg["weights"], "genes": PG_GENES_HASH()}, sort_keys=True)
-    return hashlib.sha256(blob.encode()).hexdigest()
+    d = {"pin": pin, "fid": FID_ALIASES[cfg["fidelity"]], "u": np.asarray(u, "<f8").tobytes().hex(),
+         "model": model, "stage": stage, "seed": int(seed), "K": int(K), "course": rc.VERSION,
+         "score": SCORING_VERSION, "w": cfg["weights"], "genes": PG_GENES_HASH()}
+    if _family(cfg):                                   # opt-in extras only: default keys stay byte-identical
+        d["breeding"] = cfg["breeding"]
+        d["aircraft_tag"] = model
+    if (cfg.get("decode") or {}).get("variant", "default") != "default":
+        d["decode"] = cfg["decode"]
+    return hashlib.sha256(json.dumps(d, sort_keys=True).encode()).hexdigest()
+
+
+def _family(cfg) -> bool:
+    return (cfg.get("breeding") or {}).get("mode", "isolated") == "family"
 
 
 def PG_GENES_HASH():
@@ -256,6 +320,7 @@ _CFG = {}
 
 
 def _winit(cfg):
+    set_plant(cfg)
     blas_single_thread_or_die()
     _CFG["cfg"] = cfg
     mods()
@@ -341,11 +406,25 @@ def resolve_config(user: Dict, name: str) -> Dict:
             raise ValueError(f"rings.{k} missing")
     if rg["curriculum"].get("mode", "floor") not in ("floor", "pass_rate_gate"):
         raise ValueError("rings.curriculum.mode must be 'floor' (default) or 'pass_rate_gate'")
+    ss = rg["curriculum"].get("start_stage")
+    if ss is not None and (ss not in ("easy", "medium", "hard") or rg["curriculum"].get("mode") != "pass_rate_gate"):
+        raise ValueError("rings.curriculum.start_stage needs mode 'pass_rate_gate' and a stage name")
     lf = rg["curriculum"].get("late_fallback")
     if lf is not None and (not isinstance(lf, dict) or set(lf) - {"enabled", "rule"} or not isinstance(lf.get("enabled"), bool)):
         raise ValueError("rings.curriculum.late_fallback = {enabled: bool, rule: 'generation_thirds'}")
     if rg.get("seed_scheme", "legacy") not in ("legacy", "run_seed_v2"):
         raise ValueError("rings.seed_scheme must be 'legacy' (default) or 'run_seed_v2'")
+    dc = user.get("decode")
+    if dc is not None and (dc.get("variant", "default") not in ("default", "qs", "p4r1") or set(dc) - {"variant", "caps"}
+                           or dc.get("caps", "range") not in ("range", "clip", "none")):
+        raise ValueError("decode = {variant: default|qs|p4r1, caps: range|clip|none}")
+    ini = user.get("init")
+    if ini is not None and (set(ini) - {"seed_u_file", "seeded_fraction", "mutate"} or "seed_u_file" not in ini
+                            or not 0.0 < float(ini.get("seeded_fraction", 0.5)) <= 1.0):
+        raise ValueError("init = {seed_u_file, seeded_fraction in (0,1], mutate: bool}")
+    if "breeding" in user:
+        from . import phase4_family as PF
+        PF.validate(user["breeding"], [a["name"] for a in user["aircraft"]], int(user["ga"]["pop_size"]), 2)
     c = json.loads(json.dumps(user))
     if rg.get("seed_scheme") == "run_seed_v2" and c["rings"].get("run_seed") is None:
         c["rings"]["run_seed"] = int.from_bytes(os.urandom(8), "little")   # new run -> fresh run_seed (logged)
@@ -377,7 +456,7 @@ def check_pins(cfg):
            if cfg["pin_model_version"][a["name"]] != pins[a["name"]]["active"]}
     fp4 = mods()["fp4"]
     import coupled_sim as cs
-    live = {a["name"]: fp4.model_version(P4_FID, a["name"], cs.ROOT, cs_mode="active") for a in cfg["aircraft"]}
+    live = {a["name"]: fp4.model_version(_PLANT["fid"], a["name"], cs.ROOT, cs_mode="active") for a in cfg["aircraft"]}
     bad.update({k: (cfg["pin_model_version"][k], v) for k, v in live.items() if v != cfg["pin_model_version"][k]})
     if bad:
         raise RuntimeError(f"model_version pin mismatch {bad}")
@@ -390,6 +469,7 @@ def run(cfg: Dict, out_root: str = None, workers: int = None) -> Dict:
     m = mods()
     rc = m["rc"]
     blas_single_thread_or_die()
+    set_plant(cfg)
     live = check_pins(cfg)
     out_root = out_root or os.path.join(HERE, "runs")
     rd = os.path.join(out_root, cfg["run_id"])
@@ -442,15 +522,17 @@ def run(cfg: Dict, out_root: str = None, workers: int = None) -> Dict:
             cf.flush()
             return [[cache[keys[i * len(seeds) + j]] for j in range(len(seeds))] for i in range(len(pop))]
 
-        for ai, a in enumerate(cfg["aircraft"]):
+        for ai, a in enumerate([] if _family(cfg) else cfg["aircraft"]):
             model = a["name"]
             rng = np.random.default_rng([int(cfg["seed"]), zlib.crc32(model.encode())])
-            pop = PG.generation_zero(rng, N)
+            pop = _gen0(cfg, PG, rng, N, gcfg)
             hist, stages, gens_log = [], [], []
             t_ac = time.time()
             for g in range(G):
                 if cur.get("mode", "floor") == "pass_rate_gate":     # opt-in (phase4 configs only)
                     stage = RR.curriculum_stage_gated(g, hist, cur["promote_pass_rate"], cur["promote_streak"])
+                    if cur.get("start_stage"):      # opt-in: gate counts from this stage (default 'easy')
+                        stage = RR.STAGE_ORDER[min(2, RR.STAGE_ORDER.index(stage) + RR.STAGE_ORDER.index(cur["start_stage"]))]
                     if (cur.get("late_fallback") or {}).get("enabled"):   # optional by-generation floor (OFF in s2)
                         fl = RR.STAGE_ORDER[min(2, (3 * g) // max(G, 1))]
                         stage = max(stage, fl, key=RR.STAGE_ORDER.index)
@@ -512,6 +594,8 @@ def run(cfg: Dict, out_root: str = None, workers: int = None) -> Dict:
                    "wall_s": time.time() - t_ac}
             summary["aircraft"].append(ent)
             json.dump(summary, open(os.path.join(rd, "summary.partial.json"), "w"), indent=1)
+        if _family(cfg):
+            _run_family(cfg, ex, evaluate, PG, PE, RR, gcfg, rd, gl, sl, summary, seed_src, G, N, K, ag, cur)
     cf.close(); gl.close(); sl.close()
     import resource
     ru = resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -520,6 +604,115 @@ def run(cfg: Dict, out_root: str = None, workers: int = None) -> Dict:
     summary["workers"] = workers
     json.dump(summary, open(os.path.join(rd, "summary.json"), "w"), indent=1)
     return summary
+
+
+# ------------------------------------------------------------------------------------------------ family breeding (opt-in)
+def _run_family(cfg, ex, evaluate, PG, PE, RR, gcfg, rd, gl, sl, summary, seed_src, G, N, K, ag, cur):
+    """breeding.mode == 'family': generations are the outer loop so family members breed from each other's rankings.
+    Per-aircraft evaluation, stages, courses and logging are the same as the isolated loop; rows gain family/origin/parents."""
+    from . import phase4_family as PF
+    b = cfg["breeding"]
+    pc = float(b.get("crossover_probability_within_family", 0.7))
+    mig = b.get("migration")
+    xb = tuple(b.get("exchange_blocks") or PF.ALL_BLOCKS)
+    run_seed = cfg["rings"].get("run_seed")
+    ml = open(os.path.join(rd, "migrations.jsonl"), "a")
+    H = int(cfg["rings"]["holdout_courses"])
+    for fname, members in PF.families(b, [a["name"] for a in cfg["aircraft"]]):
+        st = {}
+        for model in members:
+            rng = np.random.default_rng([int(cfg["seed"]), zlib.crc32(model.encode())])   # gen-0 identical to isolated
+            st[model] = {"rng": rng, "pop": _gen0(cfg, PG, rng, N, gcfg), "hist": [], "stages": [], "gens_log": [], "t0": time.time(),
+                         "meta": [{"origin": "gen0", "parents": [], "cross_family": False}] * N}
+        frng = PF.family_rng(cfg["seed"], run_seed, members) if len(members) > 1 else None
+        for g in range(G):
+            ranked_all = {}
+            for model in members:
+                S = st[model]
+                if cur.get("mode", "floor") == "pass_rate_gate":
+                    stage = RR.curriculum_stage_gated(g, S["hist"], cur["promote_pass_rate"], cur["promote_streak"])
+                    if cur.get("start_stage"):      # opt-in: gate counts from this stage (default 'easy')
+                        stage = RR.STAGE_ORDER[min(2, RR.STAGE_ORDER.index(stage) + RR.STAGE_ORDER.index(cur["start_stage"]))]
+                    if (cur.get("late_fallback") or {}).get("enabled"):
+                        fl = RR.STAGE_ORDER[min(2, (3 * g) // max(G, 1))]
+                        stage = max(stage, fl, key=RR.STAGE_ORDER.index)
+                else:
+                    stage = RR.curriculum_stage(g, G, S["hist"], cur["promote_pass_rate"], cur["promote_streak"])
+                S["stages"].append(stage)
+                seeds = seeds_for(cfg, model, g)
+                sl.write(json.dumps({"aircraft": model, "family": fname, "gen": g, "stage": stage, "train_seeds": seeds,
+                                     "run_seed": run_seed, "seed_source": seed_src}) + "\n"); sl.flush()
+                pop = S["pop"]
+                per = evaluate(model, pop, stage, seeds)
+                aggs = [PE.aggregate_courses(rs, ag["mode"], ag["alpha"], ag["blend"]) for rs in per]
+                costs = np.array([x["cost"] for x in aggs])
+                o = PG.rank_order(costs)
+                for rank, i in enumerate(o):
+                    mt = S["meta"][int(i)]
+                    gl.write(json.dumps({"aircraft": model, "family": fname, "gen": g, "rank": rank, "idx": int(i), "id": f"{model}:g{g}:r{rank}",
+                                         "origin": mt["origin"], "parents": mt["parents"], "cross_aircraft": bool(mt.get("cross_aircraft", False)),
+                                         "stage": stage, "seeds": seeds, "u": [float(x) for x in pop[i]], "cost": aggs[i]["cost"],
+                                         "mean": aggs[i]["mean"], "cvar": aggs[i]["cvar"], "pass_rate": aggs[i]["pass_rate"],
+                                         "hard_fails": aggs[i]["hard_fails"], "terms": aggs[i]["terms"],
+                                         "courses": [{"seed": r["seed"], "cost": r["cost"], "hard_fail": r["hard_fail"],
+                                                      **{k: r["summary"][k] for k in ("passes", "misses", "finished", "t_last", "mean_rho_m", "mean_miss_m")}}
+                                                     for r in per[i]]}) + "\n")
+                gl.flush()
+                bi = int(o[0])
+                S["hist"].append(aggs[bi]["pass_rate"])
+                nhard = sum(1 for rs in per for r in rs if r["hard_fail"])
+                S["gens_log"].append({"gen": g, "stage": stage, "seeds": seeds, "best": aggs[bi]["cost"], "best_pass_rate": aggs[bi]["pass_rate"],
+                                      "median": float(np.median(costs)), "pop_pass_rate": float(np.mean([x["pass_rate"] for x in aggs])),
+                                      "hard_fail_courses": nhard, "n_courses": N * K})
+                print(f"[{model}] g{g} {stage} best {aggs[bi]['cost']:.4f} pass {aggs[bi]['pass_rate']:.3f} hard {nhard}", flush=True)
+                S["ranked"], S["per"], S["aggs"], S["o"] = pop[o], per, aggs, o
+                ranked_all[model] = S["ranked"]
+            if g < G - 1:
+                newp, metas = {}, {}
+                for model in members:
+                    S = st[model]
+                    if len(members) == 1:
+                        newp[model] = PG.next_generation(S["rng"], S["ranked"], gcfg)      # isolated operator, own rng
+                        metas[model] = [{"origin": "elite" if i < gcfg.elite else "child", "parents": [], "cross_family": False}
+                                        for i in range(N)]
+                    else:
+                        newp[model], metas[model] = PF.next_generation(frng, ranked_all, model, members, pc, gcfg, xb)
+                if mig and (g + 1) % int(mig["every_n_gens"]) == 0 and len(members) > 1:
+                    evs = PF.migrate(newp, metas, ranked_all, members, int(mig["top_k"]))
+                    ml.write(json.dumps({"family": fname, "after_gen": g, "into_gen": g + 1, "top_k": int(mig["top_k"]),
+                                         "n_moved": len(evs), "events": evs}) + "\n"); ml.flush()
+                for model in members:
+                    st[model]["pop"], st[model]["meta"] = newp[model], metas[model]
+        for model in members:
+            S = st[model]
+            best_u, o, aggs, per = S["ranked"][0], S["o"], S["aggs"], S["per"]
+            best_per, best_agg = per[int(o[0])], aggs[int(o[0])]
+            hseeds = seeds_for(cfg, model, holdout=True)
+            sl.write(json.dumps({"aircraft": model, "family": fname, "holdout_seeds": hseeds, "stage": S["stages"][-1],
+                                 "run_seed": run_seed, "seed_source": seed_src}) + "\n"); sl.flush()
+            hold = evaluate(model, [best_u], S["stages"][-1], hseeds)[0]
+            hagg = PE.aggregate_courses(hold, ag["mode"], ag["alpha"], ag["blend"])
+
+            def sm(rs, key):
+                v = [r["summary"][key] for r in rs if r["summary"].get(key) is not None]
+                return (math.fsum(v) / len(v)) if v else None
+            summary["aircraft"].append({
+                "aircraft": model, "family": fname, "best_id": f"{model}:g{G-1}:r0", "best_u": [float(x) for x in best_u],
+                "best_genes": PG.decode(best_u, model), "stages": S["stages"], "generations": S["gens_log"],
+                "train": {"cost": best_agg["cost"], "mean": best_agg["mean"], "pass_rate": best_agg["pass_rate"], "terms": best_agg["terms"],
+                          "hard_fails": best_agg["hard_fails"], "seeds": seeds_for(cfg, model, G - 1),
+                          "mean_rho_m": sm(best_per, "mean_rho_m"), "mean_miss_m": sm(best_per, "mean_miss_m"),
+                          "t_last_mean": sm(best_per, "t_last"), "nominal_time_mean": sm(best_per, "nominal_time_s"),
+                          "finished": sum(r["summary"]["finished"] for r in best_per)},
+                "holdout": {"cost": hagg["cost"], "mean": hagg["mean"], "pass_rate": hagg["pass_rate"], "terms": hagg["terms"],
+                            "hard_fails": hagg["hard_fails"], "seeds": hseeds, "stage": S["stages"][-1],
+                            "mean_rho_m": sm(hold, "mean_rho_m"), "mean_miss_m": sm(hold, "mean_miss_m"),
+                            "t_last_mean": sm(hold, "t_last"), "nominal_time_mean": sm(hold, "nominal_time_s"),
+                            "finished": sum(r["summary"]["finished"] for r in hold),
+                            "per_course": [{"seed": r["seed"], "cost": r["cost"], "passes": r["summary"]["passes"]} for r in hold]},
+                "holdout_minus_train_cost": hagg["cost"] - best_agg["cost"], "wall_s": time.time() - S["t0"]})
+            json.dump(summary, open(os.path.join(rd, "summary.partial.json"), "w"), indent=1)
+    ml.close()
 
 
 # ------------------------------------------------------------------------------------------------ trajectory export

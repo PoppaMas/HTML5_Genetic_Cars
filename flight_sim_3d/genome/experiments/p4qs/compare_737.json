@@ -1,0 +1,82 @@
+[
+ {
+  "model": "737",
+  "genes": "identity",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.06666666666666667,
+  "cost": 10.933333333333332,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "identity",
+  "var": "qs",
+  "hard": 0,
+  "pass_rate": 1.0,
+  "cost": 0.07713639017078112,
+  "chatter": 0.08148333765986786,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand0",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.044444444444444446,
+  "cost": 10.955555555555556,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand0",
+  "var": "qs",
+  "hard": 3,
+  "pass_rate": 0.15555555555555556,
+  "cost": 10.844444444444443,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand1",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.0,
+  "cost": 11.0,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand1",
+  "var": "qs",
+  "hard": 3,
+  "pass_rate": 0.044444444444444446,
+  "cost": 10.955555555555556,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand2",
+  "var": "default",
+  "hard": 0,
+  "pass_rate": 0.022222222222222223,
+  "cost": 1.3652984339761483,
+  "chatter": 0.2955281837950014,
+  "miss_m": NaN
+ },
+ {
+  "model": "737",
+  "genes": "rand2",
+  "var": "qs",
+  "hard": 0,
+  "pass_rate": 0.022222222222222223,
+  "cost": 1.3512262912942663,
+  "chatter": 0.3530438025371465,
+  "miss_m": NaN
+ }
+]

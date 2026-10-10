@@ -1,0 +1,38 @@
+[
+ {
+  "model": "T38",
+  "genes": "identity",
+  "combo": "p4r1@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.08888888888888889,
+  "chatter": 0.25184812547130914
+ },
+ {
+  "model": "T38",
+  "genes": "c172x_best",
+  "combo": "p4r1@cs1",
+  "n": 3,
+  "hard": 0,
+  "pass_rate": 0.8222222222222223,
+  "chatter": 0.29949707380890495
+ },
+ {
+  "model": "T38",
+  "genes": "rand0",
+  "combo": "p4r1@cs1",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.044444444444444446,
+  "chatter": 0.0
+ },
+ {
+  "model": "T38",
+  "genes": "rand1",
+  "combo": "p4r1@cs1",
+  "n": 3,
+  "hard": 3,
+  "pass_rate": 0.0,
+  "chatter": 0.0
+ }
+]

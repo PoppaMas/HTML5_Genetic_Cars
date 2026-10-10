@@ -1,0 +1,25 @@
+{
+ "doc": "P4 r1 fidelity full_a1_b2a_cs1 (flexeval_p4r1.model_version; alias full_a1_b2a_p4r1). b2a = underlying B2a pin. The r0 pins (model_versions_post_p4cs.json, fidelity full_a1_b2a_cs) are unchanged and still resolve bit for bit.",
+ "full_a1_b2a_cs1": {
+  "c172x": {
+   "active": "full_a1_b2a_cs1:p4cs1:active:a1229008",
+   "passthrough": "full_a1_b2a_cs1:p4cs1:passthrough:12d11653",
+   "b2a": "full_a1_b2a:flexv2b2a:847bed9b"
+  },
+  "T38": {
+   "active": "full_a1_b2a_cs1:p4cs1:active:c6c58185",
+   "passthrough": "full_a1_b2a_cs1:p4cs1:passthrough:93901ee0",
+   "b2a": "full_a1_b2a:flexv2b2a:b635a51d"
+  },
+  "737": {
+   "active": "full_a1_b2a_cs1:p4cs1:active:07531f5f",
+   "passthrough": "full_a1_b2a_cs1:p4cs1:passthrough:13371009",
+   "b2a": "full_a1_b2a:flexv2b2a:5d5a8f17"
+  },
+  "f16": {
+   "active": "full_a1_b2a_cs1:p4cs1:active:33efc4e9",
+   "passthrough": "full_a1_b2a_cs1:p4cs1:passthrough:f7d3f586",
+   "b2a": "full_a1_b2a:flexv2b2a:07b08913"
+  }
+ }
+}

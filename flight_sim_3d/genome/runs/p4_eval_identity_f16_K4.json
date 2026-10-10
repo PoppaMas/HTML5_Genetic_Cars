@@ -1,0 +1,62 @@
+{
+ "cost": 0.5122799883472446,
+ "mean": 0.4217433423957387,
+ "cvar": 0.7235321622340921,
+ "mode": "blend",
+ "K": 4,
+ "pass_rate": 0.6666666666666666,
+ "terms": {
+  "J_ring_miss": 0.3333333333333333,
+  "J_ring_acc": 0.2858000758867479,
+  "J_time": 0.0024769356065930115,
+  "J_defl_rms": 0.03527968173751299,
+  "J_rate_rms": 0.024105014859001357,
+  "J_sat": 0.0,
+  "J_chatter": 0.041153293459714746,
+  "J_g": 0.0,
+  "J_bank": 0.0,
+  "J_aoa": 0.0,
+  "J_overspeed": 0.0,
+  "J_underspeed": 0.0,
+  "J_carried": 0.0
+ },
+ "status": "ok",
+ "hard_fails": [],
+ "cache_key": "53ce2da8e8f716bcfbda772f796953222006c46263d6e39788d6f75f74c83b19",
+ "stage": "easy",
+ "course_seeds": [
+  2775460174022948320,
+  14286167635225539541,
+  2039887986951191917,
+  3260589480246937669
+ ],
+ "per_course": [
+  {
+   "cost": 0.20006267751869086,
+   "status": "ok",
+   "pass_rate": 0.8666666666666667,
+   "n_pass": 13
+  },
+  {
+   "cost": 0.4188600454969366,
+   "status": "ok",
+   "pass_rate": 0.6666666666666666,
+   "n_pass": 10
+  },
+  {
+   "cost": 0.3445184843332352,
+   "status": "ok",
+   "pass_rate": 0.7333333333333333,
+   "n_pass": 11
+  },
+  {
+   "cost": 0.7235321622340921,
+   "status": "ok",
+   "pass_rate": 0.4,
+   "n_pass": 6
+  }
+ ],
+ "ring_course_version": "ring_course/1.2",
+ "seed_scheme": "course_seed(run=1, gen=0, k, ac) p4course-seed/1",
+ "omp_num_threads": "1"
+}

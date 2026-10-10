@@ -24,10 +24,14 @@ TEAM = os.path.dirname(HERE)
 # Read-only copy of ER's FD pin evolution/_fd_pin_p4cs (== flight-dynamics flexeval_p4.py md5 8c1f9f89...), placed so that
 # FD's TEAM-relative paths resolve to the real evolution/ (symlink). Nothing is written into evolution/ or flight-dynamics/.
 FD_PIN = os.path.join(HERE, "_p4team", "flight-dynamics")
+FD_R1 = FD_PIN                   # where the p4r1 (full_a1_b2a_cs1) files live
 if not os.path.isdir(FD_PIN):   # repo layout: use the shipped frozen pin directly (the _p4team symlink copy is team-layout only)
     FD_PIN = os.path.join(TEAM, "evolution", "_fd_pin_p4cs")
+    FD_R1 = os.path.join(TEAM, "flight-dynamics")   # the p4r1 files ship in flight-dynamics/ (no separate p4r1 pin dir yet)
 LIMITS_FILE = os.path.join(FD_PIN, "v2_results", "p4_aircraft_limits.json")
 FIDELITY = "full_a1_b2a_cs"
+FIDELITY_R1 = "full_a1_b2a_cs1"      # FD p4r1 (alias full_a1_b2a_p4r1); variant "p4r1" flies this
+SCALING_R1_FILE = os.path.join(FD_R1, "v2_results", "p4r1_gain_scaling.json")
 REF = "c172x"
 DT = 1.0 / 120.0
 G = 9.80665
@@ -88,6 +92,49 @@ def qs_tune(model):
     return None
 
 
+# --- phase4_rings_p4r1 (opt-in): FD's recipe (flight-dynamics v2_results/P4_JET_TRACKING.md, p4r1_gain_scaling.json), constants
+# read from FD's JSON only. (1) outer gains k_lat/k_lat_rate/k_vert/k_vert_rate x outer_gain_scale; (2) inner-loop per-axis
+# gain_scale (non-FBW; the f16 keeps the FBW rate-demand mapping); (3) kd_pitch/kd_roll upper bounds = gene_caps, implemented as
+# a narrowed gene range per aircraft (u stays in [0,1]); c172x (the reference) is left exactly as the default decode.
+P4R1_OUTER = ("k_lat", "k_lat_rate", "k_vert", "k_vert_rate")
+
+
+def scaling_r1() -> Dict:
+    return json.load(open(SCALING_R1_FILE))["aircraft"]
+
+
+def p4r1_genes(genes, model: str, caps: str = "range"):
+    """Per-aircraft gene table: caps='range' narrows kd_pitch/kd_roll max to FD gene_caps (log range [min, cap]); 'clip' / 'none'
+    keep the default table (clip is applied at decode). The reference aircraft is never capped."""
+    import dataclasses
+    if caps != "range" or model == REF:
+        return genes
+    c = scaling_r1()[model]["gene_caps"]
+    hi = {"kd_pitch": c["kd_pitch_hi"], "kd_roll": c["kd_roll_hi"]}
+    return [dataclasses.replace(g, max=min(g.max, hi[g.name])) if g.name in hi else g for g in genes]
+
+
+def decode_physical_p4r1(u, genes, model: str, course=None, caps: str = "range"):
+    d = decode_physical(u, p4r1_genes(genes, model, caps), model)
+    if model == REF:
+        return d
+    J = scaling_r1()[model]
+    for k in P4R1_OUTER:
+        d[k] = d[k] * J["outer_gain_scale"]
+    if caps == "clip":
+        d["kd_pitch"] = min(d["kd_pitch"], J["gene_caps"]["kd_pitch_hi"])
+        d["kd_roll"] = min(d["kd_roll"], J["gene_caps"]["kd_roll_hi"])
+    return d
+
+
+def p4r1_sc_over(model: str):
+    """FD gain_scale per axis for non-FBW aircraft; None for the reference and for FBW models (rate-demand mapping kept)."""
+    if model == REF or model in FBW:
+        return None
+    g = scaling_r1()[model]["gain_scale"]
+    return {"pitch": g["pitch"], "roll": g["roll"], "yaw": g["yaw"]}
+
+
 def _clamp(x, lo, hi):
     return lo if x < lo else hi if x > hi else x
 
@@ -100,7 +147,7 @@ def _sb():
     return RC
 
 
-def make_guidance(gains: Dict[str, float], model: str, sb_course: Dict, tune: Optional[Dict[str, float]] = None):
+def make_guidance(gains: Dict[str, float], model: str, sb_course: Dict, tune: Optional[Dict[str, float]] = None, sc_over: Optional[Dict[str, float]] = None):
     """Stateful closure guidance(state, gains, course, model) -> command norms. One closure per flight."""
     RC = _sb()
     g, sc, lim = gains, gain_scales(model), aircraft_limits(model)
@@ -109,6 +156,8 @@ def make_guidance(gains: Dict[str, float], model: str, sb_course: Dict, tune: Op
         ref = aircraft_limits(REF)
         sc = dict(sc, yaw=sc["roll"], roll=ref["roll_rate_max_dps"] / fbw["p_dps_per_norm"],
                   pitch=ref["pitch_rate_g_limited_dps"] / fbw["q_dps_per_norm"])
+    if sc_over:                               # opt-in (p4r1): FD per-axis gain_scale replaces the c172x-relative scale
+        sc = dict(sc, **sc_over)
     if tune:                                  # opt-in (phase4_rings_qs / experiments): multipliers on the gain scales; None = default
         sc = dict(sc, yaw=sc.get("yaw", sc["roll"]) * tune.get("yaw", 1.0), roll=sc["roll"] * tune.get("roll", 1.0),
                   pitch=sc["pitch"] * tune.get("pitch", 1.0))
@@ -221,16 +270,16 @@ def make_guidance(gains: Dict[str, float], model: str, sb_course: Dict, tune: Op
 
 
 # ---------------------------------------------------------------------------------------------- evaluator
-def _fd():
+def _fd(variant: str = "default"):
     sys.dont_write_bytecode = True
     if FD_PIN not in sys.path:
         sys.path.append(FD_PIN)
-    import flexeval_p4 as fp4
-    import flexeval as _fe
-    if not os.path.exists(_fe.EVOLUTION_SIM):   # repo layout: the frozen pin sits inside evolution/ (same fix as evolution/phase4_loop.py)
-        _fe.load_sim.__defaults__ = (os.path.join(TEAM, "evolution", "sim.py"),)
-        _fe.PHASE1_CONFIG = os.path.join(TEAM, "evolution", "configs", "phase1.json")
-        _fe.default_profile.__defaults__ = (None, _fe.PHASE1_CONFIG)
+    if variant == "p4r1":
+        if FD_R1 not in sys.path:
+            sys.path.append(FD_R1)
+        import flexeval_p4r1 as fp4
+    else:
+        import flexeval_p4 as fp4
     return fp4
 
 
@@ -250,17 +299,21 @@ def cache_key(u, model: str, stage: str, seeds: Sequence[int], K: int, mv: str, 
 
 
 def fly_one(u, genes, model: str, stage: str, seed: int, M: Optional[int] = None, variant: str = "default",
-            tune: Optional[Dict[str, float]] = None, gain_hook=None):
-    RC, fp4 = _sb(), _fd()
+            tune: Optional[Dict[str, float]] = None, gain_hook=None, caps: str = "range", plant: Optional[str] = None):
+    plant = plant or ("cs1" if variant == "p4r1" else "cs")        # FD plant: cs = p4cs0 (r0), cs1 = p4r1
+    RC, fp4 = _sb(), _fd("p4r1" if plant == "cs1" else "default")
     PE, ER = _er()
     course = RC.make_course(model, stage, seed, M=M)
-    gains = decode_physical(u, genes, model) if variant == "default" else decode_physical_qs(u, genes, model, course)
+    fid = FIDELITY_R1 if plant == "cs1" else FIDELITY
+    gains = {"default": lambda: decode_physical(u, genes, model), "qs": lambda: decode_physical_qs(u, genes, model, course),
+             "p4r1": lambda: decode_physical_p4r1(u, genes, model, course, caps)}[variant]()
     if gain_hook:
         gains = gain_hook(dict(gains))
-    guid = make_guidance(gains, model, course, tune if variant == "default" else qs_tune(model))
+    guid = make_guidance(gains, model, course, tune if variant == "default" else qs_tune(model),
+                         sc_over=p4r1_sc_over(model) if variant == "p4r1" else None)
     fd_course = {"start": {"alt_ft": course["start"]["alt_ft"], "kcas": course["start"]["kcas"]},
                  "duration_s": course["time_limit_s"], "sb_course_id": f"{model}:{stage}:{seed}"}
-    r = fp4.fly_course(None, gains, None, None, None, fd_course, FIDELITY, model=model, guidance=guid, cs_mode="active")
+    r = fp4.fly_course(None, gains, None, None, None, fd_course, fid, model=model, guidance=guid, cs_mode="active")
     rings = [ER.Ring(tuple(RC.ring_at(course, k)["centre_neu_m"]), tuple(RC.ring_at(course, k)["normal_neu"]),
                      float(course["params"]["radius_m"])) for k in range(course["M"])]
     traj = {"t": r.get("t", []), "pos": r.get("pos", []), "att": r.get("att", []), "nz": r.get("nz", []),

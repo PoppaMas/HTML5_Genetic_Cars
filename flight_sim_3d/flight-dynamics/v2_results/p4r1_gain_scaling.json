@@ -1,0 +1,156 @@
+{
+ "aircraft": {
+  "737": {
+   "auth_pitch_dps2_per_norm": 9.898668420184595,
+   "auth_roll_dps2_per_norm": 22.887494676099454,
+   "auth_yaw_dps2_per_norm": 18.396518111938587,
+   "gain_scale": {
+    "pitch": 4.264165385334822,
+    "roll": 7.140195268952802,
+    "yaw": 1.0,
+    "yaw_uncapped": 1.237291858159159
+   },
+   "gene_caps": {
+    "kd_pitch_hi": 0.05,
+    "kd_roll_hi": 0.05,
+    "note": "loop gain K = kd*gain_scale*authority = kd*authority_ref <= ~2 (pitch) / 8 (roll) 1/s; evolved T38/f16 kd gave K = 73/69 1/s (limit cycle). Tested on T38 (chatter 0.34 -> 0.05)"
+   },
+   "mach_trim": 0.45223592266429535,
+   "outer_gain_scale": 1.6497694656208843,
+   "qbar_trim_psf": 208.38799324533684,
+   "sign_pitch": -1.0,
+   "sign_roll": 1.0,
+   "sign_yaw": -1.0,
+   "start": {
+    "alt_ft": 10000.0,
+    "kcas": 250.0
+   },
+   "trim_cmd": {
+    "aileron": 1.1661685721952323e-15,
+    "elevator": 0.0,
+    "flap": 0.0,
+    "rudder": 8.202401938449093e-16,
+    "speedbrake": 0.0,
+    "throttle": 0.5856736990967643
+   },
+   "v_tas_ms": 148.51085465160114,
+   "vt_trim_fps": 487.2403367834683
+  },
+  "T38": {
+   "auth_pitch_dps2_per_norm": 56.135470255662526,
+   "auth_roll_dps2_per_norm": 166.56541605621186,
+   "auth_yaw_dps2_per_norm": 3.2976513220808106,
+   "gain_scale": {
+    "pitch": 0.7519231431752421,
+    "roll": 0.9811231231176885,
+    "yaw": 1.0,
+    "yaw_uncapped": 6.902446576436843
+   },
+   "gene_caps": {
+    "kd_pitch_hi": 0.05,
+    "kd_roll_hi": 0.05,
+    "note": "loop gain K = kd*gain_scale*authority = kd*authority_ref <= ~2 (pitch) / 8 (roll) 1/s; evolved T38/f16 kd gave K = 73/69 1/s (limit cycle). Tested on T38 (chatter 0.34 -> 0.05)"
+   },
+   "mach_trim": 0.5410063411523036,
+   "outer_gain_scale": 1.804437776478425,
+   "qbar_trim_psf": 298.2272265680704,
+   "sign_pitch": -1.0,
+   "sign_roll": 1.0,
+   "sign_yaw": -1.0,
+   "start": {
+    "alt_ft": 10000.0,
+    "kcas": 300.0
+   },
+   "trim_cmd": {
+    "aileron": 5.536506836497637e-16,
+    "elevator": 0.0,
+    "flap": 0.0,
+    "rudder": 2.5177332146599578e-15,
+    "speedbrake": 0.0,
+    "throttle": 0.3538222303574973
+   },
+   "v_tas_ms": 177.6623883019271,
+   "vt_trim_fps": 582.8818513842753
+  },
+  "c172x": {
+   "auth_pitch_dps2_per_norm": 42.20955923825808,
+   "auth_roll_dps2_per_norm": 163.42118120446776,
+   "auth_yaw_dps2_per_norm": 22.761862078379117,
+   "gain_scale": {
+    "pitch": 1.0,
+    "roll": 1.0,
+    "yaw": 1.0,
+    "yaw_uncapped": 1.0
+   },
+   "gene_caps": {
+    "kd_pitch_hi": 0.05,
+    "kd_roll_hi": 0.05,
+    "note": "loop gain K = kd*gain_scale*authority = kd*authority_ref <= ~2 (pitch) / 8 (roll) 1/s; evolved T38/f16 kd gave K = 73/69 1/s (limit cycle). Tested on T38 (chatter 0.34 -> 0.05)"
+   },
+   "mach_trim": 0.16259700272091684,
+   "outer_gain_scale": 1.0,
+   "qbar_trim_psf": 33.82528920183821,
+   "sign_pitch": -1.0,
+   "sign_roll": 1.0,
+   "sign_yaw": -1.0,
+   "start": {
+    "alt_ft": 4000.0,
+    "kcas": 100.0
+   },
+   "trim_cmd": {
+    "aileron": -0.07493495035250447,
+    "elevator": 0.0,
+    "flap": 0.0,
+    "rudder": -0.0037249119086857152,
+    "speedbrake": 0.0,
+    "throttle": 0.7804654514255639
+   },
+   "v_tas_ms": 54.564687813373325,
+   "vt_trim_fps": 179.01800463705158
+  },
+  "f16": {
+   "auth_pitch_dps2_per_norm": 183.88647377543248,
+   "auth_roll_dps2_per_norm": 790.665172323048,
+   "auth_yaw_dps2_per_norm": 15.277510908325558,
+   "fbw_rate_demand": {
+    "pitch_dps_per_norm": 9.241254760174568,
+    "roll_dps_per_norm": 180.05650203664976
+   },
+   "gain_scale": {
+    "pitch": 0.2295414032997643,
+    "roll": 0.20668822521209718,
+    "yaw": 1.0,
+    "yaw_uncapped": 1.4898933612264629
+   },
+   "gain_scale_note": "FBW rate-command: keep the rate-demand mapping (roll = ref_roll_rate_max / roll_dps_per_norm, pitch = ref_pitch_rate / pitch_dps_per_norm); the authority numbers above are the closed-loop FBW response, informational only for f16",
+   "gene_caps": {
+    "kd_pitch_hi": 0.02,
+    "kd_roll_hi": 0.05,
+    "note": "f16 FBW: rate-demand gain 26*kd_pitch <= ~0.5 (untested cap)"
+   },
+   "mach_trim": 0.6289878936891417,
+   "outer_gain_scale": 1.9456372666228654,
+   "qbar_trim_psf": 403.11332283153604,
+   "sign_pitch": -1.0,
+   "sign_roll": 1.0,
+   "sign_yaw": -1.0,
+   "start": {
+    "alt_ft": 10000.0,
+    "kcas": 350.0
+   },
+   "trim_cmd": {
+    "aileron": -6.052438411563443e-11,
+    "elevator": 0.0,
+    "flap": 0.0,
+    "rudder": 4.5049991515000443e-10,
+    "speedbrake": 0.0,
+    "throttle": 0.28357508211663096
+   },
+   "v_tas_ms": 206.5548643437295,
+   "vt_trim_fps": 677.6734394479314
+  }
+ },
+ "doc": "Control power at the course start trim, plant full_a1_b2a_cs1 active; gain_scale = ref(c172x)/aircraft per axis (yaw capped (0.3, 1.0)); outer_gain_scale = (V_tas/V_tas_ref)^0.50 for the 4 guidance gains",
+ "ref": "c172x",
+ "schema": "fd-p4r1-scaling/1"
+}

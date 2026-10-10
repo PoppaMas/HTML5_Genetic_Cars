@@ -1,0 +1,82 @@
+[
+ {
+  "model": "T38",
+  "genes": "identity",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.044444444444444446,
+  "cost": 10.955555555555556,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "identity",
+  "var": "qs",
+  "hard": 0,
+  "pass_rate": 0.9333333333333332,
+  "cost": 0.19620036889866546,
+  "chatter": 0.35834138125715337,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand0",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.022222222222222223,
+  "cost": 10.97777777777778,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand0",
+  "var": "qs",
+  "hard": 3,
+  "pass_rate": 0.11111111111111112,
+  "cost": 10.888888888888891,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand1",
+  "var": "default",
+  "hard": 3,
+  "pass_rate": 0.0,
+  "cost": 11.0,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand1",
+  "var": "qs",
+  "hard": 3,
+  "pass_rate": 0.0,
+  "cost": 11.0,
+  "chatter": 0.0,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand2",
+  "var": "default",
+  "hard": 0,
+  "pass_rate": 0.0,
+  "cost": 1.3736090616229466,
+  "chatter": 0.5145093616664358,
+  "miss_m": NaN
+ },
+ {
+  "model": "T38",
+  "genes": "rand2",
+  "var": "qs",
+  "hard": 0,
+  "pass_rate": 0.0,
+  "cost": 1.3864019318915262,
+  "chatter": 0.5918919374109668,
+  "miss_m": NaN
+ }
+]
